@@ -1,0 +1,48 @@
+{
+  "evidence_class": "simulated",
+  "controller": {
+    "type": "pressure_band_baseline",
+    "target_bar_g": 7.0,
+    "lower_band_bar_g": 6.8,
+    "upper_band_bar_g": 7.2,
+    "safety_min_bar_g": 6.5,
+    "safety_max_bar_g": 7.5,
+    "pressure_gain_kg_s_per_bar": 0.025
+  },
+  "scenario": {
+    "duration_seconds": 3600.0,
+    "timestep_seconds": 1.0,
+    "initial_pressure_bar_g": 7.0,
+    "nominal_leak_kg_s": 0.005,
+    "high_leak_kg_s": 0.02,
+    "demand_blocks_kg_s": [
+      0.07,
+      0.11,
+      0.145,
+      0.09
+    ],
+    "block_duration_seconds": 900
+  },
+  "baseline": {
+    "energy_kwh": 25.311174554824547,
+    "minimum_pressure_bar_g": 6.799305619662522,
+    "maximum_pressure_bar_g": 7.201742631845943,
+    "startup_count": 4,
+    "safety_violations": 0
+  },
+  "leak_comparison": {
+    "nominal_energy_kwh": 25.311174554824547,
+    "high_leak_energy_kwh": 28.48898360884331,
+    "additional_energy_kwh": 3.1778090540187627,
+    "additional_energy_percent": 12.554964792864748,
+    "high_leak_safety_violations": 0
+  },
+  "limitations": [
+    "All compressor specifications are simulation assumptions.",
+    "The demand profile is synthetic.",
+    "Leak rates are imposed scenario inputs, not inferred from MetroPT.",
+    "The compressor power model is simplified.",
+    "The baseline controller is a simulated conventional reference, not a reproduction of a specific industrial controller.",
+    "No optimization is applied in this report."
+  ]
+}
