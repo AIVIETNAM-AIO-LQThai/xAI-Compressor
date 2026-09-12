@@ -1,0 +1,64 @@
+{
+  "raw_rows": 1516948,
+  "bins_before_quality_filter": 61393,
+  "bins_after_quality_filter": 50301,
+  "low_coverage_bins": 11092,
+  "incomplete_feature_bins": 0,
+  "model_feature_count": 63,
+  "quality_columns": [
+    "sample_count",
+    "coverage_ratio"
+  ],
+  "coverage_quantiles": {
+    "0.0": 0.0,
+    "0.01": 0.0,
+    "0.05": 0.0,
+    "0.5": 1.0,
+    "0.95": 1.0,
+    "0.99": 1.0,
+    "1.0": 1.0
+  },
+  "splits": {
+    "train": {
+      "rows": 5271,
+      "start": "2020-02-01 00:05:00",
+      "end": "2020-02-21 23:55:00"
+    },
+    "calibration": {
+      "rows": 1796,
+      "start": "2020-02-22 01:00:00",
+      "end": "2020-02-28 23:55:00"
+    },
+    "test": {
+      "rows": 43221,
+      "start": "2020-03-01 04:05:00",
+      "end": "2020-09-01 03:55:00"
+    }
+  },
+  "incident_coverage": [
+    {
+      "id": 1,
+      "expected_bins": 288,
+      "valid_bins": 286,
+      "coverage_ratio": 0.9930555555555556
+    },
+    {
+      "id": 2,
+      "expected_bins": 79,
+      "valid_bins": 79,
+      "coverage_ratio": 1.0
+    },
+    {
+      "id": 3,
+      "expected_bins": 631,
+      "valid_bins": 572,
+      "coverage_ratio": 0.9064976228209192
+    },
+    {
+      "id": 4,
+      "expected_bins": 55,
+      "valid_bins": 54,
+      "coverage_ratio": 0.9818181818181818
+    }
+  ]
+}
