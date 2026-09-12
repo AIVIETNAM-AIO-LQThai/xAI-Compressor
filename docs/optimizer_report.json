@@ -35,11 +35,22 @@
     "energy_kwh": 25.217708333326183,
     "minimum_pressure_bar_g": 6.5,
     "maximum_pressure_bar_g": 7.39863155375289,
+    "terminal_pressure_bar_g": 7.000000000000008,
     "startup_count": 4,
     "overpressure_bar_hours": 0.03432240318383166,
     "minimum_reserve_kg_s": 0.024999999999999998,
     "safety_violations": 0,
     "objective_value": 25.421140573651286
+  },
+  "acceptance": {
+    "solver_optimal": true,
+    "energy_nonnegative": true,
+    "no_safety_violations": true,
+    "minimum_pressure_ok": true,
+    "maximum_pressure_ok": true,
+    "reserve_requirement_ok": true,
+    "terminal_pressure_ok": true,
+    "all_passed": true
   },
   "comparison": {
     "energy_saving_kwh": 0.09346622149836392,
