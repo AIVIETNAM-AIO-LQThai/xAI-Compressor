@@ -1,0 +1,462 @@
+{
+  "project": "AeroXAI",
+  "deployment": {
+    "mode": "advisory",
+    "override_equipment_ctrl": false
+  },
+  "evidence_classes": {
+    "REAL": {
+      "scope": "MetroPT-3 telemetry detection and XAI",
+      "detection": {
+        "evidence_class": "REAL",
+        "dataset": "MetroPT-3",
+        "detector": {
+          "name": "pca_reconstruction",
+          "scaler": "robust",
+          "input_feature_count": 63,
+          "variance_retained": 0.95,
+          "components": 3,
+          "explained_variance_ratio": 0.9716022727986392,
+          "threshold": 52941.88448793303
+        },
+        "metrics": {
+          "timely_incident_recall": 1.0,
+          "anytime_incident_recall": 1.0,
+          "pre_onset_incident_recall": 0.5,
+          "incident_overlap_recall": 1.0,
+          "false_alerts_per_24h": 0.8862358575692373,
+          "time_in_alert_fraction": 0.07549570810485644,
+          "relevant_episode_precision": 0.06338028169014084,
+          "pr_auc": 0.24916826514697024,
+          "episodes_total": 142,
+          "false_episodes": 133
+        },
+        "incidents": [
+          {
+            "id": 1,
+            "incident_start": "2020-04-18 00:00:00",
+            "incident_end": "2020-04-18 23:59:00",
+            "explanation_timestamp": "2020-04-18 00:40:00",
+            "timing": "post_onset",
+            "lead_hours": null,
+            "delay_hours": 0.6666666666666666,
+            "raw_score": 197231.22762546717,
+            "smoothed_score": 180453.04329740186,
+            "top_features": [
+              {
+                "feature": "tp2__mean",
+                "share": 0.5407888132773343
+              },
+              {
+                "feature": "tp2__min",
+                "share": 0.28396890039042405
+              },
+              {
+                "feature": "tp2__max",
+                "share": 0.07039118614829552
+              },
+              {
+                "feature": "tp2__std",
+                "share": 0.04455791339576344
+              },
+              {
+                "feature": "dv_pressure__last",
+                "share": 0.020265039609841114
+              }
+            ],
+            "top_groups": [
+              {
+                "group": "tp2",
+                "share": 0.9397156633866365
+              },
+              {
+                "group": "dv_pressure",
+                "share": 0.060190277288814736
+              },
+              {
+                "group": "motor_current",
+                "share": 5.122069832465102e-05
+              },
+              {
+                "group": "h1",
+                "share": 2.2812910205930112e-05
+              },
+              {
+                "group": "pressure_relationships",
+                "share": 1.0505528658816807e-05
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "incident_start": "2020-05-29 23:30:00",
+            "incident_end": "2020-05-30 06:00:00",
+            "explanation_timestamp": "2020-05-29 21:20:00",
+            "timing": "pre_onset",
+            "lead_hours": 2.1666666666666665,
+            "delay_hours": null,
+            "raw_score": 35.822060692348,
+            "smoothed_score": 58988.95445080686,
+            "top_features": [
+              {
+                "feature": "dv_pressure__std",
+                "share": 0.642862412682932
+              },
+              {
+                "feature": "motor_current__min",
+                "share": 0.09801198950675115
+              },
+              {
+                "feature": "dv_pressure__last",
+                "share": 0.07562720714215976
+              },
+              {
+                "feature": "tp2__max",
+                "share": 0.07493169230730878
+              },
+              {
+                "feature": "dv_pressure__max",
+                "share": 0.05693688350597062
+              }
+            ],
+            "top_groups": [
+              {
+                "group": "dv_pressure",
+                "share": 0.7756286007226351
+              },
+              {
+                "group": "tp2",
+                "share": 0.12633728723990423
+              },
+              {
+                "group": "motor_current",
+                "share": 0.09801224365882992
+              },
+              {
+                "group": "oil_temperature",
+                "share": 1.3580132123576455e-05
+              },
+              {
+                "group": "h1",
+                "share": 3.5796462106153857e-06
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "incident_start": "2020-06-05 10:00:00",
+            "incident_end": "2020-06-07 14:30:00",
+            "explanation_timestamp": "2020-06-05 10:10:00",
+            "timing": "post_onset",
+            "lead_hours": null,
+            "delay_hours": 0.16666666666666666,
+            "raw_score": 154559.43638072346,
+            "smoothed_score": 96204.74042199,
+            "top_features": [
+              {
+                "feature": "tp2__mean",
+                "share": 0.5252045347854459
+              },
+              {
+                "feature": "tp2__min",
+                "share": 0.2385381597761626
+              },
+              {
+                "feature": "tp2__max",
+                "share": 0.055280143183479
+              },
+              {
+                "feature": "dv_pressure__std",
+                "share": 0.0498122517329799
+              },
+              {
+                "feature": "tp2__std",
+                "share": 0.04153888916524166
+              }
+            ],
+            "top_groups": [
+              {
+                "group": "tp2",
+                "share": 0.8607272776886175
+              },
+              {
+                "group": "dv_pressure",
+                "share": 0.1301757931945996
+              },
+              {
+                "group": "motor_current",
+                "share": 0.009043769562144206
+              },
+              {
+                "group": "h1",
+                "share": 2.7871756121881816e-05
+              },
+              {
+                "group": "pressure_relationships",
+                "share": 1.1093616672619423e-05
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "incident_start": "2020-07-15 14:30:00",
+            "incident_end": "2020-07-15 19:00:00",
+            "explanation_timestamp": "2020-07-15 08:45:00",
+            "timing": "pre_onset",
+            "lead_hours": 5.75,
+            "delay_hours": null,
+            "raw_score": 22696.272410624664,
+            "smoothed_score": 63496.51849308473,
+            "top_features": [
+              {
+                "feature": "dv_pressure__std",
+                "share": 0.6843491770126678
+              },
+              {
+                "feature": "motor_current__min",
+                "share": 0.11704697610451448
+              },
+              {
+                "feature": "tp2__mean",
+                "share": 0.06694168918809099
+              },
+              {
+                "feature": "tp2__max",
+                "share": 0.06343410175576439
+              },
+              {
+                "feature": "dv_pressure__max",
+                "share": 0.06047075369612639
+              }
+            ],
+            "top_groups": [
+              {
+                "group": "dv_pressure",
+                "share": 0.7449660398454754
+              },
+              {
+                "group": "tp2",
+                "share": 0.13795717253058715
+              },
+              {
+                "group": "motor_current",
+                "share": 0.11704739292077361
+              },
+              {
+                "group": "oil_temperature",
+                "share": 1.9245892482784432e-05
+              },
+              {
+                "group": "h1",
+                "share": 3.6414879158668905e-06
+              }
+            ]
+          }
+        ],
+        "explanation_basis": "squared PCA reconstruction residual in robust-scaled feature space, propagated through the same causal EWMA used by the alert pipeline",
+        "causal_claim": false,
+        "limitations": [
+          "MetroPT evidence supports detection and explanation, not multi-compressor energy optimization claims.",
+          "Benchmark-false episodes are not necessarily physically normal because incident labels are sparse.",
+          "PCA contributions identify signals associated with anomaly evidence, not confirmed root cause."
+        ]
+      }
+    },
+    "SIMULATED": {
+      "scope": "Digital twin, baseline controller, optimization, action explanations, and robustness stress tests",
+      "digital_twin": {
+        "evidence_class": "simulated",
+        "model": {
+          "equation": "dp_dt = (R*T/V) * (m_in - m_demand - m_leak)",
+          "temperature_assumption": "constant",
+          "gas_assumption": "ideal gas",
+          "receiver_assumption": "lumped constant-volume receiver"
+        },
+        "parameters": {
+          "volume_m3": 10.0,
+          "temperature_k": 298.15,
+          "gas_constant_j_per_kg_k": 287.05,
+          "ambient_pressure_pa": 101325.0,
+          "timestep_seconds": 1.0
+        },
+        "validation": {
+          "balanced_pressure_change_bar": 0.0,
+          "rise_10min_bar": 1.0270074899999884,
+          "decay_10min_bar": -1.0270074899999893,
+          "analytical_error_pa": 1.0477378964424133e-09
+        },
+        "leak_scenario": {
+          "lower_leak_kg_s": 0.005,
+          "higher_leak_kg_s": 0.02,
+          "lower_leak_final_bar_g": 7.256751872500172,
+          "higher_leak_final_bar_g": 6.486496254999656,
+          "pressure_difference_bar": 0.7702556175005162
+        },
+        "limitations": [
+          "Parameters are simulation assumptions, not measurements from MetroPT or a factory.",
+          "Temperature is assumed constant.",
+          "Compressor flow is externally specified and not yet pressure-dependent.",
+          "Leak flow is externally specified and not yet pressure-dependent.",
+          "No compressor power or energy model is included yet.",
+          "No controller or optimizer is included yet."
+        ]
+      },
+      "baseline": {
+        "evidence_class": "simulated",
+        "controller": {
+          "type": "pressure_band_baseline",
+          "target_bar_g": 7.0,
+          "lower_band_bar_g": 6.8,
+          "upper_band_bar_g": 7.2,
+          "safety_min_bar_g": 6.5,
+          "safety_max_bar_g": 7.5,
+          "pressure_gain_kg_s_per_bar": 0.025
+        },
+        "scenario": {
+          "duration_seconds": 3600.0,
+          "timestep_seconds": 1.0,
+          "initial_pressure_bar_g": 7.0,
+          "nominal_leak_kg_s": 0.005,
+          "high_leak_kg_s": 0.02,
+          "demand_blocks_kg_s": [
+            0.07,
+            0.11,
+            0.145,
+            0.09
+          ],
+          "block_duration_seconds": 900
+        },
+        "baseline": {
+          "energy_kwh": 25.311174554824547,
+          "minimum_pressure_bar_g": 6.799305619662522,
+          "maximum_pressure_bar_g": 7.201742631845943,
+          "startup_count": 4,
+          "safety_violations": 0
+        },
+        "leak_comparison": {
+          "nominal_energy_kwh": 25.311174554824547,
+          "high_leak_energy_kwh": 28.48898360884331,
+          "additional_energy_kwh": 3.1778090540187627,
+          "additional_energy_percent": 12.554964792864748,
+          "high_leak_safety_violations": 0
+        },
+        "limitations": [
+          "All compressor specifications are simulation assumptions.",
+          "The demand profile is synthetic.",
+          "Leak rates are imposed scenario inputs, not inferred from MetroPT.",
+          "The compressor power model is simplified.",
+          "The baseline controller is a simulated conventional reference, not a reproduction of a specific industrial controller.",
+          "No optimization is applied in this report."
+        ]
+      },
+      "optimizer": {
+        "evidence_class": "simulated",
+        "method": {
+          "name": "constrained_milp",
+          "optimizer_interval_seconds": 60.0,
+          "reserve_mass_flow_kg_s": 0.01,
+          "startup_penalty_kwh": 0.05,
+          "overpressure_penalty_kwh_per_bar_hour": 0.1,
+          "terminal_pressure_min_bar_g": 7.0,
+          "solver_status": 0,
+          "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+        },
+        "scenario": {
+          "duration_seconds": 3600.0,
+          "initial_pressure_bar_g": 7.0,
+          "nominal_leak_kg_s": 0.005,
+          "demand_blocks_kg_s": [
+            0.07,
+            0.11,
+            0.145,
+            0.09
+          ],
+          "block_duration_seconds": 900,
+          "safety_min_bar_g": 6.5,
+          "safety_max_bar_g": 7.5
+        },
+        "baseline": {
+          "energy_kwh": 25.311174554824547,
+          "minimum_pressure_bar_g": 6.799305619662522,
+          "maximum_pressure_bar_g": 7.201742631845943,
+          "startup_count": 4,
+          "safety_violations": 0
+        },
+        "optimized": {
+          "energy_kwh": 25.217708333326183,
+          "minimum_pressure_bar_g": 6.5,
+          "maximum_pressure_bar_g": 7.39863155375289,
+          "terminal_pressure_bar_g": 7.000000000000008,
+          "startup_count": 4,
+          "overpressure_bar_hours": 0.03432240318383166,
+          "minimum_reserve_kg_s": 0.024999999999999998,
+          "safety_violations": 0,
+          "objective_value": 25.421140573651286
+        },
+        "acceptance": {
+          "solver_optimal": true,
+          "energy_nonnegative": true,
+          "no_safety_violations": true,
+          "minimum_pressure_ok": true,
+          "maximum_pressure_ok": true,
+          "reserve_requirement_ok": true,
+          "terminal_pressure_ok": true,
+          "all_passed": true
+        },
+        "comparison": {
+          "energy_saving_kwh": 0.09346622149836392,
+          "energy_saving_percent": 0.36926860622731705
+        },
+        "limitations": [
+          "All compressor specifications are simulation assumptions.",
+          "The demand profile is synthetic.",
+          "Leak rate is an imposed scenario input, not inferred from MetroPT.",
+          "The compressor power model is simplified and does not model pressure-dependent efficiency.",
+          "The optimizer uses 60-second control intervals.",
+          "The result is predicted simulated energy performance, not measured industrial energy savings.",
+          "AeroXAI remains advisory-only and does not override equipment control."
+        ]
+      },
+      "action_explanations": {
+        "summary": {
+          "interval_count": 60,
+          "decision_point_count": 5,
+          "minimum_safety_margin_bar": 0.0,
+          "binding_constraint_intervals": 20
+        },
+        "causal_claim": false,
+        "acceptance": {
+          "count_matches_schedule": true,
+          "all_simulated": true,
+          "no_causal_claims": true,
+          "baseline_comparison_complete": true,
+          "all_passed": true
+        }
+      },
+      "robustness": {
+        "status": "nominal_feasible_but_not_robust_to_tested_perturbations",
+        "all_tested_perturbations_safe": false,
+        "unsafe_scenarios": [
+          "demand_plus_5pct",
+          "demand_plus_10pct",
+          "leak_plus_0p005",
+          "leak_plus_0p010",
+          "volume_minus_10pct"
+        ],
+        "worst_tested_minimum_pressure_bar_g": 3.6185778391647427
+      }
+    },
+    "LITERATURE": {
+      "scope": "External references support context and industry framing only.",
+      "runtime_embedded": false
+    }
+  },
+  "safety": {
+    "deployment_mode": "advisory",
+    "override_equipment_ctrl": false,
+    "recommendation_valid_for_seconds": 60.0,
+    "requires_reoptimization": true,
+    "open_loop_schedule_approved": false,
+    "robustness_status": "nominal_feasible_but_not_robust_to_tested_perturbations"
+  }
+}
