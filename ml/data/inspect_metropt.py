@@ -5,7 +5,8 @@ from pathlib import Path
 
 import pandas as pd
 import yaml
-from m1.data.schema import (
+
+from ml.data.schema import (
     ANALOG_COLUMNS,
     DIGITAL_COLUMNS,
     canonicalize_column_name,

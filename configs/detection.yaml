@@ -22,3 +22,12 @@ outputs:
   scores_file: "data/processed/detector_scores.parquet"
   model_file: "artifacts/detection/robust_z.json"
   metrics_file: "docs/detector_metrics.json"
+
+selection:
+  primary: pca_reconstruction
+  baseline: robust_z_topk
+  comparison:
+    - isolation_forest
+
+pca:
+  variance_retained: 0.95

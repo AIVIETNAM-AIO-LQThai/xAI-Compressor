@@ -6,6 +6,8 @@ from ml.detection.alerts import (
     extract_alert_episodes,
     persistent_alerts,
 )
+from ml.detection.isolation_forest import fit_isolation_forest, score_isolation_forest
+from ml.detection.pca_detector import fit_pca_detector, score_pca_detector
 from ml.detection.robust_z import (
     fit_robust_z,
     score_robust_z,
@@ -187,3 +189,76 @@ def test_ewma_rejects_non_datetime_index():
             alpha=0.2,
             reset_gap_minutes=10,
         )
+
+def test_pca_scores_outlier_higher():
+    index = pd.date_range(
+        "2020-01-01",
+        periods=20,
+        freq="5min",
+    )
+
+    train = pd.DataFrame(
+        {
+            "x": range(20),
+            "y": range(20),
+        },
+        index=index,
+        dtype=float,
+    )
+
+    detector = fit_pca_detector(
+        train,
+        ["x", "y"],
+        variance_retained=0.95,
+    )
+
+    test = pd.DataFrame(
+        {
+            "x": [10.0, 100.0],
+            "y": [10.0, -100.0],
+        },
+        index=pd.date_range(
+            "2020-02-01",
+            periods=2,
+            freq="5min",
+        ),
+    )
+
+    scores = score_pca_detector(
+        test,
+        detector,
+    )
+
+    assert scores.iloc[1] > scores.iloc[0]
+
+
+def test_isolation_forest_returns_finite_scores():
+    index = pd.date_range(
+        "2020-01-01",
+        periods=50,
+        freq="5min",
+    )
+
+    train = pd.DataFrame(
+        {
+            "x": range(50),
+            "y": range(50),
+        },
+        index=index,
+        dtype=float,
+    )
+
+    detector = fit_isolation_forest(
+        train,
+        ["x", "y"],
+        n_estimators=50,
+        random_state=42,
+    )
+
+    scores = score_isolation_forest(
+        train,
+        detector,
+    )
+
+    assert scores.notna().all()
+    assert len(scores) == len(train)

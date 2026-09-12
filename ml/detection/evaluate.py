@@ -22,6 +22,9 @@ def evaluate_detection(
     late_tolerance_hours: int,
     bin_minutes: int,
 ) -> dict[str, Any]:
+    pre_onset_detected = 0
+    overlap_detected = 0
+
     scores = scores.sort_index()
     alerts = alerts.reindex(
         scores.index,
@@ -49,26 +52,29 @@ def evaluate_detection(
     )
 
     for incident in incidents:
-        start = pd.Timestamp(
-            incident["start"]
-        )
+        start = pd.Timestamp(incident["start"])
+        end = pd.Timestamp(incident["end"])
 
-        end = pd.Timestamp(
-            incident["end"]
-        )
+        pre_onset_candidates = [
+            episode for episode in episodes
+            if (start - early_window <= episode.start < start)
+        ]
+
+        overlap_candidates = [
+            episode for episode in episodes
+            if (episode.start <= end and episode.end >= start)
+        ]
+
+        pre_onset_detected += int(bool(pre_onset_candidates))
+        overlap_detected += int(bool(overlap_candidates))
 
         labels.loc[
             (labels.index >= start)
             & (labels.index <= end)
         ] = True
 
-        timely_start = (
-            start - early_window
-        )
-
-        timely_end = (
-            start + late_window
-        )
+        timely_start = start - early_window
+        timely_end = start + late_window
 
         timely_candidates = [
             episode
@@ -89,21 +95,11 @@ def evaluate_detection(
             )
         ]
 
-        timely_detected = bool(
-            timely_candidates
-        )
+        timely_detected = bool(timely_candidates)
+        anytime_detected = bool(anytime_candidates)
 
-        anytime_detected = bool(
-            anytime_candidates
-        )
-
-        timely_count += int(
-            timely_detected
-        )
-
-        anytime_count += int(
-            anytime_detected
-        )
+        timely_count += int(timely_detected)
+        anytime_count += int(anytime_detected)
 
         first_alert = (
             min(
@@ -154,17 +150,10 @@ def evaluate_detection(
         episodes
     ):
         for incident in incidents:
-            start = pd.Timestamp(
-                incident["start"]
-            )
+            start = pd.Timestamp(incident["start"])
+            end = pd.Timestamp(incident["end"])
 
-            end = pd.Timestamp(
-                incident["end"]
-            )
-
-            relevant_start = (
-                start - early_window
-            )
+            relevant_start = (start - early_window)
 
             if (
                 episode.start <= end
@@ -175,6 +164,11 @@ def evaluate_detection(
                     index
                 )
                 break
+
+    episode_precision = (
+        len(relevant_episodes) / len(episodes)
+        if episodes else None
+    )
 
     false_episode_count = (
         len(episodes)
@@ -228,4 +222,18 @@ def evaluate_detection(
             precision_recall_auc,
         "valid_exposure_days":
             valid_exposure_days,
+        "pre_onset_incident_recall": (
+            pre_onset_detected
+            / len(incidents)
+            if incidents
+            else None
+        ),
+        "incident_overlap_recall": (
+            overlap_detected
+            / len(incidents)
+            if incidents
+            else None
+        ),
+        "relevant_episode_precision":
+            episode_precision,
     }
