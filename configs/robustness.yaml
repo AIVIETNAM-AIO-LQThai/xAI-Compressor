@@ -1,0 +1,38 @@
+robustness:
+  replay_tolerance_bar: 1.0e-8
+
+  scenarios:
+    - id: nominal
+      demand_multiplier: 1.00
+      leak_delta_kg_s: 0.000
+      volume_multiplier: 1.00
+
+    - id: demand_plus_5pct
+      demand_multiplier: 1.05
+      leak_delta_kg_s: 0.000
+      volume_multiplier: 1.00
+
+    - id: demand_plus_10pct
+      demand_multiplier: 1.10
+      leak_delta_kg_s: 0.000
+      volume_multiplier: 1.00
+
+    - id: leak_plus_0p005
+      demand_multiplier: 1.00
+      leak_delta_kg_s: 0.005
+      volume_multiplier: 1.00
+
+    - id: leak_plus_0p010
+      demand_multiplier: 1.00
+      leak_delta_kg_s: 0.010
+      volume_multiplier: 1.00
+
+    - id: volume_minus_10pct
+      demand_multiplier: 1.00
+      leak_delta_kg_s: 0.000
+      volume_multiplier: 0.90
+
+    - id: volume_plus_10pct
+      demand_multiplier: 1.00
+      leak_delta_kg_s: 0.000
+      volume_multiplier: 1.10
