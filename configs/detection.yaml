@@ -27,7 +27,12 @@ selection:
   primary: pca_reconstruction
   baseline: robust_z_topk
   comparison:
+    - pca_standard_scaler
     - isolation_forest
 
 pca:
   variance_retained: 0.95
+  scaler: robust
+  benchmark_scalers:
+    - robust
+    - standard
