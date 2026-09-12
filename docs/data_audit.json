@@ -1,0 +1,219 @@
+{
+  "dataset": "MetroPT-3",
+  "rows_raw": 1516948,
+  "rows_after_normalization": 1516948,
+  "expected_rows": 1516948,
+  "raw_columns": [
+    "Unnamed: 0",
+    "timestamp",
+    "TP2",
+    "TP3",
+    "H1",
+    "DV_pressure",
+    "Reservoirs",
+    "Oil_temperature",
+    "Motor_current",
+    "COMP",
+    "DV_eletric",
+    "Towers",
+    "MPG",
+    "LPS",
+    "Pressure_switch",
+    "Oil_level",
+    "Caudal_impulses"
+  ],
+  "canonical_columns": [
+    "timestamp",
+    "tp2",
+    "tp3",
+    "h1",
+    "dv_pressure",
+    "reservoirs",
+    "oil_temperature",
+    "motor_current",
+    "comp",
+    "dv_electric",
+    "towers",
+    "mpg",
+    "lps",
+    "pressure_switch",
+    "oil_level",
+    "caudal_impulses"
+  ],
+  "duplicate_timestamps_raw": 0,
+  "missing_values": {
+    "timestamp": 0,
+    "tp2": 0,
+    "tp3": 0,
+    "h1": 0,
+    "dv_pressure": 0,
+    "reservoirs": 0,
+    "oil_temperature": 0,
+    "motor_current": 0,
+    "comp": 0,
+    "dv_electric": 0,
+    "towers": 0,
+    "mpg": 0,
+    "lps": 0,
+    "pressure_switch": 0,
+    "oil_level": 0,
+    "caudal_impulses": 0
+  },
+  "time_start": "2020-02-01 00:00:00",
+  "time_end": "2020-09-01 03:59:50",
+  "cadence_seconds": {
+    "min": 8.0,
+    "p01": 9.0,
+    "median": 10.0,
+    "p95": 10.0,
+    "p99": 12.0,
+    "max": 172918.0,
+    "most_common": {
+      "10.0": 1337521,
+      "9.0": 128277,
+      "12.0": 38321,
+      "13.0": 7988,
+      "11.0": 4471,
+      "21.0": 10,
+      "19.0": 5,
+      "22.0": 4,
+      "20.0": 3,
+      "17.0": 3
+    }
+  },
+  "gaps": {
+    "gt_15_seconds": 363,
+    "gt_30_seconds": 331,
+    "gt_60_seconds": 331,
+    "gt_300_seconds": 275
+  },
+  "analog_summary": {
+    "tp2": {
+      "min": -0.032,
+      "p01": -0.0240000000000009,
+      "median": -0.0120000000000004,
+      "mean": 1.3678259663482208,
+      "p99": 10.352,
+      "max": 10.676,
+      "std": 3.2509296807037575
+    },
+    "tp3": {
+      "min": 0.7300000000000004,
+      "p01": 7.875999999999999,
+      "median": 8.96,
+      "mean": 8.984610701223774,
+      "p99": 10.14,
+      "max": 10.302,
+      "std": 0.6390950863089508
+    },
+    "h1": {
+      "min": -0.0360000000000013,
+      "p01": -0.0240000000000009,
+      "median": 8.784,
+      "mean": 7.5681549004975786,
+      "p99": 10.114,
+      "max": 10.288,
+      "std": 3.3331995652894286
+    },
+    "dv_pressure": {
+      "min": -0.032,
+      "p01": -0.0259999999999998,
+      "median": -0.0199999999999995,
+      "mean": 0.055956189665038424,
+      "p99": 2.112,
+      "max": 9.844,
+      "std": 0.3824015460354256
+    },
+    "reservoirs": {
+      "min": 0.7119999999999997,
+      "p01": 7.875999999999999,
+      "median": 8.96,
+      "mean": 8.985233443730436,
+      "p99": 10.138,
+      "max": 10.3,
+      "std": 0.6383070418596231
+    },
+    "oil_temperature": {
+      "min": 15.400000000000006,
+      "p01": 48.825,
+      "median": 62.7,
+      "mean": 62.644181738596174,
+      "p99": 76.175,
+      "max": 89.05000000000001,
+      "std": 6.51626108944493
+    },
+    "motor_current": {
+      "min": 0.0199999999999995,
+      "p01": 0.0349999999999992,
+      "median": 0.0449999999999999,
+      "mean": 2.050170803481728,
+      "p99": 6.1875,
+      "max": 9.295,
+      "std": 2.302053413886757
+    }
+  },
+  "digital_unique_values": {
+    "comp": [
+      0.0,
+      1.0
+    ],
+    "dv_electric": [
+      0.0,
+      1.0
+    ],
+    "towers": [
+      0.0,
+      1.0
+    ],
+    "mpg": [
+      0.0,
+      1.0
+    ],
+    "lps": [
+      0.0,
+      1.0
+    ],
+    "pressure_switch": [
+      0.0,
+      1.0
+    ],
+    "oil_level": [
+      0.0,
+      1.0
+    ],
+    "caudal_impulses": [
+      0.0,
+      1.0
+    ]
+  },
+  "reported_incidents": [
+    {
+      "id": 1,
+      "start": "2020-04-18 00:00:00",
+      "end": "2020-04-18 23:59:00",
+      "condition": "air_leak_high_stress",
+      "rows_in_interval": 8657
+    },
+    {
+      "id": 2,
+      "start": "2020-05-29 23:30:00",
+      "end": "2020-05-30 06:00:00",
+      "condition": "air_leak_high_stress",
+      "rows_in_interval": 2360
+    },
+    {
+      "id": 3,
+      "start": "2020-06-05 10:00:00",
+      "end": "2020-06-07 14:30:00",
+      "condition": "air_leak_high_stress",
+      "rows_in_interval": 17315
+    },
+    {
+      "id": 4,
+      "start": "2020-07-15 14:30:00",
+      "end": "2020-07-15 19:00:00",
+      "condition": "air_leak_high_stress",
+      "rows_in_interval": 1622
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+dataset:
+  name: MetroPT-3
+  source: UCI Machine Learning Repository
+  doi: "10.24432/C5VW3R"
+  license: "CC BY 4.0"
+
+  source_url: "https://archive.ics.uci.edu/static/public/791/metropt%2B3%2Bdataset.zip"
+
+  expected_zip_sha256: "aab991a970e58210de853bb8078ce0e63abb4d9412fdc5c79792dae3d8e1721a"
+  expected_rows: 1516948
+
+  raw_zip: "data/raw/metropt3.zip"
+  raw_csv: "data/raw/MetroPT3(AirCompressor).csv"
+  raw_description_pdf: "data/raw/Data Description_Metro.pdf"
+
+  analog_columns:
+    - tp2
+    - tp3
+    - h1
+    - dv_pressure
+    - reservoirs
+    - oil_temperature
+    - motor_current
+
+  digital_columns:
+    - comp
+    - dv_electric
+    - towers
+    - mpg
+    - lps
+    - pressure_switch
+    - oil_level
+    - caudal_impulses
+
+  reported_incidents:
+    - id: 1
+      start: "2020-04-18 00:00:00"
+      end: "2020-04-18 23:59:00"
+      condition: "air_leak_high_stress"
+
+    - id: 2
+      start: "2020-05-29 23:30:00"
+      end: "2020-05-30 06:00:00"
+      condition: "air_leak_high_stress"
+
+    - id: 3
+      start: "2020-06-05 10:00:00"
+      end: "2020-06-07 14:30:00"
+      condition: "air_leak_high_stress"
+
+    - id: 4
+      start: "2020-07-15 14:30:00"
+      end: "2020-07-15 19:00:00"
+      condition: "air_leak_high_stress"
