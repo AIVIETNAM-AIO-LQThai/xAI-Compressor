@@ -1,0 +1,12 @@
+optimization:
+  interval_seconds: 60
+  reserve_mass_flow_kg_s: 0.010
+
+  startup_penalty_kwh: 0.050
+  overpressure_penalty_kwh_per_bar_hour: 0.10
+
+  terminal_pressure_min_bar_g: 7.0
+
+  solver:
+    time_limit_seconds: 30
+    mip_rel_gap: 0.001

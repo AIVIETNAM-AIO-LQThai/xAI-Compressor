@@ -1,0 +1,57 @@
+{
+  "evidence_class": "simulated",
+  "method": {
+    "name": "constrained_milp",
+    "optimizer_interval_seconds": 60.0,
+    "reserve_mass_flow_kg_s": 0.01,
+    "startup_penalty_kwh": 0.05,
+    "overpressure_penalty_kwh_per_bar_hour": 0.1,
+    "terminal_pressure_min_bar_g": 7.0,
+    "solver_status": 0,
+    "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+  },
+  "scenario": {
+    "duration_seconds": 3600.0,
+    "initial_pressure_bar_g": 7.0,
+    "nominal_leak_kg_s": 0.005,
+    "demand_blocks_kg_s": [
+      0.07,
+      0.11,
+      0.145,
+      0.09
+    ],
+    "block_duration_seconds": 900,
+    "safety_min_bar_g": 6.5,
+    "safety_max_bar_g": 7.5
+  },
+  "baseline": {
+    "energy_kwh": 25.311174554824547,
+    "minimum_pressure_bar_g": 6.799305619662522,
+    "maximum_pressure_bar_g": 7.201742631845943,
+    "startup_count": 4,
+    "safety_violations": 0
+  },
+  "optimized": {
+    "energy_kwh": 25.217708333326183,
+    "minimum_pressure_bar_g": 6.5,
+    "maximum_pressure_bar_g": 7.39863155375289,
+    "startup_count": 4,
+    "overpressure_bar_hours": 0.03432240318383166,
+    "minimum_reserve_kg_s": 0.024999999999999998,
+    "safety_violations": 0,
+    "objective_value": 25.421140573651286
+  },
+  "comparison": {
+    "energy_saving_kwh": 0.09346622149836392,
+    "energy_saving_percent": 0.36926860622731705
+  },
+  "limitations": [
+    "All compressor specifications are simulation assumptions.",
+    "The demand profile is synthetic.",
+    "Leak rate is an imposed scenario input, not inferred from MetroPT.",
+    "The compressor power model is simplified and does not model pressure-dependent efficiency.",
+    "The optimizer uses 60-second control intervals.",
+    "The result is predicted simulated energy performance, not measured industrial energy savings.",
+    "AeroXAI remains advisory-only and does not override equipment control."
+  ]
+}
