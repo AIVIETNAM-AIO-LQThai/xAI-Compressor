@@ -1,0 +1,125 @@
+{
+  "evidence_class": "simulated",
+  "explanation_basis": "optimizer schedule, pressure constraints, reserve margin, and interval energy comparison",
+  "causal_claim": false,
+  "acceptance": {
+    "count_matches_schedule": true,
+    "all_simulated": true,
+    "no_causal_claims": true,
+    "baseline_comparison_complete": true,
+    "all_passed": true
+  },
+  "summary": {
+    "interval_count": 60,
+    "decision_point_count": 5,
+    "minimum_safety_margin_bar": 0.0,
+    "binding_constraint_intervals": 20
+  },
+  "decision_points": [
+    {
+      "interval_index": 0,
+      "time_seconds": 60.0,
+      "recommended_action": "fixed_1 ON; fixed_2 OFF; vsd_1 20.0%",
+      "reason": "Receiver pressure begins at target, so the schedule selects the lowest-objective feasible equipment dispatch for the forecast interval. No monitored safety or reserve constraint is binding at the interval end. Interval electrical energy difference versus the frozen baseline is +0.007708 kWh. This is a schedule comparison, not the causal effect of one individual device action.",
+      "evidence_class": "simulated",
+      "causal_claim": false,
+      "demand_kg_s": 0.07,
+      "leak_kg_s": 0.005,
+      "pressure_start_bar_g": 7.0,
+      "pressure_end_bar_g": 7.00513503745,
+      "safety_margin_bar": 0.5051350374499997,
+      "reserve_available_kg_s": 0.065,
+      "required_reserve_kg_s": 0.01,
+      "interval_energy_kwh": 0.30666666666666653,
+      "baseline_interval_energy_kwh": 0.2989583333333333,
+      "interval_energy_delta_kwh": 0.007708333333333206,
+      "binding_constraints": []
+    },
+    {
+      "interval_index": 18,
+      "time_seconds": 1140.0,
+      "recommended_action": "fixed_1 ON; fixed_2 OFF; vsd_1 20.0%",
+      "reason": "Receiver pressure begins below target, so the optimized schedule balances recovery against energy, startup, reserve, and safety constraints. Active or near-active constraints: pressure_safety_min. Interval electrical energy difference versus the frozen baseline is -0.151230 kWh. This is a schedule comparison, not the causal effect of one individual device action.",
+      "evidence_class": "simulated",
+      "causal_claim": false,
+      "demand_kg_s": 0.11,
+      "leak_kg_s": 0.005,
+      "pressure_start_bar_g": 6.70026646055,
+      "pressure_end_bar_g": 6.5,
+      "safety_margin_bar": 0.0,
+      "reserve_available_kg_s": 0.025000000000000012,
+      "required_reserve_kg_s": 0.01,
+      "interval_energy_kwh": 0.30666666666666664,
+      "baseline_interval_energy_kwh": 0.45789634914110655,
+      "interval_energy_delta_kwh": -0.1512296824744399,
+      "binding_constraints": [
+        "pressure_safety_min"
+      ]
+    },
+    {
+      "interval_index": 30,
+      "time_seconds": 1860.0,
+      "recommended_action": "fixed_1 ON; fixed_2 ON; vsd_1 37.5%",
+      "reason": "Receiver pressure begins below target, so the optimized schedule balances recovery against energy, startup, reserve, and safety constraints. Active or near-active constraints: pressure_safety_min. Interval electrical energy difference versus the frozen baseline is +0.039583 kWh. This is a schedule comparison, not the causal effect of one individual device action.",
+      "evidence_class": "simulated",
+      "causal_claim": false,
+      "demand_kg_s": 0.145,
+      "leak_kg_s": 0.005,
+      "pressure_start_bar_g": 6.5,
+      "pressure_end_bar_g": 6.5,
+      "safety_margin_bar": 0.0,
+      "reserve_available_kg_s": 0.050000000000000024,
+      "required_reserve_kg_s": 0.01,
+      "interval_energy_kwh": 0.5729166666666666,
+      "baseline_interval_energy_kwh": 0.5333333333333333,
+      "interval_energy_delta_kwh": 0.039583333333333304,
+      "binding_constraints": [
+        "pressure_safety_min"
+      ]
+    },
+    {
+      "interval_index": 51,
+      "time_seconds": 3120.0,
+      "recommended_action": "fixed_1 ON; fixed_2 ON; vsd_1 OFF",
+      "reason": "Receiver pressure begins above target, so the optimized schedule can limit air production while preserving pressure and reserve constraints. No monitored safety or reserve constraint is binding at the interval end. Interval electrical energy difference versus the frozen baseline is +0.069304 kWh. This is a schedule comparison, not the causal effect of one individual device action.",
+      "evidence_class": "simulated",
+      "causal_claim": false,
+      "demand_kg_s": 0.09,
+      "leak_kg_s": 0.005,
+      "pressure_start_bar_g": 7.270255617502898,
+      "pressure_end_bar_g": 7.39863155375289,
+      "safety_margin_bar": 0.8986315537528897,
+      "reserve_available_kg_s": 0.024999999999999998,
+      "required_reserve_kg_s": 0.01,
+      "interval_energy_kwh": 0.43333333333333335,
+      "baseline_interval_energy_kwh": 0.3640294352289095,
+      "interval_energy_delta_kwh": 0.06930389810442383,
+      "binding_constraints": []
+    },
+    {
+      "interval_index": 52,
+      "time_seconds": 3180.0,
+      "recommended_action": "fixed_1 ON; fixed_2 OFF; vsd_1 20.0%",
+      "reason": "Receiver pressure begins above target, so the optimized schedule can limit air production while preserving pressure and reserve constraints. No monitored safety or reserve constraint is binding at the interval end. Interval electrical energy difference versus the frozen baseline is -0.058560 kWh. This is a schedule comparison, not the causal effect of one individual device action.",
+      "evidence_class": "simulated",
+      "causal_claim": false,
+      "demand_kg_s": 0.09,
+      "leak_kg_s": 0.005,
+      "pressure_start_bar_g": 7.39863155375289,
+      "pressure_end_bar_g": 7.301065842202846,
+      "safety_margin_bar": 0.8010658422028456,
+      "reserve_available_kg_s": 0.04500000000000002,
+      "required_reserve_kg_s": 0.01,
+      "interval_energy_kwh": 0.3066666666666419,
+      "baseline_interval_energy_kwh": 0.3652268432854021,
+      "interval_energy_delta_kwh": -0.05856017661876023,
+      "binding_constraints": []
+    }
+  ],
+  "limitations": [
+    "Explanations describe the simulated optimizer schedule.",
+    "Interval energy differences versus baseline are not the causal effect of a single compressor action.",
+    "These explanations do not establish physical root cause.",
+    "Robustness to demand and model uncertainty is evaluated separately."
+  ]
+}
