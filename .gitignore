@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Environments
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Datasets
+data/raw/*
+data/processed/*
+data/demo/*.parquet
+data/demo/*.csv
+
+# Keep directory structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/demo/.gitkeep
+
+# Models / generated artifacts
+artifacts/*
+!artifacts/.gitkeep
+
+# Python build
+build/
+dist/
+*.egg-info/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local experiment outputs
+outputs/
+runs/

@@ -1,0 +1,35 @@
+project:
+  name: AeroXAI
+  repository: xAI-Compressor
+  mode: advisory
+  competition: ESIC 2026
+
+evidence:
+  allowed_types:
+    - REAL
+    - SIMULATED
+    - LITERATURE
+
+units:
+  internal:
+    pressure: Pa_abs
+    temperature: K
+    mass_flow: kg_s
+    volume: m3
+    power: W
+    energy: J
+    time: s
+
+  display:
+    pressure: bar_g
+    temperature: degC
+    volumetric_flow: std_m3_min
+    power: kW
+    energy: kWh
+
+constants:
+  atmospheric_pressure_pa: 101325.0
+
+safety:
+  deployment_mode: advisory
+  overide_equipment_ctrl: false
