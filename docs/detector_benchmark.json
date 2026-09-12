@@ -15,38 +15,38 @@
     "robust_z": {
       "timely_incident_recall": 1.0,
       "anytime_incident_recall": 1.0,
-      "false_alerts_per_24h": 2.7719858402165616,
-      "time_in_alert_fraction": 0.1608477360542329,
-      "pr_auc": 0.09132291367983798,
-      "episodes_total": 427,
-      "false_episodes": 416,
       "pre_onset_incident_recall": 1.0,
       "incident_overlap_recall": 1.0,
-      "relevant_episode_precision": 0.02576112412177986
+      "false_alerts_per_24h": 2.7719858402165616,
+      "time_in_alert_fraction": 0.1608477360542329,
+      "relevant_episode_precision": 0.02576112412177986,
+      "pr_auc": 0.09132291367983798,
+      "episodes_total": 427,
+      "false_episodes": 416
     },
     "pca": {
       "timely_incident_recall": 1.0,
       "anytime_incident_recall": 1.0,
-      "false_alerts_per_24h": 0.8862358575692373,
-      "time_in_alert_fraction": 0.07549570810485644,
-      "pr_auc": 0.24916826514697024,
-      "episodes_total": 142,
-      "false_episodes": 133,
       "pre_onset_incident_recall": 0.5,
       "incident_overlap_recall": 1.0,
-      "relevant_episode_precision": 0.06338028169014084
+      "false_alerts_per_24h": 0.8862358575692373,
+      "time_in_alert_fraction": 0.07549570810485644,
+      "relevant_episode_precision": 0.06338028169014084,
+      "pr_auc": 0.24916826514697024,
+      "episodes_total": 142,
+      "false_episodes": 133
     },
     "isolation_forest": {
       "timely_incident_recall": 1.0,
       "anytime_incident_recall": 1.0,
-      "false_alerts_per_24h": 4.997570625390436,
-      "time_in_alert_fraction": 0.4817565535272206,
-      "pr_auc": 0.44140033854587624,
-      "episodes_total": 775,
-      "false_episodes": 750,
       "pre_onset_incident_recall": 1.0,
       "incident_overlap_recall": 1.0,
-      "relevant_episode_precision": 0.03225806451612903
+      "false_alerts_per_24h": 4.997570625390436,
+      "time_in_alert_fraction": 0.4817565535272206,
+      "relevant_episode_precision": 0.03225806451612903,
+      "pr_auc": 0.44140033854587624,
+      "episodes_total": 775,
+      "false_episodes": 750
     }
   },
   "details": {
@@ -180,6 +180,7 @@
       "model": {
         "name": "pca_reconstruction",
         "input_feature_count": 63,
+        "variance_retained": 0.95,
         "components": 3,
         "explained_variance_ratio": 0.9716022727986391,
         "threshold": 52941.8844879329
