@@ -1,0 +1,24 @@
+detector:
+  method: robust_z_topk
+  top_k: 5
+  min_scale: 1.0e-9
+
+alerting:
+  ewma_alpha: 0.20
+  threshold_quantile: 0.995
+
+  persistence_hits: 3
+  persistence_window: 4
+
+  reset_gap_minutes: 10
+  merge_minutes: 30
+
+evaluation:
+  early_warning_hours: 24
+  late_tolerance_hours: 2
+  bin_minutes: 5
+
+outputs:
+  scores_file: "data/processed/detector_scores.parquet"
+  model_file: "artifacts/detection/robust_z.json"
+  metrics_file: "docs/detector_metrics.json"
