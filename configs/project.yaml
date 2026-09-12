@@ -32,4 +32,4 @@ constants:
 
 safety:
   deployment_mode: advisory
-  overide_equipment_ctrl: false
+  override_equipment_ctrl: false
