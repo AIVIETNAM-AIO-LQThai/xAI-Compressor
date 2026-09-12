@@ -1,0 +1,37 @@
+{
+  "evidence_class": "simulated",
+  "model": {
+    "equation": "dp_dt = (R*T/V) * (m_in - m_demand - m_leak)",
+    "temperature_assumption": "constant",
+    "gas_assumption": "ideal gas",
+    "receiver_assumption": "lumped constant-volume receiver"
+  },
+  "parameters": {
+    "volume_m3": 10.0,
+    "temperature_k": 298.15,
+    "gas_constant_j_per_kg_k": 287.05,
+    "ambient_pressure_pa": 101325.0,
+    "timestep_seconds": 1.0
+  },
+  "validation": {
+    "balanced_pressure_change_bar": 0.0,
+    "rise_10min_bar": 1.0270074899999884,
+    "decay_10min_bar": -1.0270074899999893,
+    "analytical_error_pa": 1.0477378964424133e-09
+  },
+  "leak_scenario": {
+    "lower_leak_kg_s": 0.005,
+    "higher_leak_kg_s": 0.02,
+    "lower_leak_final_bar_g": 7.256751872500172,
+    "higher_leak_final_bar_g": 6.486496254999656,
+    "pressure_difference_bar": 0.7702556175005162
+  },
+  "limitations": [
+    "Parameters are simulation assumptions, not measurements from MetroPT or a factory.",
+    "Temperature is assumed constant.",
+    "Compressor flow is externally specified and not yet pressure-dependent.",
+    "Leak flow is externally specified and not yet pressure-dependent.",
+    "No compressor power or energy model is included yet.",
+    "No controller or optimizer is included yet."
+  ]
+}

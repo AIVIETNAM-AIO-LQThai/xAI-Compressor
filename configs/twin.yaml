@@ -1,0 +1,10 @@
+air:
+  gas_constant_j_per_kg_k: 287.05
+  temperature_k: 298.15
+  ambient_pressure_pa: 101325.0
+
+receiver:
+  volume_m3: 10.0
+
+simulation:
+  timestep_seconds: 1.0
