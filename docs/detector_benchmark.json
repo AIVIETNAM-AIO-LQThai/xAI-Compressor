@@ -195,8 +195,8 @@
         "input_feature_count": 63,
         "variance_retained": 0.95,
         "components": 3,
-        "explained_variance_ratio": 0.9716022727986391,
-        "threshold": 52941.8844879329
+        "explained_variance_ratio": 0.9716022727986392,
+        "threshold": 52941.88448793303
       }
     },
     "pca_standard": {
@@ -252,7 +252,7 @@
         "variance_retained": 0.95,
         "components": 11,
         "explained_variance_ratio": 0.9576052415845236,
-        "threshold": 0.33454832342804497
+        "threshold": 0.33454832342804486
       }
     },
     "isolation_forest": {

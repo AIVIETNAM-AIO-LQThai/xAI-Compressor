@@ -3,11 +3,11 @@
     "name": "pca_reconstruction",
     "variance_retained": 0.95,
     "components": 3,
-    "explained_variance_ratio": 0.9716022727986391,
+    "explained_variance_ratio": 0.9716022727986392,
     "feature_count": 63
   },
   "alerting": {
-    "threshold": 52941.8844879329,
+    "threshold": 52941.88448793303,
     "threshold_quantile": 0.995,
     "ewma_alpha": 0.2,
     "persistence_hits": 3,
@@ -34,46 +34,46 @@
       "timing": "post_onset",
       "lead_hours": null,
       "delay_hours": 0.6666666666666666,
-      "raw_score": 197231.2276254672,
-      "smoothed_score": 180453.04329740183,
+      "raw_score": 197231.22762546717,
+      "smoothed_score": 180453.04329740186,
       "top_features": [
         {
           "feature": "tp2__mean",
-          "share": 0.5407888132773344
+          "share": 0.5407888132773343
         },
         {
           "feature": "tp2__min",
-          "share": 0.2839689003904241
+          "share": 0.28396890039042405
         },
         {
           "feature": "tp2__max",
-          "share": 0.07039118614829558
+          "share": 0.07039118614829552
         },
         {
           "feature": "tp2__std",
-          "share": 0.04455791339576349
+          "share": 0.04455791339576344
         },
         {
           "feature": "dv_pressure__last",
-          "share": 0.020265039609841096
+          "share": 0.020265039609841114
         }
       ],
       "top_groups": [
         {
           "group": "tp2",
-          "share": 0.9397156633866367
+          "share": 0.9397156633866365
         },
         {
           "group": "dv_pressure",
-          "share": 0.060190277288814584
+          "share": 0.060190277288814736
         },
         {
           "group": "motor_current",
-          "share": 5.122069832463751e-05
+          "share": 5.122069832465102e-05
         },
         {
           "group": "h1",
-          "share": 2.2812910205930105e-05
+          "share": 2.2812910205930112e-05
         },
         {
           "group": "pressure_relationships",
@@ -89,50 +89,50 @@
       "timing": "pre_onset",
       "lead_hours": 2.1666666666666665,
       "delay_hours": null,
-      "raw_score": 35.82206069234874,
-      "smoothed_score": 58988.95445080672,
+      "raw_score": 35.822060692348,
+      "smoothed_score": 58988.95445080686,
       "top_features": [
         {
           "feature": "dv_pressure__std",
-          "share": 0.6428624126829297
+          "share": 0.642862412682932
         },
         {
           "feature": "motor_current__min",
-          "share": 0.09801198950675331
+          "share": 0.09801198950675115
         },
         {
           "feature": "dv_pressure__last",
-          "share": 0.0756272071421599
+          "share": 0.07562720714215976
         },
         {
           "feature": "tp2__max",
-          "share": 0.07493169230730909
+          "share": 0.07493169230730878
         },
         {
           "feature": "dv_pressure__max",
-          "share": 0.056936883505970426
+          "share": 0.05693688350597062
         }
       ],
       "top_groups": [
         {
           "group": "dv_pressure",
-          "share": 0.7756286007226325
+          "share": 0.7756286007226351
         },
         {
           "group": "tp2",
-          "share": 0.12633728723990456
+          "share": 0.12633728723990423
         },
         {
           "group": "motor_current",
-          "share": 0.09801224365883207
+          "share": 0.09801224365882992
         },
         {
           "group": "oil_temperature",
-          "share": 1.3580132123576466e-05
+          "share": 1.3580132123576455e-05
         },
         {
           "group": "h1",
-          "share": 3.5796462106154e-06
+          "share": 3.5796462106153857e-06
         }
       ]
     },
@@ -144,50 +144,50 @@
       "timing": "post_onset",
       "lead_hours": null,
       "delay_hours": 0.16666666666666666,
-      "raw_score": 154559.43638072317,
-      "smoothed_score": 96204.74042198983,
+      "raw_score": 154559.43638072346,
+      "smoothed_score": 96204.74042199,
       "top_features": [
         {
           "feature": "tp2__mean",
-          "share": 0.5252045347854472
+          "share": 0.5252045347854459
         },
         {
           "feature": "tp2__min",
-          "share": 0.23853815977616316
+          "share": 0.2385381597761626
         },
         {
           "feature": "tp2__max",
-          "share": 0.05528014318347914
+          "share": 0.055280143183479
         },
         {
           "feature": "dv_pressure__std",
-          "share": 0.04981225173297861
+          "share": 0.0498122517329799
         },
         {
           "feature": "tp2__std",
-          "share": 0.04153888916524174
+          "share": 0.04153888916524166
         }
       ],
       "top_groups": [
         {
           "group": "tp2",
-          "share": 0.860727277688619
+          "share": 0.8607272776886175
         },
         {
           "group": "dv_pressure",
-          "share": 0.13017579319459816
+          "share": 0.1301757931945996
         },
         {
           "group": "motor_current",
-          "share": 0.009043769562144147
+          "share": 0.009043769562144206
         },
         {
           "group": "h1",
-          "share": 2.7871756121881867e-05
+          "share": 2.7871756121881816e-05
         },
         {
           "group": "pressure_relationships",
-          "share": 1.1093616672619441e-05
+          "share": 1.1093616672619423e-05
         }
       ]
     },
@@ -199,50 +199,50 @@
       "timing": "pre_onset",
       "lead_hours": 5.75,
       "delay_hours": null,
-      "raw_score": 22696.272410624722,
-      "smoothed_score": 63496.518493084484,
+      "raw_score": 22696.272410624664,
+      "smoothed_score": 63496.51849308473,
       "top_features": [
         {
           "feature": "dv_pressure__std",
-          "share": 0.6843491770126652
+          "share": 0.6843491770126678
         },
         {
           "feature": "motor_current__min",
-          "share": 0.11704697610451714
+          "share": 0.11704697610451448
         },
         {
           "feature": "tp2__mean",
-          "share": 0.06694168918809087
+          "share": 0.06694168918809099
         },
         {
           "feature": "tp2__max",
-          "share": 0.0634341017557648
+          "share": 0.06343410175576439
         },
         {
           "feature": "dv_pressure__max",
-          "share": 0.06047075369612615
+          "share": 0.06047075369612639
         }
       ],
       "top_groups": [
         {
           "group": "dv_pressure",
-          "share": 0.7449660398454725
+          "share": 0.7449660398454754
         },
         {
           "group": "tp2",
-          "share": 0.13795717253058745
+          "share": 0.13795717253058715
         },
         {
           "group": "motor_current",
-          "share": 0.11704739292077626
+          "share": 0.11704739292077361
         },
         {
           "group": "oil_temperature",
-          "share": 1.9245892482784524e-05
+          "share": 1.9245892482784432e-05
         },
         {
           "group": "h1",
-          "share": 3.6414879158669095e-06
+          "share": 3.6414879158668905e-06
         }
       ]
     }
@@ -250,27 +250,27 @@
   "concentration": [
     {
       "incident_id": 1,
-      "top_1_share": 0.9397156633866367,
+      "top_1_share": 0.9397156633866365,
       "top_3_share": 0.9999571613737759,
       "top_5_share": 0.9999904798126406
     },
     {
       "incident_id": 2,
-      "top_1_share": 0.7756286007226325,
+      "top_1_share": 0.7756286007226351,
       "top_3_share": 0.9999781316213692,
       "top_5_share": 0.9999952913997033
     },
     {
       "incident_id": 3,
-      "top_1_share": 0.860727277688619,
+      "top_1_share": 0.8607272776886175,
       "top_3_share": 0.9999468404453613,
       "top_5_share": 0.9999858058181558
     },
     {
       "incident_id": 4,
-      "top_1_share": 0.7449660398454725,
-      "top_3_share": 0.9999706052968362,
-      "top_5_share": 0.9999934926772349
+      "top_1_share": 0.7449660398454754,
+      "top_3_share": 0.9999706052968361,
+      "top_5_share": 0.9999934926772348
     }
   ],
   "diagnostics": {
@@ -278,22 +278,22 @@
       {
         "component": "PC1",
         "feature": "tp2__std",
-        "absolute_loading": 0.895566284507564
+        "absolute_loading": 0.8955662845075641
       },
       {
         "component": "PC1",
         "feature": "tp2__max",
-        "absolute_loading": 0.38661867608297185
+        "absolute_loading": 0.3866186760829717
       },
       {
         "component": "PC1",
         "feature": "tp2__last",
-        "absolute_loading": 0.175358301084743
+        "absolute_loading": 0.1753583010847428
       },
       {
         "component": "PC1",
         "feature": "tp2__mean",
-        "absolute_loading": 0.11566737128471812
+        "absolute_loading": 0.11566737128471778
       },
       {
         "component": "PC1",
@@ -303,12 +303,12 @@
       {
         "component": "PC1",
         "feature": "motor_current__min",
-        "absolute_loading": 0.04288682831519035
+        "absolute_loading": 0.0428868283151903
       },
       {
         "component": "PC1",
         "feature": "dv_pressure__max",
-        "absolute_loading": 0.014168956412727078
+        "absolute_loading": 0.014168956412727082
       },
       {
         "component": "PC1",
@@ -318,27 +318,27 @@
       {
         "component": "PC1",
         "feature": "h1__std",
-        "absolute_loading": 0.0044804228265647615
+        "absolute_loading": 0.004480422826564761
       },
       {
         "component": "PC1",
         "feature": "h1__min",
-        "absolute_loading": 0.0014167427155455331
+        "absolute_loading": 0.0014167427155455327
       },
       {
         "component": "PC2",
         "feature": "tp2__last",
-        "absolute_loading": 0.9725100882769763
+        "absolute_loading": 0.9725100882769758
       },
       {
         "component": "PC2",
         "feature": "tp2__std",
-        "absolute_loading": 0.17458698044082557
+        "absolute_loading": 0.17458698044082535
       },
       {
         "component": "PC2",
         "feature": "motor_current__min",
-        "absolute_loading": 0.11775503105578532
+        "absolute_loading": 0.11775503105578548
       },
       {
         "component": "PC2",
@@ -348,82 +348,82 @@
       {
         "component": "PC2",
         "feature": "tp2__mean",
-        "absolute_loading": 0.05397845744041121
+        "absolute_loading": 0.053978457440410965
       },
       {
         "component": "PC2",
         "feature": "dv_pressure__max",
-        "absolute_loading": 0.023711622610557734
+        "absolute_loading": 0.02371162261055773
       },
       {
         "component": "PC2",
         "feature": "tp2__max",
-        "absolute_loading": 0.003261550205973962
+        "absolute_loading": 0.003261550205974073
       },
       {
         "component": "PC2",
         "feature": "dv_pressure__last",
-        "absolute_loading": 0.002134266525008619
+        "absolute_loading": 0.002134266525008621
       },
       {
         "component": "PC2",
         "feature": "h1__last",
-        "absolute_loading": 0.0020935551504683327
+        "absolute_loading": 0.0020935551504683322
       },
       {
         "component": "PC2",
         "feature": "oil_temperature__std",
-        "absolute_loading": 0.0013614397017192176
+        "absolute_loading": 0.0013614397017192173
       },
       {
         "component": "PC3",
         "feature": "motor_current__min",
-        "absolute_loading": 0.9076314224359675
+        "absolute_loading": 0.9076314224359693
       },
       {
         "component": "PC3",
         "feature": "dv_pressure__std",
-        "absolute_loading": 0.34870791067835455
+        "absolute_loading": 0.34870791067835055
       },
       {
         "component": "PC3",
         "feature": "tp2__std",
-        "absolute_loading": 0.11978084653628161
+        "absolute_loading": 0.11978084653628149
       },
       {
         "component": "PC3",
         "feature": "tp2__last",
-        "absolute_loading": 0.11488426915709743
+        "absolute_loading": 0.11488426915709754
       },
       {
         "component": "PC3",
         "feature": "dv_pressure__max",
-        "absolute_loading": 0.10355550492316813
+        "absolute_loading": 0.10355550492316694
       },
       {
         "component": "PC3",
         "feature": "tp2__max",
-        "absolute_loading": 0.10114813433457925
+        "absolute_loading": 0.10114813433457959
       },
       {
         "component": "PC3",
         "feature": "tp2__mean",
-        "absolute_loading": 0.07774406205341425
+        "absolute_loading": 0.07774406205341433
       },
       {
         "component": "PC3",
         "feature": "dv_pressure__last",
-        "absolute_loading": 0.0066291950495282696
+        "absolute_loading": 0.006629195049528172
       },
       {
         "component": "PC3",
         "feature": "dv_pressure__mean",
-        "absolute_loading": 0.003447538999184638
+        "absolute_loading": 0.003447538999184597
       },
       {
         "component": "PC3",
         "feature": "oil_temperature__std",
-        "absolute_loading": 0.0010515283353902058
+        "absolute_loading": 0.001051528335390208
       }
     ],
     "physical_context": [
@@ -553,27 +553,27 @@
     "incident_linked_top_groups": [
       {
         "group": "tp2",
-        "share": 0.9084224979998952
+        "share": 0.9084224979998946
       },
       {
         "group": "dv_pressure",
-        "share": 0.08783732167333498
+        "share": 0.08783732167333554
       },
       {
         "group": "motor_current",
-        "share": 0.0036879928423150916
+        "share": 0.003687992842315083
       },
       {
         "group": "h1",
-        "share": 2.6791992497533328e-05
+        "share": 2.679199249753332e-05
       },
       {
         "group": "pressure_relationships",
-        "share": 1.145007323690796e-05
+        "share": 1.1450073236907956e-05
       },
       {
         "group": "oil_temperature",
-        "share": 8.400901940391747e-06
+        "share": 8.40090194039174e-06
       },
       {
         "group": "towers",
@@ -581,57 +581,57 @@
       },
       {
         "group": "reservoirs",
-        "share": 1.1616953748878061e-06
+        "share": 1.1616953748878095e-06
       },
       {
         "group": "tp3",
-        "share": 1.1567004322268682e-06
+        "share": 1.1567004322268347e-06
       },
       {
         "group": "dv_electric",
-        "share": 1.1041982220514673e-07
+        "share": 1.1041982220514672e-07
       }
     ],
     "benchmark_false_top_groups": [
       {
         "group": "tp2",
-        "share": 0.8451574382166605
+        "share": 0.8451574382166607
       },
       {
         "group": "dv_pressure",
-        "share": 0.13696670390561552
+        "share": 0.13696670390561566
       },
       {
         "group": "motor_current",
-        "share": 0.01781768488878046
+        "share": 0.017817684888779998
       },
       {
         "group": "h1",
-        "share": 2.1597994215386796e-05
+        "share": 2.1597994215386817e-05
       },
       {
         "group": "pressure_relationships",
-        "share": 1.1387809113240376e-05
+        "share": 1.1387809113240385e-05
       },
       {
         "group": "oil_temperature",
-        "share": 8.125319548031403e-06
+        "share": 8.125319548031401e-06
       },
       {
         "group": "towers",
-        "share": 3.667677139508197e-06
+        "share": 3.6676771395082026e-06
       },
       {
         "group": "reservoirs",
-        "share": 2.8577430020905085e-06
+        "share": 2.857743002090515e-06
       },
       {
         "group": "tp3",
-        "share": 2.8366203584391036e-06
+        "share": 2.836620358439086e-06
       },
       {
         "group": "dv_electric",
-        "share": 2.0563834558617062e-06
+        "share": 2.056383455861709e-06
       }
     ]
   }
