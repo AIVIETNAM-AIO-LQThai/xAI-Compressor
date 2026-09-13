@@ -103,38 +103,43 @@ def test_contribution_percentiles_use_reference_distribution():
         )
     )
 
-    assert (
-        percentiles[
-            "tp2"
-        ].iloc[0]
-        == pytest.approx(
-            2.0 / 3.0
+    assert (percentiles["tp2"].iloc[0] == pytest.approx(0.5))
+    assert (percentiles["tp2"].iloc[1] == pytest.approx(1.0))
+    assert (percentiles["dv_pressure"].iloc[0] == pytest.approx(0.0))
+    assert (percentiles["dv_pressure"].iloc[1] == pytest.approx(2.0 / 3.0))
+
+def test_contribution_percentiles_handle_ties_with_midrank():
+    calibration = pd.DataFrame(
+        {
+            "inactive_signal": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+            ]
+        }
+    )
+
+    reference = fit_contribution_reference(calibration)
+
+    observed = pd.DataFrame(
+        {
+            "inactive_signal": [
+                0.0,
+                1.0,
+            ]
+        }
+    )
+
+    percentiles = (
+        contribution_percentiles(
+            observed,
+            reference,
         )
     )
 
-    assert (
-        percentiles[
-            "tp2"
-        ].iloc[1]
-        == pytest.approx(1.0)
-    )
-
-    assert (
-        percentiles[
-            "dv_pressure"
-        ].iloc[0]
-        == pytest.approx(0.0)
-    )
-
-    assert (
-        percentiles[
-            "dv_pressure"
-        ].iloc[1]
-        == pytest.approx(
-            2.0 / 3.0
-        )
-    )
-
+    assert (percentiles["inactive_signal"].iloc[0] == pytest.approx(0.5))
+    assert (percentiles["inactive_signal"].iloc[1] == pytest.approx(1.0))
 
 def test_temporal_window_uses_only_past_and_current_bins():
     index = pd.date_range(
@@ -163,11 +168,7 @@ def test_temporal_window_uses_only_past_and_current_bins():
     )
 
     assert len(window) == 4
-
-    assert (
-        window.index[-1]
-        == end
-    )
+    assert (window.index[-1] == end)
 
     assert (
         window.index[0]
@@ -177,10 +178,7 @@ def test_temporal_window_uses_only_past_and_current_bins():
         )
     )
 
-    assert (
-        window.index.max()
-        <= end
-    )
+    assert (window.index.max() <= end)
 
 
 def test_empty_repair_reproduces_original_pca_score():

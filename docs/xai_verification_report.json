@@ -121,19 +121,19 @@
           "group": "lps",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         },
         {
           "group": "oil_level",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         },
         {
           "group": "caudal_impulses",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         }
       ],
       "temporal_evidence": {
@@ -443,19 +443,19 @@
           "group": "lps",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         },
         {
           "group": "oil_level",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         },
         {
           "group": "caudal_impulses",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         }
       ],
       "temporal_evidence": {
@@ -785,19 +785,19 @@
           "group": "lps",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         },
         {
           "group": "oil_level",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         },
         {
           "group": "caudal_impulses",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         }
       ],
       "temporal_evidence": {
@@ -1127,19 +1127,19 @@
           "group": "lps",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         },
         {
           "group": "oil_level",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         },
         {
           "group": "caudal_impulses",
           "smoothed_contribution": 0.0,
           "share": 0.0,
-          "calibration_percentile": 1.0
+          "calibration_percentile": 0.5
         }
       ],
       "temporal_evidence": {

@@ -123,14 +123,25 @@ def contribution_percentiles(
             reference.sorted_values[column]
         )
 
-        ranks = np.searchsorted(
+        left_ranks = np.searchsorted(
+            reference_values,
+            values,
+            side="left",
+        )
+
+        right_ranks = np.searchsorted(
             reference_values,
             values,
             side="right",
         )
 
+        mid_ranks = (
+            left_ranks.astype(float)
+            + right_ranks.astype(float)
+        ) / 2.0
+
         percentiles[column] = (
-            ranks.astype(float)
+            mid_ranks
             / reference.sample_count
         )
 
