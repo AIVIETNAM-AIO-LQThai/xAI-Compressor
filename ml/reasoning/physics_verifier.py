@@ -189,7 +189,7 @@ def verify_leak_vs_demand(
         dtype=float,
     )
 
-    implied_leak = total_outflow- demand
+    implied_leak = total_outflow - demand
 
     if (implied_leak < -support_tolerance_kg_s).any():
         raise ValueError(
@@ -211,9 +211,14 @@ def verify_leak_vs_demand(
         np.mean(implied_leak)
     )
 
-    demand_change = mean_demand - reference_demand_kg_s
-
-    leak_change = mean_leak - nominal_leak_kg_s
+    demand_change = (
+        mean_demand
+        - reference_demand_kg_s
+    )
+    leak_change = (
+        mean_leak
+        - nominal_leak_kg_s
+    )
 
     leak_result = PhysicsHypothesisResult(
         hypothesis_id=LEAK_HYPOTHESIS,
