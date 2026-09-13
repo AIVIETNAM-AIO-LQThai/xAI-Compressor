@@ -2,13 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ml.optimization.scheduler import (
-    OptimizationConfig,
-    optimize_schedule,
+from ml.optimization.robust_scheduler import (
+    optimize_robust_schedule,
 )
-from ml.reasoning.scenarios import (
-    PhysicalScenarioSet,
-)
+from ml.optimization.scheduler import OptimizationConfig
+from ml.reasoning.scenarios import PhysicalScenarioSet
 from ml.twin.compressor import (
     CompressorSpec,
     fleet_operating_point,
@@ -41,6 +39,9 @@ class RobustFirstActionResult:
     scenario_count: int
     horizon_intervals: int
     valid_for_seconds: float
+    robust_horizon_objective_value: float
+    robust_horizon_energy_kwh: float
+    robust_horizon_startup_count: int
     method: str
     evidence_class: str
     causal_claim: bool
@@ -54,11 +55,9 @@ def _commands_from_first_row(
 
     for spec in compressors:
         if spec.kind == "fixed":
-            value = (
-                1.0
-                if bool(row[f"{spec.id}_on"])
-                else 0.0
-            )
+            value = 1.0 if bool(
+                row[f"{spec.id}_on"]
+            ) else 0.0
         else:
             value = float(
                 row[f"{spec.id}_fraction"]
@@ -85,26 +84,32 @@ def _commands_from_first_row(
     return tuple(commands)
 
 
+def _startup_count_from_first_row(
+    row,
+    compressors: list[CompressorSpec],
+) -> int:
+    return sum(
+        int(bool(row[f"{spec.id}_start"]))
+        for spec in compressors
+    )
+
+
 def _online_capacity(
     commands: dict[str, float],
     compressors: list[CompressorSpec],
 ) -> float:
-    capacity = 0.0
-
-    for spec in compressors:
-        command = commands[spec.id]
-
-        if command > 0.0:
-            capacity += spec.max_mass_flow_kg_s
-
-    return capacity
+    return sum(
+        spec.max_mass_flow_kg_s
+        for spec in compressors
+        if commands[spec.id] > 0.0
+    )
 
 
-def _evaluate_candidate(
+def _evaluate_first_action(
     commands_tuple: tuple[tuple[str, float], ...],
-    source_scenarios: tuple[str, ...],
-    scenario_set: PhysicalScenarioSet,
     *,
+    startup_count: int,
+    scenario_set: PhysicalScenarioSet,
     initial_pressure_bar_g: float,
     parameters: TwinParameters,
     compressors: list[CompressorSpec],
@@ -148,9 +153,7 @@ def _evaluate_candidate(
                 scenario.total_outflow_kg_s
             ),
             leak_mass_flow_kg_s=0.0,
-            timestep_seconds=(
-                config.interval_seconds
-            ),
+            timestep_seconds=config.interval_seconds,
             parameters=parameters,
         )
 
@@ -192,12 +195,6 @@ def _evaluate_candidate(
         * interval_hours
     )
 
-    startup_count = sum(
-        1
-        for _, value in commands_tuple
-        if value > 0.0
-    )
-
     worst_overpressure = max(
         0.0,
         max(pressures) - target_bar_g,
@@ -214,10 +211,11 @@ def _evaluate_candidate(
 
     return RobustActionEvaluation(
         commands=commands_tuple,
-        source_scenarios=source_scenarios,
-        interval_energy_kwh=float(
-            interval_energy
+        source_scenarios=tuple(
+            scenario.id
+            for scenario in scenario_set.scenarios
         ),
+        interval_energy_kwh=float(interval_energy),
         startup_count=int(startup_count),
         worst_case_min_pressure_bar_g=float(
             min(pressures)
@@ -250,119 +248,75 @@ def select_robust_first_action(
             "horizon_intervals must be positive."
         )
 
-    proposals: dict[
-        tuple[tuple[str, float], ...],
-        list[str],
-    ] = {}
+    robust_result = optimize_robust_schedule(
+        scenario_set,
+        horizon_intervals=horizon_intervals,
+        initial_pressure_bar_g=(
+            initial_pressure_bar_g
+        ),
+        parameters=parameters,
+        compressors=compressors,
+        target_bar_g=target_bar_g,
+        safety_min_bar_g=safety_min_bar_g,
+        safety_max_bar_g=safety_max_bar_g,
+        config=config,
+    )
 
-    for scenario in scenario_set.scenarios:
-        try:
-            result = optimize_schedule(
-                [
-                    scenario.total_outflow_kg_s
-                ]
-                * horizon_intervals,
-                leak_mass_flow_kg_s=0.0,
-                initial_pressure_bar_g=(
-                    initial_pressure_bar_g
-                ),
-                parameters=parameters,
-                compressors=compressors,
-                target_bar_g=target_bar_g,
-                safety_min_bar_g=(
-                    safety_min_bar_g
-                ),
-                safety_max_bar_g=(
-                    safety_max_bar_g
-                ),
-                config=config,
-            )
-        except RuntimeError:
-            continue
+    first_row = robust_result.schedule.iloc[0]
 
-        commands = _commands_from_first_row(
-            result.schedule.iloc[0],
+    commands = _commands_from_first_row(
+        first_row,
+        compressors,
+    )
+
+    startup_count = (
+        _startup_count_from_first_row(
+            first_row,
             compressors,
         )
-
-        proposals.setdefault(
-            commands,
-            [],
-        ).append(scenario.id)
-
-    if not proposals:
-        raise RuntimeError(
-            "No scenario produced a feasible "
-            "receding-horizon proposal."
-        )
-
-    evaluations = tuple(
-        _evaluate_candidate(
-            commands,
-            tuple(sorted(source_ids)),
-            scenario_set,
-            initial_pressure_bar_g=(
-                initial_pressure_bar_g
-            ),
-            parameters=parameters,
-            compressors=compressors,
-            target_bar_g=target_bar_g,
-            safety_min_bar_g=(
-                safety_min_bar_g
-            ),
-            safety_max_bar_g=(
-                safety_max_bar_g
-            ),
-            config=config,
-        )
-        for commands, source_ids in proposals.items()
     )
 
-    robust_candidates = tuple(
-        item
-        for item in evaluations
-        if item.robust_safe
-    )
-
-    if not robust_candidates:
-        raise RuntimeError(
-            "No proposed first action is safe "
-            "across all physical scenarios."
-        )
-
-    selected = min(
-        robust_candidates,
-        key=lambda item: (
-            item.objective_value,
-            item.interval_energy_kwh,
-            item.commands,
+    evaluation = _evaluate_first_action(
+        commands,
+        startup_count=startup_count,
+        scenario_set=scenario_set,
+        initial_pressure_bar_g=(
+            initial_pressure_bar_g
         ),
+        parameters=parameters,
+        compressors=compressors,
+        target_bar_g=target_bar_g,
+        safety_min_bar_g=safety_min_bar_g,
+        safety_max_bar_g=safety_max_bar_g,
+        config=config,
     )
+
+    if not evaluation.robust_safe:
+        raise RuntimeError(
+            "Robust MILP first action failed "
+            "independent one-step safety gate."
+        )
 
     return RobustFirstActionResult(
-        selected=selected,
-        candidates=tuple(
-            sorted(
-                evaluations,
-                key=lambda item: (
-                    not item.robust_safe,
-                    item.objective_value,
-                    item.commands,
-                ),
-            )
-        ),
+        selected=evaluation,
+        candidates=(evaluation,),
         scenario_count=len(
             scenario_set.scenarios
         ),
-        horizon_intervals=(
-            horizon_intervals
+        horizon_intervals=horizon_intervals,
+        valid_for_seconds=config.interval_seconds,
+        robust_horizon_objective_value=(
+            robust_result.objective_value
         ),
-        valid_for_seconds=(
-            config.interval_seconds
+        robust_horizon_energy_kwh=(
+            robust_result.energy_kwh
+        ),
+        robust_horizon_startup_count=(
+            robust_result.startup_count
         ),
         method=(
-            "scenario_optimal_proposals_"
-            "with_one_step_robust_gate"
+            "shared_action_robust_milp_"
+            "with_one_step_safety_gate"
         ),
         evidence_class="SIMULATED",
         causal_claim=False,

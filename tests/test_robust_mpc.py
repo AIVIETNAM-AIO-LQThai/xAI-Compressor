@@ -6,6 +6,9 @@ from ml.optimization import OptimizationConfig
 from ml.optimization.robust_mpc import (
     select_robust_first_action,
 )
+from ml.optimization.robust_scheduler import (
+    optimize_robust_schedule,
+)
 from ml.reasoning.scenarios import (
     PhysicalScenario,
     PhysicalScenarioSet,
@@ -78,9 +81,7 @@ def _scenario_set(
             ),
             causal_claim=False,
         )
-        for index, value in enumerate(
-            values
-        )
+        for index, value in enumerate(values)
     )
 
     return PhysicalScenarioSet(
@@ -127,6 +128,13 @@ def test_robust_action_is_safe_across_scenarios():
     assert result.scenario_count == 3
     assert result.valid_for_seconds == 60.0
     assert result.causal_claim is False
+    assert (
+        result.method
+        == (
+            "shared_action_robust_milp_"
+            "with_one_step_safety_gate"
+        )
+    )
 
 
 def test_nonidentifiable_allocation_is_accepted():
@@ -135,8 +143,7 @@ def test_nonidentifiable_allocation_is_accepted():
     )
 
     assert (
-        scenario_set
-        .allocation_identifiable
+        scenario_set.allocation_identifiable
         is False
     )
 
@@ -152,14 +159,16 @@ def test_nonidentifiable_allocation_is_accepted():
         config=CONFIG,
     )
 
-    assert result.selected.robust_safe
+    assert result.selected.robust_safe is True
 
 
-def test_selected_candidate_has_lowest_safe_objective():
-    result = select_robust_first_action(
-        _scenario_set(
-            [0.106, 0.110, 0.114]
-        ),
+def test_gate_extracts_robust_milp_first_action():
+    scenario_set = _scenario_set(
+        [0.106, 0.110, 0.114]
+    )
+
+    robust = optimize_robust_schedule(
+        scenario_set,
         horizon_intervals=10,
         initial_pressure_bar_g=7.0,
         parameters=PARAMETERS,
@@ -170,22 +179,56 @@ def test_selected_candidate_has_lowest_safe_objective():
         config=CONFIG,
     )
 
-    safe = [
-        candidate
-        for candidate in result.candidates
-        if candidate.robust_safe
-    ]
+    gated = select_robust_first_action(
+        scenario_set,
+        horizon_intervals=10,
+        initial_pressure_bar_g=7.0,
+        parameters=PARAMETERS,
+        compressors=COMPRESSORS,
+        target_bar_g=7.0,
+        safety_min_bar_g=6.5,
+        safety_max_bar_g=7.5,
+        config=CONFIG,
+    )
 
-    assert safe
+    first = robust.schedule.iloc[0]
+
+    expected = (
+        (
+            "fixed_1",
+            1.0
+            if bool(first["fixed_1_on"])
+            else 0.0,
+        ),
+        (
+            "fixed_2",
+            1.0
+            if bool(first["fixed_2_on"])
+            else 0.0,
+        ),
+        (
+            "vsd_1",
+            round(
+                float(
+                    first["vsd_1_fraction"]
+                ),
+                12,
+            ),
+        ),
+    )
+
+    assert gated.selected.commands == expected
 
     assert (
-        result.selected.objective_value
+        gated.robust_horizon_energy_kwh
         == pytest.approx(
-            min(
-                candidate.objective_value
-                for candidate in safe
-            )
+            robust.energy_kwh
         )
+    )
+
+    assert (
+        gated.robust_horizon_startup_count
+        == robust.startup_count
     )
 
 
@@ -193,8 +236,7 @@ def test_impossible_scenarios_are_rejected():
     with pytest.raises(
         RuntimeError,
         match=(
-            "No scenario produced a feasible"
-            "|No proposed first action is safe"
+            "Robust MILP optimization failed"
         ),
     ):
         select_robust_first_action(
