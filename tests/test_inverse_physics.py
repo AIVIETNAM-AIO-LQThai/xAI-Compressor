@@ -377,3 +377,56 @@ def test_independent_demand_length_must_match():
             reference_demand_kg_s=0.090,
             nominal_leak_kg_s=0.005,
         )
+
+def test_verifier_rejects_physically_inconsistent_outflow():
+    inferred = infer_total_outflow(
+        [7.0, 8.0],
+        [0.0],
+        interval_seconds=(
+            INTERVAL_SECONDS
+        ),
+        parameters=PARAMETERS,
+    )
+
+    assert (
+        inferred.physically_consistent
+        is False
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="not physically consistent",
+    ):
+        verify_leak_vs_demand(
+            inferred,
+            reference_total_outflow_kg_s=(
+                0.095
+            ),
+        )
+
+
+def test_verifier_rejects_negative_implied_leak():
+    inferred = infer_total_outflow(
+        [7.0, 7.0],
+        [0.095],
+        interval_seconds=(
+            INTERVAL_SECONDS
+        ),
+        parameters=PARAMETERS,
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="negative leakage",
+    ):
+        verify_leak_vs_demand(
+            inferred,
+            reference_total_outflow_kg_s=(
+                0.095
+            ),
+            independent_demand_kg_s=[
+                0.110
+            ],
+            reference_demand_kg_s=0.090,
+            nominal_leak_kg_s=0.005,
+        )

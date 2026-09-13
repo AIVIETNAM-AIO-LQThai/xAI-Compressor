@@ -18,6 +18,11 @@ from ml.reasoning.physics_verifier import (
     PhysicsHypothesisResult,
     verify_leak_vs_demand,
 )
+from ml.reasoning.uncertainty import (
+    IntervalEstimate,
+    PhysicalStateUncertainty,
+    infer_state_uncertainty,
+)
 
 __all__ = [
     "CandidateGenerationConfig",
@@ -25,10 +30,13 @@ __all__ = [
     "GroupEvidence",
     "HypothesisSpec",
     "IncidentEvidence",
+    "IntervalEstimate",
     "OutflowInference",
+    "PhysicalStateUncertainty",
     "PhysicsHypothesisResult",
     "generate_candidate_hypotheses",
     "incident_evidence_from_report",
+    "infer_state_uncertainty",
     "infer_total_outflow",
     "load_hypothesis_config",
     "verify_leak_vs_demand",

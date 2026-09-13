@@ -62,16 +62,11 @@ def verify_leak_vs_demand(
     PhysicsHypothesisResult,
 ]:
     if reference_total_outflow_kg_s < 0.0:
-        raise ValueError(
-            "reference_total_outflow_kg_s "
-            "cannot be negative."
-        )
-
+        raise ValueError("reference_total_outflow_kg_s cannot be negative.")
     if support_tolerance_kg_s < 0.0:
-        raise ValueError(
-            "support_tolerance_kg_s "
-            "cannot be negative."
-        )
+        raise ValueError("support_tolerance_kg_s cannot be negative.")
+    if not inference.physically_consistent:
+        raise ValueError("Outflow inference is not physically consistent.")
 
     additional_outflow = (
         inference.mean_total_outflow_kg_s
@@ -194,9 +189,18 @@ def verify_leak_vs_demand(
         dtype=float,
     )
 
-    implied_leak = (
-        total_outflow
-        - demand
+    implied_leak = total_outflow- demand
+
+    if (implied_leak < -support_tolerance_kg_s).any():
+        raise ValueError(
+            "Independent demand implies "
+            "negative leakage under the "
+            "receiver mass-balance model."
+        )
+
+    implied_leak = np.maximum(
+        implied_leak,
+        0.0,
     )
 
     mean_demand = float(
@@ -207,15 +211,9 @@ def verify_leak_vs_demand(
         np.mean(implied_leak)
     )
 
-    demand_change = (
-        mean_demand
-        - reference_demand_kg_s
-    )
+    demand_change = mean_demand - reference_demand_kg_s
 
-    leak_change = (
-        mean_leak
-        - nominal_leak_kg_s
-    )
+    leak_change = mean_leak - nominal_leak_kg_s
 
     leak_result = PhysicsHypothesisResult(
         hypothesis_id=LEAK_HYPOTHESIS,
