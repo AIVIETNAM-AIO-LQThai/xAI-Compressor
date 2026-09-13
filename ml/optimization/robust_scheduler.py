@@ -8,6 +8,7 @@ import pandas as pd
 from scipy.optimize import Bounds, LinearConstraint, milp
 from scipy.sparse import lil_matrix
 
+from ml.optimization.runtime_state import CompressorRuntimeState, resolve_runtime_state
 from ml.optimization.scheduler import OptimizationConfig
 from ml.reasoning.scenarios import PhysicalScenarioSet
 from ml.twin.compressor import CompressorSpec
@@ -43,11 +44,37 @@ def _minimum_intervals(
         ),
     )
 
+def _remaining_lock_intervals(
+    required_seconds: float,
+    elapsed_seconds: float,
+    interval_seconds: float,
+) -> int:
+    remaining_seconds = max(
+        0.0,
+        required_seconds
+        - elapsed_seconds,
+    )
+
+    if remaining_seconds <= 0.0:
+        return 0
+
+    return math.ceil(
+        remaining_seconds
+        / interval_seconds
+    )
+
 
 def optimize_robust_schedule(
     scenario_set: PhysicalScenarioSet,
     *,
     horizon_intervals: int,
+    initial_runtime_state: (
+        tuple[
+            CompressorRuntimeState,
+            ...
+        ]
+        | None
+    ) = None,
     initial_pressure_bar_g: float,
     parameters: TwinParameters,
     compressors: list[CompressorSpec],
@@ -149,12 +176,18 @@ def optimize_robust_schedule(
         for spec in compressors
     }
 
-    if len(compressor_ids) != len(
-        compressors
-    ):
-        raise ValueError(
-            "Compressor ids must be unique."
-        )
+    if len(compressor_ids) != len(compressors):
+        raise ValueError("Compressor ids must be unique.")
+
+    runtime_states = resolve_runtime_state(
+        compressors,
+        initial_runtime_state,
+    )
+
+    runtime_by_id = {
+        state.compressor_id: state
+        for state in runtime_states
+    }
 
     vsd_spec = vsd_specs[0]
     horizon = horizon_intervals
@@ -405,6 +438,49 @@ def optimize_robust_schedule(
             interval_seconds,
         )
 
+        initial_state = runtime_by_id[spec.id]
+        locked_on_intervals = 0
+        locked_off_intervals = 0
+
+        if initial_state.is_on:
+            locked_on_intervals = (
+                _remaining_lock_intervals(
+                    spec.min_on_seconds,
+                    initial_state.seconds_in_state,
+                    interval_seconds,
+                )
+            )
+        else:
+            locked_off_intervals = (
+                _remaining_lock_intervals(
+                    spec.min_off_seconds,
+                    initial_state.seconds_in_state,
+                    interval_seconds,
+                )
+            )
+
+        for k in range(
+            min(horizon, locked_on_intervals)
+        ):
+            add_constraint(
+                {
+                    int(on[k]): 1.0,
+                },
+                lower=1.0,
+                upper=1.0,
+            )
+
+        for k in range(
+            min(horizon, locked_off_intervals)
+        ):
+            add_constraint(
+                {
+                    int(on[k]): 1.0,
+                },
+                lower=0.0,
+                upper=0.0,
+            )
+
         for t in range(horizon):
             transition = {
                 int(on[t]): 1.0,
@@ -417,10 +493,18 @@ def optimize_robust_schedule(
                     int(on[t - 1])
                 ] = -1.0
 
+                transition_rhs = 0.0
+            else:
+                transition_rhs = (
+                    1.0
+                    if initial_state.is_on
+                    else 0.0
+                )
+
             add_constraint(
                 transition,
-                lower=0.0,
-                upper=0.0,
+                lower=transition_rhs,
+                upper=transition_rhs,
             )
 
             add_constraint(
@@ -432,8 +516,7 @@ def optimize_robust_schedule(
             )
 
             if (
-                t + minimum_on
-                > horizon
+                t + minimum_on > horizon
             ):
                 add_constraint(
                     {
@@ -480,6 +563,50 @@ def optimize_robust_schedule(
         interval_seconds,
     )
 
+    vsd_initial_state = runtime_by_id[vsd_spec.id]
+
+    vsd_locked_on_intervals = 0
+    vsd_locked_off_intervals = 0
+
+    if vsd_initial_state.is_on:
+        vsd_locked_on_intervals = (
+            _remaining_lock_intervals(
+                vsd_spec.min_on_seconds,
+                vsd_initial_state.seconds_in_state,
+                interval_seconds,
+            )
+        )
+    else:
+        vsd_locked_off_intervals = (
+            _remaining_lock_intervals(
+                vsd_spec.min_off_seconds,
+                vsd_initial_state.seconds_in_state,
+                interval_seconds,
+            )
+        )
+
+    for k in range(
+        min(horizon, vsd_locked_on_intervals,)
+    ):
+        add_constraint(
+            {
+                int(vsd_on[k]): 1.0,
+            },
+            lower=1.0,
+            upper=1.0,
+        )
+
+    for k in range(
+        min(horizon, vsd_locked_off_intervals)
+    ):
+        add_constraint(
+            {
+                int(vsd_on[k]): 1.0,
+            },
+            lower=0.0,
+            upper=0.0,
+        )
+
     for t in range(horizon):
         transition = {
             int(vsd_on[t]): 1.0,
@@ -488,14 +615,19 @@ def optimize_robust_schedule(
         }
 
         if t > 0:
-            transition[
-                int(vsd_on[t - 1])
-            ] = -1.0
+            transition[int(vsd_on[t - 1])] = -1.0
+            transition_rhs = 0.0
+        else:
+            transition_rhs = (
+                1.0
+                if vsd_initial_state.is_on
+                else 0.0
+            )
 
         add_constraint(
             transition,
-            lower=0.0,
-            upper=0.0,
+            lower=transition_rhs,
+            upper=transition_rhs,
         )
 
         add_constraint(
@@ -506,10 +638,7 @@ def optimize_robust_schedule(
             upper=1.0,
         )
 
-        if (
-            t + minimum_vsd_on
-            > horizon
-        ):
+        if (t + minimum_vsd_on > horizon):
             add_constraint(
                 {
                     int(vsd_start[t]): 1.0,
@@ -532,9 +661,7 @@ def optimize_robust_schedule(
 
         for k in range(
             t,
-            min(
-                horizon,
-                t + minimum_vsd_off,
+            min(horizon, t + minimum_vsd_off,
             ),
         ):
             add_constraint(
@@ -1026,7 +1153,12 @@ def optimize_robust_schedule(
         ),
         scenario_count=scenario_count,
         initial_compressor_state_assumption=(
-            "all_off_before_horizon"
+            
+                "provided_runtime_state"
+                if initial_runtime_state
+                is not None
+                else "default_all_off_min_off_satisfied"
+            
         ),
         method=(
             "shared_action_robust_milp"

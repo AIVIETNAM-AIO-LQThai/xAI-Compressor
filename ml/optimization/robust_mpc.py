@@ -5,6 +5,11 @@ from dataclasses import dataclass
 from ml.optimization.robust_scheduler import (
     optimize_robust_schedule,
 )
+from ml.optimization.runtime_state import (
+    CompressorRuntimeState,
+    advance_runtime_state,
+    resolve_runtime_state,
+)
 from ml.optimization.scheduler import OptimizationConfig
 from ml.reasoning.scenarios import PhysicalScenarioSet
 from ml.twin.compressor import (
@@ -45,6 +50,7 @@ class RobustFirstActionResult:
     method: str
     evidence_class: str
     causal_claim: bool
+    next_runtime_state: tuple[CompressorRuntimeState, ...]
 
 
 def _commands_from_first_row(
@@ -235,6 +241,13 @@ def select_robust_first_action(
     scenario_set: PhysicalScenarioSet,
     *,
     horizon_intervals: int,
+    initial_runtime_state: (
+        tuple[
+            CompressorRuntimeState,
+            ...
+        ]
+        | None
+    ) = None,
     initial_pressure_bar_g: float,
     parameters: TwinParameters,
     compressors: list[CompressorSpec],
@@ -242,15 +255,24 @@ def select_robust_first_action(
     safety_min_bar_g: float,
     safety_max_bar_g: float,
     config: OptimizationConfig,
+    
 ) -> RobustFirstActionResult:
     if horizon_intervals <= 0:
         raise ValueError(
             "horizon_intervals must be positive."
         )
 
+    resolved_runtime_state = (
+        resolve_runtime_state(
+            compressors,
+            initial_runtime_state,
+        )
+    )
+
     robust_result = optimize_robust_schedule(
         scenario_set,
         horizon_intervals=horizon_intervals,
+        initial_runtime_state=resolved_runtime_state,
         initial_pressure_bar_g=(
             initial_pressure_bar_g
         ),
@@ -297,6 +319,17 @@ def select_robust_first_action(
             "independent one-step safety gate."
         )
 
+    next_runtime_state = (
+        advance_runtime_state(
+            resolved_runtime_state,
+            commands,
+            interval_seconds=(
+                config.interval_seconds
+            ),
+            compressors=compressors,
+        )
+    )
+
     return RobustFirstActionResult(
         selected=evaluation,
         candidates=(evaluation,),
@@ -320,4 +353,5 @@ def select_robust_first_action(
         ),
         evidence_class="SIMULATED",
         causal_claim=False,
+        next_runtime_state=next_runtime_state,
     )

@@ -9,6 +9,7 @@ from ml.optimization import (
 from ml.optimization.robust_scheduler import (
     optimize_robust_schedule,
 )
+from ml.optimization.runtime_state import CompressorRuntimeState
 from ml.reasoning.scenarios import (
     PhysicalScenario,
     PhysicalScenarioSet,
@@ -255,3 +256,88 @@ def test_impossible_shared_scenario_set_is_rejected():
             safety_max_bar_g=7.5,
             config=CONFIG,
         )
+
+def test_remaining_min_on_is_preserved():
+    runtime_state = (
+        CompressorRuntimeState(
+            compressor_id="fixed_1",
+            is_on=True,
+            seconds_in_state=60.0,
+        ),
+        CompressorRuntimeState(
+            compressor_id="fixed_2",
+            is_on=False,
+            seconds_in_state=60.0,
+        ),
+        CompressorRuntimeState(
+            compressor_id="vsd_1",
+            is_on=False,
+            seconds_in_state=30.0,
+        ),
+    )
+
+    result = optimize_robust_schedule(
+        _scenario_set([0.030]),
+        horizon_intervals=5,
+        initial_runtime_state=(
+            runtime_state
+        ),
+        initial_pressure_bar_g=7.0,
+        parameters=PARAMETERS,
+        compressors=COMPRESSORS,
+        target_bar_g=7.0,
+        safety_min_bar_g=6.5,
+        safety_max_bar_g=7.5,
+        config=CONFIG,
+    )
+
+    first = result.schedule.iloc[0]
+
+    assert bool(
+        first["fixed_1_on"]
+    ) is True
+
+    assert bool(
+        first["fixed_1_start"]
+    ) is False
+
+
+def test_remaining_min_off_is_preserved():
+    runtime_state = (
+        CompressorRuntimeState(
+            compressor_id="fixed_1",
+            is_on=False,
+            seconds_in_state=0.0,
+        ),
+        CompressorRuntimeState(
+            compressor_id="fixed_2",
+            is_on=False,
+            seconds_in_state=60.0,
+        ),
+        CompressorRuntimeState(
+            compressor_id="vsd_1",
+            is_on=False,
+            seconds_in_state=30.0,
+        ),
+    )
+
+    result = optimize_robust_schedule(
+        _scenario_set([0.110]),
+        horizon_intervals=5,
+        initial_runtime_state=(
+            runtime_state
+        ),
+        initial_pressure_bar_g=7.0,
+        parameters=PARAMETERS,
+        compressors=COMPRESSORS,
+        target_bar_g=7.0,
+        safety_min_bar_g=6.5,
+        safety_max_bar_g=7.5,
+        config=CONFIG,
+    )
+
+    first = result.schedule.iloc[0]
+
+    assert bool(
+        first["fixed_1_on"]
+    ) is False
