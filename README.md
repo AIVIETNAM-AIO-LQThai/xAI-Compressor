@@ -27,7 +27,7 @@ PCA contributions identify signals associated with anomaly evidence; they do **n
 
 ### Verified XAI
 
-The frozen detector explanation is verified through four layers:
+The frozen detector explanation uses four explanation/verification layers followed by an explicit knowledge limit:
 
 ```text
 Attribution
@@ -35,6 +35,14 @@ Attribution
 -> temporal evidence
 -> model-space counterfactual verification
 -> explicit knowledge limit
+```
+
+Across all four frozen incident explanations:
+
+- the dominant contribution group was at or above approximately the **99.55th calibration-context percentile**;
+- repairing only the dominant group's anomalous model-space evidence and rerunning the same EWMA / persistence pipeline caused the frozen alert to clear.
+
+This supports a **detector-dependence** statement only. It does not establish physical root cause and does not mean that physically repairing the corresponding sensor or process variable would fix the equipment.
 
 ### SIMULATED control and energy
 
