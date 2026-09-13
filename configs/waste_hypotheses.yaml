@@ -1,0 +1,143 @@
+version: 1
+
+candidate_generation:
+  top_groups: 5
+  minimum_share: 0.001
+  minimum_percentile: 0.90
+
+hypotheses:
+  - id: leak_like_persistent_outflow
+    label: Leak-like persistent outflow
+    description: >
+      Persistent additional air outflow that is not yet distinguishable
+      from legitimate process demand using detector evidence alone.
+    trigger_groups:
+      - dv_pressure
+      - tp2
+      - pressure_relationships
+    required_observations:
+      - pressure
+      - compressor_state
+    latent_variables:
+      - leak_mass_flow_kg_s
+    alternatives:
+      - demand_surge
+    physics_verifiable: true
+
+  - id: demand_surge
+    label: Process-demand surge
+    description: >
+      Increased legitimate downstream air demand producing pressure
+      behavior that may resemble leakage.
+    trigger_groups:
+      - dv_pressure
+      - tp2
+      - pressure_relationships
+    required_observations:
+      - pressure
+      - compressor_state
+    latent_variables:
+      - demand_mass_flow_kg_s
+    alternatives:
+      - leak_like_persistent_outflow
+    physics_verifiable: true
+
+  - id: pressure_regulation_instability
+    label: Pressure regulation instability
+    description: >
+      Abnormal pressure-control behavior, cycling, or regulation
+      instability rather than a simple persistent outflow increase.
+    trigger_groups:
+      - dv_pressure
+      - pressure_relationships
+      - pressure_switch
+      - comp
+    required_observations:
+      - pressure
+      - compressor_state
+    latent_variables:
+      - control_response
+    alternatives:
+      - leak_like_persistent_outflow
+      - demand_surge
+    physics_verifiable: true
+
+  - id: sensor_inconsistency
+    label: Pressure-sensor inconsistency
+    description: >
+      One or more measured pressure signals disagree with physically
+      related measurements strongly enough that measurement error,
+      drift, or sensor failure must remain a candidate explanation.
+    trigger_groups:
+      - tp2
+      - tp3
+      - reservoirs
+      - dv_pressure
+      - pressure_relationships
+    required_observations:
+      - correlated_pressure_signals
+    latent_variables:
+      - sensor_bias
+    alternatives:
+      - leak_like_persistent_outflow
+      - demand_surge
+    physics_verifiable: true
+
+  - id: compressor_performance_degradation
+    label: Compressor performance degradation
+    description: >
+      Compressor electrical effort or operating behavior is inconsistent
+      with the observed pressure response.
+    trigger_groups:
+      - motor_current
+      - tp2
+      - tp3
+      - reservoirs
+    required_observations:
+      - motor_current
+      - pressure
+      - compressor_state
+    latent_variables:
+      - compressor_effectiveness
+    alternatives:
+      - demand_surge
+      - leak_like_persistent_outflow
+    physics_verifiable: true
+
+  - id: unloaded_or_inefficient_operation
+    label: Unloaded or inefficient compressor operation
+    description: >
+      Compressor activity or electrical effort occurs without a
+      proportionate useful pressure or flow response.
+    trigger_groups:
+      - motor_current
+      - comp
+      - pressure_switch
+      - caudal_impulses
+    required_observations:
+      - motor_current
+      - compressor_state
+      - pressure
+    latent_variables:
+      - useful_air_fraction
+    alternatives:
+      - compressor_performance_degradation
+    physics_verifiable: true
+
+  - id: excess_pressure_operation
+    label: Excess pressure operation
+    description: >
+      The system is operated above the pressure required by the process,
+      creating an energy-waste opportunity even if no equipment fault
+      exists.
+    trigger_groups:
+      - reservoirs
+      - tp3
+      - pressure_relationships
+    required_observations:
+      - pressure
+      - required_pressure
+    latent_variables:
+      - excess_pressure_bar
+    alternatives: []
+    physics_verifiable: true
