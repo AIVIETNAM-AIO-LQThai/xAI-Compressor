@@ -1,0 +1,36 @@
+raw_context:
+  raw_step_seconds: 10
+  context_minutes: 60
+  forecast_gap_minutes: 5
+  input_scaler: robust
+  target_scaler: robust
+
+model:
+  hidden_dim: 64
+  kernel_size: 3
+  dilations:
+    - 1
+    - 2
+    - 4
+    - 8
+    - 16
+    - 32
+    - 64
+  dropout: 0.10
+
+training:
+  seed: 42
+  epochs: 60
+  batch_size: 64
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  huber_delta: 1.0
+  validation_fraction: 0.15
+  patience: 8
+  min_delta: 0.00001
+  device: auto
+
+outputs:
+  checkpoint_file: "artifacts/detection/raw_context_tcn.pt"
+  scores_file: "data/processed/raw_context_tcn_scores.parquet"
+  benchmark_file: "docs/raw_context_tcn_benchmark.json"
