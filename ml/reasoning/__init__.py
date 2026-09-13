@@ -10,6 +10,14 @@ from ml.reasoning.hypotheses import (
     generate_candidate_hypotheses,
     load_hypothesis_config,
 )
+from ml.reasoning.inverse_physics import (
+    OutflowInference,
+    infer_total_outflow,
+)
+from ml.reasoning.physics_verifier import (
+    PhysicsHypothesisResult,
+    verify_leak_vs_demand,
+)
 
 __all__ = [
     "CandidateGenerationConfig",
@@ -17,7 +25,11 @@ __all__ = [
     "GroupEvidence",
     "HypothesisSpec",
     "IncidentEvidence",
+    "OutflowInference",
+    "PhysicsHypothesisResult",
     "generate_candidate_hypotheses",
     "incident_evidence_from_report",
+    "infer_total_outflow",
     "load_hypothesis_config",
+    "verify_leak_vs_demand",
 ]
