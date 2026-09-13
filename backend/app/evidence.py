@@ -33,13 +33,9 @@ def load_json_report(
 
 
 def build_detection_evidence() -> dict[str, Any]:
-    benchmark = load_json_report(
-        "detector_benchmark.json"
-    )
-
-    xai = load_json_report(
-        "xai_report.json"
-    )
+    benchmark = load_json_report("detector_benchmark.json")
+    xai = load_json_report("xai_report.json")
+    verification = load_json_report("xai_verification_report.json")
 
     primary = benchmark[
         "details"
@@ -96,6 +92,28 @@ def build_detection_evidence() -> dict[str, Any]:
                 "causal_claim"
             ]
         ),
+        "verification": {
+            "evidence_subtype":
+                verification[
+                    "evidence_subtype"
+                ],
+            "method":
+                verification[
+                    "method"
+                ],
+            "acceptance":
+                verification[
+                    "acceptance"
+                ],
+            "incidents":
+                verification[
+                    "incidents"
+                ],
+            "limitations":
+                verification[
+                    "limitations"
+                ],
+        },
         "limitations": [
             (
                 "MetroPT evidence supports "
@@ -114,6 +132,20 @@ def build_detection_evidence() -> dict[str, Any]:
                 "signals associated with "
                 "anomaly evidence, not "
                 "confirmed root cause."
+            ),
+            (
+                "Contribution percentiles "
+                "describe how unusual detector "
+                "evidence is relative to the "
+                "calibration partition; they "
+                "are not fault probabilities."
+            ),
+            (
+                "Counterfactual repair tests "
+                "detector dependence in PCA "
+                "feature space and does not "
+                "represent a physical repair "
+                "or causal intervention."
             ),
         ],
     }

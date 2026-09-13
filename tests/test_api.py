@@ -15,37 +15,41 @@ def test_detection_evidence_is_real():
 
     payload = response.json()
 
-    assert (
-        payload["evidence_class"]
-        == "REAL"
-    )
-
-    assert (
-        payload["dataset"]
-        == "MetroPT-3"
-    )
-
-    assert (
-        payload["detector"]["name"]
-        == "pca_reconstruction"
-    )
-
+    assert (payload["evidence_class"] == "REAL")
+    assert (payload["dataset"] == "MetroPT-3")
+    assert (payload["detector"]["name"] == "pca_reconstruction")
     assert (
         payload["metrics"][
             "timely_incident_recall"
         ]
         == pytest.approx(1.0)
     )
+    assert (len(payload["incidents"]) == 4)
+    assert (payload["causal_claim"] is False)
+
+    verification = payload["verification"]
 
     assert (
-        len(payload["incidents"])
-        == 4
+        verification["evidence_subtype"] == ("model_verification_on_real_telemetry")
     )
 
     assert (
-        payload["causal_claim"]
-        is False
+        verification["acceptance"]["all_passed"] is True
     )
+
+    assert (
+        verification["acceptance"]["causal_claim"] is False
+    )
+
+    assert (
+        len(verification["incidents"]) == 4
+    )
+
+    for incident in verification["incidents"]:
+        assert (incident["causal_claim"] is False)
+        assert (
+            incident["greedy_repair"]["minimum_groups_to_clear"] == 1
+        )
 
 
 def test_evidence_summary_separates_classes():

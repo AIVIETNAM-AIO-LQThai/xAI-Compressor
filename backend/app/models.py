@@ -162,6 +162,7 @@ class DetectionEvidenceResponse(BaseModel):
     incidents: list[dict[str, Any]]
     explanation_basis: str
     causal_claim: bool
+    verification: dict[str, Any]
     limitations: list[str]
 
 
