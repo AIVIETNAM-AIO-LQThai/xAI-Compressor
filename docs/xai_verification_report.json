@@ -1,0 +1,1388 @@
+{
+  "evidence_class": "REAL",
+  "evidence_subtype": "model_verification_on_real_telemetry",
+  "dataset": "MetroPT-3",
+  "detector": {
+    "name": "pca_reconstruction",
+    "scaler": "robust",
+    "components": 3,
+    "threshold": 52941.88448793303,
+    "detector_retrained": false,
+    "detector_retuned": false
+  },
+  "method": {
+    "normality_context": "Empirical percentiles of smoothed operator-level PCA contributions using calibration only.",
+    "temporal_evidence": "Twelve causal five-minute bins ending at each frozen alert.",
+    "counterfactual_repair": "Selected feature-group coordinates are replaced by the frozen PCA reconstruction in robust-scaled feature space, after which the repaired observation is reprojected and rescored.",
+    "alert_pipeline": "Repaired raw scores pass through the same causal EWMA, frozen threshold, and persistence rule.",
+    "counterfactual_interpretation": "Detector-dependence test only; not a physical intervention or causal root-cause estimate."
+  },
+  "acceptance": {
+    "threshold_matches": true,
+    "components_match": true,
+    "explained_variance_matches": true,
+    "all_frozen_incident_alerts_reproduced": true,
+    "all_frozen_incident_scores_reproduced": true,
+    "all_percentiles_in_unit_interval": true,
+    "all_temporal_windows_past_only": true,
+    "causal_claim": false,
+    "all_passed": true
+  },
+  "incidents": [
+    {
+      "id": 1,
+      "incident_start": "2020-04-18 00:00:00",
+      "explanation_timestamp": "2020-04-18 00:40:00",
+      "timing": "post_onset",
+      "lead_hours": null,
+      "delay_hours": 0.6666666666666666,
+      "original_smoothed_score": 180453.04329740186,
+      "threshold": 52941.88448793303,
+      "ranked_groups": [
+        {
+          "group": "tp2",
+          "smoothed_contribution": 169574.55129235546,
+          "share": 0.9397156633866367,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "dv_pressure",
+          "smoothed_contribution": 10861.518713681111,
+          "share": 0.06019027728881474,
+          "calibration_percentile": 0.9070155902004454
+        },
+        {
+          "group": "motor_current",
+          "smoothed_contribution": 9.242930892501414,
+          "share": 5.122069832465105e-05,
+          "calibration_percentile": 0.013363028953229399
+        },
+        {
+          "group": "h1",
+          "smoothed_contribution": 4.116659073130449,
+          "share": 2.281291020593012e-05,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "pressure_relationships",
+          "smoothed_contribution": 1.895754617931566,
+          "share": 1.050552865881681e-05,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "oil_temperature",
+          "smoothed_contribution": 0.8752587095298496,
+          "share": 4.850340529238674e-06,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "towers",
+          "smoothed_contribution": 0.4816542396797475,
+          "share": 2.6691389121431474e-06,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "reservoirs",
+          "smoothed_contribution": 0.15388762901231035,
+          "share": 8.527848918496239e-07,
+          "calibration_percentile": 0.9983296213808464
+        },
+        {
+          "group": "tp3",
+          "smoothed_contribution": 0.15247474928185745,
+          "share": 8.44955266454366e-07,
+          "calibration_percentile": 0.9983296213808464
+        },
+        {
+          "group": "dv_electric",
+          "smoothed_contribution": 0.017753511587245537,
+          "share": 9.838299904970985e-08,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "comp",
+          "smoothed_contribution": 0.017749088613625126,
+          "share": 9.835848866440633e-08,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "mpg",
+          "smoothed_contribution": 0.017749088613625126,
+          "share": 9.835848866440633e-08,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "pressure_switch",
+          "smoothed_contribution": 0.0014197654292158796,
+          "share": 7.867783237526154e-09,
+          "calibration_percentile": 0.8073496659242761
+        },
+        {
+          "group": "lps",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "oil_level",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "caudal_impulses",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        }
+      ],
+      "temporal_evidence": {
+        "window_bins_requested": 12,
+        "window_rows_observed": 10,
+        "window_complete": false,
+        "top_groups": [
+          "tp2",
+          "dv_pressure",
+          "motor_current",
+          "h1",
+          "pressure_relationships"
+        ],
+        "rows": [
+          {
+            "timestamp": "2020-04-17 23:45:00",
+            "percentiles": {
+              "tp2": 0.013363028953229399,
+              "dv_pressure": 0.0,
+              "motor_current": 0.0,
+              "h1": 0.6247216035634744,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-17 23:50:00",
+            "percentiles": {
+              "tp2": 0.013363028953229399,
+              "dv_pressure": 0.0,
+              "motor_current": 0.0,
+              "h1": 0.6247216035634744,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-17 23:55:00",
+            "percentiles": {
+              "tp2": 0.013363028953229399,
+              "dv_pressure": 0.0,
+              "motor_current": 0.0,
+              "h1": 0.6247216035634744,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-18 00:00:00",
+            "percentiles": {
+              "tp2": 0.013363028953229399,
+              "dv_pressure": 0.0,
+              "motor_current": 0.0,
+              "h1": 0.6247216035634744,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-18 00:05:00",
+            "percentiles": {
+              "tp2": 0.013363028953229399,
+              "dv_pressure": 0.0,
+              "motor_current": 0.0,
+              "h1": 0.6247216035634744,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-18 00:10:00",
+            "percentiles": {
+              "tp2": 0.013363028953229399,
+              "dv_pressure": 0.0,
+              "motor_current": 0.0,
+              "h1": 0.6247216035634744,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-18 00:15:00",
+            "percentiles": {
+              "tp2": 0.013363028953229399,
+              "dv_pressure": 0.0,
+              "motor_current": 0.0,
+              "h1": 0.6247216035634744,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-18 00:30:00",
+            "percentiles": {
+              "tp2": 1.0,
+              "dv_pressure": 0.9036748329621381,
+              "motor_current": 0.014476614699331848,
+              "h1": 1.0,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-18 00:35:00",
+            "percentiles": {
+              "tp2": 1.0,
+              "dv_pressure": 0.9047884187082406,
+              "motor_current": 0.013363028953229399,
+              "h1": 1.0,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-04-18 00:40:00",
+            "percentiles": {
+              "tp2": 1.0,
+              "dv_pressure": 0.9070155902004454,
+              "motor_current": 0.013363028953229399,
+              "h1": 1.0,
+              "pressure_relationships": 1.0
+            }
+          }
+        ]
+      },
+      "single_group_repairs": [
+        {
+          "repaired_groups": [
+            "tp2"
+          ],
+          "window_start": "2020-04-17 23:45:00",
+          "window_end": "2020-04-18 00:40:00",
+          "window_rows": 10,
+          "original_raw_score": 197231.22762546715,
+          "repaired_raw_score": 12017.704874026444,
+          "original_smoothed_score": 180453.04329740186,
+          "repaired_smoothed_score": 10873.648031586974,
+          "original_alert": true,
+          "repaired_alert": false,
+          "alert_cleared": true
+        },
+        {
+          "repaired_groups": [
+            "dv_pressure"
+          ],
+          "window_start": "2020-04-17 23:45:00",
+          "window_end": "2020-04-18 00:40:00",
+          "window_rows": 10,
+          "original_raw_score": 197231.22762546715,
+          "repaired_raw_score": 185222.16084684923,
+          "original_smoothed_score": 180453.04329740186,
+          "repaired_smoothed_score": 169569.6490516556,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        },
+        {
+          "repaired_groups": [
+            "motor_current"
+          ],
+          "window_start": "2020-04-17 23:45:00",
+          "window_end": "2020-04-18 00:40:00",
+          "window_rows": 10,
+          "original_raw_score": 197231.22762546715,
+          "repaired_raw_score": 197223.48870935227,
+          "original_smoothed_score": 180453.04329740186,
+          "repaired_smoothed_score": 180436.0536656691,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        },
+        {
+          "repaired_groups": [
+            "h1"
+          ],
+          "window_start": "2020-04-17 23:45:00",
+          "window_end": "2020-04-18 00:40:00",
+          "window_rows": 10,
+          "original_raw_score": 197231.22762546715,
+          "repaired_raw_score": 197227.18875668742,
+          "original_smoothed_score": 180453.04329740186,
+          "repaired_smoothed_score": 180448.9266243686,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        },
+        {
+          "repaired_groups": [
+            "pressure_relationships"
+          ],
+          "window_start": "2020-04-17 23:45:00",
+          "window_end": "2020-04-18 00:40:00",
+          "window_rows": 10,
+          "original_raw_score": 197231.22762546715,
+          "repaired_raw_score": 197229.31057247307,
+          "original_smoothed_score": 180453.04329740186,
+          "repaired_smoothed_score": 180451.14753940597,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        }
+      ],
+      "greedy_repair": {
+        "ranking_basis": "smoothed contribution at frozen alert timestamp",
+        "minimum_groups_to_clear": 1,
+        "steps": [
+          {
+            "repaired_groups": [
+              "tp2"
+            ],
+            "window_start": "2020-04-17 23:45:00",
+            "window_end": "2020-04-18 00:40:00",
+            "window_rows": 10,
+            "original_raw_score": 197231.22762546715,
+            "repaired_raw_score": 12017.704874026444,
+            "original_smoothed_score": 180453.04329740186,
+            "repaired_smoothed_score": 10873.648031586974,
+            "original_alert": true,
+            "repaired_alert": false,
+            "alert_cleared": true,
+            "step": 1
+          }
+        ]
+      },
+      "causal_claim": false
+    },
+    {
+      "id": 2,
+      "incident_start": "2020-05-29 23:30:00",
+      "explanation_timestamp": "2020-05-29 21:20:00",
+      "timing": "pre_onset",
+      "lead_hours": 2.1666666666666665,
+      "delay_hours": null,
+      "original_smoothed_score": 58988.95445080686,
+      "threshold": 52941.88448793303,
+      "ranked_groups": [
+        {
+          "group": "dv_pressure",
+          "smoothed_contribution": 45753.52019877055,
+          "share": 0.775628600722635,
+          "calibration_percentile": 0.9955456570155902
+        },
+        {
+          "group": "tp2",
+          "smoothed_contribution": 7452.504482433213,
+          "share": 0.12633728723990428,
+          "calibration_percentile": 0.9994432071269488
+        },
+        {
+          "group": "motor_current",
+          "smoothed_contribution": 5781.639776812099,
+          "share": 0.09801224365882992,
+          "calibration_percentile": 0.9905345211581291
+        },
+        {
+          "group": "oil_temperature",
+          "smoothed_contribution": 0.8010777952735902,
+          "share": 1.3580132123576457e-05,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "h1",
+          "smoothed_contribution": 0.21115958726799441,
+          "share": 3.5796462106153886e-06,
+          "calibration_percentile": 0.984966592427617
+        },
+        {
+          "group": "pressure_relationships",
+          "smoothed_contribution": 0.13469017347955833,
+          "share": 2.283311761219326e-06,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "reservoirs",
+          "smoothed_contribution": 0.06183230279410226,
+          "share": 1.04820136870991e-06,
+          "calibration_percentile": 0.9537861915367484
+        },
+        {
+          "group": "tp3",
+          "smoothed_contribution": 0.06164734679479387,
+          "share": 1.0450659342708638e-06,
+          "calibration_percentile": 0.9543429844097996
+        },
+        {
+          "group": "towers",
+          "smoothed_contribution": 0.014096972799371462,
+          "share": 2.3897648179418866e-07,
+          "calibration_percentile": 0.9994432071269488
+        },
+        {
+          "group": "pressure_switch",
+          "smoothed_contribution": 0.0015746572682556962,
+          "share": 2.669410371680454e-08,
+          "calibration_percentile": 0.8190423162583519
+        },
+        {
+          "group": "dv_electric",
+          "smoothed_contribution": 0.0013046588148863728,
+          "share": 2.2117001852853287e-08,
+          "calibration_percentile": 0.950445434298441
+        },
+        {
+          "group": "comp",
+          "smoothed_contribution": 0.001304648237743295,
+          "share": 2.2116822545673218e-08,
+          "calibration_percentile": 0.950445434298441
+        },
+        {
+          "group": "mpg",
+          "smoothed_contribution": 0.001304648237743295,
+          "share": 2.2116822545673218e-08,
+          "calibration_percentile": 0.950445434298441
+        },
+        {
+          "group": "lps",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "oil_level",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "caudal_impulses",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        }
+      ],
+      "temporal_evidence": {
+        "window_bins_requested": 12,
+        "window_rows_observed": 12,
+        "window_complete": true,
+        "top_groups": [
+          "dv_pressure",
+          "tp2",
+          "motor_current",
+          "oil_temperature",
+          "h1"
+        ],
+        "rows": [
+          {
+            "timestamp": "2020-05-29 20:25:00",
+            "percentiles": {
+              "dv_pressure": 0.6982182628062361,
+              "tp2": 0.9994432071269488,
+              "motor_current": 0.47383073496659245,
+              "oil_temperature": 0.9988864142538976,
+              "h1": 0.9788418708240535
+            }
+          },
+          {
+            "timestamp": "2020-05-29 20:30:00",
+            "percentiles": {
+              "dv_pressure": 0.6308463251670379,
+              "tp2": 0.9938752783964365,
+              "motor_current": 0.3819599109131403,
+              "oil_temperature": 0.9988864142538976,
+              "h1": 0.9716035634743875
+            }
+          },
+          {
+            "timestamp": "2020-05-29 20:35:00",
+            "percentiles": {
+              "dv_pressure": 0.5467706013363028,
+              "tp2": 0.987750556792873,
+              "motor_current": 0.2989977728285078,
+              "oil_temperature": 0.9972160356347439,
+              "h1": 0.955456570155902
+            }
+          },
+          {
+            "timestamp": "2020-05-29 20:40:00",
+            "percentiles": {
+              "dv_pressure": 0.4548997772828508,
+              "tp2": 0.9793986636971047,
+              "motor_current": 0.22717149220489977,
+              "oil_temperature": 0.987750556792873,
+              "h1": 0.9365256124721604
+            }
+          },
+          {
+            "timestamp": "2020-05-29 20:45:00",
+            "percentiles": {
+              "dv_pressure": 0.4220489977728285,
+              "tp2": 0.9693763919821826,
+              "motor_current": 0.2516703786191537,
+              "oil_temperature": 0.9977728285077951,
+              "h1": 0.9348552338530067
+            }
+          },
+          {
+            "timestamp": "2020-05-29 20:50:00",
+            "percentiles": {
+              "dv_pressure": 0.6191536748329621,
+              "tp2": 0.9576837416481069,
+              "motor_current": 0.6252783964365256,
+              "oil_temperature": 0.9977728285077951,
+              "h1": 0.9181514476614699
+            }
+          },
+          {
+            "timestamp": "2020-05-29 20:55:00",
+            "percentiles": {
+              "dv_pressure": 0.534521158129176,
+              "tp2": 0.9359688195991092,
+              "motor_current": 0.5328507795100222,
+              "oil_temperature": 0.9983296213808464,
+              "h1": 0.8791759465478842
+            }
+          },
+          {
+            "timestamp": "2020-05-29 21:00:00",
+            "percentiles": {
+              "dv_pressure": 0.44153674832962136,
+              "tp2": 0.9064587973273942,
+              "motor_current": 0.43875278396436523,
+              "oil_temperature": 0.9927616926503341,
+              "h1": 0.8140311804008908
+            }
+          },
+          {
+            "timestamp": "2020-05-29 21:05:00",
+            "percentiles": {
+              "dv_pressure": 0.3507795100222717,
+              "tp2": 0.8730512249443207,
+              "motor_current": 0.35356347438752783,
+              "oil_temperature": 0.982739420935412,
+              "h1": 0.7616926503340757
+            }
+          },
+          {
+            "timestamp": "2020-05-29 21:10:00",
+            "percentiles": {
+              "dv_pressure": 1.0,
+              "tp2": 0.9977728285077951,
+              "motor_current": 0.9977728285077951,
+              "oil_temperature": 1.0,
+              "h1": 0.9844097995545658
+            }
+          },
+          {
+            "timestamp": "2020-05-29 21:15:00",
+            "percentiles": {
+              "dv_pressure": 0.9977728285077951,
+              "tp2": 1.0,
+              "motor_current": 0.9955456570155902,
+              "oil_temperature": 1.0,
+              "h1": 0.9883073496659243
+            }
+          },
+          {
+            "timestamp": "2020-05-29 21:20:00",
+            "percentiles": {
+              "dv_pressure": 0.9955456570155902,
+              "tp2": 0.9994432071269488,
+              "motor_current": 0.9905345211581291,
+              "oil_temperature": 1.0,
+              "h1": 0.984966592427617
+            }
+          }
+        ]
+      },
+      "single_group_repairs": [
+        {
+          "repaired_groups": [
+            "dv_pressure"
+          ],
+          "window_start": "2020-05-29 20:25:00",
+          "window_end": "2020-05-29 21:20:00",
+          "window_rows": 12,
+          "original_raw_score": 35.82206069234799,
+          "repaired_raw_score": 1.7092254706579773,
+          "original_smoothed_score": 58988.95445080686,
+          "repaired_smoothed_score": 7471.553585643533,
+          "original_alert": true,
+          "repaired_alert": false,
+          "alert_cleared": true
+        },
+        {
+          "repaired_groups": [
+            "tp2"
+          ],
+          "window_start": "2020-05-29 20:25:00",
+          "window_end": "2020-05-29 21:20:00",
+          "window_rows": 12,
+          "original_raw_score": 35.82206069234799,
+          "repaired_raw_score": 35.591171531337174,
+          "original_smoothed_score": 58988.95445080686,
+          "repaired_smoothed_score": 51472.834397391554,
+          "original_alert": true,
+          "repaired_alert": false,
+          "alert_cleared": true
+        },
+        {
+          "repaired_groups": [
+            "motor_current"
+          ],
+          "window_start": "2020-05-29 20:25:00",
+          "window_end": "2020-05-29 21:20:00",
+          "window_rows": 12,
+          "original_raw_score": 35.82206069234799,
+          "repaired_raw_score": 26.485362972285024,
+          "original_smoothed_score": 58988.95445080686,
+          "repaired_smoothed_score": 48374.13337980856,
+          "original_alert": true,
+          "repaired_alert": false,
+          "alert_cleared": true
+        },
+        {
+          "repaired_groups": [
+            "oil_temperature"
+          ],
+          "window_start": "2020-05-29 20:25:00",
+          "window_end": "2020-05-29 21:20:00",
+          "window_rows": 12,
+          "original_raw_score": 35.82206069234799,
+          "repaired_raw_score": 35.192163201634344,
+          "original_smoothed_score": 58988.95445080686,
+          "repaired_smoothed_score": 58988.20468981765,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        },
+        {
+          "repaired_groups": [
+            "h1"
+          ],
+          "window_start": "2020-05-29 20:25:00",
+          "window_end": "2020-05-29 21:20:00",
+          "window_rows": 12,
+          "original_raw_score": 35.82206069234799,
+          "repaired_raw_score": 35.80827613861285,
+          "original_smoothed_score": 58988.95445080686,
+          "repaired_smoothed_score": 58988.74866426696,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        }
+      ],
+      "greedy_repair": {
+        "ranking_basis": "smoothed contribution at frozen alert timestamp",
+        "minimum_groups_to_clear": 1,
+        "steps": [
+          {
+            "repaired_groups": [
+              "dv_pressure"
+            ],
+            "window_start": "2020-05-29 20:25:00",
+            "window_end": "2020-05-29 21:20:00",
+            "window_rows": 12,
+            "original_raw_score": 35.82206069234799,
+            "repaired_raw_score": 1.7092254706579773,
+            "original_smoothed_score": 58988.95445080686,
+            "repaired_smoothed_score": 7471.553585643533,
+            "original_alert": true,
+            "repaired_alert": false,
+            "alert_cleared": true,
+            "step": 1
+          }
+        ]
+      },
+      "causal_claim": false
+    },
+    {
+      "id": 3,
+      "incident_start": "2020-06-05 10:00:00",
+      "explanation_timestamp": "2020-06-05 10:10:00",
+      "timing": "post_onset",
+      "lead_hours": null,
+      "delay_hours": 0.16666666666666666,
+      "original_smoothed_score": 96204.74042199,
+      "threshold": 52941.88448793303,
+      "ranked_groups": [
+        {
+          "group": "tp2",
+          "smoothed_contribution": 82806.04432415956,
+          "share": 0.8607272776886175,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "dv_pressure",
+          "smoothed_contribution": 12523.52839351311,
+          "share": 0.1301757931945996,
+          "calibration_percentile": 0.9203786191536748
+        },
+        {
+          "group": "motor_current",
+          "smoothed_contribution": 870.0535031623774,
+          "share": 0.009043769562144203,
+          "calibration_percentile": 0.8485523385300668
+        },
+        {
+          "group": "h1",
+          "smoothed_contribution": 2.681395062810651,
+          "share": 2.7871756121881813e-05,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "pressure_relationships",
+          "smoothed_contribution": 1.067258512330412,
+          "share": 1.109361667261942e-05,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "oil_temperature",
+          "smoothed_contribution": 0.8218556394461689,
+          "share": 8.542776955077288e-06,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "towers",
+          "smoothed_contribution": 0.2774505736193449,
+          "share": 2.8839594847649167e-06,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "reservoirs",
+          "smoothed_contribution": 0.1134707143642566,
+          "share": 1.1794711348581323e-06,
+          "calibration_percentile": 0.9938752783964365
+        },
+        {
+          "group": "tp3",
+          "smoothed_contribution": 0.11297973770327646,
+          "share": 1.1743676788451902e-06,
+          "calibration_percentile": 0.9938752783964365
+        },
+        {
+          "group": "dv_electric",
+          "smoothed_contribution": 0.010778940171281453,
+          "share": 1.1204167407968656e-07,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "comp",
+          "smoothed_contribution": 0.010776423802221744,
+          "share": 1.120155176860549e-07,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "mpg",
+          "smoothed_contribution": 0.010776423802221744,
+          "share": 1.120155176860549e-07,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "pressure_switch",
+          "smoothed_contribution": 0.0074591269243754,
+          "share": 7.753388129999495e-08,
+          "calibration_percentile": 0.9716035634743875
+        },
+        {
+          "group": "lps",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "oil_level",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "caudal_impulses",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        }
+      ],
+      "temporal_evidence": {
+        "window_bins_requested": 12,
+        "window_rows_observed": 12,
+        "window_complete": true,
+        "top_groups": [
+          "tp2",
+          "dv_pressure",
+          "motor_current",
+          "h1",
+          "pressure_relationships"
+        ],
+        "rows": [
+          {
+            "timestamp": "2020-06-05 09:15:00",
+            "percentiles": {
+              "tp2": 0.8752783964365256,
+              "dv_pressure": 0.7232739420935412,
+              "motor_current": 0.7700445434298441,
+              "h1": 0.8240534521158129,
+              "pressure_relationships": 0.965478841870824
+            }
+          },
+          {
+            "timestamp": "2020-06-05 09:20:00",
+            "percentiles": {
+              "tp2": 0.8340757238307349,
+              "dv_pressure": 0.6575723830734966,
+              "motor_current": 0.7282850779510023,
+              "h1": 0.765033407572383,
+              "pressure_relationships": 0.9192650334075724
+            }
+          },
+          {
+            "timestamp": "2020-06-05 09:25:00",
+            "percentiles": {
+              "tp2": 0.7856347438752784,
+              "dv_pressure": 0.5796213808463252,
+              "motor_current": 0.6720489977728286,
+              "h1": 0.6770601336302895,
+              "pressure_relationships": 0.8279510022271714
+            }
+          },
+          {
+            "timestamp": "2020-06-05 09:30:00",
+            "percentiles": {
+              "tp2": 0.737750556792873,
+              "dv_pressure": 0.4910913140311804,
+              "motor_current": 0.589086859688196,
+              "h1": 0.6570155902004454,
+              "pressure_relationships": 0.734966592427617
+            }
+          },
+          {
+            "timestamp": "2020-06-05 09:35:00",
+            "percentiles": {
+              "tp2": 0.829064587973274,
+              "dv_pressure": 0.7644766146993318,
+              "motor_current": 0.8023385300668151,
+              "h1": 0.8535634743875279,
+              "pressure_relationships": 0.9855233853006682
+            }
+          },
+          {
+            "timestamp": "2020-06-05 09:40:00",
+            "percentiles": {
+              "tp2": 0.7817371937639198,
+              "dv_pressure": 0.717706013363029,
+              "motor_current": 0.7783964365256125,
+              "h1": 0.8207126948775055,
+              "pressure_relationships": 0.9755011135857461
+            }
+          },
+          {
+            "timestamp": "2020-06-05 09:45:00",
+            "percentiles": {
+              "tp2": 0.7338530066815144,
+              "dv_pressure": 0.6514476614699332,
+              "motor_current": 0.7399777282850779,
+              "h1": 0.7422048997772829,
+              "pressure_relationships": 0.9292873051224945
+            }
+          },
+          {
+            "timestamp": "2020-06-05 09:50:00",
+            "percentiles": {
+              "tp2": 0.8496659242761693,
+              "dv_pressure": 0.571826280623608,
+              "motor_current": 0.705456570155902,
+              "h1": 0.7906458797327395,
+              "pressure_relationships": 0.9070155902004454
+            }
+          },
+          {
+            "timestamp": "2020-06-05 09:55:00",
+            "percentiles": {
+              "tp2": 1.0,
+              "dv_pressure": 0.878619153674833,
+              "motor_current": 0.8630289532293987,
+              "h1": 1.0,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-06-05 10:00:00",
+            "percentiles": {
+              "tp2": 1.0,
+              "dv_pressure": 0.9014476614699332,
+              "motor_current": 0.8619153674832962,
+              "h1": 1.0,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-06-05 10:05:00",
+            "percentiles": {
+              "tp2": 1.0,
+              "dv_pressure": 0.9153674832962138,
+              "motor_current": 0.8619153674832962,
+              "h1": 1.0,
+              "pressure_relationships": 1.0
+            }
+          },
+          {
+            "timestamp": "2020-06-05 10:10:00",
+            "percentiles": {
+              "tp2": 1.0,
+              "dv_pressure": 0.9203786191536748,
+              "motor_current": 0.8485523385300668,
+              "h1": 1.0,
+              "pressure_relationships": 1.0
+            }
+          }
+        ]
+      },
+      "single_group_repairs": [
+        {
+          "repaired_groups": [
+            "tp2"
+          ],
+          "window_start": "2020-06-05 09:15:00",
+          "window_end": "2020-06-05 10:10:00",
+          "window_rows": 12,
+          "original_raw_score": 154559.43638072337,
+          "repaired_raw_score": 15532.148227569342,
+          "original_smoothed_score": 96204.74042199,
+          "repaired_smoothed_score": 13460.47658855338,
+          "original_alert": true,
+          "repaired_alert": false,
+          "alert_cleared": true
+        },
+        {
+          "repaired_groups": [
+            "dv_pressure"
+          ],
+          "window_start": "2020-06-05 09:15:00",
+          "window_end": "2020-06-05 10:10:00",
+          "window_rows": 12,
+          "original_raw_score": 154559.43638072337,
+          "repaired_raw_score": 138931.05264816276,
+          "original_smoothed_score": 96204.74042199,
+          "repaired_smoothed_score": 82954.57867638094,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        },
+        {
+          "repaired_groups": [
+            "motor_current"
+          ],
+          "window_start": "2020-06-05 09:15:00",
+          "window_end": "2020-06-05 10:10:00",
+          "window_rows": 12,
+          "original_raw_score": 154559.43638072337,
+          "repaired_raw_score": 153997.82889676307,
+          "original_smoothed_score": 96204.74042199,
+          "repaired_smoothed_score": 94642.60097481284,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        },
+        {
+          "repaired_groups": [
+            "h1"
+          ],
+          "window_start": "2020-06-05 09:15:00",
+          "window_end": "2020-06-05 10:10:00",
+          "window_rows": 12,
+          "original_raw_score": 154559.43638072337,
+          "repaired_raw_score": 154555.10101962148,
+          "original_smoothed_score": 96204.74042199,
+          "repaired_smoothed_score": 96202.06268494844,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        },
+        {
+          "repaired_groups": [
+            "pressure_relationships"
+          ],
+          "window_start": "2020-06-05 09:15:00",
+          "window_end": "2020-06-05 10:10:00",
+          "window_rows": 12,
+          "original_raw_score": 154559.43638072337,
+          "repaired_raw_score": 154557.6581663305,
+          "original_smoothed_score": 96204.74042199,
+          "repaired_smoothed_score": 96203.67747030934,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        }
+      ],
+      "greedy_repair": {
+        "ranking_basis": "smoothed contribution at frozen alert timestamp",
+        "minimum_groups_to_clear": 1,
+        "steps": [
+          {
+            "repaired_groups": [
+              "tp2"
+            ],
+            "window_start": "2020-06-05 09:15:00",
+            "window_end": "2020-06-05 10:10:00",
+            "window_rows": 12,
+            "original_raw_score": 154559.43638072337,
+            "repaired_raw_score": 15532.148227569342,
+            "original_smoothed_score": 96204.74042199,
+            "repaired_smoothed_score": 13460.47658855338,
+            "original_alert": true,
+            "repaired_alert": false,
+            "alert_cleared": true,
+            "step": 1
+          }
+        ]
+      },
+      "causal_claim": false
+    },
+    {
+      "id": 4,
+      "incident_start": "2020-07-15 14:30:00",
+      "explanation_timestamp": "2020-07-15 08:45:00",
+      "timing": "pre_onset",
+      "lead_hours": 5.75,
+      "delay_hours": null,
+      "original_smoothed_score": 63496.51849308473,
+      "threshold": 52941.88448793303,
+      "ranked_groups": [
+        {
+          "group": "dv_pressure",
+          "smoothed_contribution": 47302.74992576834,
+          "share": 0.7449660398454754,
+          "calibration_percentile": 0.9955456570155902
+        },
+        {
+          "group": "tp2",
+          "smoothed_contribution": 8759.80015684211,
+          "share": 0.13795717253058715,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "motor_current",
+          "smoothed_contribution": 7432.101949161259,
+          "share": 0.11704739292077362,
+          "calibration_percentile": 0.9955456570155902
+        },
+        {
+          "group": "oil_temperature",
+          "smoothed_contribution": 1.2220471679490421,
+          "share": 1.924589248278443e-05,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "h1",
+          "smoothed_contribution": 0.23122180479218668,
+          "share": 3.641487915866891e-06,
+          "calibration_percentile": 0.9866369710467706
+        },
+        {
+          "group": "pressure_relationships",
+          "smoothed_contribution": 0.16817562226999166,
+          "share": 2.648580209768623e-06,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "reservoirs",
+          "smoothed_contribution": 0.09633296709785422,
+          "share": 1.5171377798980523e-06,
+          "calibration_percentile": 0.9910913140311804
+        },
+        {
+          "group": "tp3",
+          "smoothed_contribution": 0.09589960396551217,
+          "share": 1.5103127894477612e-06,
+          "calibration_percentile": 0.9910913140311804
+        },
+        {
+          "group": "towers",
+          "smoothed_contribution": 0.029223630952927668,
+          "share": 4.6023989419373193e-07,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "pressure_switch",
+          "smoothed_contribution": 0.012314103882901209,
+          "share": 1.9393352856412604e-07,
+          "calibration_percentile": 0.9944320712694877
+        },
+        {
+          "group": "dv_electric",
+          "smoothed_contribution": 0.0037488042652987228,
+          "share": 5.90395245954626e-08,
+          "calibration_percentile": 0.9922048997772829
+        },
+        {
+          "group": "comp",
+          "smoothed_contribution": 0.00374880393053983,
+          "share": 5.903951932337996e-08,
+          "calibration_percentile": 0.9922048997772829
+        },
+        {
+          "group": "mpg",
+          "smoothed_contribution": 0.00374880393053983,
+          "share": 5.903951932337996e-08,
+          "calibration_percentile": 0.9922048997772829
+        },
+        {
+          "group": "lps",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "oil_level",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        },
+        {
+          "group": "caudal_impulses",
+          "smoothed_contribution": 0.0,
+          "share": 0.0,
+          "calibration_percentile": 1.0
+        }
+      ],
+      "temporal_evidence": {
+        "window_bins_requested": 12,
+        "window_rows_observed": 12,
+        "window_complete": true,
+        "top_groups": [
+          "dv_pressure",
+          "tp2",
+          "motor_current",
+          "oil_temperature",
+          "h1"
+        ],
+        "rows": [
+          {
+            "timestamp": "2020-07-15 07:50:00",
+            "percentiles": {
+              "dv_pressure": 0.9955456570155902,
+              "tp2": 1.0,
+              "motor_current": 0.9927616926503341,
+              "oil_temperature": 1.0,
+              "h1": 0.9888641425389755
+            }
+          },
+          {
+            "timestamp": "2020-07-15 07:55:00",
+            "percentiles": {
+              "dv_pressure": 0.9910913140311804,
+              "tp2": 1.0,
+              "motor_current": 0.9916481069042317,
+              "oil_temperature": 1.0,
+              "h1": 0.9894209354120267
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:00:00",
+            "percentiles": {
+              "dv_pressure": 0.9810690423162584,
+              "tp2": 1.0,
+              "motor_current": 0.9816258351893096,
+              "oil_temperature": 1.0,
+              "h1": 0.987750556792873
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:05:00",
+            "percentiles": {
+              "dv_pressure": 0.9710467706013363,
+              "tp2": 1.0,
+              "motor_current": 0.9721603563474388,
+              "oil_temperature": 1.0,
+              "h1": 0.9866369710467706
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:10:00",
+            "percentiles": {
+              "dv_pressure": 0.9599109131403119,
+              "tp2": 0.9994432071269488,
+              "motor_current": 0.9626948775055679,
+              "oil_temperature": 1.0,
+              "h1": 0.984966592427617
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:15:00",
+            "percentiles": {
+              "dv_pressure": 0.9521158129175946,
+              "tp2": 0.9994432071269488,
+              "motor_current": 0.955456570155902,
+              "oil_temperature": 1.0,
+              "h1": 0.9816258351893096
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:20:00",
+            "percentiles": {
+              "dv_pressure": 0.9387527839643652,
+              "tp2": 0.9994432071269488,
+              "motor_current": 0.950445434298441,
+              "oil_temperature": 1.0,
+              "h1": 0.9821826280623608
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:25:00",
+            "percentiles": {
+              "dv_pressure": 0.928173719376392,
+              "tp2": 0.9994432071269488,
+              "motor_current": 0.9415367483296214,
+              "oil_temperature": 1.0,
+              "h1": 0.9810690423162584
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:30:00",
+            "percentiles": {
+              "dv_pressure": 0.9916481069042317,
+              "tp2": 1.0,
+              "motor_current": 0.9922048997772829,
+              "oil_temperature": 1.0,
+              "h1": 0.9866369710467706
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:35:00",
+            "percentiles": {
+              "dv_pressure": 0.9832962138084632,
+              "tp2": 0.9994432071269488,
+              "motor_current": 0.9832962138084632,
+              "oil_temperature": 1.0,
+              "h1": 0.9866369710467706
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:40:00",
+            "percentiles": {
+              "dv_pressure": 0.9977728285077951,
+              "tp2": 0.9994432071269488,
+              "motor_current": 0.9966592427616926,
+              "oil_temperature": 1.0,
+              "h1": 0.984966592427617
+            }
+          },
+          {
+            "timestamp": "2020-07-15 08:45:00",
+            "percentiles": {
+              "dv_pressure": 0.9955456570155902,
+              "tp2": 1.0,
+              "motor_current": 0.9955456570155902,
+              "oil_temperature": 1.0,
+              "h1": 0.9866369710467706
+            }
+          }
+        ]
+      },
+      "single_group_repairs": [
+        {
+          "repaired_groups": [
+            "dv_pressure"
+          ],
+          "window_start": "2020-07-15 07:50:00",
+          "window_end": "2020-07-15 08:45:00",
+          "window_rows": 12,
+          "original_raw_score": 22696.272410624657,
+          "repaired_raw_score": 17943.788131372512,
+          "original_smoothed_score": 63496.51849308473,
+          "repaired_smoothed_score": 9928.520644786755,
+          "original_alert": true,
+          "repaired_alert": false,
+          "alert_cleared": true
+        },
+        {
+          "repaired_groups": [
+            "tp2"
+          ],
+          "window_start": "2020-07-15 07:50:00",
+          "window_end": "2020-07-15 08:45:00",
+          "window_rows": 12,
+          "original_raw_score": 22696.272410624657,
+          "repaired_raw_score": 5937.389100083239,
+          "original_smoothed_score": 63496.51849308473,
+          "repaired_smoothed_score": 54996.28570673068,
+          "original_alert": true,
+          "repaired_alert": false,
+          "alert_cleared": true
+        },
+        {
+          "repaired_groups": [
+            "motor_current"
+          ],
+          "window_start": "2020-07-15 07:50:00",
+          "window_end": "2020-07-15 08:45:00",
+          "window_rows": 12,
+          "original_raw_score": 22696.272410624657,
+          "repaired_raw_score": 18824.194405294704,
+          "original_smoothed_score": 63496.51849308473,
+          "repaired_smoothed_score": 49993.33109583243,
+          "original_alert": true,
+          "repaired_alert": false,
+          "alert_cleared": true
+        },
+        {
+          "repaired_groups": [
+            "oil_temperature"
+          ],
+          "window_start": "2020-07-15 07:50:00",
+          "window_end": "2020-07-15 08:45:00",
+          "window_rows": 12,
+          "original_raw_score": 22696.272410624657,
+          "repaired_raw_score": 22695.336087772965,
+          "original_smoothed_score": 63496.51849308473,
+          "repaired_smoothed_score": 63495.362800696006,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        },
+        {
+          "repaired_groups": [
+            "h1"
+          ],
+          "window_start": "2020-07-15 07:50:00",
+          "window_end": "2020-07-15 08:45:00",
+          "window_rows": 12,
+          "original_raw_score": 22696.272410624657,
+          "repaired_raw_score": 22695.952722649894,
+          "original_smoothed_score": 63496.51849308473,
+          "repaired_smoothed_score": 63496.30552315117,
+          "original_alert": true,
+          "repaired_alert": true,
+          "alert_cleared": false
+        }
+      ],
+      "greedy_repair": {
+        "ranking_basis": "smoothed contribution at frozen alert timestamp",
+        "minimum_groups_to_clear": 1,
+        "steps": [
+          {
+            "repaired_groups": [
+              "dv_pressure"
+            ],
+            "window_start": "2020-07-15 07:50:00",
+            "window_end": "2020-07-15 08:45:00",
+            "window_rows": 12,
+            "original_raw_score": 22696.272410624657,
+            "repaired_raw_score": 17943.788131372512,
+            "original_smoothed_score": 63496.51849308473,
+            "repaired_smoothed_score": 9928.520644786755,
+            "original_alert": true,
+            "repaired_alert": false,
+            "alert_cleared": true,
+            "step": 1
+          }
+        ]
+      },
+      "causal_claim": false
+    }
+  ],
+  "limitations": [
+    "Contribution percentiles are not fault probabilities.",
+    "Counterfactual repair occurs in PCA feature space, not physical equipment.",
+    "Reprojection can alter residuals outside the repaired group.",
+    "Greedy repair measures detector-decision concentration, not root cause.",
+    "Temporal contribution emergence is not physical fault onset."
+  ]
+}
