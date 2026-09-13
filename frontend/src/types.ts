@@ -23,6 +23,66 @@ export interface DetectionIncident {
   }>;
 }
 
+export interface VerificationRankedGroup {
+  group: string;
+  smoothed_contribution: number;
+  share: number;
+  calibration_percentile: number;
+}
+
+export interface CounterfactualRepair {
+  repaired_groups: string[];
+  window_start: string;
+  window_end: string;
+  window_rows: number;
+  original_raw_score: number;
+  repaired_raw_score: number;
+  original_smoothed_score: number;
+  repaired_smoothed_score: number;
+  original_alert: boolean;
+  repaired_alert: boolean;
+  alert_cleared: boolean;
+}
+
+export interface TemporalEvidence {
+  window_bins_requested: number;
+  window_rows_observed: number;
+  window_complete: boolean;
+  top_groups: string[];
+  rows: Array<{
+    timestamp: string;
+    percentiles: Record<string, number>;
+  }>;
+}
+
+export interface VerificationIncident {
+  id: number;
+  incident_start: string;
+  explanation_timestamp: string;
+  timing: "pre_onset" | "post_onset";
+  lead_hours: number | null;
+  delay_hours: number | null;
+  original_smoothed_score: number;
+  threshold: number;
+  ranked_groups: VerificationRankedGroup[];
+  temporal_evidence: TemporalEvidence;
+  single_group_repairs: CounterfactualRepair[];
+  greedy_repair: {
+    ranking_basis: string;
+    minimum_groups_to_clear: number | null;
+    steps: CounterfactualRepair[];
+  };
+  causal_claim: boolean;
+}
+
+export interface DetectionVerification {
+  evidence_subtype: string;
+  method: Record<string, string>;
+  acceptance: Record<string, boolean>;
+  incidents: VerificationIncident[];
+  limitations: string[];
+}
+
 export interface DetectionEvidence {
   evidence_class: EvidenceClass;
   dataset: string;
@@ -31,6 +91,7 @@ export interface DetectionEvidence {
   incidents: DetectionIncident[];
   explanation_basis: string;
   causal_claim: boolean;
+  verification: DetectionVerification;
   limitations: string[];
 }
 
