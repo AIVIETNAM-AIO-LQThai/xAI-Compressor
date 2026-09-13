@@ -114,6 +114,7 @@ export function IncidentReplay() {
       right: 25,
       top: 18,
       bottom: 28,
+      containLabel: true,
     },
     xAxis: {
       type: "value",
@@ -188,6 +189,7 @@ export function IncidentReplay() {
       right: 25,
       top: 18,
       bottom: 62,
+      containLabel: true,
     },
     xAxis: {
       type: "category",
@@ -450,7 +452,7 @@ export function IncidentReplay() {
               3 · WHEN DID THE EVIDENCE EMERGE?
             </span>
             <h2>
-              Causal contribution context
+              Temporal contribution context
             </h2>
           </div>
 
