@@ -4,11 +4,13 @@ Status: **FROZEN FOR ESIC 2026 MVP**
 
 ## 1. Product definition
 
-AeroXAI is an explainable, advisory-first compressed-air energy decision-support system.
+AeroXAI is an explainable, advisory-first prototype for compressed-air energy-waste intelligence.
+
+The longer-term product scope is system-level compressed-air waste intelligence. The frozen MVP validates real-telemetry anomaly evidence and a separate simulated energy-decision layer; it does not claim implementation of every compressed-air waste mechanism.
 
 The implemented MVP combines:
 1. real-data anomaly / waste detection;
-2. explainable anomaly scoring;
+2. verified explainable anomaly scoring through exact attribution, calibration-context normality, temporal evidence and model-space counterfactual detector-dependence testing;
 3. a physics-based compressed-air digital twin;
 4. a simulated conventional baseline controller;
 5. constrained energy optimization;
@@ -26,7 +28,11 @@ Telemetry
 -> data-quality checks
 -> chronological feature generation
 -> anomaly detection
--> PCA alert explanation
+-> exact PCA attribution
+-> calibration-context normality
+-> temporal evidence
+-> model-space counterfactual verification
+-> knowledge limit
 
 SIMULATED DECISION LAYER
 scenario / forecast inputs
@@ -51,6 +57,9 @@ Cost and CO2 conversion are not required for the frozen technical MVP and are no
 - incident detection and timing;
 - false-alert benchmark statistics;
 - PCA anomaly-score contributions.
+- calibration-only contribution percentiles;
+- temporal contribution evidence preceding each frozen alert;
+- model-space counterfactual detector-dependence tests.
 
 ### SIMULATED
 - compressor scheduling;
@@ -72,6 +81,7 @@ May claim:
 - constrained optimization in simulation;
 - simulated energy differences under documented assumptions;
 - short-lived advisory recommendations with explicit robustness status.
+- verified detector dependence under the documented PCA feature-space repair protocol;
 
 Must not claim:
 - verified real-factory savings;
@@ -80,10 +90,13 @@ Must not claim:
 - safe autonomous industrial control;
 - universal compressor compatibility;
 - MetroPT validation of scheduling savings.
+- physical fault repair from model-space counterfactual repair;
+- fault probability from contribution percentiles;
+- physical fault onset from temporal contribution evidence;
 
 ## 5. Dataset boundary
 
-MetroPT-3 is used only for detection, incident replay, explainability and event-level evaluation.
+MetroPT-3 is used only for detection, incident replay, exact attribution, calibration-context explanation, temporal evidence, model-space counterfactual verification and event-level evaluation.
 
 It is not used to validate scheduling, industrial energy savings, exact leak flow or control safety.
 
@@ -122,6 +135,10 @@ Detection:
 - EWMA smoothing and persistence;
 - event-level evaluation;
 - exact PCA residual contributions.
+- calibration-only contribution reference distributions;
+- tie-aware empirical contribution percentiles;
+- 12-bin causal temporal evidence windows;
+- PCA feature-space counterfactual repair using the unchanged alert pipeline.
 
 Simulation/control:
 - lumped isothermal ideal-gas receiver;
@@ -147,7 +164,7 @@ Negative robustness results are reported and used to change product behavior rat
 The MVP is technically complete when it demonstrates:
 1. real MetroPT incident replay;
 2. chronological detection without future leakage;
-3. alert-signal explanation;
+3. verified alert explanation with attribution, normality context, temporal evidence, counterfactual detector-dependence testing and explicit knowledge limits;
 4. physically sensible simulation;
 5. reproducible baseline control;
 6. a lower-energy feasible nominal optimized schedule;

@@ -11,6 +11,9 @@ Supported:
 - incident detection and timing;
 - benchmark alert burden;
 - PCA alert-score contribution analysis.
+- calibration-context contribution percentiles;
+- temporal contribution evidence;
+- model-space counterfactual detector-dependence verification.
 
 Not supported by MetroPT:
 - multi-compressor dispatch savings;
@@ -35,6 +38,26 @@ Do not say AeroXAI predicted all four incidents in advance.
 Approved:
 
 > PCA feature contributions exactly decompose the squared reconstruction-error evidence and are propagated through the same causal EWMA used by the alert pipeline.
+
+Approved:
+
+> Contribution percentiles compare each signal group's anomaly contribution against its calibration-only reference distribution. They measure unusual detector evidence, not fault probability.
+
+Approved:
+
+> Across all four frozen incident explanations, the dominant contribution group was at or above approximately the 99.55th calibration-context percentile.
+
+Approved:
+
+> Under the documented PCA feature-space counterfactual protocol, repairing the dominant contribution group's anomalous model-space evidence and rerunning the unchanged EWMA and persistence pipeline cleared the frozen alert in all four documented incidents.
+
+Interpret this as **detector dependence**, not physical causality.
+
+Do not say:
+- “The counterfactual proves the physical root cause.”
+- “Repairing TP2 or DV pressure in the factory will remove the fault.”
+- “100th percentile means 100% probability of being the fault.”
+- “The temporal heatmap identifies the physical fault onset.”
 
 Use “signals contributing to anomaly evidence.”
 
@@ -140,7 +163,7 @@ Never combine:
 
 ## Safe short pitch
 
-> AeroXAI detects and explains anomalous compressed-air behavior on real historical telemetry, then uses a separate physics-based digital twin and constrained optimizer to generate short-lived explainable energy recommendations in simulation, with an explicit robustness gate that prevents unrobust open-loop schedules from being presented as safe control.
+> AeroXAI is an advisory prototype for compressed-air energy-waste intelligence. On real historical telemetry, it detects anomalous behavior and verifies its explanations through exact attribution, calibration context, temporal evidence and model-space counterfactual testing. Separately, a physics-based digital twin and constrained optimizer generate short-lived simulated energy recommendations, while an explicit robustness gate prevents unrobust open-loop schedules from being presented as safe control.
 
 Use maturity terms:
 - prototype;

@@ -43,7 +43,7 @@ Open `http://127.0.0.1:5173`.
 
 Only four manual interactions remain:
 1. Overview loads.
-2. Incident Replay switches incidents.
+2. Incident Replay switches incidents and renders attribution, calibration percentile, temporal evidence and counterfactual verification; Incident 1 explicitly shows the incomplete 10/12-bin telemetry window.
 3. Digital Twin Lab runs one simulation.
 4. Energy Recommendation returns one advisory action.
 
@@ -56,6 +56,7 @@ These committed reports must remain present:
 ```text
 docs/detector_benchmark.json
 docs/xai_report.json
+docs/xai_verification_report.json
 docs/digital_twin_report.json
 docs/baseline_controller_report.json
 docs/optimizer_report.json
@@ -74,6 +75,9 @@ Final material must preserve:
 - REAL vs SIMULATED separation;
 - advisory-only / no PLC writes;
 - PCA contribution != root cause;
+- contribution percentile != fault probability;
+- temporal evidence != physical fault onset;
+- model-space counterfactual repair = detector-dependence evidence, not physical repair or causality;
 - 0.369% = simulated nominal dispatch saving;
 - 12.55% = separate high-leak penalty;
 - open-loop robustness failure;

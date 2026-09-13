@@ -29,18 +29,45 @@ Point to REAL vs SIMULATED badges, 4/4 timely detections, 2/4 pre-onset warnings
 
 Do not present 0.369% as measured factory savings.
 
-## 0:35–1:15 — Incident Replay
+## 0:35–1:20 — Verified Incident Replay
 
-Choose Incident 2 or 4.
+Use **Incident 2**.
 
-Incident 2: about 2.17 h pre-onset.  
-Incident 4: about 5.75 h pre-onset.
+Key evidence:
+
+```text
+warning timing:          2.17 h before documented onset
+dominant group:          dv_pressure
+contribution share:      about 77.6%
+calibration percentile:  about 99.55th
+temporal window:         12 / 12 bins
+smoothed score:          58,989
+after model-space repair: 7,472
+frozen threshold:        52,942
+result:                  alert clears
+```
 
 Say:
 
-> The contribution chart shows which signal groups contributed to the same smoothed PCA alert score used by the detector. It is not a physical root-cause diagnosis.
+> AeroXAI first tells us what contributed to the detector decision. DV pressure accounts for about 77.6% of this alert's evidence.
 
-## 1:15–1:55 — Digital Twin Lab
+Then:
+
+> We compare that contribution with calibration behavior. It is around the 99.55th percentile, meaning this detector evidence is highly unusual relative to calibration.
+
+Point to the temporal heatmap:
+
+> The temporal view shows when the contribution evidence developed. It describes detector evidence over time, not physical fault onset.
+
+Point to Counterfactual Verification:
+
+> Finally, AeroXAI repairs only the dominant anomalous evidence in PCA feature space and reruns the unchanged alert pipeline. The smoothed score falls from about 58,989 to 7,472 and the alert disappears.
+
+Then explicitly say:
+
+> This verifies that the detector materially depended on that evidence. It does not prove that DV pressure physically caused the incident.
+
+## 1:20–1:50 — Digital Twin Lab
 
 Run the balanced default:
 
@@ -60,7 +87,7 @@ Say:
 
 > This is simulated physics evidence. The leak value is a scenario input, not an inferred MetroPT leak flow.
 
-## 1:55–2:40 — Energy Recommendation
+## 1:50–2:35 — Energy Recommendation
 
 Generate the default advisory action.
 
@@ -78,9 +105,9 @@ Say:
 
 > The optimizer solves the forecast horizon, but AeroXAI surfaces only the current 60-second advisory action. Robustness testing showed that the frozen one-hour open-loop schedule can become unsafe under mismatch, so re-optimization is mandatory.
 
-## 2:40–3:00 — Close
+## 2:35–3:00 — Close
 
-> AeroXAI is an evidence-aware workflow: detect on real data, explain the warning, test actions in physics, optimize under constraints, explain the recommendation, and refuse to present an unrobust open-loop plan as safe autonomous control.
+> AeroXAI is an evidence-aware compressed-air energy-waste intelligence prototype: detect on real telemetry, verify why the detector raised the warning, test actions in physics, optimize under constraints, explain the recommendation, and refuse to present an unrobust open-loop plan as safe autonomous control.
 
 ## Safe numbers to quote
 
@@ -89,6 +116,8 @@ REAL:
 - 2/4 pre-onset warnings.
 - false alert episodes about 0.886 per 24 h.
 - PR-AUC about 0.249.
+- dominant explanation group at or above about the 99.55th calibration-context percentile in all four frozen incident explanations;
+- dominant-group model-space repair cleared all four frozen alerts under the unchanged EWMA / persistence pipeline.
 
 SIMULATED:
 - baseline 25.3112 kWh.

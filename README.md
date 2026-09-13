@@ -1,12 +1,14 @@
 # AeroXAI — Explainable Compressed-Air Energy Copilot
 
-AeroXAI is an advisory-first, explainable compressed-air energy decision-support MVP for ESIC 2026.
+AeroXAI is an advisory-first prototype for compressed-air energy-waste intelligence with verified explainability, developed for ESIC 2026.
 
-It combines real historical telemetry for anomaly detection and alert explanation with a separate simulated physics/optimization layer for energy recommendations. The MVP never writes to a PLC or compressor controller.
+The current MVP combines real historical telemetry for anomaly detection and verified detector explanation with a separate simulated physics/optimization layer for energy recommendations. The longer-term product scope is system-level compressed-air waste intelligence; the frozen MVP does not claim to diagnose or optimize every industrial waste mechanism.
+
+The MVP never writes to a PLC or compressor controller.
 
 ## Evidence architecture
 
-- **REAL** — MetroPT-3 telemetry for detection, incident replay and PCA anomaly explanation.
+- **REAL** — MetroPT-3 telemetry for detection, incident replay, exact PCA attribution, calibration-context normality, temporal evidence and model-space counterfactual verification.
 - **SIMULATED** — digital twin, baseline controller, compressor scheduling, predicted energy, action explanations and robustness stress tests.
 - **LITERATURE** — external context only; never presented as AeroXAI performance.
 
@@ -22,6 +24,17 @@ Under the frozen chronological MetroPT-3 benchmark, the selected robust-scaled P
 - achieved **PR-AUC ≈ 0.249**.
 
 PCA contributions identify signals associated with anomaly evidence; they do **not** prove physical root cause.
+
+### Verified XAI
+
+The frozen detector explanation is verified through four layers:
+
+```text
+Attribution
+-> calibration-context normality
+-> temporal evidence
+-> model-space counterfactual verification
+-> explicit knowledge limit
 
 ### SIMULATED control and energy
 
@@ -59,7 +72,11 @@ REAL TELEMETRY
 MetroPT-3
   -> chronological preprocessing
   -> anomaly detection
-  -> PCA alert explanation
+  -> exact PCA attribution
+  -> calibration-context normality
+  -> temporal evidence
+  -> model-space counterfactual verification
+  -> knowledge limit
 
 SIMULATED DECISION LAYER
 scenario / forecast inputs
@@ -148,6 +165,7 @@ Underlying reports:
 ```text
 docs/detector_benchmark.json
 docs/xai_report.json
+docs/xai_verification_report.json
 docs/digital_twin_report.json
 docs/baseline_controller_report.json
 docs/optimizer_report.json
