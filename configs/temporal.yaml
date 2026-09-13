@@ -1,0 +1,29 @@
+temporal:
+  sequence_length: 12
+  scaler: robust
+
+model:
+  hidden_dim: 64
+  kernel_size: 3
+  dilations:
+    - 1
+    - 2
+    - 4
+  dropout: 0.10
+
+training:
+  seed: 42
+  epochs: 80
+  batch_size: 128
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  huber_delta: 1.0
+  validation_fraction: 0.15
+  patience: 10
+  min_delta: 0.00001
+  device: auto
+
+outputs:
+  checkpoint_file: "artifacts/detection/tcn_forecaster.pt"
+  scores_file: "data/processed/tcn_detector_scores.parquet"
+  benchmark_file: "docs/tcn_detector_benchmark.json"

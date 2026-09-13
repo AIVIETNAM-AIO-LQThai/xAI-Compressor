@@ -1,0 +1,155 @@
+{
+  "evidence_class": "REAL",
+  "causal_claim": false,
+  "evaluation_protocol": {
+    "training_partition_only": true,
+    "calibration_threshold_only": true,
+    "test_final_evaluation_only": true,
+    "sequence_length_bins": 12,
+    "sequence_minutes": 60,
+    "feature_count": 63,
+    "train_sequence_targets": 5014,
+    "calibration_score_rows": 1734,
+    "test_score_rows": 40573,
+    "scaler": "robust",
+    "ewma_alpha": 0.2,
+    "threshold_quantile": 0.995,
+    "persistence_hits": 3,
+    "persistence_window": 4
+  },
+  "training": {
+    "device": "cuda",
+    "fit_samples": 4262,
+    "validation_samples": 752,
+    "best_epoch": 75,
+    "epochs_ran": 80,
+    "best_validation_loss": 17.848510620441843,
+    "final_train_loss": 19.93179249595667
+  },
+  "model": {
+    "name": "tcn_next_state_forecaster",
+    "hidden_dim": 64,
+    "kernel_size": 3,
+    "dilations": [
+      1,
+      2,
+      4
+    ],
+    "dropout": 0.1,
+    "threshold": 348429.07157889474
+  },
+  "tcn_metrics": {
+    "timely_incident_recall": 1.0,
+    "anytime_incident_recall": 1.0,
+    "incident_results": [
+      {
+        "id": 1,
+        "timely_detected": true,
+        "anytime_detected": true,
+        "first_alert": "2020-04-17 05:55:00",
+        "lead_hours": 18.083333333333332,
+        "delay_hours": null
+      },
+      {
+        "id": 2,
+        "timely_detected": true,
+        "anytime_detected": true,
+        "first_alert": "2020-05-28 23:50:00",
+        "lead_hours": 23.666666666666668,
+        "delay_hours": null
+      },
+      {
+        "id": 3,
+        "timely_detected": true,
+        "anytime_detected": true,
+        "first_alert": "2020-06-05 10:05:00",
+        "lead_hours": null,
+        "delay_hours": 0.08333333333333333
+      },
+      {
+        "id": 4,
+        "timely_detected": true,
+        "anytime_detected": true,
+        "first_alert": "2020-07-15 00:15:00",
+        "lead_hours": 14.25,
+        "delay_hours": null
+      }
+    ],
+    "episodes_total": 294,
+    "false_episodes": 283,
+    "false_alerts_per_24h": 2.0088236019027432,
+    "time_in_alert_fraction": 0.15660661030734724,
+    "pr_auc": 0.09563953231525557,
+    "valid_exposure_days": 140.87847222222223,
+    "pre_onset_incident_recall": 0.75,
+    "incident_overlap_recall": 1.0,
+    "relevant_episode_precision": 0.03741496598639456
+  },
+  "aligned_pca_robust": {
+    "timely_incident_recall": 1.0,
+    "anytime_incident_recall": 1.0,
+    "incident_results": [
+      {
+        "id": 1,
+        "timely_detected": true,
+        "anytime_detected": true,
+        "first_alert": "2020-04-18 01:40:00",
+        "lead_hours": null,
+        "delay_hours": 1.6666666666666667
+      },
+      {
+        "id": 2,
+        "timely_detected": true,
+        "anytime_detected": true,
+        "first_alert": "2020-05-29 21:20:00",
+        "lead_hours": 2.1666666666666665,
+        "delay_hours": null
+      },
+      {
+        "id": 3,
+        "timely_detected": true,
+        "anytime_detected": true,
+        "first_alert": "2020-06-05 10:10:00",
+        "lead_hours": null,
+        "delay_hours": 0.16666666666666666
+      },
+      {
+        "id": 4,
+        "timely_detected": true,
+        "anytime_detected": true,
+        "first_alert": "2020-07-15 08:45:00",
+        "lead_hours": 5.75,
+        "delay_hours": null
+      }
+    ],
+    "episodes_total": 100,
+    "false_episodes": 90,
+    "false_alerts_per_24h": 0.6388484953047593,
+    "time_in_alert_fraction": 0.07470485298104651,
+    "pr_auc": 0.25857643382846723,
+    "valid_exposure_days": 140.87847222222223,
+    "pre_onset_incident_recall": 0.5,
+    "incident_overlap_recall": 1.0,
+    "relevant_episode_precision": 0.1
+  },
+  "aligned_pca_threshold": 52941.88448793303,
+  "frozen_pca_reference": {
+    "timely_incident_recall": 1.0,
+    "anytime_incident_recall": 1.0,
+    "pre_onset_incident_recall": 0.5,
+    "incident_overlap_recall": 1.0,
+    "false_alerts_per_24h": 0.8862358575692373,
+    "time_in_alert_fraction": 0.07549570810485644,
+    "relevant_episode_precision": 0.06338028169014084,
+    "pr_auc": 0.24916826514697024,
+    "episodes_total": 142,
+    "false_episodes": 133
+  },
+  "comparison": {
+    "comparison_basis": "same_causal_target_timestamps",
+    "false_alerts_per_24h_delta": 1.369975106597984,
+    "pr_auc_delta": -0.16293690151321166,
+    "timely_incident_recall_delta": 0.0,
+    "pre_onset_incident_recall_delta": 0.25
+  }
+}
