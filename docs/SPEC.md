@@ -1,243 +1,160 @@
 # AeroXAI Technical Specification
 
-Status: FROZEN FOR ESIC 2026 MVP
+Status: **FROZEN FOR ESIC 2026 MVP**
 
 ## 1. Product definition
 
-AeroXAI is an explainable, advisory-first compressed-air
-energy decision-support system.
+AeroXAI is an explainable, advisory-first compressed-air energy decision-support system.
 
-The ESIC MVP combines:
-
-1. real-data compressor anomaly / waste detection;
-2. explainable AI for anomaly detection;
+The implemented MVP combines:
+1. real-data anomaly / waste detection;
+2. explainable anomaly scoring;
 3. a physics-based compressed-air digital twin;
-4. a baseline compressor controller;
+4. a simulated conventional baseline controller;
 5. constrained energy optimization;
 6. explainable operating recommendations;
-7. projected energy, cost, and CO2 impact.
+7. robustness stress testing and an advisory safety gate;
+8. FastAPI and React interfaces.
 
-The MVP is NOT an autonomous industrial controller.
+The MVP is not an autonomous industrial controller and writes no command to a PLC or compressor.
 
-No command is written to a real PLC or compressor.
+## 2. Implemented pipeline
 
----
-
-## 2. Core pipeline
-
+```text
+REAL TELEMETRY
 Telemetry
-→ Data-quality checks
-→ Anomaly / waste detection
-→ XAI explanation
-→ Physics digital twin
-→ Baseline controller
-→ Constrained optimizer
-→ Action explanation
-→ Energy / cost / CO2 estimate
+-> data-quality checks
+-> chronological feature generation
+-> anomaly detection
+-> PCA alert explanation
 
----
+SIMULATED DECISION LAYER
+scenario / forecast inputs
+-> physics digital twin
+-> baseline controller
+-> constrained optimizer
+-> action explanation
+-> robustness / safety gate
+-> predicted energy impact
+
+APPLICATION
+FastAPI -> React operator interface
+```
+
+Cost and CO2 conversion are not required for the frozen technical MVP and are not presented as implemented evidence.
 
 ## 3. Evidence classes
 
-Every quantitative result exposed by AeroXAI must have exactly
-one evidence class.
-
 ### REAL
-
-Derived directly from real measured data.
-
-For ESIC MVP:
-
 - MetroPT-3 telemetry;
 - anomaly scores;
-- incident detection;
-- lead time;
-- false-alarm statistics.
+- incident detection and timing;
+- false-alert benchmark statistics;
+- PCA anomaly-score contributions.
 
 ### SIMULATED
-
-Derived from AeroXAI's physics-based digital twin.
-
-For ESIC MVP:
-
 - compressor scheduling;
 - pressure trajectory;
-- predicted power;
-- baseline energy;
-- optimized energy;
-- projected savings.
+- predicted power / electrical energy;
+- baseline and optimized energy;
+- action explanations;
+- robustness stress tests.
 
 ### LITERATURE
-
-Derived from external publications, standards, papers,
-government documents, or commercial case studies.
-
-Literature results must never be presented as AeroXAI's
-measured performance.
-
----
+External context only. Literature values must never be presented as AeroXAI measured or simulated performance.
 
 ## 4. Claims boundary
 
-The ESIC MVP MAY claim:
-
-- detection of anomalous compressor behavior on real
-  historical telemetry;
+May claim:
+- anomaly detection on real historical telemetry;
 - explainable anomaly scoring;
 - physically modeled compressed-air scenarios;
-- constrained compressor optimization in simulation;
-- projected energy savings under documented simulation
-  assumptions.
+- constrained optimization in simulation;
+- simulated energy differences under documented assumptions;
+- short-lived advisory recommendations with explicit robustness status.
 
-The ESIC MVP MUST NOT claim:
-
-- verified energy savings in a real factory;
+Must not claim:
+- verified real-factory savings;
 - exact leak localization;
-- confirmed physical root cause solely from XAI;
+- confirmed root cause from XAI;
 - safe autonomous industrial control;
-- universal compatibility with all compressors;
-- MetroPT-3 validation of compressor scheduling savings.
-
----
+- universal compressor compatibility;
+- MetroPT validation of scheduling savings.
 
 ## 5. Dataset boundary
 
-MetroPT-3 is used ONLY for:
+MetroPT-3 is used only for detection, incident replay, explainability and event-level evaluation.
 
-- anomaly detection;
-- incident replay;
-- explainability;
-- event-level evaluation.
-
-MetroPT-3 is NOT used to validate:
-
-- multi-compressor scheduling;
-- industrial energy savings;
-- exact leak flow;
-- factory control safety.
-
----
+It is not used to validate scheduling, industrial energy savings, exact leak flow or control safety.
 
 ## 6. Control boundary
 
-The ESIC MVP operates in:
+```text
+deployment_mode = advisory
+override_equipment_ctrl = false
+recommendation_valid_for_seconds = 60
+requires_reoptimization = true
+open_loop_schedule_approved = false
+```
 
-ADVISORY / SHADOW MODE
+The full optimizer horizon is a planning forecast, not an approved open-loop command sequence.
 
-The optimization engine produces recommended actions.
+A real deployment would require site calibration, read-only validation, domain-engineer review, supervised operation and formal uncertainty/safety validation before any closed-loop consideration.
 
-A real industrial deployment would require:
+## 7. Unit convention
 
-1. site calibration;
-2. read-only validation;
-3. domain-engineer review;
-4. supervised operation;
-5. safety validation;
-6. only then consideration of closed-loop control.
+Internal physics uses explicit SI conventions:
+- pressure: Pa absolute;
+- temperature: K;
+- mass flow: kg/s;
+- volume: m3;
+- power: W/kW as explicitly stated;
+- energy: reported in kWh;
+- time: seconds.
 
----
+Gauge pressure conversion must use an atmospheric reference. Physics modules must not silently mix gauge/absolute pressure or mass/volumetric flow.
 
-## 7. Internal unit convention
+## 8. Frozen technical choices
 
-AeroXAI uses SI units internally.
+Detection:
+- chronological split;
+- RobustScaler + PCA reconstruction error primary;
+- EWMA smoothing and persistence;
+- event-level evaluation;
+- exact PCA residual contributions.
 
-Pressure:
+Simulation/control:
+- lumped isothermal ideal-gas receiver;
+- documented assumed compressor fleet;
+- pressure-band simulated baseline;
+- MILP scheduling;
+- pressure, reserve, startup, minimum-runtime and terminal-pressure constraints.
 
-- Pa absolute
-
-Temperature:
-
-- K
-
-Mass flow:
-
-- kg/s
-
-Volume:
-
-- m^3
-
-Power:
-
-- W
-
-Energy:
-
-- J internally
-- converted to kWh for reporting
-
-Time:
-
-- seconds
-
-Display units may include:
-
-- bar(g)
-- °C
-- standard m^3/min
-- kW
-- kWh
-
-Gauge-pressure conversion must explicitly use an atmospheric
-reference pressure.
-
-No physics module may silently mix gauge pressure and
-absolute pressure.
-
-No physics module may silently mix standard volumetric flow,
-actual volumetric flow, and mass flow.
-
----
-
-## 8. MVP technical priority
-
-Required:
-
-1. MetroPT-3 causal preprocessing
-2. statistical anomaly baseline
-3. event-level evaluation
-4. anomaly explanation
-5. physics digital twin
-6. rule-based baseline controller
-7. constrained optimizer
-8. optimizer explanation
-9. FastAPI
-10. React UI
-11. validation and ESIC evidence package
-
-Optional only after all required items work:
-
-- temporal deep learning;
-- Integrated Gradients;
-- TimeSHAP;
-- PPO;
-- LLM explanation;
-- database;
-- live industrial protocol integration.
-
----
+Safety:
+- open-loop replay stress testing;
+- advisory-only UI/API;
+- 60-second recommendation validity;
+- mandatory re-optimization.
 
 ## 9. Scientific rule
 
 Correctness beats model complexity.
 
-A simpler method that survives chronological evaluation and
-produces reproducible evidence is preferred over a more
-complex model with weaker validation.
-
----
+Negative robustness results are reported and used to change product behavior rather than tuned away.
 
 ## 10. Definition of completion
 
-The ESIC MVP is technically complete when it can demonstrate:
+The MVP is technically complete when it demonstrates:
+1. real MetroPT incident replay;
+2. chronological detection without future leakage;
+3. alert-signal explanation;
+4. physically sensible simulation;
+5. reproducible baseline control;
+6. a lower-energy feasible nominal optimized schedule;
+7. current-action explanation;
+8. open-loop robustness testing;
+9. safety behavior responding to robustness failure;
+10. explicit REAL / SIMULATED / LITERATURE provenance;
+11. a functioning FastAPI + React demonstration interface.
 
-1. a real MetroPT incident replay;
-2. causal anomaly detection;
-3. an explanation of signals associated with the warning;
-4. physically sensible compressed-air simulation;
-5. a reproducible baseline controller;
-6. a lower-energy feasible optimized schedule in at least one
-   documented scenario;
-7. an explanation of why that schedule was selected;
-8. clear REAL / SIMULATED / LITERATURE provenance for every
-   quantitative claim.
+The frozen repository implements these requirements.
