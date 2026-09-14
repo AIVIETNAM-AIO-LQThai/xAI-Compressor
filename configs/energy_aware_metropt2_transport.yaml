@@ -1,0 +1,86 @@
+transport:
+  name: "energy_aware_hierarchical_intelligence_metropt2_transport"
+  dataset: "MetroPT2"
+  evidence_role: "previously_inspected_cross_dataset_transport"
+  independent_confirmation: false
+  primary_result_commit: "de4dfec05167358d385c3fd21e12f195135db3fd"
+  retuning_allowed: false
+
+feature_schema:
+  variant: "flowmeter_excluded"
+  excluded_groups:
+    - "flowmeter"
+  expected_feature_count: 63
+  reason: >
+    MetroPT-3 has no Flowmeter feature group. The pre-existing MetroPT2
+    flowmeter_excluded variant therefore gives the same 63-feature names
+    and order as the primary study. This variant is selected for schema
+    identity, not from MetroPT2 TEST performance.
+  require_primary_feature_name_and_order_identity: true
+
+data:
+  config: "configs/metropt2.yaml"
+  preprocessing_report: "docs/metropt2_preprocessing_report.json"
+  prior_pca_benchmark: "docs/metropt2_pca_benchmark.json"
+  train_file: "data/processed/metropt2/train_features.parquet"
+  calibration_file: "data/processed/metropt2/calibration_features.parquet"
+  test_file: "data/processed/metropt2/test_features.parquet"
+  expected_rows:
+    train: 5878
+    calibration: 2878
+    test: 14681
+
+method:
+  temporal_model_source: "configs/energy_aware_hierarchical_intelligence.yaml"
+  inference_benchmark_source: "configs/energy_aware_inference_benchmark.yaml"
+  primary_feature_reference: "docs/research/energy_aware_tcn_calibration.json"
+
+  tcn:
+    retrain_on_metropt2_train: true
+    scaler: "standard"
+    scaler_fit: "MetroPT2 TRAIN only"
+    architecture_and_training_hyperparameters: "identical_to_primary_study"
+    calibration_threshold_quantile: 0.995
+    calibration_quantile_interpolation: "higher"
+    test_tuning_allowed: false
+
+  router:
+    model: "Robust-PCA"
+    variance_retained: 0.95
+    ewma_alpha: 0.20
+    reset_gap_minutes: 10
+    threshold_source: "MetroPT2 official CALIBRATION only"
+    operating_quantiles:
+      route_q90: 0.90
+      route_q95: 0.95
+      route_q99: 0.99
+    quantile_interpolation: "higher"
+    numeric_thresholds_recalibrated_per_dataset: true
+    test_tuning_allowed: false
+
+  evidence:
+    tcn_score_smoothing: "none"
+    tcn_persistence: "none"
+    episode_merge_minutes: 30
+    episode_reset_gap_minutes: 10
+    incident_related_early_warning_hours: 24
+
+integrity:
+  reproduce_prior_flowmeter_excluded_robust_pca: true
+  reproduction_tolerance: 1.0e-12
+
+outputs:
+  checkpoint: "artifacts/research/energy_aware_tcn_metropt2.pt"
+  transport_result: "docs/research/energy_aware_metropt2_transport.json"
+  energy_result: "docs/research/energy_aware_metropt2_energy.json"
+
+guardrails:
+  - "MetroPT2 TEST was previously inspected in earlier repository research."
+  - "This is a transport stress test, not untouched independent confirmation."
+  - "No MetroPT2 TEST result may change the TCN architecture or training hyperparameters."
+  - "No MetroPT2 TEST result may change q90/q95/q99 definitions."
+  - "Numeric router thresholds are estimated from MetroPT2 CALIBRATION only."
+  - "The TCN anomaly threshold is estimated from MetroPT2 CALIBRATION only."
+  - "No physical compressor-energy saving claim is allowed."
+  - "Measured energy refers only to GPU-device TCN scoring energy."
+  - "CPU/router energy and whole-system energy remain UNKNOWN."

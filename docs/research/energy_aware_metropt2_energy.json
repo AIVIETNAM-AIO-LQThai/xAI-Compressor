@@ -1,0 +1,1252 @@
+{
+  "schema_version": "aeroxai.energy_aware_metropt2_energy.v1",
+  "study": "energy_aware_hierarchical_intelligence_metropt2_transport",
+  "dataset": "MetroPT2",
+  "evidence_class": "PREVIOUSLY_INSPECTED_CROSS_DATASET_TRANSPORT",
+  "independent_confirmation": false,
+  "causal_claim": false,
+  "test_tuning_performed": false,
+  "measurement_scope": "gpu_device_tcn_scoring_only",
+  "cpu_router_energy": "UNKNOWN",
+  "whole_system_energy": "UNKNOWN",
+  "tcn_checkpoint_sha256": "8709a5ce5e08225b2573e95960086c1e7641c31f752f656b9e50c0b23a7e2bf0",
+  "energy_protocol": {
+    "sampling_interval_seconds": 0.1,
+    "warmup_runs_per_condition": 2,
+    "measured_repetitions": 5,
+    "cooldown_seconds": 5.0,
+    "matched_idle_seconds": 10.0,
+    "minimum_workload_seconds": 20.0,
+    "condition_orders": [
+      [
+        "route_q90",
+        "route_q99",
+        "route_q95",
+        "always_on_tcn"
+      ],
+      [
+        "route_q95",
+        "route_q99",
+        "route_q90",
+        "always_on_tcn"
+      ],
+      [
+        "route_q95",
+        "always_on_tcn",
+        "route_q90",
+        "route_q99"
+      ],
+      [
+        "route_q90",
+        "always_on_tcn",
+        "route_q95",
+        "route_q99"
+      ],
+      [
+        "route_q90",
+        "route_q95",
+        "route_q99",
+        "always_on_tcn"
+      ]
+    ],
+    "materiality_fraction": 0.03,
+    "primary_metric": "gross_gpu_energy_per_logical_dataset_pass"
+  },
+  "records": [
+    {
+      "repetition": 1,
+      "condition": "route_q90",
+      "idle": {
+        "duration_s": 10.002991467001266,
+        "sample_count": 99,
+        "instant_energy_j": 276.8394232101489,
+        "average_field_energy_j": 293.2243434948104,
+        "mean_instant_w": 27.583636363636366,
+        "mean_average_w": 29.297464646464647,
+        "peak_instant_w": 62.578,
+        "peak_average_w": 62.237
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.00166685199656,
+          "sample_count": 198,
+          "instant_energy_j": 1603.0645477814621,
+          "average_field_energy_j": 1562.9060118804366,
+          "mean_instant_w": 80.26969191919191,
+          "mean_average_w": 78.16592929292929,
+          "peak_instant_w": 108.293,
+          "peak_average_w": 107.243
+        },
+        "logical_passes": 10349,
+        "invocations_per_logical_pass": 1769,
+        "total_tcn_invocations": 18307381,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0016021269984776154,
+          "mean": 0.0019234663739955396,
+          "median": 0.0017849020077846944,
+          "p95": 0.002737399196485059,
+          "maximum": 0.01194086400209926
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0010873184703196945,
+          "median": 0.001008989263869245,
+          "p95": 0.0015474274711617065
+        },
+        "peak_gpu_memory_mb": 20.34814453125,
+        "checksum": 38839080331.75
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1603.0645477814621,
+        "matched_idle_mean_power_w": 27.583636363636366,
+        "matched_idle_equivalent_energy_j": 551.7187051120725,
+        "incremental_gpu_energy_j": 1051.3458426693896,
+        "gross_gpu_energy_per_logical_pass_j": 0.15490042977886387,
+        "incremental_gpu_energy_per_logical_pass_j": 0.10158912384475695,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.756383820173197e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 5.742743009878855e-05
+      }
+    },
+    {
+      "repetition": 1,
+      "condition": "route_q99",
+      "idle": {
+        "duration_s": 10.003590362990508,
+        "sample_count": 97,
+        "instant_energy_j": 100.03666906667824,
+        "average_field_energy_j": 100.49389422247252,
+        "mean_instant_w": 10.002628865979382,
+        "mean_average_w": 10.048711340206186,
+        "peak_instant_w": 10.762,
+        "peak_average_w": 10.64
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.002256660998682,
+          "sample_count": 198,
+          "instant_energy_j": 722.3371402411469,
+          "average_field_energy_j": 709.645357108109,
+          "mean_instant_w": 36.07467171717172,
+          "mean_average_w": 35.45065151515151,
+          "peak_instant_w": 37.9,
+          "peak_average_w": 37.24
+        },
+        "logical_passes": 14075,
+        "invocations_per_logical_pass": 285,
+        "total_tcn_invocations": 4011375,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0007484829984605312,
+          "mean": 0.0014091243934546735,
+          "median": 0.0013699190021725371,
+          "p95": 0.0016305165045196186,
+          "maximum": 0.007189775002188981
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.004944296117384819,
+          "median": 0.004806733340956271,
+          "p95": 0.0057211105421741005
+        },
+        "peak_gpu_memory_mb": 11.06591796875,
+        "checksum": 22312617190.625
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 722.3371402411469,
+        "matched_idle_mean_power_w": 10.002628865979382,
+        "matched_idle_equivalent_energy_j": 200.07514986203378,
+        "incremental_gpu_energy_j": 522.2619903791132,
+        "gross_gpu_energy_per_logical_pass_j": 0.051320578347505995,
+        "incremental_gpu_energy_per_logical_pass_j": 0.03710564762906666,
+        "gross_gpu_energy_per_tcn_invocation_j": 0.00018007220472809123,
+        "incremental_gpu_energy_per_tcn_invocation_j": 0.00013019525483883037
+      }
+    },
+    {
+      "repetition": 1,
+      "condition": "route_q95",
+      "idle": {
+        "duration_s": 10.00289866598905,
+        "sample_count": 99,
+        "instant_energy_j": 104.78904855179414,
+        "average_field_energy_j": 104.78406595670758,
+        "mean_instant_w": 10.47380808080808,
+        "mean_average_w": 10.473515151515151,
+        "peak_instant_w": 11.297,
+        "peak_average_w": 10.792
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.001804475003155,
+          "sample_count": 198,
+          "instant_energy_j": 1679.5734730254258,
+          "average_field_energy_j": 1641.3842739625773,
+          "mean_instant_w": 83.82135858585859,
+          "mean_average_w": 81.93455555555555,
+          "peak_instant_w": 112.367,
+          "peak_average_w": 111.396
+        },
+        "logical_passes": 20842,
+        "invocations_per_logical_pass": 806,
+        "total_tcn_invocations": 16798652,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0007670090126339346,
+          "mean": 0.0009512917615957364,
+          "median": 0.0008747935062274337,
+          "p95": 0.0015979807947587691,
+          "maximum": 0.00765531299111899
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0011802627315083579,
+          "median": 0.0010853517446990494,
+          "p95": 0.0019826064451101354
+        },
+        "peak_gpu_memory_mb": 17.20263671875,
+        "checksum": 44745856536.0
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1679.5734730254258,
+        "matched_idle_mean_power_w": 10.47380808080808,
+        "matched_idle_equivalent_energy_j": 209.49506134103126,
+        "incremental_gpu_energy_j": 1470.0784116843945,
+        "gross_gpu_energy_per_logical_pass_j": 0.08058600292800239,
+        "incremental_gpu_energy_per_logical_pass_j": 0.07053442144153126,
+        "gross_gpu_energy_per_tcn_invocation_j": 9.998263390571016e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 8.751168913341347e-05
+      }
+    },
+    {
+      "repetition": 1,
+      "condition": "always_on_tcn",
+      "idle": {
+        "duration_s": 10.00343815900851,
+        "sample_count": 99,
+        "instant_energy_j": 110.31038833759627,
+        "average_field_energy_j": 110.51989452804727,
+        "mean_instant_w": 11.026838383838383,
+        "mean_average_w": 11.046414141414141,
+        "peak_instant_w": 11.723,
+        "peak_average_w": 11.469
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.00172054300492,
+          "sample_count": 197,
+          "instant_energy_j": 1749.6100266384447,
+          "average_field_energy_j": 1700.6833714166098,
+          "mean_instant_w": 87.43126903553299,
+          "mean_average_w": 84.98735025380711,
+          "peak_instant_w": 112.959,
+          "peak_average_w": 111.893
+        },
+        "logical_passes": 1395,
+        "invocations_per_logical_pass": 14120,
+        "total_tcn_invocations": 19697400,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.012979071994777769,
+          "mean": 0.014326431506082222,
+          "median": 0.013854876000550576,
+          "p95": 0.01533460510254372,
+          "maximum": 0.07812270300928503
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.001014619795048316,
+          "median": 0.000981223512786868,
+          "p95": 0.0010860201913982803
+        },
+        "peak_gpu_memory_mb": 20.59814453125,
+        "checksum": 6452619998.668671
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1749.6100266384447,
+        "matched_idle_mean_power_w": 11.026838383838383,
+        "matched_idle_equivalent_energy_j": 220.55573982641536,
+        "incremental_gpu_energy_j": 1529.0542868120292,
+        "gross_gpu_energy_per_logical_pass_j": 1.2542007359415375,
+        "incremental_gpu_energy_per_logical_pass_j": 1.0960962629476911,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.882441472673778e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 7.762721408977983e-05
+      }
+    },
+    {
+      "repetition": 2,
+      "condition": "route_q95",
+      "idle": {
+        "duration_s": 10.003238051998778,
+        "sample_count": 99,
+        "instant_energy_j": 109.2218194517461,
+        "average_field_energy_j": 108.9385766182,
+        "mean_instant_w": 10.920525252525254,
+        "mean_average_w": 10.89550505050505,
+        "peak_instant_w": 12.866,
+        "peak_average_w": 11.389
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.001712755009066,
+          "sample_count": 197,
+          "instant_energy_j": 1698.8233177718935,
+          "average_field_energy_j": 1656.4950542292813,
+          "mean_instant_w": 84.8057157360406,
+          "mean_average_w": 82.70192385786802,
+          "peak_instant_w": 103.352,
+          "peak_average_w": 102.39
+        },
+        "logical_passes": 21931,
+        "invocations_per_logical_pass": 806,
+        "total_tcn_invocations": 17676386,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.000761689996579662,
+          "mean": 0.0009038983583167335,
+          "median": 0.0008631549862911925,
+          "p95": 0.0010608355078147724,
+          "maximum": 0.02623612599563785
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0011214619830232425,
+          "median": 0.001070911893661529,
+          "p95": 0.0013161730866188244
+        },
+        "peak_gpu_memory_mb": 17.20263671875,
+        "checksum": 47083839348.0
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1698.8233177718935,
+        "matched_idle_mean_power_w": 10.920525252525254,
+        "matched_idle_equivalent_energy_j": 218.42920923483297,
+        "incremental_gpu_energy_j": 1480.3941085370604,
+        "gross_gpu_energy_per_logical_pass_j": 0.07746219131694375,
+        "incremental_gpu_energy_per_logical_pass_j": 0.06750235322315719,
+        "gross_gpu_energy_per_tcn_invocation_j": 9.610693711779622e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 8.374981789473597e-05
+      }
+    },
+    {
+      "repetition": 2,
+      "condition": "route_q99",
+      "idle": {
+        "duration_s": 10.003230125003029,
+        "sample_count": 99,
+        "instant_energy_j": 86.10770342029546,
+        "average_field_energy_j": 86.62794473251437,
+        "mean_instant_w": 8.609080808080808,
+        "mean_average_w": 8.663969696969698,
+        "peak_instant_w": 10.013,
+        "peak_average_w": 9.179
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.002365098000155,
+          "sample_count": 197,
+          "instant_energy_j": 721.2937166422686,
+          "average_field_energy_j": 705.912720364178,
+          "mean_instant_w": 36.004598984771576,
+          "mean_average_w": 35.246086294416244,
+          "peak_instant_w": 37.878,
+          "peak_average_w": 37.429
+        },
+        "logical_passes": 14294,
+        "invocations_per_logical_pass": 285,
+        "total_tcn_invocations": 4073790,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0007207369926618412,
+          "mean": 0.001387679401413354,
+          "median": 0.001358239991532173,
+          "p95": 0.0015997941445675672,
+          "maximum": 0.006048107999959029
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.004869050531274926,
+          "median": 0.004765754356253239,
+          "p95": 0.005613312787956376
+        },
+        "peak_gpu_memory_mb": 11.06591796875,
+        "checksum": 22659790417.25
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 721.2937166422686,
+        "matched_idle_mean_power_w": 8.609080808080808,
+        "matched_idle_equivalent_energy_j": 172.20197748141854,
+        "incremental_gpu_energy_j": 549.09173916085,
+        "gross_gpu_energy_per_logical_pass_j": 0.05046129261524196,
+        "incremental_gpu_energy_per_logical_pass_j": 0.038414141539166786,
+        "gross_gpu_energy_per_tcn_invocation_j": 0.0001770571670710244,
+        "incremental_gpu_energy_per_tcn_invocation_j": 0.00013478646154093608
+      }
+    },
+    {
+      "repetition": 2,
+      "condition": "route_q90",
+      "idle": {
+        "duration_s": 10.003434222002397,
+        "sample_count": 100,
+        "instant_energy_j": 80.1449376379894,
+        "average_field_energy_j": 80.89730018610193,
+        "mean_instant_w": 8.00864,
+        "mean_average_w": 8.08491,
+        "peak_instant_w": 8.685,
+        "peak_average_w": 8.267
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.002084723004373,
+          "sample_count": 198,
+          "instant_energy_j": 1571.178487377756,
+          "average_field_energy_j": 1540.615001792593,
+          "mean_instant_w": 78.61077272727272,
+          "mean_average_w": 76.9409696969697,
+          "peak_instant_w": 108.258,
+          "peak_average_w": 107.39
+        },
+        "logical_passes": 10374,
+        "invocations_per_logical_pass": 1769,
+        "total_tcn_invocations": 18351606,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.001584918994922191,
+          "mean": 0.0019189636405036342,
+          "median": 0.0017787475007935427,
+          "p95": 0.002739203957025894,
+          "maximum": 0.012384018002194352
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0010847731150387982,
+          "median": 0.0010055101756888314,
+          "p95": 0.0015484476862780631
+        },
+        "peak_gpu_memory_mb": 20.34814453125,
+        "checksum": 38932903600.5
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1571.178487377756,
+        "matched_idle_mean_power_w": 8.00864,
+        "matched_idle_equivalent_energy_j": 160.18949579604174,
+        "incremental_gpu_energy_j": 1410.9889915817143,
+        "gross_gpu_energy_per_logical_pass_j": 0.15145348827624408,
+        "incremental_gpu_energy_per_logical_pass_j": 0.13601204854267537,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.56153127621504e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 7.688640392463278e-05
+      }
+    },
+    {
+      "repetition": 2,
+      "condition": "always_on_tcn",
+      "idle": {
+        "duration_s": 10.002925208988017,
+        "sample_count": 99,
+        "instant_energy_j": 74.92457501681774,
+        "average_field_energy_j": 76.38053495576932,
+        "mean_instant_w": 7.477767676767677,
+        "mean_average_w": 7.627575757575758,
+        "peak_instant_w": 8.961,
+        "peak_average_w": 8.109
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.011709288999555,
+          "sample_count": 197,
+          "instant_energy_j": 1631.1196060572631,
+          "average_field_energy_j": 1600.0682101076216,
+          "mean_instant_w": 81.30059898477158,
+          "mean_average_w": 79.76906091370557,
+          "peak_instant_w": 107.836,
+          "peak_average_w": 107.071
+        },
+        "logical_passes": 1415,
+        "invocations_per_logical_pass": 14120,
+        "total_tcn_invocations": 19979800,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.012765285995556042,
+          "mean": 0.014130629351824957,
+          "median": 0.013677201000973582,
+          "p95": 0.014986721100285648,
+          "maximum": 0.0761713820102159
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0010007527869564418,
+          "median": 0.0009686402975193756,
+          "p95": 0.001061382514184536
+        },
+        "peak_gpu_memory_mb": 20.59814453125,
+        "checksum": 6545130679.653168
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1631.1196060572631,
+        "matched_idle_mean_power_w": 7.477767676767677,
+        "matched_idle_equivalent_energy_j": 149.64291287815234,
+        "incremental_gpu_energy_j": 1481.4766931791107,
+        "gross_gpu_energy_per_logical_pass_j": 1.1527347039273945,
+        "incremental_gpu_energy_per_logical_pass_j": 1.0469799951795835,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.163843512233671e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 7.414872487107532e-05
+      }
+    },
+    {
+      "repetition": 3,
+      "condition": "route_q95",
+      "idle": {
+        "duration_s": 10.002966651998577,
+        "sample_count": 99,
+        "instant_energy_j": 68.33677900860528,
+        "average_field_energy_j": 69.50292726318065,
+        "mean_instant_w": 6.839767676767676,
+        "mean_average_w": 6.949575757575758,
+        "peak_instant_w": 9.008,
+        "peak_average_w": 7.407
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.001164411005448,
+          "sample_count": 199,
+          "instant_energy_j": 1517.7215185250877,
+          "average_field_energy_j": 1482.6575305478268,
+          "mean_instant_w": 75.8515376884422,
+          "mean_average_w": 74.1188944723618,
+          "peak_instant_w": 93.396,
+          "peak_average_w": 92.747
+        },
+        "logical_passes": 21063,
+        "invocations_per_logical_pass": 806,
+        "total_tcn_invocations": 16976778,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0007667430036235601,
+          "mean": 0.000941282802129582,
+          "median": 0.0008733430004213005,
+          "p95": 0.0015662235993659111,
+          "maximum": 0.007453601007000543
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0011678446676545683,
+          "median": 0.001083552109703847,
+          "p95": 0.0019432054582703613
+        },
+        "peak_gpu_memory_mb": 17.20263671875,
+        "checksum": 45220323204.0
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1517.7215185250877,
+        "matched_idle_mean_power_w": 6.839767676767676,
+        "matched_idle_equivalent_energy_j": 136.80331783611106,
+        "incremental_gpu_energy_j": 1380.9182006889766,
+        "gross_gpu_energy_per_logical_pass_j": 0.0720562844098698,
+        "incremental_gpu_energy_per_logical_pass_j": 0.0655613255798783,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.93998565879278e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 8.134159501225596e-05
+      }
+    },
+    {
+      "repetition": 3,
+      "condition": "always_on_tcn",
+      "idle": {
+        "duration_s": 10.002929131005658,
+        "sample_count": 99,
+        "instant_energy_j": 65.33997099748667,
+        "average_field_energy_j": 66.01228846306384,
+        "mean_instant_w": 6.540555555555556,
+        "mean_average_w": 6.600505050505051,
+        "peak_instant_w": 7.937,
+        "peak_average_w": 7.398
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.01480871500098,
+          "sample_count": 198,
+          "instant_energy_j": 1650.0320275259287,
+          "average_field_energy_j": 1617.8645534687766,
+          "mean_instant_w": 82.28613131313132,
+          "mean_average_w": 80.65306565656566,
+          "peak_instant_w": 107.782,
+          "peak_average_w": 107.197
+        },
+        "logical_passes": 1379,
+        "invocations_per_logical_pass": 14120,
+        "total_tcn_invocations": 19471480,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.012971944001037627,
+          "mean": 0.01449916630965751,
+          "median": 0.014004477998241782,
+          "p95": 0.015287786094995679,
+          "maximum": 0.0769342819985468
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0010268531380777273,
+          "median": 0.0009918185551162735,
+          "p95": 0.0010827043976625837
+        },
+        "peak_gpu_memory_mb": 20.59814453125,
+        "checksum": 6378611453.881073
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1650.0320275259287,
+        "matched_idle_mean_power_w": 6.540555555555556,
+        "matched_idle_equivalent_energy_j": 130.90796833428143,
+        "incremental_gpu_energy_j": 1519.1240591916473,
+        "gross_gpu_energy_per_logical_pass_j": 1.1965424420057496,
+        "incremental_gpu_energy_per_logical_pass_j": 1.1016128057952483,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.474096614771598e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 7.801790409314789e-05
+      }
+    },
+    {
+      "repetition": 3,
+      "condition": "route_q90",
+      "idle": {
+        "duration_s": 10.003073526997468,
+        "sample_count": 98,
+        "instant_energy_j": 67.23924781901344,
+        "average_field_energy_j": 67.1731299527721,
+        "mean_instant_w": 6.707836734693878,
+        "mean_average_w": 6.714499999999999,
+        "peak_instant_w": 10.358,
+        "peak_average_w": 9.334
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.00185867799155,
+          "sample_count": 199,
+          "instant_energy_j": 1703.1693700771937,
+          "average_field_energy_j": 1662.6543682820338,
+          "mean_instant_w": 85.02598994974873,
+          "mean_average_w": 82.99137688442211,
+          "peak_instant_w": 108.967,
+          "peak_average_w": 108.517
+        },
+        "logical_passes": 10442,
+        "invocations_per_logical_pass": 1769,
+        "total_tcn_invocations": 18471898,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0015982810000423342,
+          "mean": 0.001906410745129205,
+          "median": 0.001837726500525605,
+          "p95": 0.002121433256252203,
+          "maximum": 0.012633782011107542
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.001077677074691467,
+          "median": 0.001038850480794576,
+          "p95": 0.0011992273918893178
+        },
+        "peak_gpu_memory_mb": 20.34814453125,
+        "checksum": 39188102891.5
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1703.1693700771937,
+        "matched_idle_mean_power_w": 6.707836734693878,
+        "matched_idle_equivalent_energy_j": 134.16920240238724,
+        "incremental_gpu_energy_j": 1569.0001676748063,
+        "gross_gpu_energy_per_logical_pass_j": 0.16310758188825836,
+        "incremental_gpu_energy_per_logical_pass_j": 0.15025858721268018,
+        "gross_gpu_energy_per_tcn_invocation_j": 9.220326845011778e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 8.49398457957491e-05
+      }
+    },
+    {
+      "repetition": 3,
+      "condition": "route_q99",
+      "idle": {
+        "duration_s": 10.00298741601,
+        "sample_count": 99,
+        "instant_energy_j": 81.90796270169186,
+        "average_field_energy_j": 82.16756964291356,
+        "mean_instant_w": 8.188636363636363,
+        "mean_average_w": 8.214020202020201,
+        "peak_instant_w": 8.915,
+        "peak_average_w": 8.392
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.00544460299716,
+          "sample_count": 198,
+          "instant_energy_j": 691.0084145280468,
+          "average_field_energy_j": 677.6777458373235,
+          "mean_instant_w": 34.494853535353535,
+          "mean_average_w": 33.847065656565654,
+          "peak_instant_w": 36.279,
+          "peak_average_w": 35.778
+        },
+        "logical_passes": 13858,
+        "invocations_per_logical_pass": 285,
+        "total_tcn_invocations": 3949530,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0007258190016727895,
+          "mean": 0.0014316926195870408,
+          "median": 0.0014018695001141168,
+          "p95": 0.0016542708566703367,
+          "maximum": 0.0068195669882697985
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.005023482875744003,
+          "median": 0.004918840351277603,
+          "p95": 0.005804459146211708
+        },
+        "peak_gpu_memory_mb": 11.06591796875,
+        "checksum": 21968614495.75
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 691.0084145280468,
+        "matched_idle_mean_power_w": 8.188636363636363,
+        "matched_idle_equivalent_energy_j": 163.81731114681534,
+        "incremental_gpu_energy_j": 527.1911033812315,
+        "gross_gpu_energy_per_logical_pass_j": 0.04986350227507915,
+        "incremental_gpu_energy_per_logical_pass_j": 0.03804236566468693,
+        "gross_gpu_energy_per_tcn_invocation_j": 0.00017495965710554088,
+        "incremental_gpu_energy_per_tcn_invocation_j": 0.00013348198478837521
+      }
+    },
+    {
+      "repetition": 4,
+      "condition": "route_q90",
+      "idle": {
+        "duration_s": 10.003302547993371,
+        "sample_count": 99,
+        "instant_energy_j": 77.15371068313092,
+        "average_field_energy_j": 77.49801190424324,
+        "mean_instant_w": 7.715424242424242,
+        "mean_average_w": 7.749888888888889,
+        "peak_instant_w": 9.815,
+        "peak_average_w": 8.828
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.003708730990184,
+          "sample_count": 198,
+          "instant_energy_j": 1594.372269870231,
+          "average_field_energy_j": 1565.5359950136105,
+          "mean_instant_w": 79.56022222222222,
+          "mean_average_w": 78.21913131313131,
+          "peak_instant_w": 109.794,
+          "peak_average_w": 109.027
+        },
+        "logical_passes": 10287,
+        "invocations_per_logical_pass": 1769,
+        "total_tcn_invocations": 18197703,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0015758670051582158,
+          "mean": 0.0019354758216043365,
+          "median": 0.001796753000235185,
+          "p95": 0.0027798099006758896,
+          "maximum": 0.01187294500414282
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0010941073044682512,
+          "median": 0.001015688524723112,
+          "p95": 0.0015714018658427866
+        },
+        "peak_gpu_memory_mb": 20.34814453125,
+        "checksum": 38606398625.25
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1594.372269870231,
+        "matched_idle_mean_power_w": 7.715424242424242,
+        "matched_idle_equivalent_energy_j": 154.33709928147513,
+        "incremental_gpu_energy_j": 1440.035170588756,
+        "gross_gpu_energy_per_logical_pass_j": 0.15498904149608544,
+        "incremental_gpu_energy_per_logical_pass_j": 0.1399859211226554,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.76139296190421e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 7.913279882569553e-05
+      }
+    },
+    {
+      "repetition": 4,
+      "condition": "always_on_tcn",
+      "idle": {
+        "duration_s": 10.003155013007927,
+        "sample_count": 99,
+        "instant_energy_j": 90.83812413655457,
+        "average_field_energy_j": 91.59020543337394,
+        "mean_instant_w": 9.062242424242424,
+        "mean_average_w": 9.149747474747475,
+        "peak_instant_w": 10.584,
+        "peak_average_w": 9.868
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.010199773998465,
+          "sample_count": 198,
+          "instant_energy_j": 1641.2950532224384,
+          "average_field_energy_j": 1606.6441923616871,
+          "mean_instant_w": 81.91657575757576,
+          "mean_average_w": 80.2530404040404,
+          "peak_instant_w": 111.048,
+          "peak_average_w": 110.466
+        },
+        "logical_passes": 1368,
+        "invocations_per_logical_pass": 14120,
+        "total_tcn_invocations": 19316160,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.012598102999618277,
+          "mean": 0.014615747738054395,
+          "median": 0.013694871500774752,
+          "p95": 0.01543883384802029,
+          "maximum": 0.075621626994689
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0010351096131766568,
+          "median": 0.0009698917493466538,
+          "p95": 0.001093401830596338
+        },
+        "peak_gpu_memory_mb": 20.59814453125,
+        "checksum": 6327730579.3396
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1641.2950532224384,
+        "matched_idle_mean_power_w": 9.062242424242424,
+        "matched_idle_equivalent_energy_j": 181.33728130949504,
+        "incremental_gpu_energy_j": 1459.9577719129434,
+        "gross_gpu_energy_per_logical_pass_j": 1.199777085688917,
+        "incremental_gpu_energy_per_logical_pass_j": 1.0672205935036136,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.497004856153803e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 7.558219500733807e-05
+      }
+    },
+    {
+      "repetition": 4,
+      "condition": "route_q95",
+      "idle": {
+        "duration_s": 10.002830113997334,
+        "sample_count": 99,
+        "instant_energy_j": 91.8632448314787,
+        "average_field_energy_j": 92.4650654504875,
+        "mean_instant_w": 9.183464646464646,
+        "mean_average_w": 9.244656565656566,
+        "peak_instant_w": 9.905,
+        "peak_average_w": 9.696
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.00197900700732,
+          "sample_count": 197,
+          "instant_energy_j": 1653.124238116316,
+          "average_field_energy_j": 1605.7432691690167,
+          "mean_instant_w": 82.59808629441625,
+          "mean_average_w": 80.2361116751269,
+          "peak_instant_w": 110.065,
+          "peak_average_w": 109.125
+        },
+        "logical_passes": 20829,
+        "invocations_per_logical_pass": 806,
+        "total_tcn_invocations": 16788174,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0007642150012543425,
+          "mean": 0.0009522190356080527,
+          "median": 0.0008663689950481057,
+          "p95": 0.0016523418016731737,
+          "maximum": 0.0070841220003785565
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0011814131955434897,
+          "median": 0.001074899497578295,
+          "p95": 0.0020500518631180816
+        },
+        "peak_gpu_memory_mb": 17.20263671875,
+        "checksum": 44717946732.0
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1653.124238116316,
+        "matched_idle_mean_power_w": 9.183464646464646,
+        "matched_idle_equivalent_energy_j": 183.68746707017976,
+        "incremental_gpu_energy_j": 1469.4367710461363,
+        "gross_gpu_energy_per_logical_pass_j": 0.07936647165568755,
+        "incremental_gpu_energy_per_logical_pass_j": 0.07054763891910971,
+        "gross_gpu_energy_per_tcn_invocation_j": 9.846956781102675e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 8.752808798896988e-05
+      }
+    },
+    {
+      "repetition": 4,
+      "condition": "route_q99",
+      "idle": {
+        "duration_s": 10.003701781010022,
+        "sample_count": 99,
+        "instant_energy_j": 96.45922030433695,
+        "average_field_energy_j": 96.75814491919502,
+        "mean_instant_w": 9.651757575757577,
+        "mean_average_w": 9.675535353535354,
+        "peak_instant_w": 10.28,
+        "peak_average_w": 9.941
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.00253858900396,
+          "sample_count": 197,
+          "instant_energy_j": 724.966680196038,
+          "average_field_energy_j": 711.6344154026251,
+          "mean_instant_w": 36.127796954314725,
+          "mean_average_w": 35.44623350253807,
+          "peak_instant_w": 38.108,
+          "peak_average_w": 37.659
+        },
+        "logical_passes": 14566,
+        "invocations_per_logical_pass": 285,
+        "total_tcn_invocations": 4151310,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.000723674995242618,
+          "mean": 0.0013617029316299054,
+          "median": 0.0013272869909997098,
+          "p95": 0.0015716360067017376,
+          "maximum": 0.007279804005520418
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0047779050232628255,
+          "median": 0.004657147336841087,
+          "p95": 0.005514512304216623
+        },
+        "peak_gpu_memory_mb": 11.06591796875,
+        "checksum": 23090982735.25
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 724.966680196038,
+        "matched_idle_mean_power_w": 9.651757575757577,
+        "matched_idle_equivalent_energy_j": 193.05965336080226,
+        "incremental_gpu_energy_j": 531.9070268352358,
+        "gross_gpu_energy_per_logical_pass_j": 0.049771157503503916,
+        "incremental_gpu_energy_per_logical_pass_j": 0.03651702779316462,
+        "gross_gpu_energy_per_tcn_invocation_j": 0.00017463564036317164,
+        "incremental_gpu_energy_per_tcn_invocation_j": 0.00012812992208127935
+      }
+    },
+    {
+      "repetition": 5,
+      "condition": "route_q90",
+      "idle": {
+        "duration_s": 10.00282527199306,
+        "sample_count": 98,
+        "instant_energy_j": 97.83467524148755,
+        "average_field_energy_j": 97.62724640764404,
+        "mean_instant_w": 9.784489795918367,
+        "mean_average_w": 9.761581632653062,
+        "peak_instant_w": 10.395,
+        "peak_average_w": 9.934
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.002097695993143,
+          "sample_count": 196,
+          "instant_energy_j": 1720.6321992353305,
+          "average_field_energy_j": 1664.4408358658382,
+          "mean_instant_w": 85.9638163265306,
+          "mean_average_w": 83.11481632653062,
+          "peak_instant_w": 112.228,
+          "peak_average_w": 111.247
+        },
+        "logical_passes": 10773,
+        "invocations_per_logical_pass": 1769,
+        "total_tcn_invocations": 19057437,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.00158346799435094,
+          "mean": 0.0018478130187406935,
+          "median": 0.001764848013408482,
+          "p95": 0.002071434201207012,
+          "maximum": 0.015976818001945503
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0010445523000230036,
+          "median": 0.0009976529188289894,
+          "p95": 0.0011709633698174177
+        },
+        "peak_gpu_memory_mb": 20.34814453125,
+        "checksum": 40430322969.75
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1720.6321992353305,
+        "matched_idle_mean_power_w": 9.784489795918367,
+        "matched_idle_equivalent_energy_j": 195.71032080340717,
+        "incremental_gpu_energy_j": 1524.9218784319232,
+        "gross_gpu_energy_per_logical_pass_j": 0.1597170889478632,
+        "incremental_gpu_energy_per_logical_pass_j": 0.1415503460904041,
+        "gross_gpu_energy_per_tcn_invocation_j": 9.028665288177684e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 8.001715437558174e-05
+      }
+    },
+    {
+      "repetition": 5,
+      "condition": "route_q95",
+      "idle": {
+        "duration_s": 10.003623944008723,
+        "sample_count": 99,
+        "instant_energy_j": 92.09819919407376,
+        "average_field_energy_j": 93.28553136752636,
+        "mean_instant_w": 9.195313131313132,
+        "mean_average_w": 9.325717171717171,
+        "peak_instant_w": 10.134,
+        "peak_average_w": 10.42
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.00194845200167,
+          "sample_count": 198,
+          "instant_energy_j": 1574.8743584735744,
+          "average_field_energy_j": 1545.084051010724,
+          "mean_instant_w": 78.3869898989899,
+          "mean_average_w": 77.09777272727273,
+          "peak_instant_w": 100.979,
+          "peak_average_w": 100.39
+        },
+        "logical_passes": 21313,
+        "invocations_per_logical_pass": 806,
+        "total_tcn_invocations": 17178278,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0007431799895130098,
+          "mean": 0.0009304036050465168,
+          "median": 0.0008559720008634031,
+          "p95": 0.0015731482068076725,
+          "maximum": 0.007206899012089707
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0011543469045242143,
+          "median": 0.0010620000010712197,
+          "p95": 0.0019517967826397922
+        },
+        "peak_gpu_memory_mb": 17.20263671875,
+        "checksum": 45757050204.0
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1574.8743584735744,
+        "matched_idle_mean_power_w": 9.195313131313132,
+        "matched_idle_equivalent_energy_j": 183.92417925253932,
+        "incremental_gpu_energy_j": 1390.9501792210351,
+        "gross_gpu_energy_per_logical_pass_j": 0.0738926644992997,
+        "incremental_gpu_energy_per_logical_pass_j": 0.06526299344161006,
+        "gross_gpu_energy_per_tcn_invocation_j": 9.167824379565719e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 8.09714558828909e-05
+      }
+    },
+    {
+      "repetition": 5,
+      "condition": "route_q99",
+      "idle": {
+        "duration_s": 10.002467448997777,
+        "sample_count": 100,
+        "instant_energy_j": 75.88282614104479,
+        "average_field_energy_j": 76.90398226839865,
+        "mean_instant_w": 7.601649999999999,
+        "mean_average_w": 7.687469999999999,
+        "peak_instant_w": 8.991,
+        "peak_average_w": 8.205
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.002172193999286,
+          "sample_count": 197,
+          "instant_energy_j": 705.5730418316896,
+          "average_field_energy_j": 690.2467348745745,
+          "mean_instant_w": 35.238253807106595,
+          "mean_average_w": 34.48575634517767,
+          "peak_instant_w": 37.077,
+          "peak_average_w": 36.587
+        },
+        "logical_passes": 14183,
+        "invocations_per_logical_pass": 285,
+        "total_tcn_invocations": 4042155,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.0007421439950121567,
+          "mean": 0.001398508110336974,
+          "median": 0.001362027003779076,
+          "p95": 0.0015900733982562086,
+          "maximum": 0.00767966199782677
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.004907046001182365,
+          "median": 0.004779042118523074,
+          "p95": 0.005579204906162136
+        },
+        "peak_gpu_memory_mb": 11.06591796875,
+        "checksum": 22483825905.125
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 705.5730418316896,
+        "matched_idle_mean_power_w": 7.601649999999999,
+        "matched_idle_equivalent_energy_j": 152.04951225851465,
+        "incremental_gpu_energy_j": 553.523529573175,
+        "gross_gpu_energy_per_logical_pass_j": 0.04974779960739544,
+        "incremental_gpu_energy_per_logical_pass_j": 0.03902725301933124,
+        "gross_gpu_energy_per_tcn_invocation_j": 0.00017455368283296647,
+        "incremental_gpu_energy_per_tcn_invocation_j": 0.00013693772989239032
+      }
+    },
+    {
+      "repetition": 5,
+      "condition": "always_on_tcn",
+      "idle": {
+        "duration_s": 10.002567564006313,
+        "sample_count": 99,
+        "instant_energy_j": 69.11580470098414,
+        "average_field_energy_j": 69.68481588941945,
+        "mean_instant_w": 6.908686868686869,
+        "mean_average_w": 6.964919191919193,
+        "peak_instant_w": 7.909,
+        "peak_average_w": 7.305
+      },
+      "workload": {
+        "meter": {
+          "duration_s": 20.00701938099519,
+          "sample_count": 198,
+          "instant_energy_j": 1636.2664904736246,
+          "average_field_energy_j": 1596.2136102351346,
+          "mean_instant_w": 81.67674747474747,
+          "mean_average_w": 79.76331313131314,
+          "peak_instant_w": 107.958,
+          "peak_average_w": 106.712
+        },
+        "logical_passes": 1339,
+        "invocations_per_logical_pass": 14120,
+        "total_tcn_invocations": 18906680,
+        "logical_pass_seconds_summary": {
+          "minimum": 0.012862193994806148,
+          "mean": 0.014930024271745886,
+          "median": 0.014026442004251294,
+          "p95": 0.018632081100076713,
+          "maximum": 0.08145041498937644
+        },
+        "throughput_normalized_ms_per_tcn_window_summary": {
+          "mean": 0.0010573671580556578,
+          "median": 0.0009933740796211963,
+          "p95": 0.001319552485841127
+        },
+        "peak_gpu_memory_mb": 20.59814453125,
+        "checksum": 6193590091.912079
+      },
+      "accounting": {
+        "gross_gpu_energy_j": 1636.2664904736246,
+        "matched_idle_mean_power_w": 6.908686868686869,
+        "matched_idle_equivalent_energy_j": 138.22223207904517,
+        "incremental_gpu_energy_j": 1498.0442583945794,
+        "gross_gpu_energy_per_logical_pass_j": 1.2220063409063664,
+        "incremental_gpu_energy_per_logical_pass_j": 1.1187783856568927,
+        "gross_gpu_energy_per_tcn_invocation_j": 8.654435842113076e-05,
+        "incremental_gpu_energy_per_tcn_invocation_j": 7.923359671791025e-05
+      }
+    }
+  ],
+  "energy_reduction_vs_always_on_tcn": {
+    "route_q90": {
+      "gross_reduction_by_repetition": [
+        0.8764947066766159,
+        0.8686137514900536,
+        0.8636842487468784,
+        0.8708184684098296,
+        0.8692992960827024
+      ],
+      "mean_gross_reduction_fraction": 0.8697820942812159,
+      "sample_sd_gross_reduction_fraction": 0.004607468818237554,
+      "gross_reduction_directionally_consistent": true,
+      "incremental_reduction_by_repetition": [
+        0.9073173339980587,
+        0.8700910722564992,
+        0.8636012704080639,
+        0.8688313156860186,
+        0.8734777611856592
+      ],
+      "mean_incremental_reduction_fraction": 0.87666375070686,
+      "meets_3_percent_materiality": true
+    },
+    "route_q95": {
+      "gross_reduction_by_repetition": [
+        0.9357471251461945,
+        0.932801371336329,
+        0.9397795833392397,
+        0.9338489852803655,
+        0.9395316848810349
+      ],
+      "mean_gross_reduction_fraction": 0.9363417499966328,
+      "sample_sd_gross_reduction_fraction": 0.003205312713294348,
+      "gross_reduction_directionally_consistent": true,
+      "incremental_reduction_by_repetition": [
+        0.9356494280421632,
+        0.9355266064930124,
+        0.940486053507203,
+        0.9338959167874501,
+        0.9416658434965288
+      ],
+      "mean_incremental_reduction_fraction": 0.9374447696652716,
+      "meets_3_percent_materiality": true
+    },
+    "route_q99": {
+      "gross_reduction_by_repetition": [
+        0.9590810490882233,
+        0.9562247128994042,
+        0.9583270091184618,
+        0.9585163293271891,
+        0.9592900642639077
+      ],
+      "mean_gross_reduction_fraction": 0.9582878329394372,
+      "sample_sd_gross_reduction_fraction": 0.0012190025798013366,
+      "gross_reduction_directionally_consistent": true,
+      "incremental_reduction_by_repetition": [
+        0.9661474553984155,
+        0.9633095744751285,
+        0.9654666635458868,
+        0.9657830555224937,
+        0.9651161896585835
+      ],
+      "mean_incremental_reduction_fraction": 0.9651645877201016,
+      "meets_3_percent_materiality": true
+    }
+  },
+  "routing_evidence_coverage": {
+    "route_q90": {
+      "threshold": 9.490034886378899,
+      "calibration_quantile": 0.9,
+      "valid_tcn_windows": 14120,
+      "tcn_invocations": 1769,
+      "tcn_invocation_fraction": 0.12528328611898018,
+      "tcn_alert_bins": 932,
+      "covered_tcn_alert_bins": 675,
+      "tcn_alert_bin_coverage": 0.7242489270386266,
+      "tcn_incident_related_alert_bins": 795,
+      "covered_tcn_incident_related_alert_bins": 593,
+      "tcn_incident_alert_bin_coverage": 0.7459119496855345,
+      "alert_episodes": 73,
+      "covered_alert_episodes": 18,
+      "alert_episode_coverage": 0.2465753424657534,
+      "incident_related_alert_episodes": 7,
+      "covered_incident_related_alert_episodes": 4,
+      "incident_related_alert_episode_coverage": 0.5714285714285714
+    },
+    "route_q95": {
+      "threshold": 18.32664006331794,
+      "calibration_quantile": 0.95,
+      "valid_tcn_windows": 14120,
+      "tcn_invocations": 806,
+      "tcn_invocation_fraction": 0.05708215297450425,
+      "tcn_alert_bins": 932,
+      "covered_tcn_alert_bins": 300,
+      "tcn_alert_bin_coverage": 0.3218884120171674,
+      "tcn_incident_related_alert_bins": 795,
+      "covered_tcn_incident_related_alert_bins": 229,
+      "tcn_incident_alert_bin_coverage": 0.2880503144654088,
+      "alert_episodes": 73,
+      "covered_alert_episodes": 11,
+      "alert_episode_coverage": 0.1506849315068493,
+      "incident_related_alert_episodes": 7,
+      "covered_incident_related_alert_episodes": 4,
+      "incident_related_alert_episode_coverage": 0.5714285714285714
+    },
+    "route_q99": {
+      "threshold": 43.35613425150058,
+      "calibration_quantile": 0.99,
+      "valid_tcn_windows": 14120,
+      "tcn_invocations": 285,
+      "tcn_invocation_fraction": 0.02018413597733711,
+      "tcn_alert_bins": 932,
+      "covered_tcn_alert_bins": 167,
+      "tcn_alert_bin_coverage": 0.1791845493562232,
+      "tcn_incident_related_alert_bins": 795,
+      "covered_tcn_incident_related_alert_bins": 104,
+      "tcn_incident_alert_bin_coverage": 0.13081761006289308,
+      "alert_episodes": 73,
+      "covered_alert_episodes": 10,
+      "alert_episode_coverage": 0.136986301369863,
+      "incident_related_alert_episodes": 7,
+      "covered_incident_related_alert_episodes": 4,
+      "incident_related_alert_episode_coverage": 0.5714285714285714
+    }
+  },
+  "guardrails": [
+    "MetroPT2 TEST was previously inspected in earlier repository research.",
+    "This is a transport stress test, not untouched independent confirmation.",
+    "No MetroPT2 TEST result may change the TCN architecture or training hyperparameters.",
+    "No MetroPT2 TEST result may change q90/q95/q99 definitions.",
+    "Numeric router thresholds are estimated from MetroPT2 CALIBRATION only.",
+    "The TCN anomaly threshold is estimated from MetroPT2 CALIBRATION only.",
+    "No physical compressor-energy saving claim is allowed.",
+    "Measured energy refers only to GPU-device TCN scoring energy.",
+    "CPU/router energy and whole-system energy remain UNKNOWN."
+  ]
+}
