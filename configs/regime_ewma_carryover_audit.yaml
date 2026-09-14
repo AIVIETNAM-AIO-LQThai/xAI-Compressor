@@ -1,0 +1,67 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+
+study:
+  role: "posthoc_regime_ewma_carryover_diagnostic"
+  evidence_class: "REAL"
+  production_promotion_allowed: false
+
+representation:
+  features: "model_feature_columns"
+  variance_retained: 0.95
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+
+smoothing:
+  ewma_alpha: 0.20
+  reset_gap_minutes: 10
+  threshold_quantile: 0.995
+  variants:
+    - "baseline_gap_reset_only"
+    - "diagnostic_reset_on_regime_change"
+
+bootstrap:
+  replicates: 2000
+  seed: 20260914
+  confidence: 0.95
+  circular_block_lengths:
+    - 1
+    - 12
+
+diagnostics:
+  tail_quantiles:
+    - 0.99
+    - 0.995
+  autocorrelation_lags:
+    - 1
+    - 2
+    - 3
+    - 6
+    - 12
+
+candidate_reproduction:
+  tolerance: 1.0e-12
+  expected:
+    train_rows: 5271
+    calibration_rows: 1796
+    feature_count: 63
+    component_count: 11
+    current_threshold: 3.3312096774193547
+    pressure_threshold: 9.452193548387097
+    baseline_pooled_threshold: 0.25200852435862636
+    transition_count: 742
+
+outputs:
+  result_json: "docs/research/regime_ewma_carryover_audit.json"
+  local_output_dir: "data/processed/regime_ewma_carryover_audit"
+
+guardrails:
+  - "TRAIN and CALIBRATION only."
+  - "TEST and incident labels/timestamps must not be loaded."
+  - "The detector, router, PCA dimension, scaler and raw anomaly score are unchanged."
+  - "Reset-on-regime-change EWMA is diagnostic only, not a promoted alerting rule."
+  - "No test-set detection metrics are computed."
