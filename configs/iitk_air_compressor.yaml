@@ -125,3 +125,35 @@ external_validation:
     - "Explanation groups are five acoustic feature families; raw N_eff is not directly comparable to MetroPT sensor-group N_eff."
     - "Feature-family contribution is detector evidence, not physical root cause."
     - "No detector or representation is promoted from this exploratory research branch."
+
+uncertainty_analysis:
+  output_file: "docs/iitk_air_compressor_uncertainty.json"
+
+  confidence_level: 0.95
+
+  # Follow-up analysis designed only after the frozen external benchmark
+  # was observed. It may quantify uncertainty, but it must not retune the
+  # split, features, representation, or q=0.95 operating threshold rule.
+  status: "post_benchmark_exploratory_uncertainty_analysis"
+
+  calibration_bootstrap:
+    iterations: 5000
+    seed: 20260914
+    moving_block_lengths:
+      - 5
+      - 10
+
+  auc_bootstrap:
+    iterations: 1000
+    seed: 20260915
+
+  calibration_tail:
+    top_scores_to_report: 6
+
+  interpretation_guardrails:
+    - "Bootstrap distributions quantify finite-sample sensitivity; they do not create an independent validation set."
+    - "Calibration-score resampling does not authorize selecting a new threshold from test performance."
+    - "Moving-block calibration bootstrap is a sensitivity analysis for possible local acquisition dependence."
+    - "Wilson intervals are binomial reference intervals and assume recording-level Bernoulli sampling."
+    - "A degenerate bootstrap AUC interval at 1.0 means complete separation in this observed sample, not population AUC exactly equal to 1."
+    - "No uncertainty result may be used to promote a detector without a separate confirmatory dataset."

@@ -271,3 +271,90 @@ Not allowed:
 No IITK representation may replace the frozen V3 detector from this research
 branch without a separate promotion decision and an additional independent
 confirmatory evaluation.
+
+## Post-benchmark uncertainty analysis
+
+This section was frozen **after** the IITK external benchmark result was
+observed. It is therefore exploratory follow-up analysis, not part of the
+original confirmatory benchmark.
+
+Its purpose is limited to quantifying finite-sample uncertainty and diagnosing
+whether operating-point sensitivity is driven by the small healthy calibration
+set.
+
+No split, feature, representation, or test label may be changed. The operating
+rule remains:
+
+```text
+healthy calibration only
+q = 0.95
+interpolation = higher
+```
+
+With 60 calibration recordings, NumPy's `higher` quantile at q=0.95 uses the
+58th ordered observation (1-based), i.e. the third-highest calibration score.
+This makes upper-tail sensitivity worth measuring explicitly.
+
+The following analyses are frozen before their outputs are inspected:
+
+```text
+1. Wilson 95% reference intervals
+   - held-out healthy false-positive rate
+   - overall fault recall
+   - each of seven per-fault recalls
+
+2. Stratified non-parametric ROC-AUC bootstrap
+   - 1,000 resamples
+   - healthy and fault recordings resampled separately
+   - overall ROC-AUC
+   - per-fault ROC-AUC
+
+3. Calibration-threshold sensitivity
+   - leave-one-calibration-recording-out thresholds
+   - 5,000 IID calibration bootstraps
+   - 5,000 circular moving-block bootstraps, block length 5
+   - 5,000 circular moving-block bootstraps, block length 10
+
+4. For every calibration bootstrap threshold, apply that threshold to the
+   unchanged IITK test scores and report the resulting:
+   - held-out healthy FPR
+   - overall fault recall
+   - macro fault recall
+   - balanced accuracy
+   - per-fault recall
+```
+
+The moving-block analyses exist because adjacent recording numbers may share
+unreported acquisition context. They are sensitivity analyses, not claims that
+block lengths 5 or 10 are physically optimal.
+
+The top six calibration anomaly scores and their healthy recording numbers are
+reported to expose upper-tail leverage. They must not be removed or trimmed
+after inspection.
+
+Interpretation rules:
+
+Allowed:
+
+> The ranking representation is strong, while the finite calibration set makes
+> the q=0.95 operating threshold sensitive / stable under resampling.
+
+Allowed:
+
+> Robust feature-energy exhibits good ranking but a conservative and
+> calibration-sensitive operating point.
+
+Only use the second statement if the frozen uncertainty results actually
+support it.
+
+Not allowed:
+
+> A different threshold would be better because it improves IITK test recall.
+
+Not allowed:
+
+> Bootstrap confidence intervals are equivalent to an independent replication.
+
+Not allowed:
+
+> Perfect sampled ROC-AUC proves population ROC-AUC is exactly 1.
