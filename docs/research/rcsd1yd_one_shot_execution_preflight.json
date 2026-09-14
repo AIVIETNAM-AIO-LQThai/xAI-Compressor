@@ -1,0 +1,79 @@
+{
+  "schema_version": "aeroxai.rcsd1yd_one_shot_execution_preflight.v1",
+  "study": "rcsd1yd_one_shot_execution",
+  "adaptation_freeze_commit": "a75a4828abac6b3e26baaca83ea1c6ec7d3c3805",
+  "adaptation_freeze_sha256": "1180c8cb5a47d2d0580b6e4d8d99868469db3cfcb77a978c7baa3c9fd65e03ba",
+  "tcn_checkpoint_sha256": "a4ebea11a3f0a1a4de3afc633a7dbee6a9e612740139636b39c77d7d421c8c50",
+  "evaluation_parquet_sha256": "cb57841ee1f73944af59d227a7de109e0e23e7afea5384261ab966d71373a734",
+  "evaluation_parquet_opened": false,
+  "evaluation_metrics_computed": false,
+  "systems": [
+    "always_on_tcn",
+    "fixed_pca_route_q90",
+    "fixed_pca_route_q95",
+    "fixed_pca_route_q99",
+    "frozen_evidence_aware_router"
+  ],
+  "energy_protocol": {
+    "scope": "gpu_device_tcn_scoring_only",
+    "nvml_sampling_interval_seconds": 0.1,
+    "warmup_runs_per_condition": 2,
+    "measured_repetitions": 5,
+    "matched_idle_seconds": 10.0,
+    "minimum_metered_workload_seconds": 20.0,
+    "cpu_router_energy": "UNKNOWN",
+    "whole_system_energy": "UNKNOWN",
+    "physical_compressor_energy": "NOT_MEASURED",
+    "gpu_device_index": 0,
+    "inference_batch_size": 1024,
+    "cooldown_seconds": 5.0,
+    "condition_order_seed": 20260915,
+    "condition_orders": [
+      [
+        "fixed_pca_route_q90",
+        "fixed_pca_route_q99",
+        "fixed_pca_route_q95",
+        "always_on_tcn",
+        "frozen_evidence_aware_router"
+      ],
+      [
+        "fixed_pca_route_q90",
+        "frozen_evidence_aware_router",
+        "fixed_pca_route_q99",
+        "fixed_pca_route_q95",
+        "always_on_tcn"
+      ],
+      [
+        "frozen_evidence_aware_router",
+        "fixed_pca_route_q90",
+        "always_on_tcn",
+        "fixed_pca_route_q95",
+        "fixed_pca_route_q99"
+      ],
+      [
+        "frozen_evidence_aware_router",
+        "fixed_pca_route_q95",
+        "fixed_pca_route_q99",
+        "always_on_tcn",
+        "fixed_pca_route_q90"
+      ],
+      [
+        "fixed_pca_route_q95",
+        "always_on_tcn",
+        "fixed_pca_route_q99",
+        "frozen_evidence_aware_router",
+        "fixed_pca_route_q90"
+      ]
+    ]
+  },
+  "zero_denominator_rule": {
+    "high_evidence_coverage_definition": "routed high-evidence bins divided by all EVALUATION high-evidence bins\n",
+    "alert_evidence_coverage_definition": "routed alert-evidence bins divided by all EVALUATION alert-evidence bins\n",
+    "zero_high_evidence_bins": "INCONCLUSIVE_EXTERNAL_EVALUATION",
+    "zero_alert_evidence_bins": "INCONCLUSIVE_EXTERNAL_EVALUATION",
+    "minimum_positive_bins_for_defined_coverage": 1,
+    "success_not_allowed_when_inconclusive": true
+  },
+  "ready_to_commit_execution_harness": true,
+  "ready_to_open_evaluation_after_harness_commit": true
+}

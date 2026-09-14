@@ -1,0 +1,39 @@
+study:
+  name: "rcsd1yd_one_shot_execution"
+  parent_study: "rcsd1yd_external_evaluation"
+  adaptation_freeze_commit: "a75a4828abac6b3e26baaca83ea1c6ec7d3c3805"
+  preregistration_commit: "7dc7bd2d9a44758075dab286cc3d674949a876bd"
+
+frozen_artifacts:
+  adaptation_freeze_file: "docs/research/rcsd1yd_adaptation_freeze.json"
+  expected_adaptation_freeze_sha256: "1180c8cb5a47d2d0580b6e4d8d99868469db3cfcb77a978c7baa3c9fd65e03ba"
+  pre_evaluation_preflight_file: "docs/research/rcsd1yd_pre_evaluation_preflight.json"
+  tcn_checkpoint_file: "artifacts/research/rcsd1yd_tcn.pt"
+  expected_tcn_checkpoint_sha256: "a4ebea11a3f0a1a4de3afc633a7dbee6a9e612740139636b39c77d7d421c8c50"
+  evaluation_parquet: "data/processed/rcsd1yd/evaluation.parquet"
+  expected_evaluation_parquet_sha256: "cb57841ee1f73944af59d227a7de109e0e23e7afea5384261ab966d71373a734"
+
+evaluation:
+  tcn_inference_batch_size: 1024
+  result_file: "docs/research/rcsd1yd_one_shot_evaluation.json"
+
+energy_execution:
+  conditions:
+    - "always_on_tcn"
+    - "fixed_pca_route_q90"
+    - "fixed_pca_route_q95"
+    - "fixed_pca_route_q99"
+    - "frozen_evidence_aware_router"
+  condition_order_seed: 20260915
+  gpu_device_index: 0
+  inference_batch_size: 1024
+  cooldown_seconds: 5.0
+  final_result_file: "docs/research/rcsd1yd_external_evaluation_result.json"
+
+guardrails:
+  - "The evaluation partition is opened only after this harness is committed."
+  - "No EVALUATION-derived tuning, refitting, threshold changes, or feature changes."
+  - "All teacher thresholds and cheap-signal references come from the committed TRAIN/CAL adaptation freeze."
+  - "The frozen evidence-aware logistic router is applied exactly as committed."
+  - "Zero teacher-positive denominators imply INCONCLUSIVE_EXTERNAL_EVALUATION, never PASS."
+  - "GPU measurement scope is TCN scoring only; CPU/router and whole-system energy remain UNKNOWN."
