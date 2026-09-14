@@ -1,0 +1,268 @@
+{
+  "schema_version": "aeroxai.energy_aware_tcn_calibration.v1",
+  "study": "energy_aware_hierarchical_intelligence",
+  "evidence_class": "REAL",
+  "causal_claim": false,
+  "purpose": "G3 TRAIN/CALIBRATION-only TCN training and calibration; MetroPT-3 TEST not opened",
+  "data_use": {
+    "train_file": "data/processed/train.parquet",
+    "calibration_file": "data/processed/calibration.parquet",
+    "test_file_opened": false,
+    "calibration_used_for_training": false
+  },
+  "features": {
+    "count": 63,
+    "names": [
+      "tp2__mean",
+      "tp2__std",
+      "tp2__min",
+      "tp2__max",
+      "tp2__last",
+      "tp3__mean",
+      "tp3__std",
+      "tp3__min",
+      "tp3__max",
+      "tp3__last",
+      "h1__mean",
+      "h1__std",
+      "h1__min",
+      "h1__max",
+      "h1__last",
+      "dv_pressure__mean",
+      "dv_pressure__std",
+      "dv_pressure__min",
+      "dv_pressure__max",
+      "dv_pressure__last",
+      "reservoirs__mean",
+      "reservoirs__std",
+      "reservoirs__min",
+      "reservoirs__max",
+      "reservoirs__last",
+      "oil_temperature__mean",
+      "oil_temperature__std",
+      "oil_temperature__min",
+      "oil_temperature__max",
+      "oil_temperature__last",
+      "motor_current__mean",
+      "motor_current__std",
+      "motor_current__min",
+      "motor_current__max",
+      "motor_current__last",
+      "comp__active_ratio",
+      "comp__transitions",
+      "comp__last",
+      "dv_electric__active_ratio",
+      "dv_electric__transitions",
+      "dv_electric__last",
+      "towers__active_ratio",
+      "towers__transitions",
+      "towers__last",
+      "mpg__active_ratio",
+      "mpg__transitions",
+      "mpg__last",
+      "lps__active_ratio",
+      "lps__transitions",
+      "lps__last",
+      "pressure_switch__active_ratio",
+      "pressure_switch__transitions",
+      "pressure_switch__last",
+      "oil_level__active_ratio",
+      "oil_level__transitions",
+      "oil_level__last",
+      "caudal_impulses__active_ratio",
+      "caudal_impulses__transitions",
+      "caudal_impulses__last",
+      "tp3_minus_reservoirs__mean",
+      "tp3_minus_reservoirs__std",
+      "tp2_minus_tp3__mean",
+      "tp2_minus_tp3__std"
+    ],
+    "scaler": "standard",
+    "scaler_fit": "TRAIN only"
+  },
+  "sequence": {
+    "history_bins": 12,
+    "bin_minutes": 5,
+    "history_minutes": 60,
+    "exact_5_minute_contiguity": true,
+    "max_gap_minutes_ceiling": 10
+  },
+  "model": {
+    "family": "causal_tcn_next_step_prediction",
+    "residual_blocks": 3,
+    "channels": [
+      32,
+      32,
+      32
+    ],
+    "kernel_size": 3,
+    "dilations": [
+      1,
+      2,
+      4
+    ],
+    "dropout": 0.1,
+    "output_features": 63
+  },
+  "training": {
+    "objective": "mean_squared_next_step_prediction_error",
+    "optimizer": "AdamW",
+    "device": "cuda",
+    "fit_samples": 4011,
+    "validation_samples": 1003,
+    "best_epoch": 26,
+    "epochs_ran": 31,
+    "best_validation_mse": 0.3520388965117016,
+    "final_train_mse": 0.31021926954585516,
+    "train_losses": [
+      0.8021448821356932,
+      0.6530833244769539,
+      0.5636557719856686,
+      0.5141615480206846,
+      0.4857312445330281,
+      0.4649101033067501,
+      0.4472368629280096,
+      0.4223855490125465,
+      0.40346826770096994,
+      0.4032457915959707,
+      0.38238012190324,
+      0.3732727676800914,
+      0.3672400350375712,
+      0.3651792192973273,
+      0.3576169257537292,
+      0.3574324693875371,
+      0.35115457752107,
+      0.345228053185447,
+      0.34040388477558925,
+      0.3369164944021995,
+      0.3349064609276865,
+      0.32986341060560204,
+      0.32640721105601955,
+      0.3196010615902332,
+      0.32218998773114044,
+      0.31716995214292515,
+      0.31825909011086395,
+      0.3105155076358836,
+      0.3076203175983177,
+      0.3106858568821902,
+      0.31021926954585516
+    ],
+    "validation_losses": [
+      0.6815238379885407,
+      0.5805063007003883,
+      0.5186738564984749,
+      0.48358914793904495,
+      0.46900350351633124,
+      0.4616452597252512,
+      0.4425589902510315,
+      0.4126823051857687,
+      0.4045804349161454,
+      0.39877854916058175,
+      0.38388173349001115,
+      0.37501281505805306,
+      0.39723467306862564,
+      0.36738111413012475,
+      0.3643179614011455,
+      0.36325811555354687,
+      0.3637074663833987,
+      0.3609830026671751,
+      0.3534232257667591,
+      0.3577415635020046,
+      0.35277362496165904,
+      0.35394397924690396,
+      0.35650165864857936,
+      0.3522484928280383,
+      0.3612931601903731,
+      0.3520388965117016,
+      0.35670330092414904,
+      0.3543469891888076,
+      0.3552253568992539,
+      0.36123557506149573,
+      0.35354666258853784
+    ]
+  },
+  "conditioning": {
+    "train_scaled_magnitude": {
+      "p50_abs": 0.45983497166813503,
+      "p95_abs": 1.9679502106539388,
+      "p99_abs": 3.02308106465424,
+      "p999_abs": 6.242399347997644,
+      "max_abs": 44.34449917362046
+    },
+    "calibration_scaled_magnitude": {
+      "p50_abs": 0.4532113345687065,
+      "p95_abs": 1.9585038419757907,
+      "p99_abs": 2.9583486496989977,
+      "p999_abs": 6.456309144249697,
+      "max_abs": 32.4530430006186
+    },
+    "calibration_feature_mse_concentration": {
+      "top_1_share": 0.04872002825140953,
+      "top_3_share": 0.14456678926944733,
+      "top_5_share": 0.2343849539756775,
+      "top_features": [
+        {
+          "feature": "pressure_switch__last",
+          "mse": 1.2167651653289795,
+          "share": 0.04872002825140953
+        },
+        {
+          "feature": "dv_pressure__max",
+          "mse": 1.2023446559906006,
+          "share": 0.04814262315630913
+        },
+        {
+          "feature": "dv_pressure__std",
+          "mse": 1.1913936138153076,
+          "share": 0.04770413413643837
+        },
+        {
+          "feature": "dv_pressure__mean",
+          "mse": 1.1672207117080688,
+          "share": 0.04673623666167259
+        },
+        {
+          "feature": "towers__last",
+          "mse": 1.0759553909301758,
+          "share": 0.043081916868686676
+        },
+        {
+          "feature": "tp2__last",
+          "mse": 1.0023741722106934,
+          "share": 0.04013568162918091
+        },
+        {
+          "feature": "dv_electric__last",
+          "mse": 0.9638251066207886,
+          "share": 0.038592152297496796
+        },
+        {
+          "feature": "comp__last",
+          "mse": 0.9626374244689941,
+          "share": 0.03854459524154663
+        },
+        {
+          "feature": "mpg__last",
+          "mse": 0.9616349339485168,
+          "share": 0.038504455238580704
+        },
+        {
+          "feature": "pressure_switch__active_ratio",
+          "mse": 0.9182015657424927,
+          "share": 0.036765359342098236
+        }
+      ]
+    }
+  },
+  "calibration": {
+    "score_rows": 1734,
+    "threshold_quantile": 0.995,
+    "quantile_interpolation": "higher",
+    "threshold": 5.4152655601501465,
+    "score_min": 0.003664861898869276,
+    "score_median": 0.04314921982586384,
+    "score_mean": 0.39642293632112124,
+    "score_max": 37.64971160888672
+  },
+  "checkpoint": "artifacts/research/energy_aware_tcn.pt"
+}

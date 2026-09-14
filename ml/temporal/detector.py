@@ -5,9 +5,8 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 import torch
-from sklearn.preprocessing import RobustScaler
 
-from ml.detection.common import transform_frame
+from ml.detection.common import Scaler, transform_frame
 from ml.temporal.sequences import (
     CausalSequenceBatch,
     build_causal_sequences,
@@ -18,7 +17,7 @@ from ml.temporal.tcn import TCNForecaster
 @dataclass
 class TemporalDetector:
     features: list[str]
-    scaler: RobustScaler
+    scaler: Scaler
     model: TCNForecaster
     sequence_length: int
     bin_minutes: int
@@ -28,7 +27,7 @@ def prepare_temporal_batch(
     frame: pd.DataFrame,
     *,
     features: list[str],
-    scaler: RobustScaler,
+    scaler: Scaler,
     sequence_length: int,
     bin_minutes: int,
 ) -> CausalSequenceBatch:

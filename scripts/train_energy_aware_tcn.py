@@ -4,12 +4,13 @@ import json
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pandas as pd
 import torch
 import yaml
 
 from ml.data.features import model_feature_columns
-from ml.detection.common import fit_scaler
+from ml.detection.common import fit_scaler, transform_frame
 from ml.temporal.detector import (
     TemporalDetector,
     prepare_temporal_batch,
@@ -56,7 +57,7 @@ def validate_study_config(config: dict[str, Any]) -> None:
 
     expected = {
         "family": "causal_tcn_next_step_prediction",
-        "scaler": "robust",
+        "scaler": "standard",
         "objective": "mean_squared_next_step_prediction_error",
         "optimizer": "AdamW",
     }
@@ -64,7 +65,7 @@ def validate_study_config(config: dict[str, Any]) -> None:
     if temporal["family"] != expected["family"]:
         raise ValueError("Unexpected temporal_model.family.")
     if temporal["scaler"] != expected["scaler"]:
-        raise ValueError("Study is frozen to RobustScaler.")
+        raise ValueError("Study is frozen to StandardScaler for the TCN.")
     if training["objective"] != expected["objective"]:
         raise ValueError("Study is frozen to next-step MSE.")
     if training["optimizer"] != expected["optimizer"]:
@@ -128,6 +129,81 @@ def validate_study_config(config: dict[str, Any]) -> None:
         raise ValueError("TCN quantile interpolation must remain 'higher'.")
 
 
+
+def _scaled_magnitude_summary(values: np.ndarray) -> dict[str, float]:
+    absolute = np.abs(values)
+    return {
+        "p50_abs": float(np.quantile(absolute, 0.50)),
+        "p95_abs": float(np.quantile(absolute, 0.95)),
+        "p99_abs": float(np.quantile(absolute, 0.99)),
+        "p999_abs": float(np.quantile(absolute, 0.999)),
+        "max_abs": float(absolute.max()),
+    }
+
+
+def _calibration_error_concentration(
+    frame: pd.DataFrame,
+    *,
+    detector: TemporalDetector,
+    device: str,
+    batch_size: int = 1024,
+) -> dict[str, object]:
+    batch = prepare_temporal_batch(
+        frame,
+        features=detector.features,
+        scaler=detector.scaler,
+        sequence_length=detector.sequence_length,
+        bin_minutes=detector.bin_minutes,
+    )
+
+    torch_device = torch.device(device)
+    model = detector.model.to(torch_device)
+    model.eval()
+
+    squared_errors: list[np.ndarray] = []
+
+    with torch.inference_mode():
+        for start in range(0, len(batch.inputs), batch_size):
+            stop = min(len(batch.inputs), start + batch_size)
+
+            inputs = torch.from_numpy(
+                batch.inputs[start:stop]
+            ).to(torch_device)
+            targets = torch.from_numpy(
+                batch.targets[start:stop]
+            ).to(torch_device)
+
+            predictions = model(inputs)
+            squared_errors.append(
+                (targets - predictions)
+                .square()
+                .detach()
+                .cpu()
+                .numpy()
+            )
+
+    feature_mse = np.concatenate(squared_errors, axis=0).mean(axis=0)
+    total = float(feature_mse.sum())
+    order = np.argsort(feature_mse)[::-1]
+
+    top_features = []
+    for index in order[:10]:
+        top_features.append(
+            {
+                "feature": detector.features[int(index)],
+                "mse": float(feature_mse[int(index)]),
+                "share": float(feature_mse[int(index)] / total),
+            }
+        )
+
+    return {
+        "top_1_share": float(feature_mse[order[:1]].sum() / total),
+        "top_3_share": float(feature_mse[order[:3]].sum() / total),
+        "top_5_share": float(feature_mse[order[:5]].sum() / total),
+        "top_features": top_features,
+    }
+
+
 def main() -> None:
     config = _load_yaml(STUDY_CONFIG_PATH)
     validate_study_config(config)
@@ -160,11 +236,16 @@ def main() -> None:
             f"{missing_in_calibration}"
         )
 
+    scaler_name = str(temporal["scaler"])
+
     scaler = fit_scaler(
         train,
         features,
-        method="robust",
+        method=scaler_name,
     )
+
+    train_scaled = transform_frame(train, features, scaler)
+    calibration_scaled = transform_frame(calibration, features, scaler)
 
     # Exact 5-minute contiguity preserves the preregistered 60-minute
     # history and is stricter than the 10-minute maximum-gap ceiling.
@@ -236,6 +317,12 @@ def main() -> None:
         )
     )
 
+    error_concentration = _calibration_error_concentration(
+        calibration,
+        detector=detector,
+        device=result.device,
+    )
+
     checkpoint = {
         "study": config["study"]["name"],
         "evidence_role": "research_second_stage_evidence",
@@ -269,7 +356,12 @@ def main() -> None:
             "validation_fraction": training_config.validation_fraction,
             "patience": training_config.patience,
         },
-        "scaler_center": scaler.center_,
+        "scaler_name": scaler_name,
+        "scaler_location": (
+            scaler.center_
+            if hasattr(scaler, "center_")
+            else scaler.mean_
+        ),
         "scaler_scale": scaler.scale_,
         "calibration_threshold": threshold,
     }
@@ -295,6 +387,8 @@ def main() -> None:
         "features": {
             "count": len(features),
             "names": features,
+            "scaler": scaler_name,
+            "scaler_fit": "TRAIN only",
         },
         "sequence": {
             "history_bins": int(sequence["history_bins"]),
@@ -324,6 +418,15 @@ def main() -> None:
             "final_train_mse": result.train_losses[-1],
             "train_losses": list(result.train_losses),
             "validation_losses": list(result.validation_losses),
+        },
+        "conditioning": {
+            "train_scaled_magnitude": _scaled_magnitude_summary(
+                train_scaled
+            ),
+            "calibration_scaled_magnitude": _scaled_magnitude_summary(
+                calibration_scaled
+            ),
+            "calibration_feature_mse_concentration": error_concentration,
         },
         "calibration": {
             "score_rows": len(calibration_scores),
@@ -359,6 +462,13 @@ def main() -> None:
                 "best_validation_mse": min(result.validation_losses),
                 "calibration_score_rows": len(calibration_scores),
                 "calibration_threshold": threshold,
+                "scaler": scaler_name,
+                "train_scaled_p99_abs": (
+                    _scaled_magnitude_summary(train_scaled)["p99_abs"]
+                ),
+                "calibration_top_3_mse_share": (
+                    error_concentration["top_3_share"]
+                ),
                 "test_file_opened": False,
                 "checkpoint": str(CHECKPOINT_PATH.relative_to(ROOT)),
                 "report": str(REPORT_PATH.relative_to(ROOT)),

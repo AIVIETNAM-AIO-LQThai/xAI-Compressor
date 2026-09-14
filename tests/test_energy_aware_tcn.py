@@ -78,6 +78,20 @@ def test_current_preregistered_config_passes_guard() -> None:
     validate_study_config(config)
 
 
+def test_guard_rejects_scaler_change() -> None:
+    path = (
+        ROOT
+        / "configs"
+        / "energy_aware_hierarchical_intelligence.yaml"
+    )
+    config = yaml.safe_load(path.read_text(encoding="utf-8"))
+    changed = deepcopy(config)
+    changed["temporal_model"]["scaler"] = "robust"
+
+    with pytest.raises(ValueError, match="StandardScaler"):
+        validate_study_config(changed)
+
+
 def test_guard_rejects_objective_change() -> None:
     path = (
         ROOT

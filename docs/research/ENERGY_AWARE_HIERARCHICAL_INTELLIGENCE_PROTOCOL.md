@@ -1,6 +1,6 @@
 # AeroXAI Energy-Aware Hierarchical Intelligence Study
 
-Status: **preregistered — no experiment executed yet**
+Status: **pre-TEST protocol amended after TRAIN/CALIBRATION conditioning diagnostic**
 
 Target branch:
 
@@ -30,7 +30,7 @@ deep-model evidence?
 
 ## 3. Evidence status
 
-MetroPT-3 TEST has already been inspected extensively.
+MetroPT-3 TEST has already been inspected extensively in prior work.
 
 All MetroPT-3 results are therefore:
 
@@ -40,6 +40,9 @@ MetroPT2 has also been used in previous research.
 
 It is a cross-dataset transport benchmark, not untouched
 confirmation evidence.
+
+For this study, no MetroPT-3 TEST rows were opened during the
+G3 TRAIN/CALIBRATION conditioning diagnostic or the scaler amendment.
 
 ## 4. Frozen systems
 
@@ -73,12 +76,13 @@ Failure invalidates the benchmark.
 
 ## 6. Temporal model
 
-Describe exactly the architecture frozen in the YAML:
+Describe exactly the architecture frozen in the YAML after the
+pre-TEST scaler amendment:
 
 - causal TCN
 - 12 previous 5-minute bins
 - same model features
-- RobustScaler fit on TRAIN only
+- StandardScaler fit on TRAIN only
 - 3 residual blocks
 - channels 32/32/32
 - kernel 3
@@ -95,6 +99,9 @@ Describe exactly the architecture frozen in the YAML:
 - seed 20260915
 
 No architecture search is permitted.
+
+The frozen operational PCA remains RobustScaler-based and is not
+changed by the TCN scaler amendment.
 
 ## 7. Router
 
@@ -230,7 +237,69 @@ and incremental GPU energy must still be reported.
 This threshold applies only to measured GPU energy. CPU energy remains
 UNKNOWN under the current WSL hardware interface.
 
-## 14. Stop condition
+## 14. Pre-TEST temporal-scaling amendment
+
+The first preregistered TCN execution was run on MetroPT-3 TRAIN and
+CALIBRATION only. MetroPT-3 TEST was not opened.
+
+That run exposed a numerical-conditioning failure of the originally
+frozen RobustScaler + MSE combination.
+
+TRAIN scaled-value diagnostics were:
+
+- absolute p99 approximately 1435
+- absolute p99.9 approximately 6434
+- absolute maximum approximately 6931
+
+CALIBRATION showed comparable scale magnitudes.
+
+The cause was visible directly in TRAIN feature geometry. Several
+features have extremely small TRAIN interquartile ranges relative to
+their physically observed range. Examples include:
+
+- `tp2__std`: IQR 0.0007059, raw max 4.8935
+- `tp2__last`: IQR 0.0020, raw max 10.544
+- `tp2__max`: IQR 0.0040, raw max 10.544
+- `dv_pressure__std`: IQR 0.0002156, raw max 1.1759
+
+Under RobustScaler these small denominators create values in the
+thousands. With a squared-error objective, a few such coordinates
+dominate the temporal-model loss.
+
+The CALIBRATION residual diagnostic confirmed this consequence:
+
+- top-1 feature MSE share: 59.7%
+- top-3 feature MSE share: 92.2%
+- top-5 feature MSE share: 98.2%
+
+This was treated as a conditioning diagnostic, not as a model-quality
+comparison.
+
+Before any MetroPT-3 TEST evaluation, routing benchmark, or TCN energy
+comparison, the TCN preprocessing is therefore amended exactly once:
+
+- TCN scaler changes from RobustScaler to StandardScaler;
+- StandardScaler is fit on TRAIN only;
+- all 63 features remain unchanged;
+- TCN architecture remains unchanged;
+- MSE objective remains unchanged;
+- optimizer and training hyperparameters remain unchanged;
+- router operating points remain unchanged;
+- frozen Robust-PCA remains unchanged;
+- the 3% measured-GPU-energy materiality rule remains unchanged.
+
+No alternative TCN was selected using TEST performance. The amendment
+is based on numerical conditioning and TRAIN feature geometry, with
+CALIBRATION used only to document that the pathological scaling
+propagated beyond TRAIN.
+
+The original RobustScaler TCN output is retained as a diagnostic
+artifact and is not the benchmark TCN for Systems B or C.
+
+After this amendment, no further preprocessing, model, or routing
+change is permitted before observing the primary TEST result.
+
+## 15. Stop condition
 
 After TEST results are observed:
 
@@ -238,6 +307,7 @@ NO router threshold,
 TCN architecture,
 training hyperparameter,
 feature set,
+preprocessing/scaling rule,
 or energy accounting definition may be changed.
 
 A new experiment requires a new protocol commit.
