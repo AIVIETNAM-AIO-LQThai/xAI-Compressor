@@ -1,0 +1,318 @@
+{
+  "diagnostics": {
+    "autocorrelation": {
+      "baseline": {
+        "1": {
+          "correlation": 0.8005408043142339,
+          "pair_count": 1790
+        },
+        "12": {
+          "correlation": 0.10342777447028192,
+          "pair_count": 1734
+        },
+        "2": {
+          "correlation": 0.6376315026621335,
+          "pair_count": 1784
+        },
+        "3": {
+          "correlation": 0.5097785952933783,
+          "pair_count": 1779
+        },
+        "6": {
+          "correlation": 0.2715028844426105,
+          "pair_count": 1764
+        }
+      },
+      "transition_reset": {
+        "1": {
+          "correlation": 0.08588696438670636,
+          "pair_count": 1790
+        },
+        "12": {
+          "correlation": 0.14508800583275364,
+          "pair_count": 1734
+        },
+        "2": {
+          "correlation": 0.0019105367675176137,
+          "pair_count": 1784
+        },
+        "3": {
+          "correlation": -0.01217845985007931,
+          "pair_count": 1779
+        },
+        "6": {
+          "correlation": 0.006404524566326385,
+          "pair_count": 1764
+        }
+      }
+    },
+    "bootstrap_threshold_stability": {
+      "baseline": {
+        "circular_block_1": {
+          "lower": 0.08810459338672243,
+          "maximum": 0.8317879563888855,
+          "median": 0.25200852435862636,
+          "minimum": 0.07152852074327996,
+          "relative_95_width": 1.8168757767937145,
+          "replicates": 2000,
+          "upper": 0.5459727768394395
+        },
+        "circular_block_12": {
+          "lower": 0.06553589055842408,
+          "maximum": 1.0367501361833897,
+          "median": 0.20496435052884035,
+          "minimum": 0.060182272435838687,
+          "relative_95_width": 3.738465073820936,
+          "replicates": 2000,
+          "upper": 0.8317879563888855
+        }
+      },
+      "transition_reset": {
+        "circular_block_1": {
+          "lower": 0.09723709081026126,
+          "maximum": 0.2218319476372591,
+          "median": 0.12146337674041127,
+          "minimum": 0.08859249894432777,
+          "relative_95_width": 0.5987219624925073,
+          "replicates": 2000,
+          "upper": 0.16995988210324706
+        },
+        "circular_block_12": {
+          "lower": 0.09483882387756946,
+          "maximum": 0.2218319476372591,
+          "median": 0.12146337674041127,
+          "minimum": 0.08789799429305292,
+          "relative_95_width": 0.6184667365721652,
+          "replicates": 2000,
+          "upper": 0.16995988210324706
+        }
+      }
+    },
+    "conditional_tails": {
+      "high_current_high_pressure": {
+        "baseline_ewma": {
+          "count": 232,
+          "max": 1.0367501361833897,
+          "q99": 0.20496435052884035,
+          "q995": 0.44068820165535805
+        },
+        "raw": {
+          "count": 232,
+          "max": 0.12493521666097984,
+          "q99": 0.10870305515037192,
+          "q995": 0.12146337674041127
+        },
+        "transition_reset_ewma": {
+          "count": 232,
+          "max": 0.12493521666097984,
+          "q99": 0.10870305515037192,
+          "q995": 0.12146337674041127
+        }
+      },
+      "high_current_only": {
+        "baseline_ewma": {
+          "count": 128,
+          "max": 0.09674240172946211,
+          "q99": 0.07152852074327996,
+          "q995": 0.09674240172946211
+        },
+        "raw": {
+          "count": 128,
+          "max": 0.3412175502067473,
+          "q99": 0.2562305628302937,
+          "q995": 0.3412175502067473
+        },
+        "transition_reset_ewma": {
+          "count": 128,
+          "max": 0.2562305628302937,
+          "q99": 0.2218319476372591,
+          "q995": 0.2562305628302937
+        }
+      },
+      "high_pressure_only": {
+        "baseline_ewma": {
+          "count": 107,
+          "max": 0.35265359668277985,
+          "q99": 0.06722703035326952,
+          "q995": 0.35265359668277985
+        },
+        "raw": {
+          "count": 107,
+          "max": 0.003158654495455082,
+          "q99": 0.0027988076324308533,
+          "q995": 0.003158654495455082
+        },
+        "transition_reset_ewma": {
+          "count": 107,
+          "max": 0.003158654495455082,
+          "q99": 0.0027988076324308533,
+          "q995": 0.003158654495455082
+        }
+      },
+      "low_current_low_pressure": {
+        "baseline_ewma": {
+          "count": 1329,
+          "max": 1.2834808496176113,
+          "q99": 0.07242256718512058,
+          "q995": 0.16815884148584342
+        },
+        "raw": {
+          "count": 1329,
+          "max": 6.360499355477008,
+          "q99": 0.13966131176642557,
+          "q995": 0.16995988210324706
+        },
+        "transition_reset_ewma": {
+          "count": 1329,
+          "max": 1.2816910221324405,
+          "q99": 0.06841698404704137,
+          "q995": 0.08831143263083013
+        }
+      }
+    },
+    "tail_composition": {
+      "baseline": {
+        "0.99": {
+          "cutoff": 0.08213844467431552,
+          "regime_fraction": {
+            "high_current_high_pressure": 0.2222222222222222,
+            "high_current_only": 0.05555555555555555,
+            "high_pressure_only": 0.05555555555555555,
+            "low_current_low_pressure": 0.6666666666666666
+          },
+          "tail_count": 18
+        },
+        "0.995": {
+          "cutoff": 0.25200852435862636,
+          "regime_fraction": {
+            "high_current_high_pressure": 0.2222222222222222,
+            "high_current_only": 0.0,
+            "high_pressure_only": 0.1111111111111111,
+            "low_current_low_pressure": 0.6666666666666666
+          },
+          "tail_count": 9
+        }
+      },
+      "transition_reset": {
+        "0.99": {
+          "cutoff": 0.09439563176418928,
+          "regime_fraction": {
+            "high_current_high_pressure": 0.3888888888888889,
+            "high_current_only": 0.3888888888888889,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.2222222222222222
+          },
+          "tail_count": 18
+        },
+        "0.995": {
+          "cutoff": 0.12146337674041127,
+          "regime_fraction": {
+            "high_current_high_pressure": 0.2222222222222222,
+            "high_current_only": 0.5555555555555556,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.2222222222222222
+          },
+          "tail_count": 9
+        }
+      }
+    },
+    "transition_pair_carryover": {
+      "high_current_high_pressure -> high_current_only": {
+        "count": 1,
+        "mean_absolute_delta": 0.18470204208701374,
+        "mean_signed_delta": -0.18470204208701374,
+        "median_absolute_delta": 0.18470204208701374,
+        "q90_absolute_delta": 0.18470204208701374,
+        "q95_absolute_delta": 0.18470204208701374
+      },
+      "high_current_high_pressure -> high_pressure_only": {
+        "count": 94,
+        "mean_absolute_delta": 0.025775536639077112,
+        "mean_signed_delta": 0.025775536639077112,
+        "median_absolute_delta": 0.02114387695792412,
+        "q90_absolute_delta": 0.034447224315635905,
+        "q95_absolute_delta": 0.0457171666309275
+      },
+      "high_current_high_pressure -> low_current_low_pressure": {
+        "count": 137,
+        "mean_absolute_delta": 0.020815252047015533,
+        "mean_signed_delta": 0.01328885367453962,
+        "median_absolute_delta": 0.01055040529505038,
+        "q90_absolute_delta": 0.031057397386337116,
+        "q95_absolute_delta": 0.04167817933815139
+      },
+      "high_current_only -> high_current_high_pressure": {
+        "count": 42,
+        "mean_absolute_delta": 0.012502764275092051,
+        "mean_signed_delta": 0.011660514961410573,
+        "median_absolute_delta": 0.010887349345983677,
+        "q90_absolute_delta": 0.020427346497323286,
+        "q95_absolute_delta": 0.02949413133079217
+      },
+      "high_current_only -> high_pressure_only": {
+        "count": 10,
+        "mean_absolute_delta": 0.0171041252425558,
+        "mean_signed_delta": 0.0171041252425558,
+        "median_absolute_delta": 0.014809844870096164,
+        "q90_absolute_delta": 0.03318975422310328,
+        "q95_absolute_delta": 0.03318975422310328
+      },
+      "high_current_only -> low_current_low_pressure": {
+        "count": 55,
+        "mean_absolute_delta": 0.012463034892699884,
+        "mean_signed_delta": 0.0054150687794551474,
+        "median_absolute_delta": 0.010725770521782082,
+        "q90_absolute_delta": 0.025798050979086107,
+        "q95_absolute_delta": 0.029703567374511353
+      },
+      "high_pressure_only -> low_current_low_pressure": {
+        "count": 107,
+        "mean_absolute_delta": 0.016942684163653333,
+        "mean_signed_delta": 0.012604283147406777,
+        "median_absolute_delta": 0.012044283326241682,
+        "q90_absolute_delta": 0.02682117293773186,
+        "q95_absolute_delta": 0.03847553311338658
+      },
+      "low_current_low_pressure -> high_current_high_pressure": {
+        "count": 190,
+        "mean_absolute_delta": 0.027455944668880822,
+        "mean_signed_delta": 0.0023800013238064114,
+        "median_absolute_delta": 0.015747882828615924,
+        "q90_absolute_delta": 0.04294754950284155,
+        "q95_absolute_delta": 0.06293606435179425
+      },
+      "low_current_low_pressure -> high_current_only": {
+        "count": 106,
+        "mean_absolute_delta": 0.01806855186211441,
+        "mean_signed_delta": -0.014978309511598903,
+        "median_absolute_delta": 0.010789035778655339,
+        "q90_absolute_delta": 0.039208875292172415,
+        "q95_absolute_delta": 0.05980762396944585
+      }
+    }
+  },
+  "guardrails": {
+    "detector_unchanged": true,
+    "no_incidents_loaded": true,
+    "no_test_loaded": true,
+    "transition_reset_is_diagnostic_only": true
+  },
+  "reproduction": {
+    "baseline_threshold": 0.25200852435862636,
+    "calibration_rows": 1796,
+    "component_count": 11,
+    "current_threshold": 3.3312096774193547,
+    "feature_count": 63,
+    "pressure_threshold": 9.452193548387097,
+    "status": "PASS",
+    "train_rows": 5271,
+    "transition_count": 742
+  },
+  "study": {
+    "evidence_class": "REAL",
+    "incidents_loaded": false,
+    "posthoc": true,
+    "role": "posthoc_regime_ewma_carryover_diagnostic",
+    "test_loaded": false
+  }
+}
