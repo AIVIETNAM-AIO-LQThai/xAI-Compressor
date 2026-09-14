@@ -1,0 +1,104 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+  test_file: "data/processed/test.parquet"
+  incidents_config: "configs/metropt.yaml"
+
+study:
+  role: "exploratory_reused_test_benchmark"
+  evidence_class: "REAL"
+  candidates:
+    - "frozen_robust_pca"
+    - "global_standard_pca"
+    - "regime_conditioned_standard_pca"
+
+representation:
+  features: "model_feature_columns"
+  variance_retained: 0.95
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+  labels:
+    low_low: "low_current_low_pressure"
+    high_current: "high_current_only"
+    high_pressure: "high_pressure_only"
+    high_both: "high_current_high_pressure"
+  threshold_source: "train_only"
+
+regime_pca:
+  scaler: "standard"
+  latent_dimension_rule: "global_standard_pca_95pct_component_count"
+  require_all_regimes_in_train: true
+  pooled_calibration_threshold: true
+
+alerting:
+  ewma_alpha: 0.20
+  threshold_quantile: 0.995
+  persistence_hits: 3
+  persistence_window: 4
+  reset_gap_minutes: 10
+  merge_minutes: 30
+
+evaluation:
+  early_warning_hours: 24
+  late_tolerance_hours: 2
+  bin_minutes: 5
+
+xai:
+  contribution_level: "exact_squared_reconstruction_residual"
+  aggregation: "operator_signal_group"
+  percentile_reference: "pooled_calibration"
+  report:
+    - "top1_concentration"
+    - "top3_concentration"
+    - "normalized_entropy"
+    - "effective_group_count"
+    - "herfindahl_index"
+    - "calibration_percentile"
+
+calibration_stability:
+  bootstrap_replicates: 2000
+  seed: 20260914
+  confidence: 0.95
+  circular_block_lengths:
+    - 1
+    - 12
+
+frozen_robust_reproduction:
+  tolerance: 1.0e-12
+  expected:
+    timely_incident_recall: 1.0
+    pre_onset_incident_recall: 0.5
+    incident_overlap_recall: 1.0
+    false_alerts_per_24h: 0.8862358575692373
+    time_in_alert_fraction: 0.07549570810485644
+    relevant_episode_precision: 0.06338028169014084
+    pr_auc: 0.24916826514697024
+
+decision:
+  strict_dominance_reference:
+    - "frozen_robust_pca"
+    - "global_standard_pca"
+  required_metrics:
+    timely_incident_recall: "not_lower_than_both"
+    false_alerts_per_24h: "not_higher_than_both"
+    pr_auc: "not_lower_than_both"
+    calibration_relative_width_block12: "not_higher_than_both"
+  xai_is_descriptive_not_monotonic_target: true
+  production_promotion_allowed: false
+
+outputs:
+  result_json: "docs/research/regime_pca_benchmark.json"
+
+guardrails:
+  - "No hyperparameter or router threshold may be changed after seeing test results."
+  - "The MetroPT-3 test set has been repeatedly inspected; all candidate results are exploratory."
+  - "Regime thresholds are derived from training data only."
+  - "The official calibration split is used only for alert calibration and calibration-stability analysis."
+  - "The same alerting protocol is used for all three PCA representations."
+  - "Regime-conditioned PCA uses one global StandardScaler fitted on training data."
+  - "Every regime PCA uses the same fixed latent dimension derived from global Standard-PCA at 95% training variance."
+  - "Exact residual XAI describes detector evidence, not physical root cause."
+  - "No result from this benchmark changes the frozen V3 detector."
