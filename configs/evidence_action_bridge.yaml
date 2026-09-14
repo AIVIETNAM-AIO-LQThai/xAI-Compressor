@@ -1,0 +1,10 @@
+bridge:
+  site_calibrated: false
+  calibrated_compressor_inflow_available: false
+  receiver_pressure_trace_available: false
+  deployment_mode: advisory
+  override_equipment_ctrl: false
+
+replay:
+  incident_id: 1
+  output_file: "docs/evidence_action_replay.json"

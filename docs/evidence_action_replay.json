@@ -1,0 +1,202 @@
+{
+  "bridge_assessment": {
+    "causal_claim": false,
+    "may_generate_real_asset_advisory": false,
+    "missing_requirements": [
+      "site_calibrated_receiver_and_compressor_model",
+      "calibrated_compressor_inflow_observation",
+      "receiver_pressure_trace"
+    ],
+    "note": "Real detector evidence can support candidate hypotheses, but AeroXAI must not map those hypotheses to a real-asset physical state or control advisory until the receiver/compressor model is site-calibrated and the required physical observations are available.",
+    "status": "WITHHOLD_REAL_ASSET_ADVISORY_MISSING_VALIDATED_PHYSICAL_BRIDGE"
+  },
+  "candidate_hypotheses": [
+    {
+      "causal_claim": false,
+      "counterfactual_support_groups": [
+        "tp2"
+      ],
+      "evidence_class": "MODEL_INFERENCE_FROM_REAL",
+      "hypothesis_id": "leak_like_persistent_outflow",
+      "label": "Leak-like persistent outflow",
+      "matched_groups": [
+        "tp2",
+        "dv_pressure"
+      ],
+      "strongest_percentile": 1.0,
+      "strongest_share": 0.9397156633866367
+    },
+    {
+      "causal_claim": false,
+      "counterfactual_support_groups": [
+        "tp2"
+      ],
+      "evidence_class": "MODEL_INFERENCE_FROM_REAL",
+      "hypothesis_id": "demand_surge",
+      "label": "Process-demand surge",
+      "matched_groups": [
+        "tp2",
+        "dv_pressure"
+      ],
+      "strongest_percentile": 1.0,
+      "strongest_share": 0.9397156633866367
+    },
+    {
+      "causal_claim": false,
+      "counterfactual_support_groups": [
+        "tp2"
+      ],
+      "evidence_class": "MODEL_INFERENCE_FROM_REAL",
+      "hypothesis_id": "sensor_inconsistency",
+      "label": "Pressure-sensor inconsistency",
+      "matched_groups": [
+        "tp2",
+        "dv_pressure"
+      ],
+      "strongest_percentile": 1.0,
+      "strongest_share": 0.9397156633866367
+    },
+    {
+      "causal_claim": false,
+      "counterfactual_support_groups": [
+        "tp2"
+      ],
+      "evidence_class": "MODEL_INFERENCE_FROM_REAL",
+      "hypothesis_id": "compressor_performance_degradation",
+      "label": "Compressor performance degradation",
+      "matched_groups": [
+        "tp2"
+      ],
+      "strongest_percentile": 1.0,
+      "strongest_share": 0.9397156633866367
+    },
+    {
+      "causal_claim": false,
+      "counterfactual_support_groups": [],
+      "evidence_class": "MODEL_INFERENCE_FROM_REAL",
+      "hypothesis_id": "pressure_regulation_instability",
+      "label": "Pressure regulation instability",
+      "matched_groups": [
+        "dv_pressure"
+      ],
+      "strongest_percentile": 0.9070155902004454,
+      "strongest_share": 0.06019027728881474
+    }
+  ],
+  "causal_claim": false,
+  "detector_evidence": {
+    "causal_claim": false,
+    "explanation_timestamp": "2020-04-18 00:40:00",
+    "groups": [
+      {
+        "calibration_percentile": 1.0,
+        "counterfactual_alert_cleared": true,
+        "group": "tp2",
+        "share": 0.9397156633866367
+      },
+      {
+        "calibration_percentile": 0.9070155902004454,
+        "counterfactual_alert_cleared": false,
+        "group": "dv_pressure",
+        "share": 0.06019027728881474
+      },
+      {
+        "calibration_percentile": 0.013363028953229399,
+        "counterfactual_alert_cleared": false,
+        "group": "motor_current",
+        "share": 5.122069832465105e-05
+      },
+      {
+        "calibration_percentile": 1.0,
+        "counterfactual_alert_cleared": false,
+        "group": "h1",
+        "share": 2.281291020593012e-05
+      },
+      {
+        "calibration_percentile": 1.0,
+        "counterfactual_alert_cleared": false,
+        "group": "pressure_relationships",
+        "share": 1.050552865881681e-05
+      },
+      {
+        "calibration_percentile": 1.0,
+        "counterfactual_alert_cleared": null,
+        "group": "oil_temperature",
+        "share": 4.850340529238674e-06
+      },
+      {
+        "calibration_percentile": 1.0,
+        "counterfactual_alert_cleared": null,
+        "group": "towers",
+        "share": 2.6691389121431474e-06
+      },
+      {
+        "calibration_percentile": 0.9983296213808464,
+        "counterfactual_alert_cleared": null,
+        "group": "reservoirs",
+        "share": 8.527848918496239e-07
+      },
+      {
+        "calibration_percentile": 0.9983296213808464,
+        "counterfactual_alert_cleared": null,
+        "group": "tp3",
+        "share": 8.44955266454366e-07
+      },
+      {
+        "calibration_percentile": 1.0,
+        "counterfactual_alert_cleared": null,
+        "group": "dv_electric",
+        "share": 9.838299904970985e-08
+      },
+      {
+        "calibration_percentile": 1.0,
+        "counterfactual_alert_cleared": null,
+        "group": "comp",
+        "share": 9.835848866440633e-08
+      },
+      {
+        "calibration_percentile": 1.0,
+        "counterfactual_alert_cleared": null,
+        "group": "mpg",
+        "share": 9.835848866440633e-08
+      },
+      {
+        "calibration_percentile": 0.8073496659242761,
+        "counterfactual_alert_cleared": null,
+        "group": "pressure_switch",
+        "share": 7.867783237526154e-09
+      },
+      {
+        "calibration_percentile": 0.5,
+        "counterfactual_alert_cleared": null,
+        "group": "lps",
+        "share": 0.0
+      },
+      {
+        "calibration_percentile": 0.5,
+        "counterfactual_alert_cleared": null,
+        "group": "oil_level",
+        "share": 0.0
+      },
+      {
+        "calibration_percentile": 0.5,
+        "counterfactual_alert_cleared": null,
+        "group": "caudal_impulses",
+        "share": 0.0
+      }
+    ],
+    "incident_id": 1,
+    "incident_start": "2020-04-18 00:00:00",
+    "temporal_bins_observed": 10,
+    "temporal_bins_requested": 12,
+    "temporal_window_complete": false,
+    "timing": "post_onset"
+  },
+  "detector_evidence_class": "REAL",
+  "downstream_physics_executed": false,
+  "incident_id": 1,
+  "interpretation": "AeroXAI preserved the verified real detector evidence and generated candidate waste hypotheses, then intentionally withheld real-asset physics/control reasoning because the current MetroPT prototype has no validated site-calibrated physical bridge.",
+  "recommendation": null,
+  "robust_control_executed": false,
+  "schema_version": "aeroxai.evidence_action_replay.v1"
+}
