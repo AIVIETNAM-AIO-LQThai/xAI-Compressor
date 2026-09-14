@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter
 
 from backend.app.evidence import (
@@ -5,6 +7,10 @@ from backend.app.evidence import (
 )
 from backend.app.models import (
     EvidenceSummaryResponse,
+)
+from backend.app.proof_bundle import (
+    build_proof_bundle,
+    verify_proof_bundle,
 )
 from backend.app.proof_manifest import (
     build_proof_manifest,
@@ -29,3 +35,22 @@ def get_evidence_summary() -> dict:
 )
 def get_proof_manifest() -> dict:
     return build_proof_manifest()
+
+
+@router.get(
+    "/proof-bundle",
+)
+def get_proof_bundle() -> dict:
+    return build_proof_bundle()
+
+
+@router.post(
+    "/proof-bundle/verify",
+)
+def verify_submitted_proof_bundle(
+    bundle: dict[str, Any],
+) -> dict:
+    return verify_proof_bundle(
+        bundle,
+        check_current_sources=True,
+    )
