@@ -1,0 +1,63 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+
+scope:
+  evidence_class: "REAL"
+  analysis_role: "train_only_healthy_geometry_audit"
+  calibration_allowed: false
+  test_allowed: false
+  incident_labels_allowed: false
+
+split:
+  fit_fraction: 0.80
+  order: "chronological"
+
+scaling:
+  method: "robust"
+  fit_on: "geometry_reference_only"
+
+global_pca:
+  variance_targets: [0.80, 0.90, 0.95, 0.99]
+
+intrinsic_dimension:
+  estimators:
+    - "participation_ratio"
+    - "two_nearest_neighbor"
+
+local_geometry:
+  neighbor_counts: [25, 50, 100, 200]
+  latent_dimension_rule: "global_pca_95pct_component_count"
+  neighbor_metric: "euclidean_in_fit_robust_scaled_space"
+
+residual_structure:
+  pc_count: 3
+  regime_features:
+    - "comp__active_ratio"
+    - "motor_current__mean"
+    - "reservoirs__mean"
+    - "tp3__mean"
+    - "dv_pressure__mean"
+  quantile_bins: 5
+
+relationship_shapes:
+  spline_knots: 6
+  pairs:
+    - {x: "tp2__mean", y: "tp3__mean"}
+    - {x: "tp3__mean", y: "reservoirs__mean"}
+    - {x: "motor_current__mean", y: "reservoirs__mean"}
+    - {x: "motor_current__mean", y: "tp3__mean"}
+    - {x: "dv_pressure__mean", y: "reservoirs__mean"}
+    - {x: "oil_temperature__mean", y: "motor_current__mean"}
+
+outputs:
+  summary_json: "docs/research/healthy_manifold_geometry.json"
+  point_table: "data/processed/manifold_audit/geometry_points.parquet"
+  relationship_table: "data/processed/manifold_audit/relationship_results.parquet"
+
+guardrails:
+  - "No calibration or test parquet may be loaded by this audit."
+  - "No incident label or incident timestamp may be used."
+  - "The audit tests geometry, not anomaly-detection performance."
+  - "Local reconstruction improvement is not sufficient proof of a globally nonlinear manifold."
+  - "Relationship regressions are directional diagnostics, not causal models."
+  - "No nonlinear detector may be promoted from this checkpoint."
