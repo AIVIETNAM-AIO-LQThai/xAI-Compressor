@@ -1,112 +1,222 @@
-# AeroXAI — Explainable Compressed-Air Energy Copilot
+# AeroXAI — Proof-Carrying Explainable Compressed-Air Energy Copilot
 
-AeroXAI is an advisory-first prototype for compressed-air energy-waste intelligence with verified explainability, developed for ESIC 2026.
+AeroXAI is an advisory-first prototype for compressed-air energy-waste intelligence, developed for ESIC 2026.
 
-The current MVP combines real historical telemetry for anomaly detection and verified detector explanation with a separate simulated physics/optimization layer for energy recommendations. The longer-term product scope is system-level compressed-air waste intelligence; the frozen MVP does not claim to diagnose or optimize every industrial waste mechanism.
+The V3 prototype is built around a simple rule:
+
+> **Data proposes evidence; physics and optimization verify what can safely be claimed.**
+
+AeroXAI uses real historical telemetry for anomaly detection and verified detector explanation, then generates candidate waste hypotheses. Before any real-asset physical state or control recommendation can be issued, a physical-bridge gate checks whether the asset has the required calibrated model and observations. In the current MetroPT prototype that bridge is intentionally **withheld**, so no real-asset physics or action is fabricated.
+
+Separately, a simulation-only validation path tests inverse physics, bounded uncertainty, robust optimization, compressor runtime continuity, and a short-lived safety-gated advisory.
 
 The MVP never writes to a PLC or compressor controller.
 
-## Evidence architecture
+## Product identity
 
-- **REAL** — MetroPT-3 telemetry for detection, incident replay, exact PCA attribution, calibration-context normality, temporal evidence and model-space counterfactual verification.
-- **SIMULATED** — digital twin, baseline controller, compressor scheduling, predicted energy, action explanations and robustness stress tests.
-- **LITERATURE** — external context only; never presented as AeroXAI performance.
+**AeroXAI is a proof-carrying industrial energy reasoning system that turns anomalous telemetry into physically tested hypotheses and robust, auditable actions — while making the evidence boundary visible.**
 
-## Frozen results
-
-### REAL telemetry
-
-Under the frozen chronological MetroPT-3 benchmark, the selected robust-scaled PCA detector:
-
-- detected **4/4 documented incidents within the predefined timely window**;
-- produced **pre-onset warnings for 2/4 incidents**;
-- produced about **0.886 benchmark-false alert episodes per 24 h** of valid test exposure;
-- achieved **PR-AUC ≈ 0.249**.
-
-PCA contributions identify signals associated with anomaly evidence; they do **not** prove physical root cause.
-
-### Verified XAI
-
-The frozen detector explanation uses four explanation/verification layers followed by an explicit knowledge limit:
+The current prototype demonstrates two intentionally separate paths:
 
 ```text
-Attribution
--> calibration-context normality
--> temporal evidence
--> model-space counterfactual verification
+REAL EVIDENCE PATH
+MetroPT-3 telemetry
+  -> chronological anomaly detection
+  -> verified XAI
+  -> candidate waste hypotheses
+  -> physical-bridge gate
+  -> WITHHOLD real-asset action
+     because site calibration / physical observations are absent
+
+SIMULATION-ONLY VALIDATION PATH
+known synthetic physical truth
+  -> synthetic pressure trajectory
+  -> inverse physics
+  -> bounded physical-state uncertainty
+  -> scenario generation
+  -> shared-action robust MILP
+  -> independent first-action safety gate
+  -> 60-second advisory
+  -> proof manifest
+```
+
+The two paths coexist in one product but are never blended into one scientific claim.
+
+## Provenance model
+
+AeroXAI uses the following provenance labels:
+
+- **REAL** — measured MetroPT-3 telemetry and frozen real-data evaluation.
+- **MODEL_INFERENCE_FROM_REAL** — candidate hypotheses generated from verified real detector evidence; not diagnoses.
+- **PHYSICS_MODEL_INFERENCE** — physical quantities inferred from the receiver model; not direct measurements.
+- **SIMULATED** — synthetic digital-twin, optimization, safety-gate and energy results.
+- **LITERATURE** — external context only.
+
+All V3 reasoning outputs keep `causal_claim = false`.
+
+## Frozen primary real-data result
+
+The production detection baseline remains **RobustScaler + PCA reconstruction error** with causal EWMA smoothing and persistence.
+
+Under the frozen chronological MetroPT-3 benchmark:
+
+- **4/4** documented incidents were detected within the predefined timely window;
+- **2/4** produced pre-onset warnings;
+- benchmark-false alert episodes were about **0.886 per 24 h** of valid exposure;
+- **PR-AUC ≈ 0.249**.
+
+PCA contributions identify signals contributing to anomaly evidence; they do **not** establish physical root cause.
+
+## Verified XAI
+
+The frozen explanation pipeline is:
+
+```text
+exact PCA contribution
+-> calibration-context rarity
+-> past-only temporal evidence
+-> model-space counterfactual detector-dependence test
 -> explicit knowledge limit
 ```
 
 Across all four frozen incident explanations:
 
 - the dominant contribution group was at or above approximately the **99.55th calibration-context percentile**;
-- repairing only the dominant group's anomalous model-space evidence and rerunning the same EWMA / persistence pipeline caused the frozen alert to clear.
+- repairing only the dominant anomalous model-space evidence and rerunning the unchanged EWMA / persistence pipeline cleared the frozen alert.
 
-This supports a **detector-dependence** statement only. It does not establish physical root cause and does not mean that physically repairing the corresponding sensor or process variable would fix the equipment.
+This is detector-dependence evidence only. It is not a physical intervention and does not prove root cause.
 
-### SIMULATED control and energy
+## Temporal representation research
 
-Frozen one-hour synthetic scenario:
+AeroXAI also benchmarks causal deep temporal representations as research channels. None replaced the frozen PCA detector.
+
+| Model | Timely recall | Pre-onset recall | False alerts / 24 h | PR-AUC | Status |
+|---|---:|---:|---:|---:|---|
+| Frozen PCA reference | 1.00 | 0.50 | 0.886 | 0.249 | Primary detector |
+| 5-min causal TCN | 1.00 | 0.75 | 2.009 | 0.096 | Not promoted |
+| Causal Transformer | 1.00 | 0.50 | 1.753 | 0.165 | Not promoted |
+| Raw-context causal TCN | 1.00 | **1.00** | 2.579 | 0.233 | Exploratory precursor channel |
+
+For model-vs-PCA comparisons, use the aligned PCA metrics in `docs/RESEARCH_RESULTS.md`; valid target timestamps differ across experiments.
+
+The raw-context TCN produced pre-onset alerts for all four documented incidents on its valid test subset, but also produced substantially more false alerts than aligned PCA. Because the same held-out test period was revisited across temporal-model experiments, this precursor result is **exploratory rather than independent confirmatory evidence**.
+
+## Real evidence-to-action gate
+
+For the current MetroPT prototype, the real path ends with:
+
+```text
+WITHHOLD_REAL_ASSET_ADVISORY_MISSING_VALIDATED_PHYSICAL_BRIDGE
+```
+
+Missing requirements:
+
+- site-calibrated receiver and compressor model;
+- calibrated compressor inflow observation;
+- receiver pressure trace appropriate for the inverse model.
+
+Therefore:
+
+```text
+downstream_physics_executed = false
+robust_control_executed = false
+recommendation = null
+```
+
+This refusal is a product behavior, not a missing demo feature.
+
+## Simulation-only physics and robust action proof
+
+A separate synthetic validation uses known total outflow of **0.110 kg/s**.
+
+Results:
+
+- inverse-physics recovery passed;
+- inferred mean total outflow: **0.11000000000000001 kg/s**;
+- absolute numerical recovery error: about **1.39e-17 kg/s**;
+- bounded total-outflow scenarios: approximately **0.106 / 0.110 / 0.114 kg/s**;
+- leakage remains **unidentifiable** because independent process demand is absent;
+- shared-action robust MILP evaluates all three scenarios together;
+- selected 60-second action passes the independent first-action safety gate.
+
+Current simulated first action:
+
+```text
+fixed_1  ON
+fixed_2  OFF
+vsd_1    20%
+```
+
+For that bounded synthetic scenario set:
+
+- worst first-interval pressure minimum ≈ **6.805 bar(g)**;
+- worst first-interval pressure maximum ≈ **6.846 bar(g)**;
+- minimum modeled reserve ≈ **0.026 kg/s**;
+- recommendation validity = **60 s**.
+
+This is **SIMULATION_ONLY** and is explicitly not connected to a real MetroPT incident.
+
+## Earlier frozen energy benchmarks
+
+A separate one-hour nominal synthetic scheduling benchmark remains part of the evidence pack:
 
 - baseline energy: **25.3112 kWh**;
 - optimized energy: **25.2177 kWh**;
 - nominal simulated dispatch saving: **0.0935 kWh (0.369%)**;
 - nominal optimized schedule: **0 modeled safety violations**.
 
-Separate leak scenario:
+A separate high-leak baseline scenario increased predicted one-hour energy by **3.1778 kWh (12.55%)** when leak input changed from 0.005 to 0.020 kg/s.
 
-- increasing leak input from 0.005 to 0.020 kg/s increased baseline energy by **3.1778 kWh (12.55%)**.
+The **0.369% dispatch saving** and **12.55% high-leak penalty** are different experiments and must never be combined.
 
-The 0.369% dispatch saving and 12.55% leak penalty are different experiments and must not be combined.
-
-### Robustness result
-
-The frozen nominal schedule was replayed unchanged under six non-nominal stress scenarios. Five were unsafe under the simplified model: demand +5%, demand +10%, leak +0.005 kg/s, leak +0.010 kg/s, and receiver volume -10%. The worst tested minimum pressure was **3.619 bar(g)**.
-
-This negative result changes product behavior:
-
-```text
-deployment_mode = advisory
-override_equipment_ctrl = false
-recommendation_valid_for_seconds = 60
-requires_reoptimization = true
-open_loop_schedule_approved = false
-```
+The earlier frozen one-hour open-loop schedule also failed several non-nominal replay tests, which motivated the V3 short-lived robust receding-horizon action gate.
 
 ## Architecture
 
 ```text
 REAL TELEMETRY
 MetroPT-3
-  -> chronological preprocessing
-  -> anomaly detection
-  -> exact PCA attribution
-  -> calibration-context normality
-  -> temporal evidence
-  -> model-space counterfactual verification
-  -> knowledge limit
+  -> frozen PCA detector
+  -> verified XAI
+  -> candidate hypothesis engine
+  -> physical-bridge gate
+  -> withhold if required calibration/observations are absent
 
-SIMULATED DECISION LAYER
-scenario / forecast inputs
-  -> physics digital twin
-  -> baseline controller
-  -> constrained MILP optimizer
-  -> action explanation
-  -> robustness / safety gate
+TEMPORAL RESEARCH CHANNEL
+5-min causal TCN / causal Transformer / raw-context TCN
+  -> benchmark only
+  -> no production promotion unless evidence supports it
 
-APPLICATION
-FastAPI -> React/Vite operator interface
+SIMULATED PHYSICS + CONTROL
+synthetic physical truth
+  -> receiver inverse physics
+  -> explicit identifiability test
+  -> bounded uncertainty
+  -> physical scenario set
+  -> state-aware shared-action robust MILP
+  -> independent first-action safety gate
+  -> 60-second advisory
+  -> runtime-state update
+  -> re-observe / re-optimize
+
+PROOF LAYER
+real evidence replay
++ simulated action proof
+-> machine-readable proof manifest
+-> API
+-> Evidence Proof UI
 ```
 
 ## Repository
 
 ```text
-backend/        FastAPI and evidence APIs
-configs/        frozen detector/twin/compressor/optimizer/safety config
-docs/           evidence reports, claims guardrails and demo guide
-frontend/       React + TypeScript + Vite UI
-ml/             preprocessing, detection, XAI, twin, control, optimization
-notebooks/      executed research/validation notebooks
+backend/        FastAPI, evidence APIs and proof manifest
+configs/        detector/twin/compressor/optimizer/bridge configs
+docs/           evidence reports, proof files, claims and demo guide
+frontend/       React + TypeScript + Vite operator interface
+ml/             detection, XAI, temporal models, reasoning, twin, optimization
+notebooks/      research/validation notebooks
+scripts/        reproducible report/proof generation
 tests/          unit, acceptance and API tests
 ```
 
@@ -138,6 +248,7 @@ Frontend: `http://127.0.0.1:5173`
 GET  /health
 GET  /evidence/detection
 GET  /evidence/summary
+GET  /evidence/proof-manifest
 POST /twin/simulate
 POST /optimization/recommend
 ```
@@ -160,31 +271,23 @@ cd frontend
 npm run build
 ```
 
-## Evidence
-
-Machine-readable entry point:
-
-```text
-docs/evidence_summary.json
-```
-
-Underlying reports:
+## Key machine-readable evidence
 
 ```text
 docs/detector_benchmark.json
-docs/xai_report.json
 docs/xai_verification_report.json
-docs/digital_twin_report.json
-docs/baseline_controller_report.json
-docs/optimizer_report.json
-docs/action_explanations.json
-docs/robustness_report.json
+docs/tcn_detector_benchmark.json
+docs/transformer_detector_benchmark.json
+docs/raw_context_tcn_benchmark.json
+docs/evidence_action_replay.json
+docs/simulated_action_proof.json
+docs/proof_manifest.json
 ```
 
-See `docs/CLAIMS.md`, `docs/DEMO.md`, `docs/SPEC.md`, and `docs/SUBMISSION_CHECKLIST.md`.
+See `docs/CLAIMS.md`, `docs/RESEARCH_RESULTS.md`, `docs/DEMO.md`, `docs/SPEC.md`, and `docs/SUBMISSION_CHECKLIST.md`.
 
 ## Status
 
-**ESIC 2026 MVP implemented and frozen for submission preparation.**
+**ESIC 2026 V3 release candidate.**
 
 Do not retune frozen research results unless a reproducibility or correctness defect is found.

@@ -1,106 +1,399 @@
 # AeroXAI Technical Specification
 
-Status: **FROZEN FOR ESIC 2026 MVP**
+Status: **ESIC 2026 V3 RELEASE CANDIDATE**
 
 ## 1. Product definition
 
-AeroXAI is an explainable, advisory-first prototype for compressed-air energy-waste intelligence.
+AeroXAI is a proof-carrying, explainable, advisory-first prototype for compressed-air energy-waste intelligence.
 
-The longer-term product scope is system-level compressed-air waste intelligence. The frozen MVP validates real-telemetry anomaly evidence and a separate simulated energy-decision layer; it does not claim implementation of every compressed-air waste mechanism.
+The defining V3 behavior is not simply anomaly detection or compressor optimization. It is the controlled transition between evidence layers:
 
-The implemented MVP combines:
-1. real-data anomaly / waste detection;
-2. verified explainable anomaly scoring through exact attribution, calibration-context normality, temporal evidence and model-space counterfactual detector-dependence testing;
-3. a physics-based compressed-air digital twin;
-4. a simulated conventional baseline controller;
-5. constrained energy optimization;
-6. explainable operating recommendations;
-7. robustness stress testing and an advisory safety gate;
-8. FastAPI and React interfaces.
+1. detect anomalous behavior on real telemetry;
+2. verify detector evidence;
+3. generate candidate waste hypotheses without causal overclaim;
+4. check whether a validated physical bridge exists;
+5. infer physical state only when the model and observations support it;
+6. propagate bounded uncertainty into physical scenarios;
+7. optimize one shared action across those scenarios;
+8. independently safety-check the first action;
+9. issue only a short-lived advisory;
+10. carry provenance and claim boundaries with the result.
 
 The MVP is not an autonomous industrial controller and writes no command to a PLC or compressor.
 
-## 2. Implemented pipeline
+## 2. Implemented V3 architecture
 
 ```text
 REAL TELEMETRY
-Telemetry
--> data-quality checks
--> chronological feature generation
--> anomaly detection
+MetroPT-3
+-> data-quality / chronological preprocessing
+-> frozen RobustScaler + PCA detector
 -> exact PCA attribution
--> calibration-context normality
--> temporal evidence
--> model-space counterfactual verification
--> knowledge limit
+-> calibration-context rarity
+-> past-only temporal evidence
+-> model-space counterfactual detector-dependence verification
+-> candidate waste hypothesis engine
+-> physical-bridge gate
+-> WITHHOLD if calibration / required observations are missing
 
-SIMULATED DECISION LAYER
-scenario / forecast inputs
--> physics digital twin
--> baseline controller
--> constrained optimizer
--> action explanation
--> robustness / safety gate
--> predicted energy impact
+TEMPORAL RESEARCH CHANNEL
+5-min causal TCN
+causal Transformer
+raw-context causal TCN
+-> chronological benchmark
+-> no production promotion unless evidence beats primary baseline
 
-APPLICATION
-FastAPI -> React operator interface
+SIMULATION-ONLY PHYSICS + CONTROL
+known synthetic truth
+-> synthetic receiver trajectory
+-> inverse total-outflow physics
+-> identifiability test
+-> bounded physical-state uncertainty
+-> scenario generation
+-> shared-action robust MILP
+-> compressor runtime-state constraints
+-> independent first-action safety gate
+-> 60-second advisory
+-> next runtime state
+-> re-observe / re-optimize
+
+PROOF LAYER
+real evidence replay
++ simulated action proof
+-> proof manifest
+-> FastAPI endpoint
+-> Evidence Proof UI
 ```
 
-Cost and CO2 conversion are not required for the frozen technical MVP and are not presented as implemented evidence.
-
-## 3. Evidence classes
+## 3. Provenance model
 
 ### REAL
-- MetroPT-3 telemetry;
-- anomaly scores;
-- incident detection and timing;
-- false-alert benchmark statistics;
-- PCA anomaly-score contributions.
-- calibration-only contribution percentiles;
-- temporal contribution evidence preceding each frozen alert;
-- model-space counterfactual detector-dependence tests.
+
+Measured MetroPT-3 telemetry and frozen real-data detector/XAI evaluation.
+
+### MODEL_INFERENCE_FROM_REAL
+
+Candidate hypotheses generated from verified REAL detector evidence.
+
+Requirements:
+
+```text
+causal_claim = false
+```
+
+These objects are not diagnoses or probabilities of physical root cause.
+
+### PHYSICS_MODEL_INFERENCE
+
+Physical quantities derived from the receiver model.
+
+Requirements:
+
+- assumptions must be explicit;
+- identifiability must be explicit;
+- values must not be labeled measured unless they are measured;
+- causal claim remains false.
 
 ### SIMULATED
-- compressor scheduling;
-- pressure trajectory;
-- predicted power / electrical energy;
-- baseline and optimized energy;
-- action explanations;
-- robustness stress tests.
+
+Synthetic digital-twin, optimizer, safety and energy results.
 
 ### LITERATURE
-External context only. Literature values must never be presented as AeroXAI measured or simulated performance.
 
-## 4. Claims boundary
+External context only.
 
-May claim:
-- anomaly detection on real historical telemetry;
-- explainable anomaly scoring;
-- physically modeled compressed-air scenarios;
-- constrained optimization in simulation;
-- simulated energy differences under documented assumptions;
-- short-lived advisory recommendations with explicit robustness status.
-- verified detector dependence under the documented PCA feature-space repair protocol;
+## 4. Real-data detector
 
-Must not claim:
-- verified real-factory savings;
-- exact leak localization;
-- confirmed root cause from XAI;
-- safe autonomous industrial control;
-- universal compressor compatibility;
-- MetroPT validation of scheduling savings.
-- physical fault repair from model-space counterfactual repair;
-- fault probability from contribution percentiles;
-- physical fault onset from temporal contribution evidence;
+Primary production baseline:
 
-## 5. Dataset boundary
+```text
+RobustScaler
+-> PCA reconstruction error
+-> causal EWMA
+-> persistence rule
+```
 
-MetroPT-3 is used only for detection, incident replay, exact attribution, calibration-context explanation, temporal evidence, model-space counterfactual verification and event-level evaluation.
+Protocol:
 
-It is not used to validate scheduling, industrial energy savings, exact leak flow or control safety.
+- chronological train/calibration/test split;
+- no future leakage;
+- threshold from calibration only;
+- event-level evaluation;
+- frozen detector parameters.
 
-## 6. Control boundary
+Frozen headline metrics:
+
+```text
+timely incident recall      1.0
+pre-onset incident recall   0.5
+false alerts / 24 h         0.8862358576
+PR-AUC                      0.2491682651
+```
+
+## 5. Verified detector explanation
+
+Explanation layers:
+
+1. exact PCA reconstruction-error contribution;
+2. calibration-only empirical contribution percentile;
+3. 12-bin causal temporal evidence window;
+4. model-space counterfactual repair;
+5. unchanged EWMA / persistence replay;
+6. explicit knowledge limit.
+
+Interpretation rule:
+
+> Counterfactual repair verifies detector dependence, not physical causality.
+
+## 6. Temporal representation research
+
+Three causal deep temporal candidates are implemented:
+
+- 5-minute engineered-feature TCN next-state forecaster;
+- causal Transformer next-state forecaster;
+- raw 10-second context TCN forecasting the next 5-minute engineered target.
+
+All use chronological training and calibration-only thresholds.
+
+None is production-primary.
+
+See `docs/RESEARCH_RESULTS.md` for the comparison and repeated-test-set caveat.
+
+## 7. Waste hypothesis engine
+
+Candidate ontology includes:
+
+- leak-like persistent outflow;
+- process-demand surge;
+- pressure-regulation instability;
+- pressure-sensor inconsistency;
+- compressor performance degradation;
+- unloaded / inefficient operation;
+- excess-pressure operation.
+
+Candidate generation uses verified XAI groups and calibration context.
+
+Output provenance:
+
+```text
+evidence_class = MODEL_INFERENCE_FROM_REAL
+causal_claim = false
+```
+
+## 8. Real physical-bridge gate
+
+A real-asset action is only eligible when the minimum physical bridge is present.
+
+Current required conditions include:
+
+- site-calibrated receiver and compressor model;
+- calibrated compressor inflow observation;
+- receiver pressure trace.
+
+Current MetroPT prototype:
+
+```text
+physical_bridge_available = false
+downstream_physics_executed = false
+robust_control_executed = false
+recommendation = null
+```
+
+Current bridge status:
+
+```text
+WITHHOLD_REAL_ASSET_ADVISORY_MISSING_VALIDATED_PHYSICAL_BRIDGE
+```
+
+This is expected behavior.
+
+## 9. Inverse receiver physics
+
+The implemented inverse model uses:
+
+```text
+m_out = m_in - V/(R*T) * dp/dt
+```
+
+where `m_out` is total outflow.
+
+Important identifiability rule:
+
+```text
+m_out = m_demand + m_leak
+```
+
+Pressure plus compressor inflow alone cannot distinguish legitimate process demand from leakage.
+
+If independent demand is absent:
+
+```text
+leak_identifiable = false
+demand = null
+leak = null
+```
+
+## 10. Physical-state uncertainty
+
+Uncertainty is represented as bounded interval estimates:
+
+```text
+lower
+center
+upper
+```
+
+These are engineering uncertainty bounds, not confidence intervals unless a statistical calibration procedure is separately defined.
+
+The current synthetic proof uses:
+
+```text
+total outflow center 0.110 kg/s
+absolute bound       +/- 0.004 kg/s
+```
+
+which produces approximately:
+
+```text
+0.106 / 0.110 / 0.114 kg/s
+```
+
+## 11. Scenario generation
+
+For unidentified demand/leak allocation, scenarios vary total outflow only and do not fabricate a demand/leak split.
+
+For identifiable states with independent demand, bounded combinations may be generated subject to physical consistency.
+
+## 12. Robust scheduler
+
+The V3 robust optimizer uses one shared compressor action schedule across all physical scenarios.
+
+Constraints include:
+
+- pressure safety bounds in every scenario;
+- modeled reserve in every scenario;
+- terminal pressure;
+- compressor capacity;
+- startup / shutdown transitions;
+- minimum on/off runtime;
+- VSD load limits;
+- persistent runtime state across receding horizons.
+
+Objective includes:
+
+- electrical energy;
+- startup penalty;
+- overpressure penalty.
+
+Use:
+
+> lowest-objective feasible shared schedule
+
+rather than claiming every action is the instantaneous lowest-energy action.
+
+## 13. First-action safety gate
+
+Only the first optimizer interval is eligible for advisory display.
+
+The first action is independently replayed across the scenario set.
+
+Required output behavior:
+
+```text
+robust_safe = true
+valid_for_seconds = 60
+```
+
+The system then updates compressor runtime state and requires re-observation / re-optimization.
+
+## 14. Simulation-only validation proof
+
+Synthetic truth:
+
+```text
+total outflow = 0.110 kg/s
+```
+
+Inverse recovery passes with numerical error around machine precision.
+
+Current scenario set:
+
+```text
+0.106 / 0.110 / 0.114 kg/s total outflow
+```
+
+Leakage remains unidentified.
+
+Current robust first action:
+
+```text
+fixed_1 ON
+fixed_2 OFF
+vsd_1   20%
+```
+
+Current first-interval proof includes:
+
+- three source scenarios;
+- robust safety pass;
+- approximately 6.805 bar(g) worst minimum pressure;
+- approximately 6.846 bar(g) worst maximum pressure;
+- approximately 0.026 kg/s minimum reserve;
+- 60-second validity.
+
+Scope:
+
+```text
+SIMULATION_ONLY
+connected_to_real_incident = false
+```
+
+## 15. Earlier nominal energy benchmark
+
+The earlier frozen one-hour deterministic benchmark remains valid as a separate experiment:
+
+```text
+baseline energy            25.3112 kWh
+optimized energy           25.2177 kWh
+energy reduction            0.0935 kWh
+energy reduction percent    0.369%
+```
+
+A separate high-leak scenario increased predicted baseline energy by 12.55%.
+
+Those experiments are not the same as the V3 robust-action proof.
+
+## 16. Proof manifest
+
+The product-level evidence manifest combines the paths without scientifically joining them.
+
+Machine-readable file:
+
+```text
+docs/proof_manifest.json
+```
+
+API:
+
+```text
+GET /evidence/proof-manifest
+```
+
+UI:
+
+```text
+#proof
+```
+
+Manifest invariants include:
+
+- real recommendation is null when the bridge is unavailable;
+- simulation scope is `SIMULATION_ONLY`;
+- simulated proof cannot declare connection to the real incident;
+- causal claim is false;
+- allowed and forbidden claims are machine-readable.
+
+## 17. Control boundary
 
 ```text
 deployment_mode = advisory
@@ -110,68 +403,52 @@ requires_reoptimization = true
 open_loop_schedule_approved = false
 ```
 
-The full optimizer horizon is a planning forecast, not an approved open-loop command sequence.
+There is no PLC-write endpoint.
 
-A real deployment would require site calibration, read-only validation, domain-engineer review, supervised operation and formal uncertainty/safety validation before any closed-loop consideration.
-
-## 7. Unit convention
+## 18. Unit convention
 
 Internal physics uses explicit SI conventions:
-- pressure: Pa absolute;
+
+- pressure: Pa absolute internally; bar(g) only when explicitly converted for display;
 - temperature: K;
 - mass flow: kg/s;
 - volume: m3;
-- power: W/kW as explicitly stated;
-- energy: reported in kWh;
+- power: kW where documented;
+- energy: kWh;
 - time: seconds.
 
-Gauge pressure conversion must use an atmospheric reference. Physics modules must not silently mix gauge/absolute pressure or mass/volumetric flow.
+Physics modules must not silently mix gauge/absolute pressure or mass/volumetric flow.
 
-## 8. Frozen technical choices
+## 19. Scientific rules
 
-Detection:
-- chronological split;
-- RobustScaler + PCA reconstruction error primary;
-- EWMA smoothing and persistence;
-- event-level evaluation;
-- exact PCA residual contributions.
-- calibration-only contribution reference distributions;
-- tie-aware empirical contribution percentiles;
-- 12-bin causal temporal evidence windows;
-- PCA feature-space counterfactual repair using the unchanged alert pipeline.
+1. Correctness beats model complexity.
+2. Negative results are reported rather than tuned away.
+3. A detector explanation is not a physical diagnosis.
+4. Identifiability must be stated before estimating latent physical quantities.
+5. REAL and SIMULATED provenance must remain separate.
+6. A recommendation may only claim the uncertainty set and model constraints actually checked.
+7. Repeated use of a held-out test period for research model comparison is disclosed.
 
-Simulation/control:
-- lumped isothermal ideal-gas receiver;
-- documented assumed compressor fleet;
-- pressure-band simulated baseline;
-- MILP scheduling;
-- pressure, reserve, startup, minimum-runtime and terminal-pressure constraints.
+## 20. Definition of V3 completion
 
-Safety:
-- open-loop replay stress testing;
-- advisory-only UI/API;
-- 60-second recommendation validity;
-- mandatory re-optimization.
+V3 is technically complete when the repository demonstrates:
 
-## 9. Scientific rule
+1. frozen real MetroPT detector benchmark;
+2. verified XAI with detector-dependence testing;
+3. causal temporal-representation research with documented non-promotion;
+4. candidate waste hypotheses from real detector evidence;
+5. explicit physical-bridge eligibility gate;
+6. inverse receiver physics with identifiability;
+7. bounded physical uncertainty;
+8. physical scenario generation;
+9. shared-action robust optimization;
+10. persistent compressor runtime state;
+11. independent first-action safety replay;
+12. 60-second advisory behavior;
+13. real/simulated proof artifacts;
+14. machine-readable proof manifest;
+15. FastAPI endpoint and React Evidence Proof UI;
+16. passing backend tests, Ruff and production frontend build;
+17. successful browser smoke test.
 
-Correctness beats model complexity.
-
-Negative robustness results are reported and used to change product behavior rather than tuned away.
-
-## 10. Definition of completion
-
-The MVP is technically complete when it demonstrates:
-1. real MetroPT incident replay;
-2. chronological detection without future leakage;
-3. verified alert explanation with attribution, normality context, temporal evidence, counterfactual detector-dependence testing and explicit knowledge limits;
-4. physically sensible simulation;
-5. reproducible baseline control;
-6. a lower-energy feasible nominal optimized schedule;
-7. current-action explanation;
-8. open-loop robustness testing;
-9. safety behavior responding to robustness failure;
-10. explicit REAL / SIMULATED / LITERATURE provenance;
-11. a functioning FastAPI + React demonstration interface.
-
-The frozen repository implements these requirements.
+The current V3 release branch should be frozen after final acceptance and documentation review.

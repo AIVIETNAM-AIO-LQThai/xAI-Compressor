@@ -1,4 +1,17 @@
-# AeroXAI Submission Freeze Checklist
+# AeroXAI ESIC 2026 V3 Submission Freeze Checklist
+
+## Release branch
+
+Create the release branch from the audited proof-manifest UI tip:
+
+```bash
+git switch feat/proof-manifest-ui
+git pull --ff-only origin feat/proof-manifest-ui
+git status --short
+git switch -c release/esic-2026-v3
+```
+
+`git status --short` must be empty before applying release documentation.
 
 ## Technical acceptance
 
@@ -18,7 +31,8 @@ npm run build
 ```
 
 Acceptance:
-- pytest passes;
+
+- full pytest passes;
 - Ruff passes;
 - production frontend build passes;
 - no model retuning;
@@ -39,59 +53,135 @@ cd frontend
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`.
+Open:
 
-Only four manual interactions remain:
-1. Overview loads.
-2. Incident Replay switches incidents and renders attribution, calibration percentile, temporal evidence and counterfactual verification; Incident 1 explicitly shows the incomplete 10/12-bin telemetry window.
-3. Digital Twin Lab runs one simulation.
-4. Energy Recommendation returns one advisory action.
+```text
+http://127.0.0.1:5173
+```
+
+Manual browser checks:
+
+1. **Overview** loads.
+2. **Incident Replay** renders REAL detector evidence, calibration context, temporal evidence and counterfactual verification.
+3. **Digital Twin Lab** runs a SIMULATED scenario.
+4. **Energy Recommendation** returns an advisory action and shows no-write / re-optimization posture.
+5. **Evidence Proof** renders the REAL path as withheld and the SIMULATED path as `SIMULATION_ONLY`.
+
+Evidence Proof acceptance:
+
+```text
+REAL:
+physical bridge available = false
+downstream physics executed = false
+robust control executed = false
+recommendation = null / WITHHELD
+
+SIMULATED:
+connected_to_real_incident = false
+recovery passed = true
+robust_safe = true
+valid_for_seconds = 60
+```
 
 This browser smoke test cannot be verified from GitHub alone.
 
-## Evidence integrity
+## Proof artifact integrity
 
-These committed reports must remain present:
+These committed files must remain present:
+
+```text
+docs/evidence_action_replay.json
+docs/simulated_action_proof.json
+docs/proof_manifest.json
+```
+
+`docs/proof_manifest.json` must preserve:
+
+```text
+causal_claim = false
+deployment.mode = advisory
+override_equipment_ctrl = false
+```
+
+It must explicitly forbid:
+
+- treating the synthetic physical state as the real MetroPT incident;
+- claiming measured MetroPT energy savings from the simulated optimizer;
+- claiming physical root cause from detector evidence;
+- claiming identified leakage without independent process-demand information.
+
+## Real-data evidence integrity
+
+These reports must remain present:
 
 ```text
 docs/detector_benchmark.json
 docs/xai_report.json
 docs/xai_verification_report.json
+docs/tcn_detector_benchmark.json
+docs/transformer_detector_benchmark.json
+docs/raw_context_tcn_benchmark.json
+```
+
+Primary production detector remains frozen PCA.
+
+Do not promote the raw-context TCN in submission wording beyond:
+
+```text
+exploratory secondary precursor channel
+```
+
+Required caveat:
+
+> The same held-out test period was reused during sequential temporal-model research, so the raw-context precursor result is exploratory rather than an independent confirmatory generalization estimate.
+
+## Simulation/control evidence integrity
+
+These reports must remain present:
+
+```text
 docs/digital_twin_report.json
 docs/baseline_controller_report.json
 docs/optimizer_report.json
 docs/action_explanations.json
 docs/robustness_report.json
-docs/evidence_summary.json
 ```
 
 Do not regenerate frozen reports merely to change floating-point last digits.
 
 ## Claims integrity
 
-Use `docs/CLAIMS.md`.
+Use:
+
+```text
+docs/CLAIMS.md
+```
 
 Final material must preserve:
-- REAL vs SIMULATED separation;
+
+- REAL vs MODEL_INFERENCE_FROM_REAL vs PHYSICS_MODEL_INFERENCE vs SIMULATED provenance;
 - advisory-only / no PLC writes;
 - PCA contribution != root cause;
 - contribution percentile != fault probability;
 - temporal evidence != physical fault onset;
-- model-space counterfactual repair = detector-dependence evidence, not physical repair or causality;
-- 0.369% = simulated nominal dispatch saving;
-- 12.55% = separate high-leak penalty;
-- open-loop robustness failure;
-- 60-second recommendation validity and required re-optimization.
+- model-space counterfactual repair = detector-dependence evidence;
+- candidate hypothesis != diagnosis;
+- total outflow != leakage unless demand is independently identifiable;
+- current real MetroPT physical bridge is unavailable;
+- no real MetroPT compressor recommendation is issued;
+- simulation-only action is not connected to the real incident;
+- 0.369% = separate nominal simulated dispatch saving;
+- 12.55% = separate high-leak baseline penalty;
+- open-loop robustness failure motivated short-lived re-optimized advisories;
+- V3 simulated first action is valid for 60 seconds under its modeled uncertainty set.
 
 ## Repository hygiene
 
-Before the final submission commit:
+Before final release commit:
 
 ```bash
 git status --short
 ```
-
-Expected: no output.
 
 Never commit:
 
@@ -106,16 +196,35 @@ processed parquet datasets
 
 ## Demo
 
-Use `docs/DEMO.md`.
+Use:
 
-Order:
+```text
+docs/DEMO.md
+```
+
+Recommended order:
 
 ```text
 Overview
 -> Incident Replay
+-> Evidence Proof
 -> Digital Twin Lab
 -> Energy Recommendation
 ```
+
+## Submission narrative
+
+The headline novelty should be:
+
+> Proof-carrying industrial energy reasoning that refuses unsupported transitions from anomaly evidence to physical action.
+
+Do not lead with:
+
+- “AI compressor optimizer”;
+- “Transformer anomaly detector”;
+- “LLM copilot”.
+
+Those are components or possible extensions, not the V3 identity.
 
 ## Final freeze
 
@@ -128,4 +237,9 @@ git status --short
 
 Record the final commit SHA in submission notes.
 
-After that, change code only for a reproducibility, correctness or submission-blocking defect.
+After that, change code only for:
+
+- reproducibility defects;
+- correctness defects;
+- broken runtime/demo behavior;
+- submission-blocking documentation defects.
