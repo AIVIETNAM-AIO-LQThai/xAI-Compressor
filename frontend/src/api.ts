@@ -3,6 +3,8 @@ import type {
   EvidenceSummary,
   OptimizationRequest,
   OptimizationResponse,
+  ProofBundleResponse,
+  ProofBundleVerification,
   ProofManifestResponse,
   TwinRequest,
   TwinResponse,
@@ -51,6 +53,24 @@ export function getDetectionEvidence() {
 export function getProofManifest() {
   return request<ProofManifestResponse>(
     "/evidence/proof-manifest",
+  );
+}
+
+export function getProofBundle() {
+  return request<ProofBundleResponse>(
+    "/evidence/proof-bundle",
+  );
+}
+
+export function verifyProofBundle(
+  bundle: ProofBundleResponse,
+) {
+  return request<ProofBundleVerification>(
+    "/evidence/proof-bundle/verify",
+    {
+      method: "POST",
+      body: JSON.stringify(bundle),
+    },
   );
 }
 

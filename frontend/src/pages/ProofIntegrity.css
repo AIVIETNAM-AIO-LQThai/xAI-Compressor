@@ -1,0 +1,233 @@
+.proof-identity-secondary {
+  display: block;
+  margin-top: 6px;
+  color: rgba(188, 209, 221, 0.52);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+.proof-verification {
+  margin: 0 0 18px;
+  padding: 18px;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12, 27, 34, 0.94),
+      rgba(7, 18, 24, 0.98)
+    );
+}
+
+.proof-verification-pass {
+  border: 1px solid rgba(142, 252, 115, 0.2);
+}
+
+.proof-verification-fail {
+  border: 1px solid rgba(255, 126, 105, 0.28);
+}
+
+.proof-verification-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.proof-verification-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 14px;
+}
+
+.proof-verification-pass .proof-verification-icon {
+  color: #9cff84;
+  background: rgba(142, 252, 115, 0.07);
+}
+
+.proof-verification-fail .proof-verification-icon {
+  color: #ff9d89;
+  background: rgba(255, 126, 105, 0.07);
+}
+
+.proof-verification-head h2 {
+  margin: 4px 0 0;
+  color: #eff8f3;
+  font-size: 17px;
+}
+
+.proof-verification-head p {
+  max-width: 760px;
+  margin: 5px 0 0;
+  color: rgba(193, 213, 222, 0.58);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.proof-verification-status {
+  padding: 8px 11px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.proof-verification-pass .proof-verification-status {
+  color: #a8ff91;
+  border: 1px solid rgba(142, 252, 115, 0.18);
+  background: rgba(142, 252, 115, 0.06);
+}
+
+.proof-verification-fail .proof-verification-status {
+  color: #ffad9c;
+  border: 1px solid rgba(255, 126, 105, 0.2);
+  background: rgba(255, 126, 105, 0.06);
+}
+
+.proof-verification-checks {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.proof-check {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.proof-check span {
+  overflow: hidden;
+  color: rgba(210, 225, 232, 0.65);
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.proof-check strong {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+.proof-check-pass svg,
+.proof-check-pass strong {
+  color: #9cff84;
+}
+
+.proof-check-fail svg,
+.proof-check-fail strong {
+  color: #ff9d89;
+}
+
+.proof-artifact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.proof-artifact {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(146, 182, 199, 0.11);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.proof-artifact-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(221, 235, 241, 0.76);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.proof-artifact > code {
+  display: block;
+  overflow: hidden;
+  margin-top: 9px;
+  color: rgba(190, 214, 225, 0.58);
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.proof-artifact dl {
+  margin: 10px 0 0;
+}
+
+.proof-artifact dl > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(146, 182, 199, 0.07);
+}
+
+.proof-artifact dt {
+  color: rgba(183, 204, 214, 0.45);
+  font-size: 9px;
+}
+
+.proof-artifact dd {
+  min-width: 0;
+  margin: 0;
+  color: rgba(221, 235, 241, 0.72);
+  font-family: monospace;
+  font-size: 9px;
+  text-align: right;
+}
+
+.proof-artifact p {
+  margin: 8px 0 0;
+  color: rgba(190, 211, 220, 0.52);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.proof-verification-errors {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 126, 105, 0.18);
+  border-radius: 10px;
+  background: rgba(255, 126, 105, 0.04);
+}
+
+.proof-verification-errors p {
+  margin: 3px 0;
+  color: rgba(255, 190, 177, 0.82);
+  font-size: 10px;
+}
+
+@media (max-width: 1000px) {
+  .proof-verification-checks {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .proof-artifact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .proof-verification-head {
+    grid-template-columns: auto 1fr;
+  }
+
+  .proof-verification-status {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+
+  .proof-verification-checks {
+    grid-template-columns: 1fr;
+  }
+}

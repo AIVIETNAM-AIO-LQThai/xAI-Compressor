@@ -195,6 +195,43 @@ export interface ProofManifestResponse {
   forbidden_claims: string[];
 }
 
+export interface ProofBundleArtifact {
+  role:
+    | "real_evidence_replay"
+    | "simulated_action_proof";
+  evidence_class: "REAL" | "SIMULATED";
+  path: string;
+  canonical_sha256: string;
+  file_sha256: string;
+  payload: Record<string, unknown>;
+}
+
+export interface ProofBundleResponse {
+  schema_version: "aeroxai.proof_bundle.v1";
+  project: "AeroXAI";
+  manifest: ProofManifestResponse;
+  manifest_sha256: string;
+  artifacts: ProofBundleArtifact[];
+  integrity_policy: {
+    canonicalization: string;
+    digest_algorithm: "sha256";
+    source_file_digest_scope: string;
+    embedded_payload_digest_scope: string;
+    semantic_rebuild_required: boolean;
+  };
+  bundle_id: string;
+}
+
+export interface ProofBundleVerification {
+  schema_version:
+    "aeroxai.proof_bundle_verification.v1";
+  bundle_id: string | null;
+  verified: boolean;
+  checks: Record<string, boolean>;
+  errors: string[];
+  current_sources_checked: boolean;
+}
+
 export interface TwinRequest {
   initial_pressure_bar_g: number;
   mass_flow_in_kg_s: number;

@@ -10,14 +10,21 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-import { getProofManifest } from "../api";
+import {
+  getProofBundle,
+  verifyProofBundle,
+} from "../api";
 import { ErrorPanel } from "../components/ErrorPanel";
 import { EvidenceBadge } from "../components/EvidenceBadge";
 import { LoadingPanel } from "../components/LoadingPanel";
 import { PageHeader } from "../components/PageHeader";
-import type { ProofManifestResponse } from "../types";
+import type {
+  ProofBundleResponse,
+  ProofBundleVerification,
+} from "../types";
 
 import "./ProofManifest.css";
+import "./ProofIntegrity.css";
 
 function humanize(value: string) {
   return value
@@ -33,6 +40,8 @@ function commandLabel(
   compressorId: string,
   value: number,
 ) {
+  void compressorId;
+
   if (value === 0) {
     return "OFF";
   }
@@ -44,14 +53,30 @@ function commandLabel(
   return `${Math.round(value * 100)}%`;
 }
 
+function shortHash(value: string) {
+  if (value.length <= 20) {
+    return value;
+  }
+
+  return `${value.slice(0, 10)}…${value.slice(-10)}`;
+}
+
 export function ProofManifest() {
-  const [data, setData] =
-    useState<ProofManifestResponse | null>(null);
+  const [bundle, setBundle] =
+    useState<ProofBundleResponse | null>(null);
+  const [verification, setVerification] =
+    useState<ProofBundleVerification | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getProofManifest()
-      .then(setData)
+    getProofBundle()
+      .then(async (proofBundle) => {
+        setBundle(proofBundle);
+        const result = await verifyProofBundle(
+          proofBundle,
+        );
+        setVerification(result);
+      })
       .catch((err: Error) => setError(err.message));
   }, []);
 
@@ -59,16 +84,20 @@ export function ProofManifest() {
     return <ErrorPanel error={error} />;
   }
 
-  if (!data) {
+  if (!bundle || !verification) {
     return <LoadingPanel />;
   }
 
+  const data = bundle.manifest;
   const real = data.real_evidence_path;
   const simulated = data.simulated_validation_path;
   const action = simulated.robust_action;
   const state = simulated.physical_state;
   const recovery =
     simulated.inverse_physics_recovery;
+  const checks = Object.entries(
+    verification.checks,
+  );
 
   return (
     <div className="page-shell proof-page">
@@ -81,15 +110,133 @@ export function ProofManifest() {
       <div className="proof-identity">
         <div>
           <span className="proof-overline">
-            MANIFEST ID
+            BUNDLE ID
           </span>
-          <code>{data.manifest_id}</code>
+          <code>{bundle.bundle_id}</code>
+          <span className="proof-identity-secondary">
+            Manifest {data.manifest_id}
+          </span>
         </div>
         <div className="proof-identity-state">
           <ShieldCheck size={18} />
           <span>ADVISORY · NO EQUIPMENT WRITE</span>
         </div>
       </div>
+
+      <section
+        className={
+          verification.verified
+            ? "proof-verification proof-verification-pass"
+            : "proof-verification proof-verification-fail"
+        }
+      >
+        <div className="proof-verification-head">
+          <div className="proof-verification-icon">
+            {verification.verified ? (
+              <ShieldCheck size={25} />
+            ) : (
+              <AlertTriangle size={25} />
+            )}
+          </div>
+          <div>
+            <span className="proof-overline">
+              TAMPER-EVIDENT BUNDLE
+            </span>
+            <h2>
+              {verification.verified
+                ? "Cryptographic integrity verified"
+                : "Integrity verification failed"}
+            </h2>
+            <p>
+              SHA-256 checks, source-file hashes and a
+              semantic manifest rebuild are evaluated
+              against the exact bundle shown below.
+            </p>
+          </div>
+          <div className="proof-verification-status">
+            {verification.verified
+              ? "VERIFIED"
+              : "FAILED"}
+          </div>
+        </div>
+
+        <div className="proof-verification-checks">
+          {checks.map(([name, passed]) => (
+            <div
+              className={
+                passed
+                  ? "proof-check proof-check-pass"
+                  : "proof-check proof-check-fail"
+              }
+              key={name}
+            >
+              {passed ? (
+                <CheckCircle2 size={15} />
+              ) : (
+                <CircleStop size={15} />
+              )}
+              <span>{humanize(name)}</span>
+              <strong>{passed ? "PASS" : "FAIL"}</strong>
+            </div>
+          ))}
+        </div>
+
+        <div className="proof-artifact-grid">
+          {bundle.artifacts.map((artifact) => (
+            <article
+              className="proof-artifact"
+              key={artifact.role}
+            >
+              <div className="proof-artifact-head">
+                <EvidenceBadge
+                  kind={artifact.evidence_class}
+                />
+                <span>{humanize(artifact.role)}</span>
+              </div>
+              <code>{artifact.path}</code>
+              <dl>
+                <div>
+                  <dt>Canonical JSON</dt>
+                  <dd title={artifact.canonical_sha256}>
+                    {shortHash(
+                      artifact.canonical_sha256,
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Exact file</dt>
+                  <dd title={artifact.file_sha256}>
+                    {shortHash(
+                      artifact.file_sha256,
+                    )}
+                  </dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+          <article className="proof-artifact">
+            <div className="proof-artifact-head">
+              <ShieldCheck size={17} />
+              <span>Manifest digest</span>
+            </div>
+            <code>
+              {shortHash(bundle.manifest_sha256)}
+            </code>
+            <p>
+              The embedded source payloads must rebuild
+              this exact manifest.
+            </p>
+          </article>
+        </div>
+
+        {verification.errors.length > 0 && (
+          <div className="proof-verification-errors">
+            {verification.errors.map((message) => (
+              <p key={message}>{message}</p>
+            ))}
+          </div>
+        )}
+      </section>
 
       <section className="proof-path-grid">
         <article className="proof-track proof-track-real">
@@ -420,16 +567,16 @@ export function ProofManifest() {
         <ShieldCheck size={20} />
         <div>
           <strong>
-            Evidence-class separation is a product
-            behavior.
+            Evidence-class separation and artifact
+            integrity are product behaviors.
           </strong>
           <span>
-            REAL and SIMULATED results coexist in one
-            manifest, but are never converted into one
-            blended claim.
+            REAL and SIMULATED results remain separate,
+            while SHA-256 and semantic-rebuild checks
+            bind this view to the frozen source artifacts.
           </span>
         </div>
-        <code>{simulated.proof_id}</code>
+        <code>{bundle.bundle_id}</code>
       </section>
     </div>
   );
