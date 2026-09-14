@@ -1,0 +1,61 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+
+scope:
+  evidence_class: "REAL"
+  analysis_role: "post_geometry_scaling_and_regime_audit"
+  calibration_allowed: false
+  test_allowed: false
+  incident_labels_allowed: false
+  prior_result_informed: true
+
+split:
+  fit_fraction: 0.80
+  order: "chronological"
+
+scaling:
+  methods:
+    - "robust"
+    - "standard"
+
+pca:
+  variance_target: 0.95
+  report_pc_loadings: 3
+  report_top_features: 12
+
+distribution_shift:
+  reference_quantiles:
+    - 0.01
+    - 0.99
+
+regimes:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+  labels:
+    low_low: "low_current_low_pressure"
+    high_current: "high_current_only"
+    high_pressure: "high_pressure_only"
+    high_both: "high_current_high_pressure"
+  minimum_fit_rows: 100
+  minimum_audit_rows: 25
+
+neighbors:
+  k: 50
+
+subspace:
+  minimum_half_rows: 50
+
+outputs:
+  summary_json: "docs/research/scaling_regime_geometry.json"
+  feature_table: "data/processed/manifold_audit/scaling_regime_feature_diagnostics.parquet"
+  regime_table: "data/processed/manifold_audit/regime_geometry_results.parquet"
+
+guardrails:
+  - "Only the MetroPT-3 training parquet may be loaded."
+  - "Calibration, test, incident labels, and incident timestamps remain unavailable."
+  - "This protocol is informed by the preceding exploratory healthy-manifold audit."
+  - "Regime thresholds are fitted from the first 80% training reference only."
+  - "Global and regime-conditioned PCA use the same scaler and same latent dimension within each comparison."
+  - "The audit diagnoses representation geometry; it does not measure anomaly-detection performance."
+  - "No alternative detector may be promoted from this checkpoint."
