@@ -1,0 +1,88 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+  test_file: "data/processed/test.parquet"
+  incidents_config: "configs/metropt.yaml"
+
+study:
+  role: "exploratory_reused_test_benchmark"
+  evidence_class: "REAL"
+  candidate: "regime_standard_pca_transition_reset_ewma"
+  references:
+    - "frozen_robust_pca"
+    - "regime_standard_pca_baseline_ewma"
+  production_promotion_allowed: false
+
+representation:
+  features: "model_feature_columns"
+  variance_retained: 0.95
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+
+alerting:
+  ewma_alpha: 0.20
+  threshold_quantile: 0.995
+  persistence_hits: 3
+  persistence_window: 4
+  reset_gap_minutes: 10
+  merge_minutes: 30
+  candidate_extra_reset: "regime_change"
+  persistence_resets_on_regime_change: false
+
+evaluation:
+  early_warning_hours: 24
+  late_tolerance_hours: 2
+  bin_minutes: 5
+
+calibration_stability:
+  bootstrap_replicates: 2000
+  seed: 20260914
+  confidence: 0.95
+  circular_block_lengths:
+    - 1
+    - 12
+
+reproduction:
+  tolerance: 1.0e-12
+  frozen_robust_expected:
+    timely_incident_recall: 1.0
+    pre_onset_incident_recall: 0.5
+    incident_overlap_recall: 1.0
+    false_alerts_per_24h: 0.8862358575692373
+    time_in_alert_fraction: 0.07549570810485644
+    relevant_episode_precision: 0.06338028169014084
+    pr_auc: 0.24916826514697024
+  baseline_regime_expected:
+    timely_incident_recall: 1.0
+    pre_onset_incident_recall: 1.0
+    false_alerts_per_24h: 1.6458665926285834
+    pr_auc: 0.27670556668116664
+  candidate_calibration_expected:
+    threshold: 0.12146337674041127
+    relative_width_block_1: 0.5987219624925073
+    relative_width_block_12: 0.6184667365721652
+
+decision:
+  exploratory_candidate_gate:
+    timely_incident_recall_minimum: 1.0
+    pre_onset_incident_recall_minimum: 1.0
+    false_alerts_per_24h_maximum: 1.6458665926285834
+    pr_auc_minimum: 0.27670556668116664
+    calibration_relative_width_block12_maximum: 0.67998060967883
+  independent_confirmation_required_if_pass: true
+  production_promotion_allowed: false
+
+outputs:
+  result_json: "docs/research/regime_transition_ewma_benchmark.json"
+
+guardrails:
+  - "The MetroPT-3 TEST set is reused and results are exploratory."
+  - "No detector, scaler, PCA dimension, router threshold, EWMA alpha, alert quantile, persistence rule, reset gap, or merge window is tuned."
+  - "The only candidate change is resetting EWMA state when the operating-regime label changes."
+  - "Persistence history does not reset on regime change in this experiment."
+  - "Calibration and TEST EWMA states are independent."
+  - "Candidate XAI uses the identical regime-reset EWMA recursion so contribution sums remain exactly additive to the smoothed anomaly score."
+  - "No result from this benchmark changes the frozen V3 detector."
