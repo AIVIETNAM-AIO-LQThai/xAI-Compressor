@@ -1,0 +1,81 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+  test_file: "data/processed/test.parquet"
+  incidents_config: "configs/metropt.yaml"
+
+study:
+  role: "posthoc_reused_test_failure_diagnostic"
+  evidence_class: "REAL"
+  production_promotion_allowed: false
+
+representation:
+  features: "model_feature_columns"
+  variance_retained: 0.95
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+
+alerting:
+  ewma_alpha: 0.20
+  threshold_quantile: 0.995
+  persistence_hits: 3
+  persistence_window: 4
+  reset_gap_minutes: 10
+  merge_minutes: 30
+
+evaluation:
+  early_warning_hours: 24
+  late_tolerance_hours: 2
+  bin_minutes: 5
+
+reproduction:
+  tolerance: 1.0e-12
+  candidate_expected:
+    threshold: 0.12146337674041126
+    episodes_total: 381
+    false_episodes: 371
+    false_alerts_per_24h: 2.4721316026931355
+    time_in_alert_fraction: 0.1531200111057125
+    pr_auc: 0.2654428190469076
+    pre_onset_incident_recall: 0.75
+    timely_incident_recall: 1.0
+  baseline_expected:
+    threshold: 0.25200852435862636
+    episodes_total: 259
+    false_episodes: 247
+    false_alerts_per_24h: 1.6458665926285834
+    time_in_alert_fraction: 0.2065431156150945
+    pr_auc: 0.27670556668116664
+    pre_onset_incident_recall: 1.0
+    timely_incident_recall: 1.0
+
+diagnostics:
+  score_quantiles:
+    - 0.50
+    - 0.90
+    - 0.95
+    - 0.99
+    - 0.995
+  transition_neighborhood_rows:
+    - 0
+    - 1
+    - 2
+  episode_gap_quantiles:
+    - 0.50
+    - 0.90
+    - 0.95
+    - 0.99
+
+outputs:
+  result_json: "docs/research/regime_transition_failure_audit.json"
+  local_output_dir: "data/processed/regime_transition_failure_audit"
+
+guardrails:
+  - "This is a post-hoc diagnostic after the transition-reset TEST benchmark failed."
+  - "TRAIN, CALIBRATION, TEST and incidents are loaded only to explain the already-observed failure."
+  - "No detector, router, scaler, PCA dimension, EWMA alpha, threshold quantile, persistence rule, reset gap or merge window is changed."
+  - "No alternative alert rule is simulated."
+  - "No post-hoc tuning is allowed."
