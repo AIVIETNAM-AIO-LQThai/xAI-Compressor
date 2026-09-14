@@ -107,3 +107,27 @@ representation_ablation:
     standard_feature_energy:
       family: feature_energy
       scaler: standard
+
+temporal_explanation_dynamics:
+  output_file: "docs/metropt2_temporal_explanation_dynamics.json"
+  trajectory_file: "data/processed/metropt2/temporal_explanation_dynamics.parquet"
+
+  pre_onset_hours: 24
+  post_onset_hours: 6
+
+  phases:
+    - name: early_precursor
+      start_hours: -24
+      end_hours: -6
+
+    - name: near_precursor
+      start_hours: -6
+      end_hours: 0
+
+    - name: early_event
+      start_hours: 0
+      end_hours: 2
+
+    - name: established_event
+      start_hours: 2
+      end_hours: 6

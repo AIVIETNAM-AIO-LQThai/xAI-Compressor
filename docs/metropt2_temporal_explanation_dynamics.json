@@ -1,0 +1,1574 @@
+{
+  "analysis_window": {
+    "phases": [
+      {
+        "end_hours": -6,
+        "name": "early_precursor",
+        "start_hours": -24
+      },
+      {
+        "end_hours": 0,
+        "name": "near_precursor",
+        "start_hours": -6
+      },
+      {
+        "end_hours": 2,
+        "name": "early_event",
+        "start_hours": 0
+      },
+      {
+        "end_hours": 6,
+        "name": "established_event",
+        "start_hours": 2
+      }
+    ],
+    "post_onset_hours": 6.0,
+    "pre_onset_hours": 24.0
+  },
+  "causal_claim": false,
+  "dataset": "MetroPT2",
+  "evidence_class": "REAL",
+  "interpretation_guardrails": [
+    "Effective group count measures the distribution of detector evidence, not the number of physical root causes.",
+    "Temporal changes in dominant groups are detector-evidence changes, not proven causal fault propagation.",
+    "This is exploratory analysis on a reused test benchmark.",
+    "No detector or representation is promoted from this analysis."
+  ],
+  "protocol": {
+    "alert_definition": "Same calibration threshold and persistence logic as frozen representation ablation.",
+    "contribution_smoothing": "Same causal EWMA and gap-reset protocol as detector.",
+    "test_retuning": false
+  },
+  "research_question": "How does detector-evidence dimensionality evolve before and after reported fault onset?",
+  "schema_version": "aeroxai.metropt2_temporal_explanation_dynamics.v1",
+  "trajectory_file": "/mnt/c/Users/Dell ProMax Tower T2/Downloads/code/xAI-Compressor/data/processed/metropt2/temporal_explanation_dynamics.parquet",
+  "variants": {
+    "flowmeter_excluded": {
+      "model_feature_count": 63,
+      "representations": {
+        "robust_feature_energy": {
+          "family": "feature_energy",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 2.3586889262682584,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 15:45:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 10,
+                  "alert_fraction": 0.4166666666666667,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 1,
+                  "max_effective_groups": 2.101935787932261,
+                  "max_effective_groups_timestamp": "2022-06-04 10:50:00",
+                  "median_effective_groups": 1.5375164520492999,
+                  "median_top1": 0.8708185838369972,
+                  "median_top3": 0.9995658976362087,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 9,
+                  "max_effective_groups": 7.275277433766122,
+                  "max_effective_groups_timestamp": "2022-06-03 14:35:00",
+                  "median_effective_groups": 1.8270275138164842,
+                  "median_top1": 0.7120972581879781,
+                  "median_top3": 0.9998175792594275,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 30,
+                  "alert_fraction": 0.625,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 2.4591515794802854,
+                  "max_effective_groups_timestamp": "2022-06-04 16:15:00",
+                  "median_effective_groups": 1.6081689508498982,
+                  "median_top1": 0.8480726470295017,
+                  "median_top3": 0.9996155548478147,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 5,
+                  "max_effective_groups": 2.8456373118713576,
+                  "max_effective_groups_timestamp": "2022-06-04 05:20:00",
+                  "median_effective_groups": 2.2792615393043363,
+                  "median_top1": 0.6776369520489626,
+                  "median_top3": 0.9998315149068718,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 2.4644218347718487,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 15:20:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 2.5117518388863678,
+                  "max_effective_groups_timestamp": "2022-07-11 10:25:00",
+                  "median_effective_groups": 1.942806871684412,
+                  "median_top1": 0.7902857952749214,
+                  "median_top3": 0.9995326387313723,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 15,
+                  "max_effective_groups": 2.8530995574135374,
+                  "max_effective_groups_timestamp": "2022-07-10 11:20:00",
+                  "median_effective_groups": 2.1925519976463357,
+                  "median_top1": 0.648738910884576,
+                  "median_top3": 0.9998679627523079,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 5,
+                  "alert_fraction": 0.10416666666666667,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 6,
+                  "max_effective_groups": 2.5444698878317165,
+                  "max_effective_groups_timestamp": "2022-07-11 16:10:00",
+                  "median_effective_groups": 1.822349540630164,
+                  "median_top1": 0.7825328285636854,
+                  "median_top3": 0.9996166055458278,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 6,
+                  "max_effective_groups": 2.961748402643927,
+                  "max_effective_groups_timestamp": "2022-07-11 04:50:00",
+                  "median_effective_groups": 2.1395985204945043,
+                  "median_top1": 0.7290079034612046,
+                  "median_top3": 0.9998207308826896,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.13970829434277998,
+          "scaler": "robust",
+          "threshold": 40591.31995221116
+        },
+        "robust_pca": {
+          "family": "pca_reconstruction",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 1.4188665678096624,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 12:50:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 15,
+                  "alert_fraction": 0.625,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 3,
+                  "max_effective_groups": 3.2400540319765896,
+                  "max_effective_groups_timestamp": "2022-06-04 10:25:00",
+                  "median_effective_groups": 1.0379542824369168,
+                  "median_top1": 0.9955413404408648,
+                  "median_top3": 0.9975384600094547,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 9.370212730233275,
+                  "max_effective_groups_timestamp": "2022-06-03 21:30:00",
+                  "median_effective_groups": 2.0146111279488284,
+                  "median_top1": 0.8631135367587661,
+                  "median_top3": 0.9106067089002271,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.4188665678096624,
+                  "max_effective_groups_timestamp": "2022-06-04 12:50:00",
+                  "median_effective_groups": 1.0161927131847461,
+                  "median_top1": 0.9982742684816249,
+                  "median_top3": 0.999018970895504,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 5.882487117970072,
+                  "max_effective_groups_timestamp": "2022-06-04 07:05:00",
+                  "median_effective_groups": 2.5664644268516055,
+                  "median_top1": 0.75740027695694,
+                  "median_top3": 0.9092066660313316,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 1.3132879632937051,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 10:05:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 3.1858638017173706,
+                  "max_effective_groups_timestamp": "2022-07-11 11:50:00",
+                  "median_effective_groups": 1.9877381506152434,
+                  "median_top1": 0.8134871885613759,
+                  "median_top3": 0.9634640215999725,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 7.921130507297394,
+                  "max_effective_groups_timestamp": "2022-07-10 18:35:00",
+                  "median_effective_groups": 2.2099508119380418,
+                  "median_top1": 0.839079117721129,
+                  "median_top3": 0.8993648345634839,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 3.9255309384191173,
+                  "max_effective_groups_timestamp": "2022-07-11 15:55:00",
+                  "median_effective_groups": 2.647563674552149,
+                  "median_top1": 0.6774189751833957,
+                  "median_top3": 0.9245958026503311,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 6,
+                  "alert_fraction": 0.09230769230769231,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 3,
+                  "max_effective_groups": 7.176838080260243,
+                  "max_effective_groups_timestamp": "2022-07-11 08:15:00",
+                  "median_effective_groups": 3.517148418118077,
+                  "median_top1": 0.6827384321071737,
+                  "median_top3": 0.8165908659854928,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.31561736203894797,
+          "scaler": "robust",
+          "threshold": 51.09592474377603
+        },
+        "standard_feature_energy": {
+          "family": "feature_energy",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 2.620457457341955,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 13:00:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 2.59746427288907,
+                  "max_effective_groups_timestamp": "2022-06-04 12:15:00",
+                  "median_effective_groups": 1.6168465950622228,
+                  "median_top1": 0.8234602176282164,
+                  "median_top3": 0.9997256414370828,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 30,
+                  "max_effective_groups": 12.266965035594641,
+                  "max_effective_groups_timestamp": "2022-06-03 15:15:00",
+                  "median_effective_groups": 11.523159822835707,
+                  "median_top1": 0.1488642725985903,
+                  "median_top3": 0.40226450425958304,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 2.620457457341955,
+                  "max_effective_groups_timestamp": "2022-06-04 13:00:00",
+                  "median_effective_groups": 1.89443367353282,
+                  "median_top1": 0.7593214541356785,
+                  "median_top3": 0.9993114154112572,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3055555555555556,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 7,
+                  "max_effective_groups": 12.699945254721975,
+                  "max_effective_groups_timestamp": "2022-06-04 06:35:00",
+                  "median_effective_groups": 10.947756351553128,
+                  "median_top1": 0.2157791268261071,
+                  "median_top3": 0.4379425458819952,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 11.402614871825131,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 01:05:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.0142937982523796,
+                  "max_effective_groups_timestamp": "2022-07-11 10:35:00",
+                  "median_effective_groups": 1.0111703954914473,
+                  "median_top1": 0.9987913745173354,
+                  "median_top3": 0.9997856661219584,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 2,
+                  "alert_fraction": 0.011235955056179775,
+                  "dominant_group_mode": "tp3",
+                  "dominant_group_switches": 69,
+                  "max_effective_groups": 12.48324218991131,
+                  "max_effective_groups_timestamp": "2022-07-10 23:25:00",
+                  "median_effective_groups": 11.856950692188708,
+                  "median_top1": 0.12803965303716408,
+                  "median_top3": 0.3590567221655925,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.014667222600348,
+                  "max_effective_groups_timestamp": "2022-07-11 14:55:00",
+                  "median_effective_groups": 1.0101192455598025,
+                  "median_top1": 0.9989370046436723,
+                  "median_top3": 0.9997475204605111,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3384615384615385,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 9,
+                  "max_effective_groups": 12.176932396558374,
+                  "max_effective_groups_timestamp": "2022-07-11 07:30:00",
+                  "median_effective_groups": 9.175650030943856,
+                  "median_top1": 0.3558166436226432,
+                  "median_top3": 0.49870646432291454,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.8456669235045002,
+          "scaler": "standard",
+          "threshold": 1.611218060723905
+        },
+        "standard_pca": {
+          "family": "pca_reconstruction",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 4.25913136346711,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 13:05:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 4.250474555306776,
+                  "max_effective_groups_timestamp": "2022-06-04 12:05:00",
+                  "median_effective_groups": 3.436179974605711,
+                  "median_top1": 0.6452247876191695,
+                  "median_top3": 0.881281560749138,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 33,
+                  "max_effective_groups": 11.392366336996282,
+                  "max_effective_groups_timestamp": "2022-06-04 01:45:00",
+                  "median_effective_groups": 9.91479126589574,
+                  "median_top1": 0.23483676012750335,
+                  "median_top3": 0.5077537516294539,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 4.25913136346711,
+                  "max_effective_groups_timestamp": "2022-06-04 13:05:00",
+                  "median_effective_groups": 3.5877990790728562,
+                  "median_top1": 0.6347044898683201,
+                  "median_top3": 0.8678595107308444,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3055555555555556,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 14,
+                  "max_effective_groups": 12.316923648627768,
+                  "max_effective_groups_timestamp": "2022-06-04 06:30:00",
+                  "median_effective_groups": 10.486735021288474,
+                  "median_top1": 0.23099863062629028,
+                  "median_top3": 0.4846243914121273,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 1.7732167548759947,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 12:50:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.771226466107422,
+                  "max_effective_groups_timestamp": "2022-07-11 11:30:00",
+                  "median_effective_groups": 1.769036846832551,
+                  "median_top1": 0.8704150100315377,
+                  "median_top3": 0.9643382302365271,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 29,
+                  "max_effective_groups": 12.084972209999544,
+                  "max_effective_groups_timestamp": "2022-07-10 23:25:00",
+                  "median_effective_groups": 10.016878619152077,
+                  "median_top1": 0.2148025695730159,
+                  "median_top3": 0.47704387685462923,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.7732167548759947,
+                  "max_effective_groups_timestamp": "2022-07-11 12:50:00",
+                  "median_effective_groups": 1.7691863303310753,
+                  "median_top1": 0.8704567719056547,
+                  "median_top3": 0.9642130088672014,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3384615384615385,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 10,
+                  "max_effective_groups": 11.532699759115824,
+                  "max_effective_groups_timestamp": "2022-07-11 07:15:00",
+                  "median_effective_groups": 9.59292636775322,
+                  "median_top1": 0.23544810455666876,
+                  "median_top3": 0.5080623978295927,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.844774523877772,
+          "scaler": "standard",
+          "threshold": 0.1756369689684198
+        }
+      }
+    },
+    "full": {
+      "model_feature_count": 68,
+      "representations": {
+        "robust_feature_energy": {
+          "family": "feature_energy",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 2.372610833572838,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 15:45:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 10,
+                  "alert_fraction": 0.4166666666666667,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 1,
+                  "max_effective_groups": 2.120829746514444,
+                  "max_effective_groups_timestamp": "2022-06-04 10:50:00",
+                  "median_effective_groups": 1.5542710446286123,
+                  "median_top1": 0.8698761657726859,
+                  "median_top3": 0.9980775649610067,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 9,
+                  "max_effective_groups": 7.275277433766122,
+                  "max_effective_groups_timestamp": "2022-06-03 14:35:00",
+                  "median_effective_groups": 1.8270275138164844,
+                  "median_top1": 0.712097258187978,
+                  "median_top3": 0.9998175792594275,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 30,
+                  "alert_fraction": 0.625,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 2.478311161747183,
+                  "max_effective_groups_timestamp": "2022-06-04 16:15:00",
+                  "median_effective_groups": 1.6291524381399185,
+                  "median_top1": 0.8476019574770484,
+                  "median_top3": 0.9991033761453156,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 5,
+                  "max_effective_groups": 2.845637311871357,
+                  "max_effective_groups_timestamp": "2022-06-04 05:20:00",
+                  "median_effective_groups": 2.2792615393043367,
+                  "median_top1": 0.6776369520489625,
+                  "median_top3": 0.9998018892862355,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 2.4787635330559987,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 15:20:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 2.549352165262555,
+                  "max_effective_groups_timestamp": "2022-07-11 10:25:00",
+                  "median_effective_groups": 2.0001226929464577,
+                  "median_top1": 0.786272256279319,
+                  "median_top3": 0.9965634758454529,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 15,
+                  "max_effective_groups": 2.8530995574135374,
+                  "max_effective_groups_timestamp": "2022-07-10 11:20:00",
+                  "median_effective_groups": 2.1925519976463357,
+                  "median_top1": 0.6487389108845759,
+                  "median_top3": 0.9998679627523079,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 5,
+                  "alert_fraction": 0.10416666666666667,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 6,
+                  "max_effective_groups": 2.5619512018203134,
+                  "max_effective_groups_timestamp": "2022-07-11 16:10:00",
+                  "median_effective_groups": 2.0073245978170755,
+                  "median_top1": 0.7596116542386805,
+                  "median_top3": 0.9986158370787805,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 6,
+                  "max_effective_groups": 2.961748402643927,
+                  "max_effective_groups_timestamp": "2022-07-11 04:50:00",
+                  "median_effective_groups": 2.1395985204945043,
+                  "median_top1": 0.7290079034612046,
+                  "median_top3": 0.9997961088514399,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.14002600777534902,
+          "scaler": "robust",
+          "threshold": 37606.664073372085
+        },
+        "robust_pca": {
+          "family": "pca_reconstruction",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 1.623807723807315,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 12:50:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 15,
+                  "alert_fraction": 0.625,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 1,
+                  "max_effective_groups": 2.4158912211911554,
+                  "max_effective_groups_timestamp": "2022-06-04 10:30:00",
+                  "median_effective_groups": 1.0581716922835755,
+                  "median_top1": 0.9927293538577057,
+                  "median_top3": 0.9965497817669793,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 9.370213221256403,
+                  "max_effective_groups_timestamp": "2022-06-03 21:30:00",
+                  "median_effective_groups": 2.014611168539591,
+                  "median_top1": 0.8631135354115279,
+                  "median_top3": 0.9106067076765038,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.623807723807315,
+                  "max_effective_groups_timestamp": "2022-06-04 12:50:00",
+                  "median_effective_groups": 1.0363861571008188,
+                  "median_top1": 0.9954116805675217,
+                  "median_top3": 0.9986509004427784,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 3,
+                  "max_effective_groups": 5.882487392870199,
+                  "max_effective_groups_timestamp": "2022-06-04 07:05:00",
+                  "median_effective_groups": 2.4984665392575085,
+                  "median_top1": 0.7403538207875546,
+                  "median_top3": 0.9122323290469806,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 2.771110434644693,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 15:00:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 5,
+                  "alert_fraction": 0.20833333333333334,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 1,
+                  "max_effective_groups": 2.6376394705281507,
+                  "max_effective_groups_timestamp": "2022-07-11 10:45:00",
+                  "median_effective_groups": 2.472625299779123,
+                  "median_top1": 0.6212011858848321,
+                  "median_top3": 0.9808073342781052,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 7.921130709299732,
+                  "max_effective_groups_timestamp": "2022-07-10 18:35:00",
+                  "median_effective_groups": 2.209950832245248,
+                  "median_top1": 0.8390791171351151,
+                  "median_top3": 0.8993648339752414,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 9,
+                  "alert_fraction": 0.1875,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 2.9312505452946542,
+                  "max_effective_groups_timestamp": "2022-07-11 16:00:00",
+                  "median_effective_groups": 2.3384214691366445,
+                  "median_top1": 0.7396722119531441,
+                  "median_top3": 0.9722589938607797,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 7,
+                  "alert_fraction": 0.1076923076923077,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 4,
+                  "max_effective_groups": 7.15085408538112,
+                  "max_effective_groups_timestamp": "2022-07-11 08:10:00",
+                  "median_effective_groups": 3.4779105802375536,
+                  "median_top1": 0.6778158747874596,
+                  "median_top3": 0.8363078116920649,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.6045054591773454,
+          "scaler": "robust",
+          "threshold": 47.338871454698655
+        },
+        "standard_feature_energy": {
+          "family": "feature_energy",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 1.0187625014844015,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 11:25:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.0187625014844015,
+                  "max_effective_groups_timestamp": "2022-06-04 11:25:00",
+                  "median_effective_groups": 1.0119243117808212,
+                  "median_top1": 0.9985942964671695,
+                  "median_top3": 0.999999083501278,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 30,
+                  "max_effective_groups": 12.286435599659441,
+                  "max_effective_groups_timestamp": "2022-06-03 15:15:00",
+                  "median_effective_groups": 11.544481722936169,
+                  "median_top1": 0.14881160536462515,
+                  "median_top3": 0.40217087588166833,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.0162532354363853,
+                  "max_effective_groups_timestamp": "2022-06-04 14:20:00",
+                  "median_effective_groups": 1.0121425802562072,
+                  "median_top1": 0.9985342150364152,
+                  "median_top3": 0.9999401574932263,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3055555555555556,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 7,
+                  "max_effective_groups": 12.715245465509465,
+                  "max_effective_groups_timestamp": "2022-06-04 06:35:00",
+                  "median_effective_groups": 10.966342035846203,
+                  "median_top1": 0.21572891509478745,
+                  "median_top3": 0.4378366504508039,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 1.0051529605002376,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 12:55:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.005127389578051,
+                  "max_effective_groups_timestamp": "2022-07-11 11:30:00",
+                  "median_effective_groups": 1.0046173599395352,
+                  "median_top1": 0.9994602549996225,
+                  "median_top3": 0.9999997117405245,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "tp3",
+                  "dominant_group_switches": 69,
+                  "max_effective_groups": 12.499711721803582,
+                  "max_effective_groups_timestamp": "2022-07-10 23:25:00",
+                  "median_effective_groups": 11.875201304411807,
+                  "median_top1": 0.12801166324307214,
+                  "median_top3": 0.3589660156739365,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.0051529605002376,
+                  "max_effective_groups_timestamp": "2022-07-11 12:55:00",
+                  "median_effective_groups": 1.0044120361129354,
+                  "median_top1": 0.9994872273041986,
+                  "median_top3": 0.9999997047243394,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3384615384615385,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 9,
+                  "max_effective_groups": 12.19967441136259,
+                  "max_effective_groups_timestamp": "2022-07-11 07:30:00",
+                  "median_effective_groups": 9.19397153641533,
+                  "median_top1": 0.3557143340716672,
+                  "median_top3": 0.49856306902269976,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.8822157510381541,
+          "scaler": "standard",
+          "threshold": 2.642454475072326
+        },
+        "standard_pca": {
+          "family": "pca_reconstruction",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 1.757050016678773,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 11:15:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.757050016678773,
+                  "max_effective_groups_timestamp": "2022-06-04 11:15:00",
+                  "median_effective_groups": 1.6973420466748697,
+                  "median_top1": 0.8948429291395202,
+                  "median_top3": 0.965070295661715,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 33,
+                  "max_effective_groups": 11.484816288861635,
+                  "max_effective_groups_timestamp": "2022-06-04 01:45:00",
+                  "median_effective_groups": 9.94434350474886,
+                  "median_top1": 0.23545854808707972,
+                  "median_top3": 0.5066991970793236,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.677308182711948,
+                  "max_effective_groups_timestamp": "2022-06-04 12:20:00",
+                  "median_effective_groups": 1.5683900409934322,
+                  "median_top1": 0.9118853195309816,
+                  "median_top3": 0.9707170594688059,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3055555555555556,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 14,
+                  "max_effective_groups": 12.375577870516567,
+                  "max_effective_groups_timestamp": "2022-06-04 06:30:00",
+                  "median_effective_groups": 10.529246807402258,
+                  "median_top1": 0.23025681726049801,
+                  "median_top3": 0.48442677064606854,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 1.6062986339379746,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 09:30:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.5136779410613246,
+                  "max_effective_groups_timestamp": "2022-07-11 11:30:00",
+                  "median_effective_groups": 1.456726317875025,
+                  "median_top1": 0.930404144640822,
+                  "median_top3": 0.9739952850816581,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 29,
+                  "max_effective_groups": 12.118306366942328,
+                  "max_effective_groups_timestamp": "2022-07-10 23:25:00",
+                  "median_effective_groups": 10.042662065005247,
+                  "median_top1": 0.21509688150808648,
+                  "median_top3": 0.47724234620951056,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "flowmeter",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.552221122707924,
+                  "max_effective_groups_timestamp": "2022-07-11 14:10:00",
+                  "median_effective_groups": 1.4241695787403446,
+                  "median_top1": 0.9353982810280035,
+                  "median_top3": 0.9749721583967795,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3384615384615385,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 10,
+                  "max_effective_groups": 11.594379012107705,
+                  "max_effective_groups_timestamp": "2022-07-11 07:15:00",
+                  "median_effective_groups": 9.626373617593616,
+                  "median_top1": 0.2361385297434513,
+                  "median_top3": 0.5093760026448683,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.8252970964074291,
+          "scaler": "standard",
+          "threshold": 0.20957651518373227
+        }
+      }
+    },
+    "strict_flow_blind": {
+      "model_feature_count": 60,
+      "representations": {
+        "robust_feature_energy": {
+          "family": "feature_energy",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 2.358659949339164,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 15:45:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 10,
+                  "alert_fraction": 0.4166666666666667,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 1,
+                  "max_effective_groups": 2.1018939308293545,
+                  "max_effective_groups_timestamp": "2022-06-04 10:50:00",
+                  "median_effective_groups": 1.5374987263177635,
+                  "median_top1": 0.8708196560548723,
+                  "median_top3": 0.9995679443923946,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 9,
+                  "max_effective_groups": 7.275277433766122,
+                  "max_effective_groups_timestamp": "2022-06-03 14:35:00",
+                  "median_effective_groups": 1.8270275138164842,
+                  "median_top1": 0.712097258187978,
+                  "median_top3": 0.9998175792594273,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 30,
+                  "alert_fraction": 0.625,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 2.4591069143543853,
+                  "max_effective_groups_timestamp": "2022-06-04 16:15:00",
+                  "median_effective_groups": 1.6081180499368926,
+                  "median_top1": 0.8480729585974538,
+                  "median_top3": 0.9996159183345779,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 5,
+                  "max_effective_groups": 2.8456373118713576,
+                  "max_effective_groups_timestamp": "2022-06-04 05:20:00",
+                  "median_effective_groups": 2.279261539304337,
+                  "median_top1": 0.6776369520489627,
+                  "median_top3": 0.9998321263372656,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 2.464392309842601,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 15:20:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 2.511656691028272,
+                  "max_effective_groups_timestamp": "2022-07-11 10:25:00",
+                  "median_effective_groups": 1.942647645452787,
+                  "median_top1": 0.7902900319655914,
+                  "median_top3": 0.9995358485539583,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 15,
+                  "max_effective_groups": 2.8530995574135374,
+                  "max_effective_groups_timestamp": "2022-07-10 11:20:00",
+                  "median_effective_groups": 2.1925519976463357,
+                  "median_top1": 0.648738910884576,
+                  "median_top3": 0.9998679627523079,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 5,
+                  "alert_fraction": 0.10416666666666667,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 6,
+                  "max_effective_groups": 2.544432478600646,
+                  "max_effective_groups_timestamp": "2022-07-11 16:10:00",
+                  "median_effective_groups": 1.8214264215857177,
+                  "median_top1": 0.7825637605058229,
+                  "median_top3": 0.9996187205199245,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 6,
+                  "max_effective_groups": 2.961748402643927,
+                  "max_effective_groups_timestamp": "2022-07-11 04:50:00",
+                  "median_effective_groups": 2.1395985204945043,
+                  "median_top1": 0.7290079034612046,
+                  "median_top3": 0.9998207308826893,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.1397081211498106,
+          "scaler": "robust",
+          "threshold": 42620.88594982172
+        },
+        "robust_pca": {
+          "family": "pca_reconstruction",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 1.4181199604925268,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 12:50:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 15,
+                  "alert_fraction": 0.625,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 3,
+                  "max_effective_groups": 3.1321568346391144,
+                  "max_effective_groups_timestamp": "2022-06-04 10:25:00",
+                  "median_effective_groups": 1.0379109596879128,
+                  "median_top1": 0.9955443820568801,
+                  "median_top3": 0.9975415078118486,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 9.370212730233272,
+                  "max_effective_groups_timestamp": "2022-06-03 21:30:00",
+                  "median_effective_groups": 2.014611127948835,
+                  "median_top1": 0.8631135367587673,
+                  "median_top3": 0.9106067089002282,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.4181199604925268,
+                  "max_effective_groups_timestamp": "2022-06-04 12:50:00",
+                  "median_effective_groups": 1.0161546321997867,
+                  "median_top1": 0.9982770051560212,
+                  "median_top3": 0.9990213950472167,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 5.882487117970053,
+                  "max_effective_groups_timestamp": "2022-06-04 07:05:00",
+                  "median_effective_groups": 2.5664644268515904,
+                  "median_top1": 0.759225078396621,
+                  "median_top3": 0.9092066660313326,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 1.3065769823344777,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 10:05:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 3.1338761066694683,
+                  "max_effective_groups_timestamp": "2022-07-11 11:50:00",
+                  "median_effective_groups": 1.9589959549136489,
+                  "median_top1": 0.815113329520407,
+                  "median_top3": 0.965088139701368,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 7.9211305072973905,
+                  "max_effective_groups_timestamp": "2022-07-10 18:35:00",
+                  "median_effective_groups": 2.209950811938031,
+                  "median_top1": 0.8390791177211309,
+                  "median_top3": 0.8993648345634853,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 3.85498683186948,
+                  "max_effective_groups_timestamp": "2022-07-11 15:55:00",
+                  "median_effective_groups": 2.5993695570028565,
+                  "median_top1": 0.6796706792222614,
+                  "median_top3": 0.9261761902103922,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 6,
+                  "alert_fraction": 0.09230769230769231,
+                  "dominant_group_mode": "dv_pressure",
+                  "dominant_group_switches": 3,
+                  "max_effective_groups": 7.150853973341948,
+                  "max_effective_groups_timestamp": "2022-07-11 08:10:00",
+                  "median_effective_groups": 3.51714841811807,
+                  "median_top1": 0.6827384321071766,
+                  "median_top3": 0.8165908659854945,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.3151336612757326,
+          "scaler": "robust",
+          "threshold": 53.65072098096481
+        },
+        "standard_feature_energy": {
+          "family": "feature_energy",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 2.620308193535927,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 13:00:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 2.5973305200800856,
+                  "max_effective_groups_timestamp": "2022-06-04 12:15:00",
+                  "median_effective_groups": 1.6168161123545082,
+                  "median_top1": 0.8234613225006624,
+                  "median_top3": 0.9997276050350283,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 30,
+                  "max_effective_groups": 12.266965035594641,
+                  "max_effective_groups_timestamp": "2022-06-03 15:15:00",
+                  "median_effective_groups": 11.523159822835707,
+                  "median_top1": 0.14886427259859028,
+                  "median_top3": 0.40226450425958316,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 2.620308193535927,
+                  "max_effective_groups_timestamp": "2022-06-04 13:00:00",
+                  "median_effective_groups": 1.8943459443974655,
+                  "median_top1": 0.7593227212304511,
+                  "median_top3": 0.9993165829366508,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3055555555555556,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 7,
+                  "max_effective_groups": 12.699945254721975,
+                  "max_effective_groups_timestamp": "2022-06-04 06:35:00",
+                  "median_effective_groups": 10.947756351553128,
+                  "median_top1": 0.215779126826107,
+                  "median_top3": 0.4379425458819951,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 11.402614871825131,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 01:05:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.0141939605125008,
+                  "max_effective_groups_timestamp": "2022-07-11 10:35:00",
+                  "median_effective_groups": 1.0110708142226374,
+                  "median_top1": 0.998799083084854,
+                  "median_top3": 0.9997933826244441,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 2,
+                  "alert_fraction": 0.011235955056179775,
+                  "dominant_group_mode": "tp3",
+                  "dominant_group_switches": 69,
+                  "max_effective_groups": 12.48324218991131,
+                  "max_effective_groups_timestamp": "2022-07-10 23:25:00",
+                  "median_effective_groups": 11.856950692188704,
+                  "median_top1": 0.12803965303716408,
+                  "median_top3": 0.35905672216559237,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.0145673627632328,
+                  "max_effective_groups_timestamp": "2022-07-11 14:55:00",
+                  "median_effective_groups": 1.0100197525558308,
+                  "median_top1": 0.9989447148436266,
+                  "median_top3": 0.9997552363676047,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3384615384615385,
+                  "dominant_group_mode": "oil_temperature",
+                  "dominant_group_switches": 9,
+                  "max_effective_groups": 12.176932396558374,
+                  "max_effective_groups_timestamp": "2022-07-11 07:30:00",
+                  "median_effective_groups": 9.175650030943856,
+                  "median_top1": 0.35581664362264326,
+                  "median_top3": 0.4987064643229146,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.8456669235045002,
+          "scaler": "standard",
+          "threshold": 1.6917789637601002
+        },
+        "standard_pca": {
+          "family": "pca_reconstruction",
+          "incident_summaries": {
+            "1": {
+              "condition": "air_leak",
+              "onset": "2022-06-04 10:19:24.300000",
+              "peak_effective_groups_while_alerting": 4.25890569101238,
+              "peak_effective_groups_while_alerting_timestamp": "2022-06-04 13:05:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 4.250254724859012,
+                  "max_effective_groups_timestamp": "2022-06-04 12:05:00",
+                  "median_effective_groups": 3.436104596188442,
+                  "median_top1": 0.6452258697181141,
+                  "median_top3": 0.8812830400760502,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 33,
+                  "max_effective_groups": 11.392366336996288,
+                  "max_effective_groups_timestamp": "2022-06-04 01:45:00",
+                  "median_effective_groups": 9.91479126589574,
+                  "median_top1": 0.2348367601275031,
+                  "median_top3": 0.5077537516294545,
+                  "valid_bins": 165
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "tp2",
+                  "dominant_group_switches": 2,
+                  "max_effective_groups": 4.25890569101238,
+                  "max_effective_groups_timestamp": "2022-06-04 13:05:00",
+                  "median_effective_groups": 3.5877261555369273,
+                  "median_top1": 0.634707134113343,
+                  "median_top3": 0.8678607931540698,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3055555555555556,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 14,
+                  "max_effective_groups": 12.316923648627773,
+                  "max_effective_groups_timestamp": "2022-06-04 06:30:00",
+                  "median_effective_groups": 10.486735021288474,
+                  "median_top1": 0.23099863062629034,
+                  "median_top3": 0.48462439141212765,
+                  "valid_bins": 72
+                }
+              },
+              "window_bins": 309,
+              "window_end": "2022-06-04 16:15:00",
+              "window_start": "2022-06-03 14:35:00"
+            },
+            "2": {
+              "condition": "oil_leak",
+              "onset": "2022-07-11 10:10:18.948000",
+              "peak_effective_groups_while_alerting": 1.773020930831634,
+              "peak_effective_groups_while_alerting_timestamp": "2022-07-11 12:50:00",
+              "phase_summaries": {
+                "early_event": {
+                  "alert_bins": 24,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.7710306030395926,
+                  "max_effective_groups_timestamp": "2022-07-11 11:30:00",
+                  "median_effective_groups": 1.7688409570226242,
+                  "median_top1": 0.870423024907831,
+                  "median_top3": 0.9643471211115773,
+                  "valid_bins": 24
+                },
+                "early_precursor": {
+                  "alert_bins": 0,
+                  "alert_fraction": 0.0,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 29,
+                  "max_effective_groups": 12.084972209999544,
+                  "max_effective_groups_timestamp": "2022-07-10 23:25:00",
+                  "median_effective_groups": 10.01687861915208,
+                  "median_top1": 0.2148025695730159,
+                  "median_top3": 0.4770438768546289,
+                  "valid_bins": 178
+                },
+                "established_event": {
+                  "alert_bins": 48,
+                  "alert_fraction": 1.0,
+                  "dominant_group_mode": "pressure_switch",
+                  "dominant_group_switches": 0,
+                  "max_effective_groups": 1.773020930831634,
+                  "max_effective_groups_timestamp": "2022-07-11 12:50:00",
+                  "median_effective_groups": 1.7689904360491218,
+                  "median_top1": 0.8704647831678938,
+                  "median_top3": 0.9642218841351021,
+                  "valid_bins": 48
+                },
+                "near_precursor": {
+                  "alert_bins": 22,
+                  "alert_fraction": 0.3384615384615385,
+                  "dominant_group_mode": "motor_current",
+                  "dominant_group_switches": 10,
+                  "max_effective_groups": 11.532699759115834,
+                  "max_effective_groups_timestamp": "2022-07-11 07:15:00",
+                  "median_effective_groups": 9.592926367753234,
+                  "median_top1": 0.23544810455666781,
+                  "median_top3": 0.5080623978295924,
+                  "valid_bins": 65
+                }
+              },
+              "window_bins": 315,
+              "window_end": "2022-07-11 16:10:00",
+              "window_start": "2022-07-10 10:15:00"
+            }
+          },
+          "pr_auc_reproduced": 0.844774523877772,
+          "scaler": "standard",
+          "threshold": 0.18441881741684094
+        }
+      }
+    }
+  }
+}
