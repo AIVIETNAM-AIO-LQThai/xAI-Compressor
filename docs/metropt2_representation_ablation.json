@@ -1,0 +1,3579 @@
+{
+  "causal_claim": false,
+  "dataset": "MetroPT2",
+  "evidence_class": "REAL",
+  "frozen_robust_pca_check": {
+    "flowmeter_excluded": {
+      "absolute_difference": 0.0,
+      "expected_pr_auc": 0.31561736203894797,
+      "observed_pr_auc": 0.31561736203894797,
+      "reproduced": true
+    },
+    "full": {
+      "absolute_difference": 0.0,
+      "expected_pr_auc": 0.6045054591773454,
+      "observed_pr_auc": 0.6045054591773454,
+      "reproduced": true
+    },
+    "strict_flow_blind": {
+      "absolute_difference": 0.0,
+      "expected_pr_auc": 0.3151336612757326,
+      "observed_pr_auc": 0.3151336612757326,
+      "reproduced": true
+    }
+  },
+  "interpretation_guardrails": [
+    "Own-alert explanation concentrations can be affected by different alert timestamps.",
+    "Matched-timestamp concentration holds time fixed at the robust PCA first timely alert, isolating representation effects more cleanly.",
+    "Feature-energy contribution means standardized deviation energy, not causal importance.",
+    "PCA reconstruction contribution means detector residual evidence, not physical root cause.",
+    "No representation is promoted from this reused test benchmark."
+  ],
+  "pre_registration": {
+    "feature_variants": [
+      "full",
+      "flowmeter_excluded",
+      "strict_flow_blind"
+    ],
+    "matched_timestamp_reference": "robust_pca",
+    "representations": {
+      "robust_feature_energy": {
+        "family": "feature_energy",
+        "scaler": "robust"
+      },
+      "robust_pca": {
+        "family": "pca_reconstruction",
+        "scaler": "robust",
+        "variance_retained": 0.95
+      },
+      "standard_feature_energy": {
+        "family": "feature_energy",
+        "scaler": "standard"
+      },
+      "standard_pca": {
+        "family": "pca_reconstruction",
+        "scaler": "standard",
+        "variance_retained": 0.95
+      }
+    },
+    "test_retuning": false
+  },
+  "protocol": {
+    "calibration_rows": 2878,
+    "early_warning_hours": 24,
+    "ewma_alpha": 0.2,
+    "late_tolerance_hours": 2,
+    "merge_minutes": 30,
+    "persistence_hits": 3,
+    "persistence_window": 4,
+    "reset_gap_minutes": 10,
+    "test_rows": 14681,
+    "threshold_quantile": 0.995,
+    "train_rows": 5878
+  },
+  "research_question": "Is explanation concentration driven primarily by the physical data or by the anomaly representation?",
+  "schema_version": "aeroxai.metropt2_representation_ablation.v1",
+  "variants": {
+    "flowmeter_excluded": {
+      "matched_timestamp_concentration": [
+        {
+          "condition": "air_leak",
+          "id": 1,
+          "reference_representation": "robust_pca",
+          "reference_timestamp": "2022-06-04 11:05:00",
+          "representations": {
+            "robust_feature_energy": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.8619611141831589,
+              "effective_group_count": 1.6202994722968838,
+              "group_count": 16,
+              "herfindahl_index": 0.754684586371626,
+              "nonzero_group_count": 15,
+              "normalized_entropy": 0.17406512106582633,
+              "shannon_entropy_nats": 0.4826109916024123,
+              "top1_concentration": 0.8619611141831589,
+              "top3_concentration": 0.9997119633599137,
+              "top5_concentration": 0.9998561251966206
+            },
+            "robust_pca": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.9991590512015941,
+              "effective_group_count": 1.0084102456248605,
+              "group_count": 16,
+              "herfindahl_index": 0.9983189321233324,
+              "nonzero_group_count": 16,
+              "normalized_entropy": 0.0030206703545153815,
+              "shannon_entropy_nats": 0.008375076558533388,
+              "top1_concentration": 0.9991590512015941,
+              "top3_concentration": 0.9995122995601977,
+              "top5_concentration": 0.9998148826751632
+            },
+            "standard_feature_energy": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.8140595870007837,
+              "effective_group_count": 1.6218042214760995,
+              "group_count": 16,
+              "herfindahl_index": 0.6971359875246087,
+              "nonzero_group_count": 16,
+              "normalized_entropy": 0.17439991824376458,
+              "shannon_entropy_nats": 0.48353924648220153,
+              "top1_concentration": 0.8140595870007837,
+              "top3_concentration": 0.9997476718781758,
+              "top5_concentration": 0.9998847935268493
+            },
+            "standard_pca": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.6363514260480055,
+              "effective_group_count": 3.472416722311777,
+              "group_count": 16,
+              "herfindahl_index": 0.44369411663655456,
+              "nonzero_group_count": 16,
+              "normalized_entropy": 0.4489850237497597,
+              "shannon_entropy_nats": 1.244850813303144,
+              "top1_concentration": 0.6363514260480055,
+              "top3_concentration": 0.8813875400175584,
+              "top5_concentration": 0.9489780730737349
+            }
+          }
+        },
+        {
+          "condition": "oil_leak",
+          "id": 2,
+          "reference_representation": "robust_pca",
+          "reference_timestamp": "2022-07-11 09:40:00",
+          "representations": {
+            "robust_feature_energy": {
+              "dominant_group": "dv_pressure",
+              "dominant_share": 0.6510523314941274,
+              "effective_group_count": 2.277763560153679,
+              "group_count": 16,
+              "herfindahl_index": 0.5071209439324064,
+              "nonzero_group_count": 15,
+              "normalized_entropy": 0.2969044995032335,
+              "shannon_entropy_nats": 0.8231940669049119,
+              "top1_concentration": 0.6510523314941274,
+              "top3_concentration": 0.9995338241962137,
+              "top5_concentration": 0.999846351875544
+            },
+            "robust_pca": {
+              "dominant_group": "dv_pressure",
+              "dominant_share": 0.981643979680408,
+              "effective_group_count": 1.1128832392802357,
+              "group_count": 16,
+              "herfindahl_index": 0.9638566252841304,
+              "nonzero_group_count": 16,
+              "normalized_entropy": 0.038575559232921365,
+              "shannon_entropy_nats": 0.10695416048329044,
+              "top1_concentration": 0.981643979680408,
+              "top3_concentration": 0.9977296782461932,
+              "top5_concentration": 0.9986967890025059
+            },
+            "standard_feature_energy": {
+              "dominant_group": "pressure_switch",
+              "dominant_share": 0.9987429023711749,
+              "effective_group_count": 1.011464573527895,
+              "group_count": 16,
+              "herfindahl_index": 0.9974879952026191,
+              "nonzero_group_count": 16,
+              "normalized_entropy": 0.004111447623414638,
+              "shannon_entropy_nats": 0.011399353312758976,
+              "top1_concentration": 0.9987429023711749,
+              "top3_concentration": 0.999772104479197,
+              "top5_concentration": 0.9998615624323035
+            },
+            "standard_pca": {
+              "dominant_group": "pressure_switch",
+              "dominant_share": 0.8704681573683766,
+              "effective_group_count": 1.7694565881065507,
+              "group_count": 16,
+              "herfindahl_index": 0.7647166542621981,
+              "nonzero_group_count": 16,
+              "normalized_entropy": 0.20582659177002105,
+              "shannon_entropy_nats": 0.5706724870786117,
+              "top1_concentration": 0.8704681573683766,
+              "top3_concentration": 0.964162480439916,
+              "top5_concentration": 0.9790041258479032
+            }
+          }
+        }
+      ],
+      "model_feature_count": 63,
+      "representations": {
+        "robust_feature_energy": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.6202994722968838,
+            "mean_top3_concentration": 0.9997119633599137,
+            "timely_explanations": 1
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "tp2",
+                "dominant_share": 0.8619611141831589,
+                "effective_group_count": 1.6202994722968838,
+                "group_count": 16,
+                "herfindahl_index": 0.754684586371626,
+                "nonzero_group_count": 15,
+                "normalized_entropy": 0.17406512106582633,
+                "shannon_entropy_nats": 0.4826109916024123,
+                "top1_concentration": 0.8619611141831589,
+                "top3_concentration": 0.9997119633599137,
+                "top5_concentration": 0.9998561251966206
+              },
+              "condition": "air_leak",
+              "delay_hours": 0.7599166666666666,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 11:05:00",
+              "id": 1,
+              "lead_hours": null,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.8619611141831589,
+                  "smoothed_contribution": 72619.88657843493
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.10219177445497851,
+                  "smoothed_contribution": 8609.617009465946
+                },
+                {
+                  "calibration_percentile": 0.3728283530229326,
+                  "group": "dv_pressure",
+                  "share": 0.03555907472177629,
+                  "smoothed_contribution": 2995.838130791562
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 7.208093305011422e-05,
+                  "smoothed_contribution": 6.07279040369189
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 7.208090365668403e-05,
+                  "smoothed_contribution": 6.072787927306898
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 7.208090365668403e-05,
+                  "smoothed_contribution": 6.072787927306898
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 3.527987120470925e-05,
+                  "smoothed_contribution": 2.9723153437329803
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 2.2924856587829188e-05,
+                  "smoothed_contribution": 1.9314101968656647
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 9.037934296781254e-06,
+                  "smoothed_contribution": 0.7614424278960418
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 2.6062714850759316e-06,
+                  "smoothed_contribution": 0.2195773527651339
+                },
+                {
+                  "calibration_percentile": 0.17095205003474634,
+                  "group": "reservoirs",
+                  "share": 4.0832355225276004e-07,
+                  "smoothed_contribution": 0.03440109949739359
+                },
+                {
+                  "calibration_percentile": 0.1702571230020848,
+                  "group": "tp3",
+                  "share": 4.067115220916881e-07,
+                  "smoothed_contribution": 0.034265286587122114
+                },
+                {
+                  "calibration_percentile": 0.7769284225156359,
+                  "group": "pressure_switch",
+                  "share": 3.766939946309352e-07,
+                  "smoothed_contribution": 0.03173632164462503
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 3.76618539737981e-07,
+                  "smoothed_contribution": 0.03172996459941967
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 3.76618539737981e-07,
+                  "smoothed_contribution": 0.03172996459941967
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 0.0,
+                  "smoothed_contribution": 0.0
+                }
+              ],
+              "timing": "post_onset"
+            },
+            {
+              "condition": "oil_leak",
+              "explanation_available": false,
+              "id": 2,
+              "reason": "No timely alert within the pre-registered evaluation window."
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 11,
+            "false_alerts_per_24h": 0.09808596144676793,
+            "false_episodes": 5,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": 0.7599166666666666,
+                "first_alert": "2022-06-04 11:05:00",
+                "id": 1,
+                "lead_hours": null,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": null,
+                "id": 2,
+                "lead_hours": null,
+                "timely_detected": false
+              }
+            ],
+            "pr_auc": 0.13970829434277998,
+            "pre_onset_incident_recall": 0.0,
+            "relevant_episode_precision": 0.5454545454545454,
+            "time_in_alert_fraction": 0.005517335331380696,
+            "timely_incident_recall": 0.5,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "family": "feature_energy",
+            "input_feature_count": 63,
+            "scaler": "robust",
+            "threshold": 40591.31995221116
+          },
+          "threshold": 40591.31995221116
+        },
+        "robust_pca": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.060646742452548,
+            "mean_top3_concentration": 0.9986209889031954,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "tp2",
+                "dominant_share": 0.9991590512015941,
+                "effective_group_count": 1.0084102456248605,
+                "group_count": 16,
+                "herfindahl_index": 0.9983189321233324,
+                "nonzero_group_count": 16,
+                "normalized_entropy": 0.0030206703545153815,
+                "shannon_entropy_nats": 0.008375076558533388,
+                "top1_concentration": 0.9991590512015941,
+                "top3_concentration": 0.9995122995601977,
+                "top5_concentration": 0.9998148826751632
+              },
+              "condition": "air_leak",
+              "delay_hours": 0.7599166666666666,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 11:05:00",
+              "id": 1,
+              "lead_hours": null,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.9991590512015941,
+                  "smoothed_contribution": 24219.212995857924
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.00017662650243552085,
+                  "smoothed_contribution": 4.2813552837807425
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.0001766218561680368,
+                  "smoothed_contribution": 4.281242660128185
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.0001766197665132914,
+                  "smoothed_contribution": 4.281192007738753
+                },
+                {
+                  "calibration_percentile": 0.7689367616400278,
+                  "group": "dv_pressure",
+                  "share": 0.00012596334845213023,
+                  "smoothed_contribution": 3.0533008355024003
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.00010178928436737636,
+                  "smoothed_contribution": 2.467331258046163
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 4.587551214169947e-05,
+                  "smoothed_contribution": 1.1120039382295626
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 2.3845295336677948e-05,
+                  "smoothed_contribution": 0.5780003554125033
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 4.974424738390056e-06,
+                  "smoothed_contribution": 0.12057805223907819
+                },
+                {
+                  "calibration_percentile": 0.9972202918693537,
+                  "group": "pressure_switch",
+                  "share": 1.7878188605601012e-06,
+                  "smoothed_contribution": 0.04333600914673677
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 1.7841279363557796e-06,
+                  "smoothed_contribution": 0.043246542630521426
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.3090136879855824e-06,
+                  "smoothed_contribution": 0.03172996459941967
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 1.3090136879855824e-06,
+                  "smoothed_contribution": 0.03172996459941967
+                },
+                {
+                  "calibration_percentile": 0.747394023627519,
+                  "group": "tp3",
+                  "share": 1.2231726010800434e-06,
+                  "smoothed_contribution": 0.029649211224808313
+                },
+                {
+                  "calibration_percentile": 0.7456567060458652,
+                  "group": "reservoirs",
+                  "share": 1.2196609454262258e-06,
+                  "smoothed_contribution": 0.029564090106057865
+                },
+                {
+                  "calibration_percentile": 0.9096594857539958,
+                  "group": "lps",
+                  "share": 5.333921269567643e-13,
+                  "smoothed_contribution": 1.2929210336976785e-08
+                }
+              ],
+              "timing": "post_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "dv_pressure",
+                "dominant_share": 0.981643979680408,
+                "effective_group_count": 1.1128832392802357,
+                "group_count": 16,
+                "herfindahl_index": 0.9638566252841304,
+                "nonzero_group_count": 16,
+                "normalized_entropy": 0.038575559232921365,
+                "shannon_entropy_nats": 0.10695416048329044,
+                "top1_concentration": 0.981643979680408,
+                "top3_concentration": 0.9977296782461932,
+                "top5_concentration": 0.9986967890025059
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 09:40:00",
+              "id": 2,
+              "lead_hours": 0.5052633333333334,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 0.9989576094510076,
+                  "group": "dv_pressure",
+                  "share": 0.981643979680408,
+                  "smoothed_contribution": 134.24534436212156
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.01517190096339115,
+                  "smoothed_contribution": 2.0748429284123477
+                },
+                {
+                  "calibration_percentile": 0.9781097984711605,
+                  "group": "oil_temperature",
+                  "share": 0.0009137976023940496,
+                  "smoothed_contribution": 0.12496697005222675
+                },
+                {
+                  "calibration_percentile": 0.504864489228631,
+                  "group": "tp2",
+                  "share": 0.0005865729786126663,
+                  "smoothed_contribution": 0.08021715931371526
+                },
+                {
+                  "calibration_percentile": 0.9989576094510076,
+                  "group": "pressure_switch",
+                  "share": 0.00038053777770012746,
+                  "smoothed_contribution": 0.052040684879238866
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 0.00022841433920902824,
+                  "smoothed_contribution": 0.031236947670524623
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 0.00022841433920902824,
+                  "smoothed_contribution": 0.031236947670524623
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "comp",
+                  "share": 0.00014278716672384134,
+                  "smoothed_contribution": 0.019526949448184262
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "mpg",
+                  "share": 0.00014278059352431068,
+                  "smoothed_contribution": 0.019526050526117993
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "dv_electric",
+                  "share": 0.00014257375493344158,
+                  "smoothed_contribution": 0.01949776418358102
+                },
+                {
+                  "calibration_percentile": 0.3165392633773454,
+                  "group": "reservoirs",
+                  "share": 0.00013793534120958042,
+                  "smoothed_contribution": 0.018863434976105556
+                },
+                {
+                  "calibration_percentile": 0.30611535788742184,
+                  "group": "tp3",
+                  "share": 0.00013657202115540513,
+                  "smoothed_contribution": 0.018676993278364862
+                },
+                {
+                  "calibration_percentile": 0.22341904100069493,
+                  "group": "h1",
+                  "share": 7.118265596327462e-05,
+                  "smoothed_contribution": 0.009734629214057156
+                },
+                {
+                  "calibration_percentile": 0.830090340514246,
+                  "group": "motor_current",
+                  "share": 6.009511567537526e-05,
+                  "smoothed_contribution": 0.00821834561746999
+                },
+                {
+                  "calibration_percentile": 0.16400277970813065,
+                  "group": "towers",
+                  "share": 1.245562523622962e-05,
+                  "smoothed_contribution": 0.001703376920446823
+                },
+                {
+                  "calibration_percentile": 0.5899930507296733,
+                  "group": "lps",
+                  "share": 4.465453892958862e-11,
+                  "smoothed_contribution": 6.106759762216501e-09
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 16,
+            "false_alerts_per_24h": 0.1569375383148287,
+            "false_episodes": 8,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": 0.7599166666666666,
+                "first_alert": "2022-06-04 11:05:00",
+                "id": 1,
+                "lead_hours": null,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 09:40:00",
+                "id": 2,
+                "lead_hours": 0.5052633333333334,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.31561736203894797,
+            "pre_onset_incident_recall": 0.5,
+            "relevant_episode_precision": 0.5,
+            "time_in_alert_fraction": 0.015121585723043389,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "components": 3,
+            "explained_variance_ratio": 0.9977280511376374,
+            "family": "pca_reconstruction",
+            "input_feature_count": 63,
+            "scaler": "robust",
+            "threshold": 51.09592474377603,
+            "variance_retained": 0.95
+          },
+          "threshold": 51.09592474377603
+        },
+        "standard_feature_energy": {
+          "explanation_summary": {
+            "mean_effective_group_count": 6.171507732150296,
+            "mean_top3_concentration": 0.6995893436970668,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "pressure_switch",
+                "dominant_share": 0.9990211099724854,
+                "effective_group_count": 1.009984345834534,
+                "group_count": 16,
+                "herfindahl_index": 0.9980433299655008,
+                "nonzero_group_count": 16,
+                "normalized_entropy": 0.0035832330556766633,
+                "shannon_entropy_nats": 0.009934831559325907,
+                "top1_concentration": 0.9990211099724854,
+                "top3_concentration": 0.9994778966479247,
+                "top5_concentration": 0.9996326151011753
+              },
+              "condition": "air_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 08:30:00",
+              "id": 1,
+              "lead_hours": 1.8234166666666667,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.9990211099724856,
+                  "smoothed_contribution": 1487.9513288343105
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.0003252126806996071,
+                  "smoothed_contribution": 0.4843747900523103
+                },
+                {
+                  "calibration_percentile": 0.9312022237665045,
+                  "group": "oil_temperature",
+                  "share": 0.00013157399473973783,
+                  "smoothed_contribution": 0.19596753097481934
+                },
+                {
+                  "calibration_percentile": 0.8943710910354413,
+                  "group": "dv_pressure",
+                  "share": 8.274439739278551e-05,
+                  "smoothed_contribution": 0.1232402747301109
+                },
+                {
+                  "calibration_percentile": 0.8280055594162613,
+                  "group": "tp2",
+                  "share": 7.197405585783248e-05,
+                  "smoothed_contribution": 0.10719882791886773
+                },
+                {
+                  "calibration_percentile": 0.8057678943710911,
+                  "group": "h1",
+                  "share": 6.810301872499898e-05,
+                  "smoothed_contribution": 0.10143326922519288
+                },
+                {
+                  "calibration_percentile": 0.8012508686587908,
+                  "group": "motor_current",
+                  "share": 6.15661196921849e-05,
+                  "smoothed_contribution": 0.09169715103385725
+                },
+                {
+                  "calibration_percentile": 0.19874913134120917,
+                  "group": "tp3",
+                  "share": 4.206922707394265e-05,
+                  "smoothed_contribution": 0.0626582979106711
+                },
+                {
+                  "calibration_percentile": 0.19631688672689368,
+                  "group": "reservoirs",
+                  "share": 4.199291391592095e-05,
+                  "smoothed_contribution": 0.06254463638364985
+                },
+                {
+                  "calibration_percentile": 0.689367616400278,
+                  "group": "comp",
+                  "share": 3.615570653071281e-05,
+                  "smoothed_contribution": 0.053850645437111086
+                },
+                {
+                  "calibration_percentile": 0.6890201528839471,
+                  "group": "mpg",
+                  "share": 3.615545338787802e-05,
+                  "smoothed_contribution": 0.05385026840381954
+                },
+                {
+                  "calibration_percentile": 0.6890201528839471,
+                  "group": "dv_electric",
+                  "share": 3.615490649515065e-05,
+                  "smoothed_contribution": 0.05384945385670708
+                },
+                {
+                  "calibration_percentile": 0.49409312022237667,
+                  "group": "towers",
+                  "share": 2.4340280786640616e-05,
+                  "smoothed_contribution": 0.03625264048892782
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.042182272493264e-05,
+                  "smoothed_contribution": 0.015522359655509407
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 1.042182272493264e-05,
+                  "smoothed_contribution": 0.015522359655509407
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 3.6267673318106886e-09,
+                  "smoothed_contribution": 5.401740981118213e-06
+                }
+              ],
+              "timing": "pre_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "dv_pressure",
+                "dominant_share": 0.16997893090733587,
+                "effective_group_count": 11.333031118466058,
+                "group_count": 16,
+                "herfindahl_index": 0.09721336043311507,
+                "nonzero_group_count": 14,
+                "normalized_entropy": 0.875615467271186,
+                "shannon_entropy_nats": 2.4277215695748064,
+                "top1_concentration": 0.16997893090733587,
+                "top3_concentration": 0.39970079074620896,
+                "top5_concentration": 0.5758829715698035
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 01:00:00",
+              "id": 2,
+              "lead_hours": 9.17193,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 0.9892286309937457,
+                  "group": "dv_pressure",
+                  "share": 0.16997893090733587,
+                  "smoothed_contribution": 0.2796844043570071
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "reservoirs",
+                  "share": 0.11489169192659775,
+                  "smoothed_contribution": 0.18904351410220838
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp3",
+                  "share": 0.11483016791227534,
+                  "smoothed_contribution": 0.18894228210123293
+                },
+                {
+                  "calibration_percentile": 0.9808895066018068,
+                  "group": "h1",
+                  "share": 0.0890093739128295,
+                  "smoothed_contribution": 0.14645658489622526
+                },
+                {
+                  "calibration_percentile": 0.9624739402362752,
+                  "group": "tp2",
+                  "share": 0.0871728069107651,
+                  "smoothed_contribution": 0.14343468597444572
+                },
+                {
+                  "calibration_percentile": 0.9735927727588604,
+                  "group": "pressure_relationships",
+                  "share": 0.0795194755624244,
+                  "smoothed_contribution": 0.13084184633201745
+                },
+                {
+                  "calibration_percentile": 0.9701181375955524,
+                  "group": "motor_current",
+                  "share": 0.07108637139451751,
+                  "smoothed_contribution": 0.11696596357706925
+                },
+                {
+                  "calibration_percentile": 0.9857539958304378,
+                  "group": "comp",
+                  "share": 0.06410241095469905,
+                  "smoothed_contribution": 0.10547451104682376
+                },
+                {
+                  "calibration_percentile": 0.9857539958304378,
+                  "group": "mpg",
+                  "share": 0.0641010570422375,
+                  "smoothed_contribution": 0.10547228331072528
+                },
+                {
+                  "calibration_percentile": 0.9857539958304378,
+                  "group": "dv_electric",
+                  "share": 0.06409801921193435,
+                  "smoothed_contribution": 0.1054672848455959
+                },
+                {
+                  "calibration_percentile": 0.8453787352328006,
+                  "group": "towers",
+                  "share": 0.044582465797378464,
+                  "smoothed_contribution": 0.07335627024330404
+                },
+                {
+                  "calibration_percentile": 0.7192494788047255,
+                  "group": "pressure_switch",
+                  "share": 0.023371390296350585,
+                  "smoothed_contribution": 0.03845543291240835
+                },
+                {
+                  "calibration_percentile": 0.09277275886031966,
+                  "group": "oil_temperature",
+                  "share": 0.01325255524839395,
+                  "smoothed_contribution": 0.021805837941621182
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 3.282922260609108e-06,
+                  "smoothed_contribution": 5.401740981118213e-06
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "oil_level",
+                  "share": 0.0,
+                  "smoothed_contribution": 0.0
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "caudal_impulses",
+                  "share": 0.0,
+                  "smoothed_contribution": 0.0
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 15,
+            "false_alerts_per_24h": 0.19617192289353585,
+            "false_episodes": 10,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-06-04 08:30:00",
+                "id": 1,
+                "lead_hours": 1.8234166666666667,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 01:00:00",
+                "id": 2,
+                "lead_hours": 9.17193,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.8456669235045002,
+            "pre_onset_incident_recall": 1.0,
+            "relevant_episode_precision": 0.3333333333333333,
+            "time_in_alert_fraction": 0.06743409849465296,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "family": "feature_energy",
+            "input_feature_count": 63,
+            "scaler": "standard",
+            "threshold": 1.611218060723905
+          },
+          "threshold": 1.611218060723905
+        },
+        "standard_pca": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.7726244487609581,
+            "mean_top3_concentration": 0.9637186630138657,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "pressure_switch",
+                "dominant_share": 0.8697442612224443,
+                "effective_group_count": 1.7748071352651194,
+                "group_count": 16,
+                "herfindahl_index": 0.7634639376580798,
+                "nonzero_group_count": 16,
+                "normalized_entropy": 0.20691556458895105,
+                "shannon_entropy_nats": 0.5736917608352027,
+                "top1_concentration": 0.8697442612224443,
+                "top3_concentration": 0.9634026679825155,
+                "top5_concentration": 0.9791326441026359
+              },
+              "condition": "air_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 08:30:00",
+              "id": 1,
+              "lead_hours": 1.8234166666666667,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.8697442612224445,
+                  "smoothed_contribution": 1089.621320396707
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_pressure",
+                  "share": 0.0815673657754415,
+                  "smoothed_contribution": 102.18813133943353
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 0.012091040984629698,
+                  "smoothed_contribution": 15.147735524147805
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.00987691493379855,
+                  "smoothed_contribution": 12.37386387176061
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 0.005853061186321855,
+                  "smoothed_contribution": 7.3327534800158976
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.005336654956575753,
+                  "smoothed_contribution": 6.685796365143805
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.003595210156070193,
+                  "smoothed_contribution": 4.504102886352867
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.003416301004915801,
+                  "smoothed_contribution": 4.27996432723446
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.003416273676136339,
+                  "smoothed_contribution": 4.279930089560134
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.003416132094569636,
+                  "smoothed_contribution": 4.279752715243875
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp3",
+                  "share": 0.000772268751165743,
+                  "smoothed_contribution": 0.9675033614635337
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "reservoirs",
+                  "share": 0.0007674097041176526,
+                  "smoothed_contribution": 0.9614159154216726
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 0.00012031793702759794,
+                  "smoothed_contribution": 0.15073510140458277
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.239006889668319e-05,
+                  "smoothed_contribution": 0.015522359655509407
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 1.239006889668319e-05,
+                  "smoothed_contribution": 0.015522359655509407
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "lps",
+                  "share": 2.00747899193724e-06,
+                  "smoothed_contribution": 0.0025149828603512467
+                }
+              ],
+              "timing": "pre_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "pressure_switch",
+                "dominant_share": 0.8703981676287458,
+                "effective_group_count": 1.770441762256797,
+                "group_count": 16,
+                "herfindahl_index": 0.764575537622238,
+                "nonzero_group_count": 16,
+                "normalized_entropy": 0.20602734695519773,
+                "shannon_entropy_nats": 0.5712290986409637,
+                "top1_concentration": 0.8703981676287458,
+                "top3_concentration": 0.9640346580452158,
+                "top5_concentration": 0.9789622690320107
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 08:25:00",
+              "id": 2,
+              "lead_hours": 1.7552633333333334,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.8703981676287458,
+                  "smoothed_contribution": 1416.6606508951509
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_pressure",
+                  "share": 0.08149043986041034,
+                  "smoothed_contribution": 132.633895460614
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 0.012146050556059707,
+                  "smoothed_contribution": 19.76892016377986
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.008882689276078194,
+                  "smoothed_contribution": 14.45747112017785
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 0.006044921710716684,
+                  "smoothed_contribution": 9.838718696575649
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.0055339272790057,
+                  "smoothed_contribution": 9.007023811229509
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.0035740461096961046,
+                  "smoothed_contribution": 5.817119884207978
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.003371775804197504,
+                  "smoothed_contribution": 5.487904597111198
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.003371752761729575,
+                  "smoothed_contribution": 5.487867093174691
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.0033716417112891503,
+                  "smoothed_contribution": 5.487686347402164
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp3",
+                  "share": 0.0008357036484707201,
+                  "smoothed_contribution": 1.3601918278657954
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "reservoirs",
+                  "share": 0.000829052529256218,
+                  "smoothed_contribution": 1.349366461698875
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 0.00012712676602323492,
+                  "smoothed_contribution": 0.20691161102890596
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.0615006660815504e-05,
+                  "smoothed_contribution": 0.01727699207632226
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 1.0615006660815504e-05,
+                  "smoothed_contribution": 0.01727699207632226
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "lps",
+                  "share": 1.4743449995901398e-06,
+                  "smoothed_contribution": 0.0023996449262451308
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 10,
+            "false_alerts_per_24h": 0.11770315373612152,
+            "false_episodes": 6,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-06-04 08:30:00",
+                "id": 1,
+                "lead_hours": 1.8234166666666667,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 08:25:00",
+                "id": 2,
+                "lead_hours": 1.7552633333333334,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.844774523877772,
+            "pre_onset_incident_recall": 1.0,
+            "relevant_episode_precision": 0.4,
+            "time_in_alert_fraction": 0.06716163749063415,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "components": 11,
+            "explained_variance_ratio": 0.9506755926355281,
+            "family": "pca_reconstruction",
+            "input_feature_count": 63,
+            "scaler": "standard",
+            "threshold": 0.1756369689684198,
+            "variance_retained": 0.95
+          },
+          "threshold": 0.1756369689684198
+        }
+      }
+    },
+    "full": {
+      "matched_timestamp_concentration": [
+        {
+          "condition": "air_leak",
+          "id": 1,
+          "reference_representation": "robust_pca",
+          "reference_timestamp": "2022-06-04 11:05:00",
+          "representations": {
+            "robust_feature_energy": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.8615593446777563,
+              "effective_group_count": 1.6264953713480086,
+              "group_count": 17,
+              "herfindahl_index": 0.7539814341090493,
+              "nonzero_group_count": 16,
+              "normalized_entropy": 0.17168760770287103,
+              "shannon_entropy_nats": 0.486427621152863,
+              "top1_concentration": 0.8615593446777563,
+              "top3_concentration": 0.9992459866766792,
+              "top5_concentration": 0.9997841449522815
+            },
+            "robust_pca": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.9975422140405339,
+              "effective_group_count": 1.0205867100102728,
+              "group_count": 17,
+              "herfindahl_index": 0.9950932094865613,
+              "nonzero_group_count": 17,
+              "normalized_entropy": 0.007192422647540951,
+              "shannon_entropy_nats": 0.02037766782110516,
+              "top1_concentration": 0.9975422140405339,
+              "top3_concentration": 0.9993367526828771,
+              "top5_concentration": 0.9996894226910713
+            },
+            "standard_feature_energy": {
+              "dominant_group": "flowmeter",
+              "dominant_share": 0.9979349812081537,
+              "effective_group_count": 1.0159545571348538,
+              "group_count": 17,
+              "herfindahl_index": 0.9958771995177297,
+              "nonzero_group_count": 17,
+              "normalized_entropy": 0.005586808688350278,
+              "shannon_entropy_nats": 0.015828620926523214,
+              "top1_concentration": 0.9979349812081537,
+              "top3_concentration": 0.9999992725320513,
+              "top5_concentration": 0.9999996300984216
+            },
+            "standard_pca": {
+              "dominant_group": "flowmeter",
+              "dominant_share": 0.8841900391930623,
+              "effective_group_count": 1.719832189403595,
+              "group_count": 17,
+              "herfindahl_index": 0.7861806842621001,
+              "nonzero_group_count": 17,
+              "normalized_entropy": 0.19138224197021908,
+              "shannon_entropy_nats": 0.5422267217654203,
+              "top1_concentration": 0.8841900391930623,
+              "top3_concentration": 0.9650237326493839,
+              "top5_concentration": 0.9834026732140494
+            }
+          }
+        },
+        {
+          "condition": "oil_leak",
+          "id": 2,
+          "reference_representation": "robust_pca",
+          "reference_timestamp": "2022-07-11 09:40:00",
+          "representations": {
+            "robust_feature_energy": {
+              "dominant_group": "dv_pressure",
+              "dominant_share": 0.6491794427489557,
+              "effective_group_count": 2.317596101704825,
+              "group_count": 17,
+              "herfindahl_index": 0.5042157362822615,
+              "nonzero_group_count": 16,
+              "normalized_entropy": 0.2966703821282108,
+              "shannon_entropy_nats": 0.8405304854319036,
+              "top1_concentration": 0.6491794427489557,
+              "top3_concentration": 0.9966584552601107,
+              "top5_concentration": 0.9998016892120499
+            },
+            "robust_pca": {
+              "dominant_group": "dv_pressure",
+              "dominant_share": 0.8264788072147241,
+              "effective_group_count": 1.6929935026603307,
+              "group_count": 17,
+              "herfindahl_index": 0.7082165404587147,
+              "nonzero_group_count": 17,
+              "normalized_entropy": 0.1858307869688283,
+              "shannon_entropy_nats": 0.5264982653765523,
+              "top1_concentration": 0.8264788072147241,
+              "top3_concentration": 0.9973191834469415,
+              "top5_concentration": 0.9985823953402667
+            },
+            "standard_feature_energy": {
+              "dominant_group": "flowmeter",
+              "dominant_share": 0.9994541299958448,
+              "effective_group_count": 1.004663978341429,
+              "group_count": 17,
+              "herfindahl_index": 0.9989088551913002,
+              "nonzero_group_count": 17,
+              "normalized_entropy": 0.0016423527385899578,
+              "shannon_entropy_nats": 0.004653135694620339,
+              "top1_concentration": 0.9994541299958448,
+              "top3_concentration": 0.9999996992376601,
+              "top5_concentration": 0.9999999120417619
+            },
+            "standard_pca": {
+              "dominant_group": "flowmeter",
+              "dominant_share": 0.9106724896952887,
+              "effective_group_count": 1.5852487266778559,
+              "group_count": 17,
+              "herfindahl_index": 0.8315981461729718,
+              "nonzero_group_count": 17,
+              "normalized_entropy": 0.16262147054091117,
+              "shannon_entropy_nats": 0.46074132036655435,
+              "top1_concentration": 0.9106724896952887,
+              "top3_concentration": 0.9665876810974895,
+              "top5_concentration": 0.9811019261710676
+            }
+          }
+        }
+      ],
+      "model_feature_count": 68,
+      "representations": {
+        "robust_feature_energy": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.6264953713480086,
+            "mean_top3_concentration": 0.9992459866766792,
+            "timely_explanations": 1
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "tp2",
+                "dominant_share": 0.8615593446777563,
+                "effective_group_count": 1.6264953713480086,
+                "group_count": 17,
+                "herfindahl_index": 0.7539814341090493,
+                "nonzero_group_count": 16,
+                "normalized_entropy": 0.17168760770287103,
+                "shannon_entropy_nats": 0.486427621152863,
+                "top1_concentration": 0.8615593446777563,
+                "top3_concentration": 0.9992459866766792,
+                "top5_concentration": 0.9997841449522815
+              },
+              "condition": "air_leak",
+              "delay_hours": 0.7599166666666666,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 11:05:00",
+              "id": 1,
+              "lead_hours": null,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.8615593446777563,
+                  "smoothed_contribution": 67280.18903590296
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.10214414175090006,
+                  "smoothed_contribution": 7976.556935240508
+                },
+                {
+                  "calibration_percentile": 0.3728283530229326,
+                  "group": "dv_pressure",
+                  "share": 0.0355425002480228,
+                  "smoothed_contribution": 2775.5559152921815
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "flowmeter",
+                  "share": 0.00046611094026371654,
+                  "smoothed_contribution": 36.39915505109485
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 7.204733533863514e-05,
+                  "smoothed_contribution": 5.626261697538075
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 7.204730595890555e-05,
+                  "smoothed_contribution": 5.626259403240215
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 7.204730595890555e-05,
+                  "smoothed_contribution": 5.626259403240215
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 3.526342687076965e-05,
+                  "smoothed_contribution": 2.7537627449290856
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 2.2914171061369623e-05,
+                  "smoothed_contribution": 1.7893947412137776
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 9.03372161672814e-06,
+                  "smoothed_contribution": 0.7054540140801564
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 2.6050566734234404e-06,
+                  "smoothed_contribution": 0.2034319591794623
+                },
+                {
+                  "calibration_percentile": 0.17095205003474634,
+                  "group": "reservoirs",
+                  "share": 4.0813322817788756e-07,
+                  "smoothed_contribution": 0.03187160688729111
+                },
+                {
+                  "calibration_percentile": 0.1702571230020848,
+                  "group": "tp3",
+                  "share": 4.065219494017098e-07,
+                  "smoothed_contribution": 0.03174578022042195
+                },
+                {
+                  "calibration_percentile": 0.7769284225156359,
+                  "group": "pressure_switch",
+                  "share": 3.7651841343890616e-07,
+                  "smoothed_contribution": 0.029402768582520257
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 3.76442993716303e-07,
+                  "smoothed_contribution": 0.029396878967109408
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 3.76442993716303e-07,
+                  "smoothed_contribution": 0.029396878967109408
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 0.0,
+                  "smoothed_contribution": 0.0
+                }
+              ],
+              "timing": "post_onset"
+            },
+            {
+              "condition": "oil_leak",
+              "explanation_available": false,
+              "id": 2,
+              "reason": "No timely alert within the pre-registered evaluation window."
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 11,
+            "false_alerts_per_24h": 0.09808596144676793,
+            "false_episodes": 5,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": 0.7599166666666666,
+                "first_alert": "2022-06-04 11:05:00",
+                "id": 1,
+                "lead_hours": null,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": null,
+                "id": 2,
+                "lead_hours": null,
+                "timely_detected": false
+              }
+            ],
+            "pr_auc": 0.14002600777534902,
+            "pre_onset_incident_recall": 0.0,
+            "relevant_episode_precision": 0.5454545454545454,
+            "time_in_alert_fraction": 0.005517335331380696,
+            "timely_incident_recall": 0.5,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "family": "feature_energy",
+            "input_feature_count": 68,
+            "scaler": "robust",
+            "threshold": 37606.664073372085
+          },
+          "threshold": 37606.664073372085
+        },
+        "robust_pca": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.3567901063353016,
+            "mean_top3_concentration": 0.9983279680649093,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "tp2",
+                "dominant_share": 0.9975422140405339,
+                "effective_group_count": 1.0205867100102728,
+                "group_count": 17,
+                "herfindahl_index": 0.9950932094865613,
+                "nonzero_group_count": 17,
+                "normalized_entropy": 0.007192422647540951,
+                "shannon_entropy_nats": 0.02037766782110516,
+                "top1_concentration": 0.9975422140405339,
+                "top3_concentration": 0.9993367526828771,
+                "top5_concentration": 0.9996894226910713
+              },
+              "condition": "air_leak",
+              "delay_hours": 0.7599166666666666,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 11:05:00",
+              "id": 1,
+              "lead_hours": null,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.9975422140405339,
+                  "smoothed_contribution": 22438.388510276163
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "flowmeter",
+                  "share": 0.0016181979563606333,
+                  "smoothed_contribution": 36.39921591316175
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.00017634068598256812,
+                  "smoothed_contribution": 3.966549752534777
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.00017633604723370062,
+                  "smoothed_contribution": 3.9664454100339532
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.00017633396096045347,
+                  "smoothed_contribution": 3.9663984820854417
+                },
+                {
+                  "calibration_percentile": 0.7689367616400278,
+                  "group": "dv_pressure",
+                  "share": 0.00012575952096854126,
+                  "smoothed_contribution": 2.828793559450997
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.00010162456917711697,
+                  "smoothed_contribution": 2.285909842501091
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 4.5801276349280005e-05,
+                  "smoothed_contribution": 1.0302389397927858
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 2.3806709130816373e-05,
+                  "smoothed_contribution": 0.5355003338301739
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 4.966375140923974e-06,
+                  "smoothed_contribution": 0.11171201913195578
+                },
+                {
+                  "calibration_percentile": 0.9972202918693537,
+                  "group": "pressure_switch",
+                  "share": 1.7849258118191467e-06,
+                  "smoothed_contribution": 0.04014953779789682
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 1.781260425725414e-06,
+                  "smoothed_contribution": 0.040067089801156704
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.306895444710838e-06,
+                  "smoothed_contribution": 0.029396878967109408
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 1.306895444710838e-06,
+                  "smoothed_contribution": 0.029396878967109408
+                },
+                {
+                  "calibration_percentile": 0.747394023627519,
+                  "group": "tp3",
+                  "share": 1.2211932378832332e-06,
+                  "smoothed_contribution": 0.027469121538983468
+                },
+                {
+                  "calibration_percentile": 0.7456567060458652,
+                  "group": "reservoirs",
+                  "share": 1.2176872647548533e-06,
+                  "smoothed_contribution": 0.027390259325380965
+                },
+                {
+                  "calibration_percentile": 0.9096594857539958,
+                  "group": "lps",
+                  "share": 5.325289740488597e-13,
+                  "smoothed_contribution": 1.1978532682128226e-08
+                }
+              ],
+              "timing": "post_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "dv_pressure",
+                "dominant_share": 0.8264788072147241,
+                "effective_group_count": 1.6929935026603307,
+                "group_count": 17,
+                "herfindahl_index": 0.7082165404587147,
+                "nonzero_group_count": 17,
+                "normalized_entropy": 0.1858307869688283,
+                "shannon_entropy_nats": 0.5264982653765523,
+                "top1_concentration": 0.8264788072147241,
+                "top3_concentration": 0.9973191834469415,
+                "top5_concentration": 0.9985823953402667
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 09:40:00",
+              "id": 2,
+              "lead_hours": 0.5052633333333334,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 0.9989576094510076,
+                  "group": "dv_pressure",
+                  "share": 0.8264788072147241,
+                  "smoothed_contribution": 124.3743631172384
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "flowmeter",
+                  "share": 0.15806664676791904,
+                  "smoothed_contribution": 23.786984433503786
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.012773729464298316,
+                  "smoothed_contribution": 1.922280950080364
+                },
+                {
+                  "calibration_percentile": 0.9781097984711605,
+                  "group": "oil_temperature",
+                  "share": 0.0007693566912811649,
+                  "smoothed_contribution": 0.11577822401829635
+                },
+                {
+                  "calibration_percentile": 0.504864489228631,
+                  "group": "tp2",
+                  "share": 0.0004938552020440458,
+                  "smoothed_contribution": 0.07431881578834634
+                },
+                {
+                  "calibration_percentile": 0.9989576094510076,
+                  "group": "pressure_switch",
+                  "share": 0.0003203874464699583,
+                  "smoothed_contribution": 0.04821416382078703
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 0.00019230965053654368,
+                  "smoothed_contribution": 0.028940113282986048
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 0.00019230965053654368,
+                  "smoothed_contribution": 0.028940113282986048
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "comp",
+                  "share": 0.00012021727830845113,
+                  "smoothed_contribution": 0.01809114437633342
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "mpg",
+                  "share": 0.00012021174411242466,
+                  "smoothed_contribution": 0.01809031155146223
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "dv_electric",
+                  "share": 0.00012003759980751452,
+                  "smoothed_contribution": 0.01806410508757638
+                },
+                {
+                  "calibration_percentile": 0.3165392633773454,
+                  "group": "reservoirs",
+                  "share": 0.00011613236470027858,
+                  "smoothed_contribution": 0.017476417750592603
+                },
+                {
+                  "calibration_percentile": 0.30611535788742184,
+                  "group": "tp3",
+                  "share": 0.00011498454009581521,
+                  "smoothed_contribution": 0.017303685004266614
+                },
+                {
+                  "calibration_percentile": 0.22341904100069493,
+                  "group": "h1",
+                  "share": 5.9931051476519085e-05,
+                  "smoothed_contribution": 0.00901884754124364
+                },
+                {
+                  "calibration_percentile": 0.830090340514246,
+                  "group": "motor_current",
+                  "share": 5.0596489804734615e-05,
+                  "smoothed_contribution": 0.007614116829733517
+                },
+                {
+                  "calibration_percentile": 0.16400277970813065,
+                  "group": "towers",
+                  "share": 1.0486806288337704e-05,
+                  "smoothed_contribution": 0.0015781286124460666
+                },
+                {
+                  "calibration_percentile": 0.5899930507296733,
+                  "group": "lps",
+                  "share": 3.759614436942874e-11,
+                  "smoothed_contribution": 5.657733109176502e-09
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 23,
+            "false_alerts_per_24h": 0.1373203460254751,
+            "false_episodes": 7,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": 0.7599166666666666,
+                "first_alert": "2022-06-04 11:05:00",
+                "id": 1,
+                "lead_hours": null,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 09:40:00",
+                "id": 2,
+                "lead_hours": 0.5052633333333334,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.6045054591773454,
+            "pre_onset_incident_recall": 0.5,
+            "relevant_episode_precision": 0.6956521739130435,
+            "time_in_alert_fraction": 0.020502690552414684,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "components": 3,
+            "explained_variance_ratio": 0.997728051114605,
+            "family": "pca_reconstruction",
+            "input_feature_count": 68,
+            "scaler": "robust",
+            "threshold": 47.338871454698655,
+            "variance_retained": 0.95
+          },
+          "threshold": 47.338871454698655
+        },
+        "standard_feature_energy": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.0039073379804435,
+            "mean_top3_concentration": 0.999999712090652,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "flowmeter",
+                "dominant_share": 0.9996506590137704,
+                "effective_group_count": 1.0031382309030048,
+                "group_count": 17,
+                "herfindahl_index": 0.9993015618669997,
+                "nonzero_group_count": 17,
+                "normalized_entropy": 0.0011059234000405916,
+                "shannon_entropy_nats": 0.003133316934499025,
+                "top1_concentration": 0.9996506590137704,
+                "top3_concentration": 0.999999771643711,
+                "top5_concentration": 0.9999998465139095
+              },
+              "condition": "air_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 08:30:00",
+              "id": 1,
+              "lead_hours": 1.8234166666666667,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "flowmeter",
+                  "share": 0.9996506590137704,
+                  "smoothed_contribution": 3948611.5518963523
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.00034899901982196456,
+                  "smoothed_contribution": 1378.5431428906109
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 1.1361011860996849e-07,
+                  "smoothed_contribution": 0.4487589966661111
+                },
+                {
+                  "calibration_percentile": 0.9312022237665045,
+                  "group": "oil_temperature",
+                  "share": 4.596418908454648e-08,
+                  "smoothed_contribution": 0.18155815369725908
+                },
+                {
+                  "calibration_percentile": 0.8943710910354413,
+                  "group": "dv_pressure",
+                  "share": 2.8906009390168545e-08,
+                  "smoothed_contribution": 0.1141784898234851
+                },
+                {
+                  "calibration_percentile": 0.8280055594162613,
+                  "group": "tp2",
+                  "share": 2.5143487656318564e-08,
+                  "smoothed_contribution": 0.09931656116012744
+                },
+                {
+                  "calibration_percentile": 0.8057678943710911,
+                  "group": "h1",
+                  "share": 2.3791175726603163e-08,
+                  "smoothed_contribution": 0.0939749406056934
+                },
+                {
+                  "calibration_percentile": 0.8012508686587908,
+                  "group": "motor_current",
+                  "share": 2.1507568971596664e-08,
+                  "smoothed_contribution": 0.08495471345783835
+                },
+                {
+                  "calibration_percentile": 0.19874913134120917,
+                  "group": "tp3",
+                  "share": 1.4696505275927559e-08,
+                  "smoothed_contribution": 0.058051070123121745
+                },
+                {
+                  "calibration_percentile": 0.19631688672689368,
+                  "group": "reservoirs",
+                  "share": 1.4669845962041964e-08,
+                  "smoothed_contribution": 0.05794576606132265
+                },
+                {
+                  "calibration_percentile": 0.689367616400278,
+                  "group": "comp",
+                  "share": 1.2630670177266727e-08,
+                  "smoothed_contribution": 0.04989103915497056
+                },
+                {
+                  "calibration_percentile": 0.6890201528839471,
+                  "group": "mpg",
+                  "share": 1.2630581744099162e-08,
+                  "smoothed_contribution": 0.049890689844715154
+                },
+                {
+                  "calibration_percentile": 0.6890201528839471,
+                  "group": "dv_electric",
+                  "share": 1.2630390692054417e-08,
+                  "smoothed_contribution": 0.04988993519077271
+                },
+                {
+                  "calibration_percentile": 0.49409312022237667,
+                  "group": "towers",
+                  "share": 8.5030576951101e-09,
+                  "smoothed_contribution": 0.03358700515885961
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 3.640769829037889e-09,
+                  "smoothed_contribution": 0.014381009680839598
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 3.640769829037889e-09,
+                  "smoothed_contribution": 0.014381009680839598
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 1.2669784765199933e-12,
+                  "smoothed_contribution": 5.004554144271286e-06
+                }
+              ],
+              "timing": "pre_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "flowmeter",
+                "dominant_share": 0.9994525218811092,
+                "effective_group_count": 1.0046764450578822,
+                "group_count": 17,
+                "herfindahl_index": 0.9989056424541931,
+                "nonzero_group_count": 17,
+                "normalized_entropy": 0.0016467324881490472,
+                "shannon_entropy_nats": 0.004665544459514775,
+                "top1_concentration": 0.9994525218811092,
+                "top3_concentration": 0.9999996525375929,
+                "top5_concentration": 0.9999998555854724
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 08:25:00",
+              "id": 2,
+              "lead_hours": 1.7552633333333334,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "flowmeter",
+                  "share": 0.9994525218811092,
+                  "smoothed_contribution": 3287504.671391256
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.0005467719112169509,
+                  "smoothed_contribution": 1798.4998516268452
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_pressure",
+                  "share": 3.5874526668303306e-07,
+                  "smoothed_contribution": 1.1800227767100147
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 1.7076366409420262e-07,
+                  "smoothed_contribution": 0.5616938585106284
+                },
+                {
+                  "calibration_percentile": 0.8613620569840167,
+                  "group": "oil_temperature",
+                  "share": 3.22842154569068e-08,
+                  "smoothed_contribution": 0.10619264727755447
+                },
+                {
+                  "calibration_percentile": 0.5114662960389159,
+                  "group": "tp2",
+                  "share": 2.078837221647767e-08,
+                  "smoothed_contribution": 0.06837930694662873
+                },
+                {
+                  "calibration_percentile": 0.25330090340514244,
+                  "group": "motor_current",
+                  "share": 1.7955612735485945e-08,
+                  "smoothed_contribution": 0.059061495622124455
+                },
+                {
+                  "calibration_percentile": 0.3467685892981237,
+                  "group": "h1",
+                  "share": 1.7694850362174062e-08,
+                  "smoothed_contribution": 0.05820376851491539
+                },
+                {
+                  "calibration_percentile": 0.1438498957609451,
+                  "group": "tp3",
+                  "share": 1.696262214875772e-08,
+                  "smoothed_contribution": 0.055795246229534586
+                },
+                {
+                  "calibration_percentile": 0.14489228630993745,
+                  "group": "reservoirs",
+                  "share": 1.695745733477939e-08,
+                  "smoothed_contribution": 0.05577825757853927
+                },
+                {
+                  "calibration_percentile": 0.47324530924252955,
+                  "group": "comp",
+                  "share": 1.1719609884127196e-08,
+                  "smoothed_contribution": 0.03854937718145501
+                },
+                {
+                  "calibration_percentile": 0.47324530924252955,
+                  "group": "mpg",
+                  "share": 1.1719420949489055e-08,
+                  "smoothed_contribution": 0.038548755717711734
+                },
+                {
+                  "calibration_percentile": 0.47324530924252955,
+                  "group": "dv_electric",
+                  "share": 1.1719017921182565e-08,
+                  "smoothed_contribution": 0.038547430034488885
+                },
+                {
+                  "calibration_percentile": 0.42633773453787355,
+                  "group": "towers",
+                  "share": 9.163516999875445e-09,
+                  "smoothed_contribution": 0.030141606813662406
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 4.866262814514961e-09,
+                  "smoothed_contribution": 0.016006625011886794
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 4.866262814514961e-09,
+                  "smoothed_contribution": 0.016006625011886794
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 1.5214622518743827e-12,
+                  "smoothed_contribution": 5.004554144271286e-06
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 8,
+            "false_alerts_per_24h": 0.07846876915741435,
+            "false_episodes": 4,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-06-04 08:30:00",
+                "id": 1,
+                "lead_hours": 1.8234166666666667,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 08:25:00",
+                "id": 2,
+                "lead_hours": 1.7552633333333334,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.8822157510381541,
+            "pre_onset_incident_recall": 1.0,
+            "relevant_episode_precision": 0.5,
+            "time_in_alert_fraction": 0.06954567127579865,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "family": "feature_energy",
+            "input_feature_count": 68,
+            "scaler": "standard",
+            "threshold": 2.642454475072326
+          },
+          "threshold": 2.642454475072326
+        },
+        "standard_pca": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.1764563408546276,
+            "mean_top3_concentration": 0.9896510081830662,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "flowmeter",
+                "dominant_share": 0.98883950273593,
+                "effective_group_count": 1.0881530173599627,
+                "group_count": 17,
+                "herfindahl_index": 0.977826407806164,
+                "nonzero_group_count": 17,
+                "normalized_entropy": 0.029818361429724594,
+                "shannon_entropy_nats": 0.08448177950058691,
+                "top1_concentration": 0.98883950273593,
+                "top3_concentration": 0.9947141397630054,
+                "top5_concentration": 0.9967753737953262
+              },
+              "condition": "air_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 08:30:00",
+              "id": 1,
+              "lead_hours": 1.8234166666666667,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "flowmeter",
+                  "share": 0.9888395027359299,
+                  "smoothed_contribution": 307356.6892006785
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.00396208530721664,
+                  "smoothed_contribution": 1231.517773094029
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_pressure",
+                  "share": 0.0019125517198587277,
+                  "smoothed_contribution": 594.4701469898941
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.001040745401601734,
+                  "smoothed_contribution": 323.4903743753081
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 0.0010204886307191598,
+                  "smoothed_contribution": 317.1940502345973
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.000677622130808906,
+                  "smoothed_contribution": 210.62234475694635
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp3",
+                  "share": 0.0004600054458681356,
+                  "smoothed_contribution": 142.9814954450391
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "reservoirs",
+                  "share": 0.0004598777315401878,
+                  "smoothed_contribution": 142.94179855500494
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.0003948478120482078,
+                  "smoothed_contribution": 122.72883103222661
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 0.0003598548617898407,
+                  "smoothed_contribution": 111.85212423904345
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 0.0003012611515183078,
+                  "smoothed_contribution": 93.63969568292872
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.00018862234160503644,
+                  "smoothed_contribution": 58.6286634631803
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.00018853520022096574,
+                  "smoothed_contribution": 58.60157768512812
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.00018851293303525314,
+                  "smoothed_contribution": 58.594656472474796
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "lps",
+                  "share": 5.3940619882111945e-06,
+                  "smoothed_contribution": 1.6766128673588856
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 4.626712533449111e-08,
+                  "smoothed_contribution": 0.014381009680839598
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 4.626712533449111e-08,
+                  "smoothed_contribution": 0.014381009680839598
+                }
+              ],
+              "timing": "pre_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "flowmeter",
+                "dominant_share": 0.9619748142412504,
+                "effective_group_count": 1.2647596643492927,
+                "group_count": 17,
+                "herfindahl_index": 0.9257475668617624,
+                "nonzero_group_count": 17,
+                "normalized_entropy": 0.08290308104238771,
+                "shannon_entropy_nats": 0.23488211547266677,
+                "top1_concentration": 0.9619748142412504,
+                "top3_concentration": 0.984587876603127,
+                "top5_concentration": 0.9903141176267207
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 08:25:00",
+              "id": 2,
+              "lead_hours": 1.7552633333333334,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "flowmeter",
+                  "share": 0.9619748142412504,
+                  "smoothed_contribution": 84801.99201772654
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.017161925586612163,
+                  "smoothed_contribution": 1512.8935342788668
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_pressure",
+                  "share": 0.005451136775264377,
+                  "smoothed_contribution": 480.53987532731276
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.0030606856003645598,
+                  "smoothed_contribution": 269.81188281483816
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 0.0026655554232291796,
+                  "smoothed_contribution": 234.97955079185647
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.0018125385231898097,
+                  "smoothed_contribution": 159.7826420191667
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.0012863940407720875,
+                  "smoothed_contribution": 113.40086617885981
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "reservoirs",
+                  "share": 0.0011472888356487301,
+                  "smoothed_contribution": 101.13817663661906
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp3",
+                  "share": 0.0011458574078739385,
+                  "smoothed_contribution": 101.01199045696572
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 0.001078704856372551,
+                  "smoothed_contribution": 95.09221994729572
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 0.0009138868455578086,
+                  "smoothed_contribution": 80.56284201497063
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.0007607695290480544,
+                  "smoothed_contribution": 67.06492786980934
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.0007605554775675408,
+                  "smoothed_contribution": 67.04605836130125
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.0007604773236088123,
+                  "smoothed_contribution": 67.03916877200417
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "lps",
+                  "share": 1.904638249794158e-05,
+                  "smoothed_contribution": 1.6790160746889837
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.8157557099862044e-07,
+                  "smoothed_contribution": 0.016006625011886794
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "caudal_impulses",
+                  "share": 1.8157557099862044e-07,
+                  "smoothed_contribution": 0.016006625011886794
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 9,
+            "false_alerts_per_24h": 0.09808596144676793,
+            "false_episodes": 5,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-06-04 08:30:00",
+                "id": 1,
+                "lead_hours": 1.8234166666666667,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 08:25:00",
+                "id": 2,
+                "lead_hours": 1.7552633333333334,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.8252970964074291,
+            "pre_onset_incident_recall": 1.0,
+            "relevant_episode_precision": 0.4444444444444444,
+            "time_in_alert_fraction": 0.06859205776173286,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "components": 13,
+            "explained_variance_ratio": 0.9529606106523927,
+            "family": "pca_reconstruction",
+            "input_feature_count": 68,
+            "scaler": "standard",
+            "threshold": 0.20957651518373227,
+            "variance_retained": 0.95
+          },
+          "threshold": 0.20957651518373227
+        }
+      }
+    },
+    "strict_flow_blind": {
+      "matched_timestamp_concentration": [
+        {
+          "condition": "air_leak",
+          "id": 1,
+          "reference_representation": "robust_pca",
+          "reference_timestamp": "2022-06-04 11:05:00",
+          "representations": {
+            "robust_feature_energy": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.8619614388138174,
+              "effective_group_count": 1.620290129978016,
+              "group_count": 15,
+              "herfindahl_index": 0.7546851548282192,
+              "nonzero_group_count": 14,
+              "normalized_entropy": 0.17821132916654464,
+              "shannon_entropy_nats": 0.4826052257881534,
+              "top1_concentration": 0.8619614388138174,
+              "top3_concentration": 0.9997123398701153,
+              "top5_concentration": 0.9998565017611162
+            },
+            "robust_pca": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.9991603591161806,
+              "effective_group_count": 1.008391055474296,
+              "group_count": 15,
+              "herfindahl_index": 0.9983215457530451,
+              "nonzero_group_count": 15,
+              "normalized_entropy": 0.0030856319692047756,
+              "shannon_entropy_nats": 0.0083560462747324,
+              "top1_concentration": 0.9991603591161806,
+              "top3_concentration": 0.9995136079371918,
+              "top5_concentration": 0.9998161914482431
+            },
+            "standard_feature_energy": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.8140607544758455,
+              "effective_group_count": 1.621771725795607,
+              "group_count": 15,
+              "herfindahl_index": 0.6971379871045892,
+              "nonzero_group_count": 15,
+              "normalized_entropy": 0.17854883537162541,
+              "shannon_entropy_nats": 0.4835192095346956,
+              "top1_concentration": 0.8140607544758455,
+              "top3_concentration": 0.9997491056558668,
+              "top5_concentration": 0.9998862275011918
+            },
+            "standard_pca": {
+              "dominant_group": "tp2",
+              "dominant_share": 0.6363525639677121,
+              "effective_group_count": 3.472336067123937,
+              "group_count": 15,
+              "herfindahl_index": 0.4436957034569573,
+              "nonzero_group_count": 15,
+              "normalized_entropy": 0.4596767021282441,
+              "shannon_entropy_nats": 1.244827585640392,
+              "top1_concentration": 0.6363525639677121,
+              "top3_concentration": 0.8813891161093376,
+              "top5_concentration": 0.9489797700304899
+            }
+          }
+        },
+        {
+          "condition": "oil_leak",
+          "id": 2,
+          "reference_representation": "robust_pca",
+          "reference_timestamp": "2022-07-11 09:40:00",
+          "representations": {
+            "robust_feature_energy": {
+              "dominant_group": "dv_pressure",
+              "dominant_share": 0.6510546166820271,
+              "effective_group_count": 2.2776617333687614,
+              "group_count": 15,
+              "herfindahl_index": 0.5071245039063501,
+              "nonzero_group_count": 14,
+              "normalized_entropy": 0.3039638485466013,
+              "shannon_entropy_nats": 0.8231493611844254,
+              "top1_concentration": 0.6510546166820271,
+              "top3_concentration": 0.9995373325510568,
+              "top5_concentration": 0.9998498613273564
+            },
+            "robust_pca": {
+              "dominant_group": "dv_pressure",
+              "dominant_share": 0.9818682524684857,
+              "effective_group_count": 1.1105269277345724,
+              "group_count": 15,
+              "herfindahl_index": 0.9642970413436431,
+              "nonzero_group_count": 15,
+              "normalized_entropy": 0.03871221158063088,
+              "shannon_entropy_nats": 0.10483461235603876,
+              "top1_concentration": 0.9818682524684857,
+              "top3_concentration": 0.9979576260779122,
+              "top5_concentration": 0.998924957786658
+            },
+            "standard_feature_energy": {
+              "dominant_group": "pressure_switch",
+              "dominant_share": 0.9987506293998832,
+              "effective_group_count": 1.0113647402846464,
+              "group_count": 15,
+              "herfindahl_index": 0.9975034298420677,
+              "nonzero_group_count": 15,
+              "normalized_entropy": 0.004172982748304026,
+              "shannon_entropy_nats": 0.01130064677074077,
+              "top1_concentration": 0.9987506293998832,
+              "top3_concentration": 0.9997798394705893,
+              "top5_concentration": 0.9998692981158102
+            },
+            "standard_pca": {
+              "dominant_group": "pressure_switch",
+              "dominant_share": 0.8704761937456422,
+              "effective_group_count": 1.769260204592669,
+              "group_count": 15,
+              "herfindahl_index": 0.7647307743486245,
+              "nonzero_group_count": 15,
+              "normalized_entropy": 0.21069088581720266,
+              "shannon_entropy_nats": 0.5705614957076784,
+              "top1_concentration": 0.8704761937456422,
+              "top3_concentration": 0.9641713818263399,
+              "top5_concentration": 0.9790131642560672
+            }
+          }
+        }
+      ],
+      "model_feature_count": 60,
+      "representations": {
+        "robust_feature_energy": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.620290129978016,
+            "mean_top3_concentration": 0.9997123398701153,
+            "timely_explanations": 1
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "tp2",
+                "dominant_share": 0.8619614388138174,
+                "effective_group_count": 1.620290129978016,
+                "group_count": 15,
+                "herfindahl_index": 0.7546851548282192,
+                "nonzero_group_count": 14,
+                "normalized_entropy": 0.17821132916654464,
+                "shannon_entropy_nats": 0.4826052257881534,
+                "top1_concentration": 0.8619614388138174,
+                "top3_concentration": 0.9997123398701153,
+                "top5_concentration": 0.9998565017611162
+              },
+              "condition": "air_leak",
+              "delay_hours": 0.7599166666666666,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 11:05:00",
+              "id": 1,
+              "lead_hours": null,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.8619614388138173,
+                  "smoothed_contribution": 76250.8809073567
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.10219181294230982,
+                  "smoothed_contribution": 9040.097859939242
+                },
+                {
+                  "calibration_percentile": 0.3728283530229326,
+                  "group": "dv_pressure",
+                  "share": 0.035559088113988106,
+                  "smoothed_contribution": 3145.6300373311387
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 7.208096019714017e-05,
+                  "smoothed_contribution": 6.3764299238764846
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 7.208093080369893e-05,
+                  "smoothed_contribution": 6.376427323672245
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 7.208093080369893e-05,
+                  "smoothed_contribution": 6.376427323672245
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 3.5279884491767824e-05,
+                  "smoothed_contribution": 3.1209311109196296
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 2.2924865221758456e-05,
+                  "smoothed_contribution": 2.0279807067089486
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 9.037937700636153e-06,
+                  "smoothed_contribution": 0.799514549290844
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 2.6062724666464617e-06,
+                  "smoothed_contribution": 0.2305562204033906
+                },
+                {
+                  "calibration_percentile": 0.17095205003474634,
+                  "group": "reservoirs",
+                  "share": 4.0832370603503777e-07,
+                  "smoothed_contribution": 0.03612115447226326
+                },
+                {
+                  "calibration_percentile": 0.1702571230020848,
+                  "group": "tp3",
+                  "share": 4.0671167526684524e-07,
+                  "smoothed_contribution": 0.03597855091647822
+                },
+                {
+                  "calibration_percentile": 0.7769284225156359,
+                  "group": "pressure_switch",
+                  "share": 3.766941365009309e-07,
+                  "smoothed_contribution": 0.03332313772685629
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 3.766186815795588e-07,
+                  "smoothed_contribution": 0.03331646282939066
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 0.0,
+                  "smoothed_contribution": 0.0
+                }
+              ],
+              "timing": "post_onset"
+            },
+            {
+              "condition": "oil_leak",
+              "explanation_available": false,
+              "id": 2,
+              "reason": "No timely alert within the pre-registered evaluation window."
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 11,
+            "false_alerts_per_24h": 0.09808596144676793,
+            "false_episodes": 5,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": 0.7599166666666666,
+                "first_alert": "2022-06-04 11:05:00",
+                "id": 1,
+                "lead_hours": null,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": null,
+                "id": 2,
+                "lead_hours": null,
+                "timely_detected": false
+              }
+            ],
+            "pr_auc": 0.1397081211498106,
+            "pre_onset_incident_recall": 0.0,
+            "relevant_episode_precision": 0.5454545454545454,
+            "time_in_alert_fraction": 0.005517335331380696,
+            "timely_incident_recall": 0.5,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "family": "feature_energy",
+            "input_feature_count": 60,
+            "scaler": "robust",
+            "threshold": 42620.88594982172
+          },
+          "threshold": 42620.88594982172
+        },
+        "robust_pca": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.0594589916044344,
+            "mean_top3_concentration": 0.998735617007552,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "tp2",
+                "dominant_share": 0.9991603591161806,
+                "effective_group_count": 1.008391055474296,
+                "group_count": 15,
+                "herfindahl_index": 0.9983215457530451,
+                "nonzero_group_count": 15,
+                "normalized_entropy": 0.0030856319692047756,
+                "shannon_entropy_nats": 0.0083560462747324,
+                "top1_concentration": 0.9991603591161806,
+                "top3_concentration": 0.9995136079371918,
+                "top5_concentration": 0.9998161914482431
+              },
+              "condition": "air_leak",
+              "delay_hours": 0.7599166666666666,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 11:05:00",
+              "id": 1,
+              "lead_hours": null,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.9991603591161805,
+                  "smoothed_contribution": 25430.173645650822
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.00017662673364233299,
+                  "smoothed_contribution": 4.495423047969783
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.00017662208736876674,
+                  "smoothed_contribution": 4.495304793134594
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.0001766199977112865,
+                  "smoothed_contribution": 4.495251608125704
+                },
+                {
+                  "calibration_percentile": 0.7689367616400278,
+                  "group": "dv_pressure",
+                  "share": 0.00012596351334009294,
+                  "smoothed_contribution": 3.2059658772775097
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.00010178941761111733,
+                  "smoothed_contribution": 2.590697820948472
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 4.5875572193451424e-05,
+                  "smoothed_contribution": 1.167604135141041
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 2.3845326550536794e-05,
+                  "smoothed_contribution": 0.6069003731831284
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 4.974431249988649e-06,
+                  "smoothed_contribution": 0.12660695485103202
+                },
+                {
+                  "calibration_percentile": 0.9972202918693537,
+                  "group": "pressure_switch",
+                  "share": 1.787821200842526e-06,
+                  "smoothed_contribution": 0.045502809604073644
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 1.784130271806407e-06,
+                  "smoothed_contribution": 0.04540886976203937
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.3090154015046607e-06,
+                  "smoothed_contribution": 0.03331646282939066
+                },
+                {
+                  "calibration_percentile": 0.747394023627519,
+                  "group": "tp3",
+                  "share": 1.223174202231816e-06,
+                  "smoothed_contribution": 0.03113167178604871
+                },
+                {
+                  "calibration_percentile": 0.7456567060458652,
+                  "group": "reservoirs",
+                  "share": 1.2196625419811887e-06,
+                  "smoothed_contribution": 0.03104229461136078
+                },
+                {
+                  "calibration_percentile": 0.9096594857539958,
+                  "group": "lps",
+                  "share": 5.3339282517527e-13,
+                  "smoothed_contribution": 1.3575670853825535e-08
+                }
+              ],
+              "timing": "post_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "dv_pressure",
+                "dominant_share": 0.9818682524684857,
+                "effective_group_count": 1.1105269277345724,
+                "group_count": 15,
+                "herfindahl_index": 0.9642970413436431,
+                "nonzero_group_count": 15,
+                "normalized_entropy": 0.03871221158063088,
+                "shannon_entropy_nats": 0.10483461235603876,
+                "top1_concentration": 0.9818682524684857,
+                "top3_concentration": 0.9979576260779122,
+                "top5_concentration": 0.998924957786658
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 09:40:00",
+              "id": 2,
+              "lead_hours": 0.5052633333333334,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 0.9989576094510076,
+                  "group": "dv_pressure",
+                  "share": 0.981868252468486,
+                  "smoothed_contribution": 140.95761158022762
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.015175367234870358,
+                  "smoothed_contribution": 2.1785850748329647
+                },
+                {
+                  "calibration_percentile": 0.9781097984711605,
+                  "group": "oil_temperature",
+                  "share": 0.0009140063745561267,
+                  "smoothed_contribution": 0.13121531855483806
+                },
+                {
+                  "calibration_percentile": 0.504864489228631,
+                  "group": "tp2",
+                  "share": 0.0005867069909023106,
+                  "smoothed_contribution": 0.08422801727940216
+                },
+                {
+                  "calibration_percentile": 0.9989576094510076,
+                  "group": "pressure_switch",
+                  "share": 0.00038062471784354067,
+                  "smoothed_contribution": 0.05464271912320085
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 0.00022846652423919375,
+                  "smoothed_contribution": 0.03279879505405085
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "comp",
+                  "share": 0.0001428197888115278,
+                  "smoothed_contribution": 0.020503296920593342
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "mpg",
+                  "share": 0.00014281321411024154,
+                  "smoothed_contribution": 0.020502353052423823
+                },
+                {
+                  "calibration_percentile": 0.30437804030576787,
+                  "group": "dv_electric",
+                  "share": 0.00014260632826367854,
+                  "smoothed_contribution": 0.020472652392760006
+                },
+                {
+                  "calibration_percentile": 0.3165392633773454,
+                  "group": "reservoirs",
+                  "share": 0.00013796685481755642,
+                  "smoothed_contribution": 0.019806606724910844
+                },
+                {
+                  "calibration_percentile": 0.30611535788742184,
+                  "group": "tp3",
+                  "share": 0.00013660322329038695,
+                  "smoothed_contribution": 0.01961084294228312
+                },
+                {
+                  "calibration_percentile": 0.22341904100069493,
+                  "group": "h1",
+                  "share": 7.119891881726853e-05,
+                  "smoothed_contribution": 0.010221360674759991
+                },
+                {
+                  "calibration_percentile": 0.830090340514246,
+                  "group": "motor_current",
+                  "share": 6.010884539758033e-05,
+                  "smoothed_contribution": 0.008629262898343914
+                },
+                {
+                  "calibration_percentile": 0.16400277970813065,
+                  "group": "towers",
+                  "share": 1.2458470929634645e-05,
+                  "smoothed_contribution": 0.0017885457664691751
+                },
+                {
+                  "calibration_percentile": 0.5899930507296733,
+                  "group": "lps",
+                  "share": 4.4664740996889485e-11,
+                  "smoothed_contribution": 6.412097750327341e-09
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 16,
+            "false_alerts_per_24h": 0.1569375383148287,
+            "false_episodes": 8,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": 0.7599166666666666,
+                "first_alert": "2022-06-04 11:05:00",
+                "id": 1,
+                "lead_hours": null,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 09:40:00",
+                "id": 2,
+                "lead_hours": 0.5052633333333334,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.3151336612757326,
+            "pre_onset_incident_recall": 0.5,
+            "relevant_episode_precision": 0.5,
+            "time_in_alert_fraction": 0.015121585723043389,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "components": 3,
+            "explained_variance_ratio": 0.9977280511376374,
+            "family": "pca_reconstruction",
+            "input_feature_count": 60,
+            "scaler": "robust",
+            "threshold": 53.65072098096481,
+            "variance_retained": 0.95
+          },
+          "threshold": 53.65072098096481
+        },
+        "standard_feature_energy": {
+          "explanation_summary": {
+            "mean_effective_group_count": 6.171442150725234,
+            "mean_top3_concentration": 0.6995945519420744,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "pressure_switch",
+                "dominant_share": 0.9990315217019012,
+                "effective_group_count": 1.0098531829844086,
+                "group_count": 15,
+                "herfindahl_index": 0.9980641330434078,
+                "nonzero_group_count": 15,
+                "normalized_entropy": 0.0036206702893185937,
+                "shannon_entropy_nats": 0.009804956905114015,
+                "top1_concentration": 0.9990315217019012,
+                "top3_concentration": 0.99948831313794,
+                "top5_concentration": 0.9996430332036557
+              },
+              "condition": "air_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 08:30:00",
+              "id": 1,
+              "lead_hours": 1.8234166666666667,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.9990315217019012,
+                  "smoothed_contribution": 1562.348895276026
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.00032521607004383637,
+                  "smoothed_contribution": 0.5085935295549259
+                },
+                {
+                  "calibration_percentile": 0.9312022237665045,
+                  "group": "oil_temperature",
+                  "share": 0.00013157536599487716,
+                  "smoothed_contribution": 0.2057659075235603
+                },
+                {
+                  "calibration_percentile": 0.8943710910354413,
+                  "group": "dv_pressure",
+                  "share": 8.274525974921393e-05,
+                  "smoothed_contribution": 0.12940228846661644
+                },
+                {
+                  "calibration_percentile": 0.8280055594162613,
+                  "group": "tp2",
+                  "share": 7.197480596650092e-05,
+                  "smoothed_contribution": 0.11255876931481114
+                },
+                {
+                  "calibration_percentile": 0.8057678943710911,
+                  "group": "h1",
+                  "share": 6.810372848998419e-05,
+                  "smoothed_contribution": 0.10650493268645252
+                },
+                {
+                  "calibration_percentile": 0.8012508686587908,
+                  "group": "motor_current",
+                  "share": 6.156676133005722e-05,
+                  "smoothed_contribution": 0.09628200858555012
+                },
+                {
+                  "calibration_percentile": 0.19874913134120917,
+                  "group": "tp3",
+                  "share": 4.206966551653875e-05,
+                  "smoothed_contribution": 0.06579121280620465
+                },
+                {
+                  "calibration_percentile": 0.19631688672689368,
+                  "group": "reservoirs",
+                  "share": 4.1993351563186544e-05,
+                  "smoothed_contribution": 0.06567186820283233
+                },
+                {
+                  "calibration_percentile": 0.689367616400278,
+                  "group": "comp",
+                  "share": 3.6156083343003835e-05,
+                  "smoothed_contribution": 0.05654317770896665
+                },
+                {
+                  "calibration_percentile": 0.6890201528839471,
+                  "group": "mpg",
+                  "share": 3.61558301975308e-05,
+                  "smoothed_contribution": 0.05654278182401051
+                },
+                {
+                  "calibration_percentile": 0.6890201528839471,
+                  "group": "dv_electric",
+                  "share": 3.615528329910375e-05,
+                  "smoothed_contribution": 0.05654192654954242
+                },
+                {
+                  "calibration_percentile": 0.49409312022237667,
+                  "group": "towers",
+                  "share": 2.4340534459375778e-05,
+                  "smoothed_contribution": 0.03806527251337421
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.0421931340453523e-05,
+                  "smoothed_contribution": 0.016298477638284882
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 3.6268051297308084e-09,
+                  "smoothed_contribution": 5.6718280301741244e-06
+                }
+              ],
+              "timing": "pre_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "dv_pressure",
+                "dominant_share": 0.16997893090733585,
+                "effective_group_count": 11.333031118466058,
+                "group_count": 15,
+                "herfindahl_index": 0.09721336043311508,
+                "nonzero_group_count": 14,
+                "normalized_entropy": 0.8964832219826255,
+                "shannon_entropy_nats": 2.4277215695748064,
+                "top1_concentration": 0.16997893090733585,
+                "top3_concentration": 0.3997007907462089,
+                "top5_concentration": 0.5758829715698035
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 01:00:00",
+              "id": 2,
+              "lead_hours": 9.17193,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 0.9892286309937457,
+                  "group": "dv_pressure",
+                  "share": 0.16997893090733585,
+                  "smoothed_contribution": 0.2936686245748574
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "reservoirs",
+                  "share": 0.11489169192659779,
+                  "smoothed_contribution": 0.19849568980731883
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp3",
+                  "share": 0.11483016791227532,
+                  "smoothed_contribution": 0.19838939620629453
+                },
+                {
+                  "calibration_percentile": 0.9808895066018068,
+                  "group": "h1",
+                  "share": 0.08900937391282951,
+                  "smoothed_contribution": 0.15377941414103652
+                },
+                {
+                  "calibration_percentile": 0.9624739402362752,
+                  "group": "tp2",
+                  "share": 0.08717280691076512,
+                  "smoothed_contribution": 0.15060642027316803
+                },
+                {
+                  "calibration_percentile": 0.9735927727588604,
+                  "group": "pressure_relationships",
+                  "share": 0.07951947556242439,
+                  "smoothed_contribution": 0.13738393864861828
+                },
+                {
+                  "calibration_percentile": 0.9701181375955524,
+                  "group": "motor_current",
+                  "share": 0.07108637139451753,
+                  "smoothed_contribution": 0.12281426175592272
+                },
+                {
+                  "calibration_percentile": 0.9857539958304378,
+                  "group": "comp",
+                  "share": 0.06410241095469905,
+                  "smoothed_contribution": 0.11074823659916494
+                },
+                {
+                  "calibration_percentile": 0.9857539958304378,
+                  "group": "mpg",
+                  "share": 0.0641010570422375,
+                  "smoothed_contribution": 0.11074589747626154
+                },
+                {
+                  "calibration_percentile": 0.9857539958304378,
+                  "group": "dv_electric",
+                  "share": 0.06409801921193437,
+                  "smoothed_contribution": 0.1107406490878757
+                },
+                {
+                  "calibration_percentile": 0.8453787352328006,
+                  "group": "towers",
+                  "share": 0.044582465797378464,
+                  "smoothed_contribution": 0.07702408375546924
+                },
+                {
+                  "calibration_percentile": 0.7192494788047255,
+                  "group": "pressure_switch",
+                  "share": 0.023371390296350585,
+                  "smoothed_contribution": 0.04037820455802876
+                },
+                {
+                  "calibration_percentile": 0.09277275886031966,
+                  "group": "oil_temperature",
+                  "share": 0.013252555248393954,
+                  "smoothed_contribution": 0.022896129838702244
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "lps",
+                  "share": 3.2829222606091084e-06,
+                  "smoothed_contribution": 5.6718280301741244e-06
+                },
+                {
+                  "calibration_percentile": 0.5,
+                  "group": "oil_level",
+                  "share": 0.0,
+                  "smoothed_contribution": 0.0
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 15,
+            "false_alerts_per_24h": 0.19617192289353585,
+            "false_episodes": 10,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-06-04 08:30:00",
+                "id": 1,
+                "lead_hours": 1.8234166666666667,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 01:00:00",
+                "id": 2,
+                "lead_hours": 9.17193,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.8456669235045002,
+            "pre_onset_incident_recall": 1.0,
+            "relevant_episode_precision": 0.3333333333333333,
+            "time_in_alert_fraction": 0.06743409849465296,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "family": "feature_energy",
+            "input_feature_count": 60,
+            "scaler": "standard",
+            "threshold": 1.6917789637601002
+          },
+          "threshold": 1.6917789637601002
+        },
+        "standard_pca": {
+          "explanation_summary": {
+            "mean_effective_group_count": 1.7723838962438758,
+            "mean_top3_concentration": 0.963729748072002,
+            "timely_explanations": 2
+          },
+          "incident_explanations": [
+            {
+              "concentration": {
+                "dominant_group": "pressure_switch",
+                "dominant_share": 0.8697550375472827,
+                "effective_group_count": 1.7745493200685516,
+                "group_count": 15,
+                "herfindahl_index": 0.7634828565977501,
+                "nonzero_group_count": 15,
+                "normalized_entropy": 0.2117931514962617,
+                "shannon_entropy_nats": 0.5735464865015224,
+                "top1_concentration": 0.8697550375472827,
+                "top3_concentration": 0.9634146047558447,
+                "top5_concentration": 0.9791447757738677
+              },
+              "condition": "air_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-06-04 08:30:00",
+              "id": 1,
+              "lead_hours": 1.8234166666666667,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.8697550375472827,
+                  "smoothed_contribution": 1144.102386416542
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_pressure",
+                  "share": 0.08156837641324483,
+                  "smoothed_contribution": 107.2975379064049
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 0.012091190795317225,
+                  "smoothed_contribution": 15.905122300355895
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.009877037310971221,
+                  "smoothed_contribution": 12.992557065348501
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 0.005853133707051729,
+                  "smoothed_contribution": 7.699391154016669
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.0053367210789176155,
+                  "smoothed_contribution": 7.020086183401011
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.003595254701523606,
+                  "smoothed_contribution": 4.729308030670459
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.0034163433336450726,
+                  "smoothed_contribution": 4.493962543596174
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.003416316004527001,
+                  "smoothed_contribution": 4.4939265940381325
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.0034161744212060706,
+                  "smoothed_contribution": 4.49374035100606
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp3",
+                  "share": 0.0007722783197473284,
+                  "smoothed_contribution": 1.0158785295367057
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "reservoirs",
+                  "share": 0.0007674192124945638,
+                  "smoothed_contribution": 1.0094867111927508
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 0.00012031942779359812,
+                  "smoothed_contribution": 0.1582718564748122
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.2390222412392528e-05,
+                  "smoothed_contribution": 0.016298477638284882
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "lps",
+                  "share": 2.0075038650488566e-06,
+                  "smoothed_contribution": 0.00264073200336936
+                }
+              ],
+              "timing": "pre_onset"
+            },
+            {
+              "concentration": {
+                "dominant_group": "pressure_switch",
+                "dominant_share": 0.8704074070091685,
+                "effective_group_count": 1.7702184724192,
+                "group_count": 15,
+                "herfindahl_index": 0.7645917697168628,
+                "nonzero_group_count": 15,
+                "normalized_entropy": 0.21089083558408736,
+                "shannon_entropy_nats": 0.5711029697141009,
+                "top1_concentration": 0.8704074070091685,
+                "top3_concentration": 0.9640448913881592,
+                "top5_concentration": 0.978972660833326
+              },
+              "condition": "oil_leak",
+              "delay_hours": null,
+              "explanation_available": true,
+              "explanation_timestamp": "2022-07-11 08:25:00",
+              "id": 2,
+              "lead_hours": 1.7552633333333334,
+              "ranked_groups": [
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_switch",
+                  "share": 0.8704074070091685,
+                  "smoothed_contribution": 1487.4936834399082
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_pressure",
+                  "share": 0.08149130489115433,
+                  "smoothed_contribution": 139.26559023364436
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "towers",
+                  "share": 0.012146179487836393,
+                  "smoothed_contribution": 20.757366171969743
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "pressure_relationships",
+                  "share": 0.00888278356688482,
+                  "smoothed_contribution": 15.18034467618657
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "h1",
+                  "share": 0.006044985878282028,
+                  "smoothed_contribution": 10.330654631404402
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp2",
+                  "share": 0.005533986022304196,
+                  "smoothed_contribution": 9.457375001791
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "motor_current",
+                  "share": 0.003574084048622054,
+                  "smoothed_contribution": 6.107975878418321
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "mpg",
+                  "share": 0.0033718115960000494,
+                  "smoothed_contribution": 5.76229982696675
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "comp",
+                  "share": 0.0033717885532875214,
+                  "smoothed_contribution": 5.762260447833417
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "dv_electric",
+                  "share": 0.0033716775016682833,
+                  "smoothed_contribution": 5.7620706647722635
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "tp3",
+                  "share": 0.0008357125195646762,
+                  "smoothed_contribution": 1.4282014192590757
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "reservoirs",
+                  "share": 0.0008290613297477489,
+                  "smoothed_contribution": 1.4168347847838076
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_temperature",
+                  "share": 0.00012712811548902433,
+                  "smoothed_contribution": 0.21725719158034568
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "oil_level",
+                  "share": 1.0615119340378004e-05,
+                  "smoothed_contribution": 0.01814084168013837
+                },
+                {
+                  "calibration_percentile": 1.0,
+                  "group": "lps",
+                  "share": 1.4743606499386314e-06,
+                  "smoothed_contribution": 0.0025196271725580234
+                }
+              ],
+              "timing": "pre_onset"
+            }
+          ],
+          "metrics": {
+            "anytime_incident_recall": 1.0,
+            "episodes_total": 10,
+            "false_alerts_per_24h": 0.11770315373612152,
+            "false_episodes": 6,
+            "incident_overlap_recall": 1.0,
+            "incident_results": [
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-06-04 08:30:00",
+                "id": 1,
+                "lead_hours": 1.8234166666666667,
+                "timely_detected": true
+              },
+              {
+                "anytime_detected": true,
+                "delay_hours": null,
+                "first_alert": "2022-07-11 08:25:00",
+                "id": 2,
+                "lead_hours": 1.7552633333333334,
+                "timely_detected": true
+              }
+            ],
+            "pr_auc": 0.844774523877772,
+            "pre_onset_incident_recall": 1.0,
+            "relevant_episode_precision": 0.4,
+            "time_in_alert_fraction": 0.06716163749063415,
+            "timely_incident_recall": 1.0,
+            "valid_exposure_days": 50.97569444444444
+          },
+          "model": {
+            "components": 11,
+            "explained_variance_ratio": 0.9506755926355281,
+            "family": "pca_reconstruction",
+            "input_feature_count": 60,
+            "scaler": "standard",
+            "threshold": 0.18441881741684094,
+            "variance_retained": 0.95
+          },
+          "threshold": 0.18441881741684094
+        }
+      }
+    }
+  }
+}

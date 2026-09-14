@@ -83,3 +83,27 @@ benchmark:
   preprocessing_report: "docs/metropt2_preprocessing_report.json"
   metropt3_concentration_report: "docs/metropt3_explanation_concentration.json"
   output_file: "docs/metropt2_pca_benchmark.json"
+
+representation_ablation:
+  output_file: "docs/metropt2_representation_ablation.json"
+
+  matched_timestamp_reference: robust_pca
+
+  representations:
+    robust_pca:
+      family: pca_reconstruction
+      scaler: robust
+      variance_retained: 0.95
+
+    standard_pca:
+      family: pca_reconstruction
+      scaler: standard
+      variance_retained: 0.95
+
+    robust_feature_energy:
+      family: feature_energy
+      scaler: robust
+
+    standard_feature_energy:
+      family: feature_energy
+      scaler: standard
