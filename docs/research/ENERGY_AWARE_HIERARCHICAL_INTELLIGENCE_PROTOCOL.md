@@ -67,6 +67,7 @@ false alerts / 24h            = 0.8862358575692373
 time in alert fraction        = 0.07549570810485644
 relevant episode precision    = 0.06338028169014084
 PR-AUC                        = 0.24916826514697024
+```
 
 Failure invalidates the benchmark.
 
