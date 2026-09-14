@@ -1,0 +1,250 @@
+study:
+  name: "energy_aware_hierarchical_intelligence"
+  branch: "research/energy-aware-hierarchical-intelligence"
+  base_commit: "8b3b932f321dd7f690ba558420aa13aa2ff3707a"
+  role: "exploratory_reused_test_benchmark"
+  evidence_class: "REAL"
+  production_promotion_allowed: false
+
+research_question: >
+  Can frozen Robust-PCA route a temporal deep-learning model
+  only to suspicious windows while substantially reducing
+  temporal-model inference energy and retaining coverage of
+  incident-relevant deep-model evidence?
+
+datasets:
+  primary:
+    name: "MetroPT-3"
+    train_file: "data/processed/train.parquet"
+    calibration_file: "data/processed/calibration.parquet"
+    test_file: "data/processed/test.parquet"
+    incidents_config: "configs/metropt.yaml"
+    test_status: "reused_exploratory"
+
+  secondary:
+    name: "MetroPT2"
+    config: "configs/metropt2.yaml"
+    train_file: "data/processed/metropt2/train_features.parquet"
+    calibration_file: "data/processed/metropt2/calibration_features.parquet"
+    test_file: "data/processed/metropt2/test_features.parquet"
+    test_status: "previously_inspected_cross_dataset"
+
+systems:
+  A:
+    id: "frozen_robust_pca"
+    role: "operational_reference"
+    operational_alert_source: true
+
+  B:
+    id: "always_on_tcn"
+    role: "research_compute_reference"
+    operational_alert_source: false
+
+  C:
+    id: "pca_routed_tcn"
+    role: "hierarchical_research_system"
+    operational_alert_source: "frozen_robust_pca"
+    tcn_affects_operational_alert: false
+
+frozen_pca:
+  scaler: "robust"
+  variance_retained: 0.95
+  features: "model_feature_columns"
+
+  alerting:
+    ewma_alpha: 0.20
+    threshold_quantile: 0.995
+    quantile_interpolation: "higher"
+    persistence_hits: 3
+    persistence_window: 4
+    reset_gap_minutes: 10
+    merge_minutes: 30
+
+  expected_metrics:
+    timely_incident_recall: 1.0
+    pre_onset_incident_recall: 0.5
+    incident_overlap_recall: 1.0
+    false_alerts_per_24h: 0.8862358575692373
+    time_in_alert_fraction: 0.07549570810485644
+    relevant_episode_precision: 0.06338028169014084
+    pr_auc: 0.24916826514697024
+
+  reproduction_tolerance: 1.0e-12
+
+temporal_model:
+  family: "causal_tcn_next_step_prediction"
+  purpose: "research_second_stage_evidence"
+
+  features: "same_model_feature_columns_as_frozen_pca"
+  scaler: "robust"
+  scaler_fit: "train_only"
+
+  sequence:
+    bin_minutes: 5
+    history_bins: 12
+    history_minutes: 60
+    prohibit_cross_gap_sequences: true
+    max_gap_minutes: 10
+
+  architecture:
+    residual_blocks: 3
+    channels:
+      - 32
+      - 32
+      - 32
+    kernel_size: 3
+    dilations:
+      - 1
+      - 2
+      - 4
+    dropout: 0.10
+    output_features: "same_as_input_features"
+
+  training:
+    objective: "mean_squared_next_step_prediction_error"
+    optimizer: "AdamW"
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    batch_size: 256
+    max_epochs: 50
+    early_stopping_patience: 5
+    seed: 20260915
+
+    fit_fraction_of_train: 0.80
+    validation_fraction_of_train: 0.20
+    validation_split: "chronological_tail"
+    calibration_used_for_training: false
+    test_used_for_training: false
+    hyperparameter_search_allowed: false
+
+  anomaly_score:
+    definition: "mean_squared_prediction_error_over_features"
+
+  calibration:
+    threshold_source: "official_calibration_split_only"
+    threshold_quantile: 0.995
+    quantile_interpolation: "higher"
+
+router:
+  input_signal: "frozen_pca_causal_ewma_score"
+  threshold_source: "official_calibration_split_only"
+
+  operating_points:
+    - id: "route_q90"
+      calibration_quantile: 0.90
+
+    - id: "route_q95"
+      calibration_quantile: 0.95
+
+    - id: "route_q99"
+      calibration_quantile: 0.99
+
+  rule: >
+    Run the TCN for a window when the frozen PCA causal-EWMA
+    score is greater than or equal to the chosen routing
+    threshold.
+
+  test_tuning_allowed: false
+
+energy_measurement:
+  primary_scope: "inference"
+  training_energy: "secondary_report"
+
+  report:
+    - "wall_clock_seconds"
+    - "windows_processed"
+    - "pca_invocations"
+    - "tcn_invocations"
+    - "tcn_invocation_fraction"
+    - "joules_if_directly_measurable"
+    - "watt_hours_if_directly_measurable"
+    - "median_latency_ms"
+    - "p95_latency_ms"
+    - "peak_memory_mb"
+
+  gpu:
+    preferred_measurement: "NVML_or_nvidia_smi_power_sampling"
+
+  cpu:
+    rule: >
+      Do not label CPU energy as measured unless a validated
+      hardware energy counter is available.
+
+  repetitions: 5
+  warmup_runs: 2
+
+evaluation:
+  primary_dataset: "MetroPT-3"
+
+  operational_metrics:
+    source: "frozen_robust_pca"
+    report:
+      - "timely_incident_recall"
+      - "pre_onset_incident_recall"
+      - "incident_overlap_recall"
+      - "false_alerts_per_24h"
+      - "time_in_alert_fraction"
+      - "relevant_episode_precision"
+      - "pr_auc"
+
+  temporal_model_metrics:
+    report:
+      - "tcn_alert_bins"
+      - "tcn_incident_related_alert_bins"
+      - "tcn_alert_episodes"
+      - "tcn_incident_related_episodes"
+
+  routing_metrics:
+    report:
+      - "tcn_invocation_fraction"
+      - "tcn_alert_bin_coverage"
+      - "tcn_incident_alert_bin_coverage"
+      - "tcn_alert_episode_coverage"
+      - "tcn_incident_episode_coverage"
+
+  compute_metrics:
+    report:
+      - "joules_per_window_if_measured"
+      - "watt_hours_per_dataset_day_if_measured"
+      - "latency_ms"
+      - "energy_reduction_vs_always_on_tcn"
+
+secondary_transport:
+  dataset: "MetroPT2"
+  execute_only_after_primary_protocol_is_locked: true
+  retuning_allowed: false
+  router_quantiles_unchanged: true
+  tcn_architecture_unchanged: true
+
+decision:
+  primary_question: >
+    Does routing materially reduce TCN inference compute while
+    still routing most incident-relevant TCN evidence?
+
+  promotion_allowed: false
+
+  success_guardrails:
+    frozen_pca_reproduction_required: true
+    no_operational_alert_changes: true
+    no_test_tuned_router: true
+    no_test_tuned_tcn: true
+
+outputs:
+  baseline_result:
+    "docs/research/energy_compute_baseline.json"
+  routing_result:
+    "docs/research/energy_aware_hierarchical_routing.json"
+  final_decision:
+    "docs/research/ENERGY_AWARE_HIERARCHICAL_DECISION.md"
+
+guardrails:
+  - "No MetroPT-3 TEST result may change TCN architecture or training."
+  - "No MetroPT-3 TEST result may change routing quantiles."
+  - "MetroPT-3 TEST is reused exploratory evidence."
+  - "MetroPT2 has also been previously inspected and is not untouched confirmation evidence."
+  - "The frozen Robust-PCA detector remains the operational alert source."
+  - "TCN output cannot change operational alerts in this first study."
+  - "No physical compressor-energy saving claim is allowed from this study."
+  - "AI compute energy and compressor physical energy must remain separate."
+  - "No simulated energy result may be presented as measured plant energy."
+  - "No result from this branch changes release/esic-2026-v3.1."
