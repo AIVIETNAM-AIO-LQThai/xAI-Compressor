@@ -13,7 +13,7 @@ git switch -c release/esic-2026-v3.1
 git push -u origin release/esic-2026-v3.1
 ```
 
-`git status --short` must be empty before applying release documentation.
+`git status --short` must be empty before creating the release branch.
 
 ## Technical acceptance
 
@@ -84,6 +84,31 @@ curl -s \
   --data-binary @/tmp/aeroxai-proof-bundle.json \
   http://127.0.0.1:8000/evidence/proof-bundle/verify \
   | python -m json.tool
+```
+
+Acceptance:
+
+```text
+verified = true
+
+schema_version            = true
+bundle_id                 = true
+manifest_digest           = true
+artifact_roles            = true
+embedded_payload_digests  = true
+semantic_rebuild          = true
+current_source_files      = true
+
+errors = []
+```
+
+The Evidence Proof UI must also visibly show `VERIFIED` and all
+integrity checks as `PASS`.
+
+The bundle integrity check verifies that the displayed proof is
+bound to the frozen source artifacts. It does not establish
+physical causality or convert SIMULATED evidence into REAL
+evidence.
 
 Evidence Proof acceptance:
 
@@ -112,6 +137,17 @@ docs/evidence_action_replay.json
 docs/simulated_action_proof.json
 docs/proof_manifest.json
 ```
+
+The runtime proof layer must also provide:
+
+```text
+GET  /evidence/proof-bundle
+POST /evidence/proof-bundle/verify
+```
+
+The proof bundle must cryptographically bind the REAL replay,
+SIMULATED action proof, and derived manifest without blending
+their evidence classes.
 
 `docs/proof_manifest.json` must preserve:
 

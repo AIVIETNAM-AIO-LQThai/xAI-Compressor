@@ -95,6 +95,33 @@ Semantic Rebuild          PASS
 Current Source Files      PASS
 ```
 
+Point briefly to the REAL and SIMULATED source SHA-256
+fingerprints.
+
+Say:
+
+> Before looking at the recommendation path, AeroXAI verifies
+> that this view is tied to the exact frozen evidence artifacts.
+> The bundle fingerprints both source files with SHA-256 and
+> rebuilds the proof manifest from those embedded artifacts.
+> If the evidence, manifest, or source files are altered, the
+> verification fails.
+
+Then say:
+
+> This verifies artifact integrity and provenance. It does not
+> make simulated evidence real, and it does not establish
+> physical causality.
+
+Then move to the REAL panel.
+
+Say:
+
+> AeroXAI does not jump from an anomaly to a compressor command.
+> Real detector evidence generates multiple candidate hypotheses,
+> then the physical-bridge gate asks whether the asset is
+> calibrated well enough to support real physical reasoning.
+
 Point to:
 
 ```text
