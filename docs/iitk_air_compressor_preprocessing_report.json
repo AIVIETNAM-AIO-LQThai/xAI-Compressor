@@ -1,0 +1,120 @@
+{
+  "class_counts": [
+    {
+      "condition": "healthy",
+      "count": 60,
+      "split": "calibration"
+    },
+    {
+      "condition": "bearing",
+      "count": 225,
+      "split": "test"
+    },
+    {
+      "condition": "flywheel",
+      "count": 225,
+      "split": "test"
+    },
+    {
+      "condition": "healthy",
+      "count": 45,
+      "split": "test"
+    },
+    {
+      "condition": "leakage_inlet_valve",
+      "count": 225,
+      "split": "test"
+    },
+    {
+      "condition": "leakage_outlet_valve",
+      "count": 225,
+      "split": "test"
+    },
+    {
+      "condition": "non_return_valve",
+      "count": 225,
+      "split": "test"
+    },
+    {
+      "condition": "piston_ring",
+      "count": 225,
+      "split": "test"
+    },
+    {
+      "condition": "rider_belt",
+      "count": 225,
+      "split": "test"
+    },
+    {
+      "condition": "healthy",
+      "count": 120,
+      "split": "train"
+    }
+  ],
+  "dataset": "IITK-AirCompressor",
+  "feature_count": 31,
+  "feature_groups": {
+    "amplitude": [
+      "mean",
+      "std",
+      "rms",
+      "mean_abs",
+      "peak_abs",
+      "peak_to_peak"
+    ],
+    "distribution_shape": [
+      "skewness",
+      "excess_kurtosis",
+      "crest_factor",
+      "shape_factor",
+      "impulse_factor",
+      "clearance_factor"
+    ],
+    "spectral_band_energy": [
+      "spectral_band_0_energy_fraction",
+      "spectral_band_1_energy_fraction",
+      "spectral_band_2_energy_fraction",
+      "spectral_band_3_energy_fraction",
+      "spectral_band_4_energy_fraction",
+      "spectral_band_5_energy_fraction",
+      "spectral_band_6_energy_fraction",
+      "spectral_band_7_energy_fraction"
+    ],
+    "spectral_shape": [
+      "spectral_centroid_norm",
+      "spectral_bandwidth_norm",
+      "spectral_flatness",
+      "spectral_entropy",
+      "spectral_rolloff_50_norm",
+      "spectral_rolloff_85_norm",
+      "spectral_rolloff_95_norm",
+      "spectral_peak_frequency_norm"
+    ],
+    "temporal_structure": [
+      "zero_crossing_rate",
+      "diff_rms_ratio",
+      "lag1_autocorrelation"
+    ]
+  },
+  "frequency_semantics": {
+    "absolute_frequency_features": false,
+    "sample_rate_hz": null,
+    "sample_rate_status": "unverified_for_preprocessed_dat_files",
+    "spectral_axis": "fraction_of_nyquist"
+  },
+  "leakage_checks": {
+    "calibration_contains_fault": false,
+    "faults_test_only": true,
+    "train_contains_fault": false
+  },
+  "output_file": "/mnt/c/Users/Dell ProMax Tower T2/Downloads/code/xAI-Compressor/data/processed/iitk_air_compressor/features.parquet",
+  "recordings": 1800,
+  "schema_version": "aeroxai.iitk_air_compressor_preprocessing.v1",
+  "split_counts": {
+    "calibration": 60,
+    "test": 1620,
+    "test_fault": 1575,
+    "test_healthy": 45,
+    "train": 120
+  }
+}

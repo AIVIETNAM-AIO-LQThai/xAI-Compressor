@@ -1,0 +1,171 @@
+{
+  "absolute_frequency_features_allowed": false,
+  "all_conditions_complete": true,
+  "all_recordings_expected_length": true,
+  "all_recordings_numeric_finite": true,
+  "archive_root": "AirCompressor_Data",
+  "audit_passed": true,
+  "balanced_condition_counts": true,
+  "conditions": {
+    "bearing": {
+      "archive_directory": "Bearing",
+      "invalid_readings": [],
+      "missing_readings": [],
+      "recording_count": 225,
+      "recording_mean_range": [
+        -0.07169549026559,
+        0.16389526456421802
+      ],
+      "recording_std_range": [
+        0.1689487956541168,
+        0.2889770980580819
+      ],
+      "sample_count_distribution": {
+        "50000": 225
+      },
+      "signal_max": 3.6951,
+      "signal_min": -3.3788
+    },
+    "flywheel": {
+      "archive_directory": "Flywheel",
+      "invalid_readings": [],
+      "missing_readings": [],
+      "recording_count": 225,
+      "recording_mean_range": [
+        -0.156995537034846,
+        0.149181947605012
+      ],
+      "recording_std_range": [
+        0.1542416193627245,
+        0.2740068330418665
+      ],
+      "sample_count_distribution": {
+        "50000": 225
+      },
+      "signal_max": 4.0508,
+      "signal_min": -4.2685
+    },
+    "healthy": {
+      "archive_directory": "Healthy",
+      "invalid_readings": [],
+      "missing_readings": [],
+      "recording_count": 225,
+      "recording_mean_range": [
+        -0.105243457986822,
+        0.11225263654238599
+      ],
+      "recording_std_range": [
+        0.2010038820479424,
+        0.28645902844253335
+      ],
+      "sample_count_distribution": {
+        "50000": 225
+      },
+      "signal_max": 2.4649,
+      "signal_min": -2.3739
+    },
+    "leakage_inlet_valve": {
+      "archive_directory": "LIV",
+      "invalid_readings": [],
+      "missing_readings": [],
+      "recording_count": 225,
+      "recording_mean_range": [
+        -0.05153975074699721,
+        0.17413293922440004
+      ],
+      "recording_std_range": [
+        0.1536239587726279,
+        0.23853397005881877
+      ],
+      "sample_count_distribution": {
+        "50000": 225
+      },
+      "signal_max": 2.8696,
+      "signal_min": -3.3687
+    },
+    "leakage_outlet_valve": {
+      "archive_directory": "LOV",
+      "invalid_readings": [],
+      "missing_readings": [],
+      "recording_count": 225,
+      "recording_mean_range": [
+        -0.13675930419954,
+        0.173532875523634
+      ],
+      "recording_std_range": [
+        0.1743650247556826,
+        0.27155704773086786
+      ],
+      "sample_count_distribution": {
+        "50000": 225
+      },
+      "signal_max": 2.4519,
+      "signal_min": -2.9315
+    },
+    "non_return_valve": {
+      "archive_directory": "NRV",
+      "invalid_readings": [],
+      "missing_readings": [],
+      "recording_count": 225,
+      "recording_mean_range": [
+        -0.12086450829694,
+        0.122884429178514
+      ],
+      "recording_std_range": [
+        0.14913047031736715,
+        0.22034252011446775
+      ],
+      "sample_count_distribution": {
+        "50000": 225
+      },
+      "signal_max": 3.3946,
+      "signal_min": -3.3214
+    },
+    "piston_ring": {
+      "archive_directory": "Piston",
+      "invalid_readings": [],
+      "missing_readings": [],
+      "recording_count": 225,
+      "recording_mean_range": [
+        -0.13072165787636,
+        0.1270105632306322
+      ],
+      "recording_std_range": [
+        0.1636924811349933,
+        0.2800099160799804
+      ],
+      "sample_count_distribution": {
+        "50000": 225
+      },
+      "signal_max": 3.5421,
+      "signal_min": -3.4628
+    },
+    "rider_belt": {
+      "archive_directory": "Riderbelt",
+      "invalid_readings": [],
+      "missing_readings": [],
+      "recording_count": 225,
+      "recording_mean_range": [
+        -0.09008744064463801,
+        0.111588681779738
+      ],
+      "recording_std_range": [
+        0.14318842277311017,
+        0.24724324100395734
+      ],
+      "sample_count_distribution": {
+        "50000": 225
+      },
+      "signal_max": 2.5559,
+      "signal_min": -2.9828
+    }
+  },
+  "dataset": "IITK-AirCompressor",
+  "expected_readings_per_condition": 225,
+  "expected_samples_per_recording": 50000,
+  "sample_rate_hz": null,
+  "sample_rate_status": "unverified_for_preprocessed_dat_files",
+  "schema_version": "aeroxai.iitk_air_compressor_data_audit.v1",
+  "total_recordings": 1800,
+  "zip_sha256": "0981c16a599db0c1a96bbdf77417ab61c177bde9402b08b4c421fed235244bc6"
+}
