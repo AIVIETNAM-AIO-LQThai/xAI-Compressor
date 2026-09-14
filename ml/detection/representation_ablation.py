@@ -158,6 +158,18 @@ def _evaluate_representation(
         "_smoothed_contributions": (
             test_smoothed
         ),
+        "_calibration_smoothed_contributions": (
+            calibration_smoothed
+        ),
+        "_calibration_smoothed_score": (
+            pipeline.calibration_smoothed
+        ),
+        "_test_smoothed_score": (
+            pipeline.test_smoothed
+        ),
+        "_test_alerts": (
+            pipeline.alerts
+        ),
     }
 
 

@@ -131,3 +131,38 @@ temporal_explanation_dynamics:
     - name: established_event
       start_hours: 2
       end_hours: 6
+
+evidence_state_analysis:
+  output_file: "docs/metropt2_evidence_state_transitions.json"
+  trajectory_file: "data/processed/metropt2/evidence_state_transitions.parquet"
+
+  # These are calibration-relative percentiles of N_eff.
+  # Low percentile = unusually concentrated evidence.
+  # High percentile = unusually diffuse evidence.
+  concentrated_percentile_max: 0.10
+  diffuse_percentile_min: 0.90
+
+  # Magnitude state is not retuned:
+  # subthreshold / threshold_crossing / alerting
+  # reuse the frozen detector threshold and persistence logic.
+
+  pre_onset_hours: 24
+  post_onset_hours: 6
+
+  phases:
+    - name: early_precursor
+      start_hours: -24
+      end_hours: -6
+
+    - name: near_precursor
+      start_hours: -6
+      end_hours: 0
+
+    - name: early_event
+      start_hours: 0
+      end_hours: 2
+
+    - name: established_event
+      start_hours: 2
+      end_hours: 6
+
