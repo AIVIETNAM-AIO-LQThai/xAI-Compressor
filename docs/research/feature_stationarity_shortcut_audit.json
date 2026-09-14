@@ -1,0 +1,1324 @@
+{
+  "data": {
+    "background_test_rows": 41256,
+    "calibration_rows": 1796,
+    "feature_count": 63,
+    "incident_count": 4,
+    "relevant_test_rows": 1965,
+    "test_rows": 43221,
+    "train_rows": 5271
+  },
+  "diagnostics": {
+    "analog_min_coherence": {
+      "dv_pressure": {
+        "background_test": {
+          "among_extreme_min_last_extreme_fraction": 0.6906666666666667,
+          "among_extreme_min_mean_and_last_nonextreme_fraction": 0.0008888888888888889,
+          "among_extreme_min_mean_extreme_fraction": 0.9991111111111111,
+          "extreme_min_count": 1125,
+          "extreme_min_fraction": 0.027268760907504363,
+          "raw_last_minus_min": {
+            "count": 1125,
+            "max": 1.8900000000000006,
+            "median": 0.3300000000000001,
+            "min": 0.0,
+            "q01": 0.0,
+            "q99": 0.9935199999999997
+          },
+          "raw_mean_minus_min": {
+            "count": 1125,
+            "max": 1.0003333333333333,
+            "median": 0.3180666666666667,
+            "min": 0.015290322580644666,
+            "q01": 0.11367363440860262,
+            "q99": 0.8631573333333323
+          }
+        },
+        "calibration": {
+          "extreme_min_count": 0,
+          "extreme_min_fraction": 0.0
+        }
+      },
+      "tp2": {
+        "background_test": {
+          "among_extreme_min_last_extreme_fraction": 0.0,
+          "among_extreme_min_mean_and_last_nonextreme_fraction": 0.026713709677419355,
+          "among_extreme_min_mean_extreme_fraction": 0.9732862903225806,
+          "extreme_min_count": 1984,
+          "extreme_min_fraction": 0.048089974791545476,
+          "raw_last_minus_min": {
+            "count": 1984,
+            "max": 9.718,
+            "median": 1.0949999999999984,
+            "min": 0.0,
+            "q01": 0.0,
+            "q99": 5.019820000000004
+          },
+          "raw_mean_minus_min": {
+            "count": 1984,
+            "max": 8.741066666666667,
+            "median": 1.1753666666666662,
+            "min": 0.0,
+            "q01": 0.0,
+            "q99": 3.215979333333339
+          }
+        },
+        "calibration": {
+          "extreme_min_count": 0,
+          "extreme_min_fraction": 0.0
+        }
+      }
+    },
+    "digital_support": {
+      "pressure_switch": {
+        "background_test": {
+          "active_ratio": {
+            "any_active_fraction": 1.0,
+            "mostly_active_fraction_ge_0_5": 1.0,
+            "raw": {
+              "count": 41256,
+              "max": 1.0,
+              "median": 1.0,
+              "min": 0.64,
+              "q01": 0.76,
+              "q99": 1.0
+            }
+          },
+          "last": {
+            "active_fraction_gt_0_5": 0.9893591235214272,
+            "nonzero_fraction": 0.9893591235214272,
+            "unique_value_count": 2,
+            "unique_values": [
+              0.0,
+              1.0
+            ]
+          },
+          "rows": 41256,
+          "transitions": {
+            "any_transition_fraction": 0.09542854372697304,
+            "raw": {
+              "count": 41256,
+              "max": 12.0,
+              "median": 0.0,
+              "min": 0.0,
+              "q01": 0.0,
+              "q99": 9.0
+            },
+            "unique_value_count": 13,
+            "unique_values": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0,
+              12.0
+            ]
+          }
+        },
+        "calibration": {
+          "active_ratio": {
+            "any_active_fraction": 1.0,
+            "mostly_active_fraction_ge_0_5": 1.0,
+            "raw": {
+              "count": 1796,
+              "max": 1.0,
+              "median": 1.0,
+              "min": 0.9333333333333333,
+              "q01": 0.9666666666666667,
+              "q99": 1.0
+            }
+          },
+          "last": {
+            "active_fraction_gt_0_5": 0.9988864142538976,
+            "nonzero_fraction": 0.9988864142538976,
+            "unique_value_count": 2,
+            "unique_values": [
+              0.0,
+              1.0
+            ]
+          },
+          "rows": 1796,
+          "transitions": {
+            "any_transition_fraction": 0.021714922048997772,
+            "raw": {
+              "count": 1796,
+              "max": 4.0,
+              "median": 0.0,
+              "min": 0.0,
+              "q01": 0.0,
+              "q99": 2.0
+            },
+            "unique_value_count": 5,
+            "unique_values": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0
+            ]
+          }
+        },
+        "train": {
+          "active_ratio": {
+            "any_active_fraction": 1.0,
+            "mostly_active_fraction_ge_0_5": 1.0,
+            "raw": {
+              "count": 5271,
+              "max": 1.0,
+              "median": 1.0,
+              "min": 0.9333333333333333,
+              "q01": 0.9666666666666667,
+              "q99": 1.0
+            }
+          },
+          "last": {
+            "active_fraction_gt_0_5": 0.9990514133940429,
+            "nonzero_fraction": 0.9990514133940429,
+            "unique_value_count": 2,
+            "unique_values": [
+              0.0,
+              1.0
+            ]
+          },
+          "rows": 5271,
+          "transitions": {
+            "any_transition_fraction": 0.022007209258205273,
+            "raw": {
+              "count": 5271,
+              "max": 4.0,
+              "median": 0.0,
+              "min": 0.0,
+              "q01": 0.0,
+              "q99": 2.0
+            },
+            "unique_value_count": 4,
+            "unique_values": [
+              0.0,
+              1.0,
+              2.0,
+              4.0
+            ]
+          }
+        }
+      }
+    },
+    "feature_residual_share": {
+      "background_test_all": {
+        "feature_share": {
+          "caudal_impulses__active_ratio": 6.343423318680494e-07,
+          "caudal_impulses__last": 6.85837532438539e-07,
+          "caudal_impulses__transitions": 2.4437541443106628e-05,
+          "comp__active_ratio": 0.0003746577181725907,
+          "comp__last": 0.005059192719223657,
+          "comp__transitions": 0.0037280788897025388,
+          "dv_electric__active_ratio": 0.000365922932900925,
+          "dv_electric__last": 0.005093659672758464,
+          "dv_electric__transitions": 0.004229144902319991,
+          "dv_pressure__last": 2.753007294434832e-05,
+          "dv_pressure__max": 7.496362203728409e-05,
+          "dv_pressure__mean": 0.0005903399431289748,
+          "dv_pressure__min": 0.024897684351661547,
+          "dv_pressure__std": 7.916100959995654e-05,
+          "h1__last": 0.0027964430414436033,
+          "h1__max": 0.004077831616730354,
+          "h1__mean": 0.00017810184199570193,
+          "h1__min": 0.007719215869151394,
+          "h1__std": 0.007439192539037538,
+          "lps__active_ratio": 2.2584407124254763e-08,
+          "lps__last": 2.0021344114665426e-08,
+          "lps__transitions": 3.365289755443763e-08,
+          "motor_current__last": 0.004164796471268726,
+          "motor_current__max": 0.001155603199347145,
+          "motor_current__mean": 0.0010353631062835244,
+          "motor_current__min": 0.016040203259892746,
+          "motor_current__std": 0.0017818134785063885,
+          "mpg__active_ratio": 0.0003781458228913048,
+          "mpg__last": 0.005059236910080074,
+          "mpg__transitions": 0.0037229194469628624,
+          "oil_level__active_ratio": 9.851497511242746e-07,
+          "oil_level__last": 1.039192956760134e-06,
+          "oil_level__transitions": 2.444563517796149e-05,
+          "oil_temperature__last": 0.011674451374224178,
+          "oil_temperature__max": 0.006171365226725925,
+          "oil_temperature__mean": 0.004339470313971665,
+          "oil_temperature__min": 0.011297508933404692,
+          "oil_temperature__std": 0.006458461189267449,
+          "pressure_switch__active_ratio": 0.00012193900828962983,
+          "pressure_switch__last": 5.985385684261527e-05,
+          "pressure_switch__transitions": 2.1102189723115892e-05,
+          "reservoirs__last": 0.0071663190058095984,
+          "reservoirs__max": 0.0037720846633567855,
+          "reservoirs__mean": 0.0024557517595948253,
+          "reservoirs__min": 0.00212854644246695,
+          "reservoirs__std": 0.004503439245791705,
+          "towers__active_ratio": 0.00011664235714616252,
+          "towers__last": 0.004968973200850541,
+          "towers__transitions": 0.0018104858528587646,
+          "tp2__last": 0.006011075003784755,
+          "tp2__max": 0.007887981940675179,
+          "tp2__mean": 0.0008685308235641884,
+          "tp2__min": 0.7689701749968769,
+          "tp2__std": 0.006592812010861454,
+          "tp2_minus_tp3__mean": 0.00023237557775278552,
+          "tp2_minus_tp3__std": 0.007863310404416984,
+          "tp3__last": 0.0072233370934722515,
+          "tp3__max": 0.0037282179082951676,
+          "tp3__mean": 0.002428070058170573,
+          "tp3__min": 0.002142380941487234,
+          "tp3__std": 0.004493437139573207,
+          "tp3_minus_reservoirs__mean": 0.011234880873001382,
+          "tp3_minus_reservoirs__std": 0.003135514211859631
+        },
+        "grouped_focus_share": {
+          "dv_pressure_family": 0.02566967899937211,
+          "explicit_focus_set": 0.8015682302468161,
+          "pressure_switch_family": 0.000202895054855361,
+          "tp2_family": 0.7903305747757625
+        },
+        "row_count": 41256,
+        "top_features": [
+          "tp2__min",
+          "dv_pressure__min",
+          "motor_current__min",
+          "oil_temperature__last",
+          "oil_temperature__min",
+          "tp3_minus_reservoirs__mean",
+          "tp2__max",
+          "tp2_minus_tp3__std",
+          "h1__min",
+          "h1__std",
+          "tp3__last",
+          "reservoirs__last",
+          "tp2__std",
+          "oil_temperature__std",
+          "oil_temperature__max",
+          "tp2__last",
+          "dv_electric__last",
+          "mpg__last",
+          "comp__last",
+          "towers__last"
+        ]
+      },
+      "background_test_high_score": {
+        "feature_share": {
+          "caudal_impulses__active_ratio": 1.8684887592701745e-07,
+          "caudal_impulses__last": 2.3834542264324805e-07,
+          "caudal_impulses__transitions": 2.443818026948206e-05,
+          "comp__active_ratio": 0.0003745561824220359,
+          "comp__last": 0.005059294486794511,
+          "comp__transitions": 0.0037277048243724033,
+          "dv_electric__active_ratio": 0.00036582156515601845,
+          "dv_electric__last": 0.005093762341336446,
+          "dv_electric__transitions": 0.004228784577900662,
+          "dv_pressure__last": 2.7351467902575046e-05,
+          "dv_pressure__max": 7.463686799156772e-05,
+          "dv_pressure__mean": 0.0005902059281262864,
+          "dv_pressure__min": 0.02489486799870635,
+          "dv_pressure__std": 7.88353188547596e-05,
+          "h1__last": 0.002796447806648439,
+          "h1__max": 0.004077474038233843,
+          "h1__mean": 0.0001779551558193967,
+          "h1__min": 0.0077191255080165935,
+          "h1__std": 0.007439293832365203,
+          "lps__active_ratio": 2.258252939341094e-08,
+          "lps__last": 2.0021867496394387e-08,
+          "lps__transitions": 3.301478151001202e-08,
+          "motor_current__last": 0.004164685882587438,
+          "motor_current__max": 0.0011554547019183873,
+          "motor_current__mean": 0.0010351204667220534,
+          "motor_current__min": 0.016040543498851385,
+          "motor_current__std": 0.0017817172587776822,
+          "mpg__active_ratio": 0.0003780443681438096,
+          "mpg__last": 0.005059338678806129,
+          "mpg__transitions": 0.0037225452467587617,
+          "oil_level__active_ratio": 1.572001821404241e-07,
+          "oil_level__last": 2.0895161716981803e-07,
+          "oil_level__transitions": 2.4439671259614768e-05,
+          "oil_temperature__last": 0.011673994865311222,
+          "oil_temperature__max": 0.006170643215028452,
+          "oil_temperature__mean": 0.004338895899578404,
+          "oil_temperature__min": 0.011297383281224321,
+          "oil_temperature__std": 0.006456017004788238,
+          "pressure_switch__active_ratio": 0.0001215887531549876,
+          "pressure_switch__last": 5.947913762900969e-05,
+          "pressure_switch__transitions": 2.0775540652313894e-05,
+          "reservoirs__last": 0.007166232583225137,
+          "reservoirs__max": 0.003771974797560424,
+          "reservoirs__mean": 0.0024556315091424836,
+          "reservoirs__min": 0.0021283112672228354,
+          "reservoirs__std": 0.00450328859628997,
+          "towers__active_ratio": 0.00011588685480030693,
+          "towers__last": 0.0049690462367898425,
+          "towers__transitions": 0.0018095323142564164,
+          "tp2__last": 0.006010808693571434,
+          "tp2__max": 0.007887998609956443,
+          "tp2__mean": 0.0008684495651770226,
+          "tp2__min": 0.7689889169957008,
+          "tp2__std": 0.006592901046803004,
+          "tp2_minus_tp3__mean": 0.000232230443607905,
+          "tp2_minus_tp3__std": 0.007863416158686623,
+          "tp3__last": 0.0072232521821233775,
+          "tp3__max": 0.003728106202901261,
+          "tp3__mean": 0.002427948085532067,
+          "tp3__min": 0.0021421483480510884,
+          "tp3__std": 0.0044932878384303055,
+          "tp3_minus_reservoirs__mean": 0.011234561634410885,
+          "tp3_minus_reservoirs__std": 0.003133979518375001
+        },
+        "grouped_focus_share": {
+          "dv_pressure_family": 0.02566589758158154,
+          "explicit_focus_set": 0.8015824440806208,
+          "pressure_switch_family": 0.00020184343143631118,
+          "tp2_family": 0.7903490749112088
+        },
+        "row_count": 6211,
+        "top_features": [
+          "tp2__min",
+          "dv_pressure__min",
+          "motor_current__min",
+          "oil_temperature__last",
+          "oil_temperature__min",
+          "tp3_minus_reservoirs__mean",
+          "tp2__max",
+          "tp2_minus_tp3__std",
+          "h1__min",
+          "h1__std",
+          "tp3__last",
+          "reservoirs__last",
+          "tp2__std",
+          "oil_temperature__std",
+          "oil_temperature__max",
+          "tp2__last",
+          "dv_electric__last",
+          "mpg__last",
+          "comp__last",
+          "towers__last"
+        ]
+      },
+      "calibration_all": {
+        "feature_share": {
+          "caudal_impulses__active_ratio": 0.0,
+          "caudal_impulses__last": 0.0,
+          "caudal_impulses__transitions": 0.0,
+          "comp__active_ratio": 0.004437059424221944,
+          "comp__last": 0.002044524171246642,
+          "comp__transitions": 0.010026873798587013,
+          "dv_electric__active_ratio": 0.0044314439531902595,
+          "dv_electric__last": 0.0020445241712466404,
+          "dv_electric__transitions": 0.010026873798587015,
+          "dv_pressure__last": 0.07429278459483452,
+          "dv_pressure__max": 0.006274661874886036,
+          "dv_pressure__mean": 0.004406272119221316,
+          "dv_pressure__min": 0.06534166055997605,
+          "dv_pressure__std": 0.006362874736582544,
+          "h1__last": 0.0037215265614177657,
+          "h1__max": 0.015894391981295188,
+          "h1__mean": 0.004984973170215338,
+          "h1__min": 0.008416973349104349,
+          "h1__std": 0.0025152306494144344,
+          "lps__active_ratio": 0.0,
+          "lps__last": 0.0,
+          "lps__transitions": 0.0,
+          "motor_current__last": 0.00923048049640472,
+          "motor_current__max": 0.007790678683391483,
+          "motor_current__mean": 0.015111693485108397,
+          "motor_current__min": 0.002541376692764739,
+          "motor_current__std": 0.0071570026671934055,
+          "mpg__active_ratio": 0.004437059424221944,
+          "mpg__last": 0.002044524171246642,
+          "mpg__transitions": 0.010026873798587015,
+          "oil_level__active_ratio": 0.0,
+          "oil_level__last": 0.0,
+          "oil_level__transitions": 0.0,
+          "oil_temperature__last": 0.016150048594025905,
+          "oil_temperature__max": 0.011274788358702164,
+          "oil_temperature__mean": 0.009593948317900402,
+          "oil_temperature__min": 0.018987823543957515,
+          "oil_temperature__std": 0.08262993014724641,
+          "pressure_switch__active_ratio": 0.008196065718750195,
+          "pressure_switch__last": 0.0695389767985635,
+          "pressure_switch__transitions": 0.010028621986196275,
+          "reservoirs__last": 0.020468583031855506,
+          "reservoirs__max": 0.011631447391535259,
+          "reservoirs__mean": 0.009353752401249757,
+          "reservoirs__min": 0.010841733750961443,
+          "reservoirs__std": 0.02480811526653073,
+          "towers__active_ratio": 0.038930916588909355,
+          "towers__last": 0.014019582815614315,
+          "towers__transitions": 0.0619226914451913,
+          "tp2__last": 0.015336662732940924,
+          "tp2__max": 0.009442481575287067,
+          "tp2__mean": 0.004722042496548295,
+          "tp2__min": 0.04422702438874552,
+          "tp2__std": 0.0038770249089130396,
+          "tp2_minus_tp3__mean": 0.005638970463033007,
+          "tp2_minus_tp3__std": 0.0036615377014345874,
+          "tp3__last": 0.02048008002148002,
+          "tp3__max": 0.011594117049671589,
+          "tp3__mean": 0.009400305899267339,
+          "tp3__min": 0.010869014942700185,
+          "tp3__std": 0.02471245167772164,
+          "tp3_minus_reservoirs__mean": 0.03948292248037639,
+          "tp3_minus_reservoirs__std": 0.09461599917174496
+        },
+        "grouped_focus_share": {
+          "dv_pressure_family": 0.15667825388550047,
+          "explicit_focus_set": 0.29609011139577657,
+          "pressure_switch_family": 0.08776366450350996,
+          "tp2_family": 0.07760523610243485
+        },
+        "row_count": 1796,
+        "top_features": [
+          "tp3_minus_reservoirs__std",
+          "oil_temperature__std",
+          "dv_pressure__last",
+          "pressure_switch__last",
+          "dv_pressure__min",
+          "towers__transitions",
+          "tp2__min",
+          "tp3_minus_reservoirs__mean",
+          "towers__active_ratio",
+          "reservoirs__std",
+          "tp3__std",
+          "tp3__last",
+          "reservoirs__last",
+          "oil_temperature__min",
+          "oil_temperature__last",
+          "h1__max",
+          "tp2__last",
+          "motor_current__mean",
+          "towers__last",
+          "reservoirs__max"
+        ]
+      }
+    },
+    "support_and_scaler": {
+      "dv_pressure__last": {
+        "background_test_above_train_max_fraction": 4.8477797168896646e-05,
+        "background_test_below_train_min_fraction": 0.008459375605972465,
+        "background_test_fraction_abs_z_ge_10_0": 0.015852239674229204,
+        "background_test_fraction_abs_z_ge_50_0": 0.0,
+        "background_test_fraction_abs_z_ge_5_0": 0.021936203218925733,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 6.992000000000001,
+          "median": -0.0199999999999995,
+          "min": -0.032,
+          "q01": -0.0259999999999998,
+          "q99": 1.9564999999999708
+        },
+        "calibration_above_train_max_fraction": 0.0,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0005567928730512249,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.0005567928730512249,
+        "calibration_raw": {
+          "count": 1796,
+          "max": 4.773999999999999,
+          "median": -0.0199999999999995,
+          "min": -0.0240000000000009,
+          "q01": -0.0240000000000009,
+          "q99": -0.0139999999999993
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": 6.529999999999999,
+          "median": -0.0180000000000006,
+          "min": -0.0259999999999998,
+          "q01": -0.0240000000000009,
+          "q99": -0.0120000000000004
+        },
+        "train_scaler_mean": -0.013905520774046045,
+        "train_scaler_scale": 0.1475697243789567
+      },
+      "dv_pressure__mean": {
+        "background_test_above_train_max_fraction": 0.03332848555361644,
+        "background_test_below_train_min_fraction": 0.041836338956757806,
+        "background_test_fraction_abs_z_ge_10_0": 0.036115958890828,
+        "background_test_fraction_abs_z_ge_50_0": 0.01573104518130696,
+        "background_test_fraction_abs_z_ge_5_0": 0.0564281559045957,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 2.5052000000000003,
+          "median": -0.02013333333333276,
+          "min": -0.030838709677419876,
+          "q01": -0.0263225806451609,
+          "q99": 1.8776166666666658
+        },
+        "calibration_above_train_max_fraction": 0.0005567928730512249,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0016703786191536749,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.018374164810690423,
+        "calibration_raw": {
+          "count": 1796,
+          "max": 0.19500000000000012,
+          "median": -0.019066666666666565,
+          "min": -0.02353333333333365,
+          "q01": -0.023096774193548157,
+          "q99": 0.12487666666666812
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": 0.19433333333333355,
+          "median": -0.018266666666667118,
+          "min": -0.024933333333333717,
+          "q01": -0.02362903225806488,
+          "q99": 0.10922000000000236
+        },
+        "train_scaler_mean": -0.01550315668769363,
+        "train_scaler_scale": 0.01854285045461901
+      },
+      "dv_pressure__min": {
+        "background_test_above_train_max_fraction": 0.027535388791933294,
+        "background_test_below_train_min_fraction": 0.005162885398487493,
+        "background_test_fraction_abs_z_ge_10_0": 0.027268760907504363,
+        "background_test_fraction_abs_z_ge_50_0": 0.027220283110335468,
+        "background_test_fraction_abs_z_ge_5_0": 0.027535388791933294,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 2.1239999999999988,
+          "median": -0.0219999999999984,
+          "min": -0.032,
+          "q01": -0.0279999999999986,
+          "q99": 1.3099999999999987
+        },
+        "calibration_above_train_max_fraction": 0.0,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.0,
+        "calibration_raw": {
+          "count": 1796,
+          "max": -0.0159999999999982,
+          "median": -0.0199999999999995,
+          "min": -0.0259999999999998,
+          "q01": -0.0240000000000009,
+          "q99": -0.0159999999999982
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": -0.009999999999998,
+          "median": -0.0199999999999995,
+          "min": -0.0279999999999986,
+          "q01": -0.0240000000000009,
+          "q99": -0.0120000000000004
+        },
+        "train_scaler_mean": -0.01941946499715358,
+        "train_scaler_scale": 0.002697679282978241
+      },
+      "pressure_switch__active_ratio": {
+        "background_test_above_train_max_fraction": 0.0,
+        "background_test_below_train_min_fraction": 0.046053907310451815,
+        "background_test_fraction_abs_z_ge_10_0": 0.05155613728912158,
+        "background_test_fraction_abs_z_ge_50_0": 0.0017936784952491758,
+        "background_test_fraction_abs_z_ge_5_0": 0.09542854372697304,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 1.0,
+          "median": 1.0,
+          "min": 0.64,
+          "q01": 0.76,
+          "q99": 1.0
+        },
+        "calibration_above_train_max_fraction": 0.0,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0011135857461024498,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.021714922048997772,
+        "calibration_raw": {
+          "count": 1796,
+          "max": 1.0,
+          "median": 1.0,
+          "min": 0.9333333333333333,
+          "q01": 0.9666666666666667,
+          "q99": 1.0
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": 1.0,
+          "median": 1.0,
+          "min": 0.9333333333333333,
+          "q01": 0.9666666666666667,
+          "q99": 1.0
+        },
+        "train_scaler_mean": 0.9992352147987671,
+        "train_scaler_scale": 0.005217312497404918
+      },
+      "pressure_switch__last": {
+        "background_test_above_train_max_fraction": 0.0,
+        "background_test_below_train_min_fraction": 0.0,
+        "background_test_fraction_abs_z_ge_10_0": 0.010640876478572814,
+        "background_test_fraction_abs_z_ge_50_0": 0.0,
+        "background_test_fraction_abs_z_ge_5_0": 0.010640876478572814,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 1.0,
+          "median": 1.0,
+          "min": 0.0,
+          "q01": 0.0,
+          "q99": 1.0
+        },
+        "calibration_above_train_max_fraction": 0.0,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0011135857461024498,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.0011135857461024498,
+        "calibration_raw": {
+          "count": 1796,
+          "max": 1.0,
+          "median": 1.0,
+          "min": 0.0,
+          "q01": 1.0,
+          "q99": 1.0
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": 1.0,
+          "median": 1.0,
+          "min": 0.0,
+          "q01": 1.0,
+          "q99": 1.0
+        },
+        "train_scaler_mean": 0.9990514133940429,
+        "train_scaler_scale": 0.030784521912937398
+      },
+      "pressure_switch__transitions": {
+        "background_test_above_train_max_fraction": 0.04600542951328292,
+        "background_test_below_train_min_fraction": 0.0,
+        "background_test_fraction_abs_z_ge_10_0": 0.05097440372309482,
+        "background_test_fraction_abs_z_ge_50_0": 0.0,
+        "background_test_fraction_abs_z_ge_5_0": 0.09239868140391701,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 12.0,
+          "median": 0.0,
+          "min": 0.0,
+          "q01": 0.0,
+          "q99": 9.0
+        },
+        "calibration_above_train_max_fraction": 0.0,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0005567928730512249,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.02060133630289532,
+        "calibration_raw": {
+          "count": 1796,
+          "max": 4.0,
+          "median": 0.0,
+          "min": 0.0,
+          "q01": 0.0,
+          "q99": 2.0
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": 4.0,
+          "median": 0.0,
+          "min": 0.0,
+          "q01": 0.0,
+          "q99": 2.0
+        },
+        "train_scaler_mean": 0.044014418516410546,
+        "train_scaler_scale": 0.30295723729798246
+      },
+      "tp2__last": {
+        "background_test_above_train_max_fraction": 0.0013089005235602095,
+        "background_test_below_train_min_fraction": 0.00036358347876672484,
+        "background_test_fraction_abs_z_ge_10_0": 0.0,
+        "background_test_fraction_abs_z_ge_50_0": 0.0,
+        "background_test_fraction_abs_z_ge_5_0": 0.0,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 10.614,
+          "median": -0.0120000000000004,
+          "min": -0.032,
+          "q01": -0.0240000000000009,
+          "q99": 10.386
+        },
+        "calibration_above_train_max_fraction": 0.0,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.0,
+        "calibration_raw": {
+          "count": 1796,
+          "max": 10.482,
+          "median": -0.0120000000000004,
+          "min": -0.0259999999999998,
+          "q01": -0.0219999999999984,
+          "q99": 10.120299999999999
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": 10.544,
+          "median": -0.0120000000000004,
+          "min": -0.0279999999999986,
+          "q01": -0.0199999999999995,
+          "q99": 10.0866
+        },
+        "train_scaler_mean": 0.5299734395750338,
+        "train_scaler_scale": 2.169562404100379
+      },
+      "tp2__mean": {
+        "background_test_above_train_max_fraction": 0.04680531316656971,
+        "background_test_below_train_min_fraction": 0.00780492534419236,
+        "background_test_fraction_abs_z_ge_10_0": 0.0,
+        "background_test_fraction_abs_z_ge_50_0": 0.0,
+        "background_test_fraction_abs_z_ge_5_0": 0.05029571456273027,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 10.077677419354838,
+          "median": -0.011066666666665946,
+          "min": -0.0199999999999995,
+          "q01": -0.01619999999999896,
+          "q99": 8.909469999999951
+        },
+        "calibration_above_train_max_fraction": 0.0,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.0,
+        "calibration_raw": {
+          "count": 1796,
+          "max": 4.538866666666666,
+          "median": -0.011266666666666186,
+          "min": -0.015133333333332126,
+          "q01": -0.014533333333332345,
+          "q99": 3.7320933333333333
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": 7.358066666666667,
+          "median": -0.01079999999999896,
+          "min": -0.01638709677419244,
+          "q01": -0.014599999999999155,
+          "q99": 3.7934167741935494
+        },
+        "train_scaler_mean": 0.533974323034152,
+        "train_scaler_scale": 1.155415948177475
+      },
+      "tp2__min": {
+        "background_test_above_train_max_fraction": 0.04847779716889664,
+        "background_test_below_train_min_fraction": 0.00026662788442893153,
+        "background_test_fraction_abs_z_ge_10_0": 0.048089974791545476,
+        "background_test_fraction_abs_z_ge_50_0": 0.048089974791545476,
+        "background_test_fraction_abs_z_ge_5_0": 0.04811421369012992,
+        "background_test_raw": {
+          "count": 41256,
+          "max": 9.232,
+          "median": -0.0159999999999982,
+          "min": -0.032,
+          "q01": -0.0279999999999986,
+          "q99": 8.39
+        },
+        "calibration_above_train_max_fraction": 0.0,
+        "calibration_below_train_min_fraction": 0.0,
+        "calibration_fraction_abs_z_ge_10_0": 0.0,
+        "calibration_fraction_abs_z_ge_50_0": 0.0,
+        "calibration_fraction_abs_z_ge_5_0": 0.0,
+        "calibration_raw": {
+          "count": 1796,
+          "max": -0.009999999999998,
+          "median": -0.0139999999999993,
+          "min": -0.0279999999999986,
+          "q01": -0.0259999999999998,
+          "q99": -0.0120000000000004
+        },
+        "train_raw": {
+          "count": 5271,
+          "max": -0.0060000000000002,
+          "median": -0.0139999999999993,
+          "min": -0.0300000000000011,
+          "q01": -0.0259999999999998,
+          "q99": -0.009999999999998
+        },
+        "train_scaler_mean": -0.015154999051412899,
+        "train_scaler_scale": 0.004193036248746786
+      }
+    },
+    "temporal_extreme_runs": {
+      "dv_pressure__last": {
+        "10.0": {
+          "extreme_fraction": 0.015852239674229204,
+          "extreme_row_count": 654,
+          "first_extreme_timestamp": "2020-03-02 14:20:00",
+          "last_extreme_timestamp": "2020-08-31 15:20:00",
+          "run_count": 103,
+          "run_duration_minutes": {
+            "max": 320.0,
+            "median": 0.0,
+            "q90": 110.0,
+            "q95": 205.0,
+            "q99": 235.0
+          },
+          "run_rows": {
+            "max": 65.0,
+            "median": 1.0,
+            "q90": 23.0,
+            "q95": 42.0,
+            "q99": 48.0
+          }
+        },
+        "5.0": {
+          "extreme_fraction": 0.021936203218925733,
+          "extreme_row_count": 905,
+          "first_extreme_timestamp": "2020-03-02 14:20:00",
+          "last_extreme_timestamp": "2020-08-31 15:20:00",
+          "run_count": 165,
+          "run_duration_minutes": {
+            "max": 1280.0,
+            "median": 0.0,
+            "q90": 30.0,
+            "q95": 70.0,
+            "q99": 695.0
+          },
+          "run_rows": {
+            "max": 257.0,
+            "median": 1.0,
+            "q90": 7.0,
+            "q95": 15.0,
+            "q99": 140.0
+          }
+        },
+        "50.0": {
+          "extreme_fraction": 0.0,
+          "extreme_row_count": 0,
+          "run_count": 0
+        }
+      },
+      "dv_pressure__mean": {
+        "10.0": {
+          "extreme_fraction": 0.036115958890828,
+          "extreme_row_count": 1490,
+          "first_extreme_timestamp": "2020-03-05 04:15:00",
+          "last_extreme_timestamp": "2020-08-31 17:30:00",
+          "run_count": 332,
+          "run_duration_minutes": {
+            "max": 1280.0,
+            "median": 0.0,
+            "q90": 5.0,
+            "q95": 30.0,
+            "q99": 690.0
+          },
+          "run_rows": {
+            "max": 257.0,
+            "median": 1.0,
+            "q90": 2.0,
+            "q95": 7.0,
+            "q99": 139.0
+          }
+        },
+        "5.0": {
+          "extreme_fraction": 0.0564281559045957,
+          "extreme_row_count": 2328,
+          "first_extreme_timestamp": "2020-03-01 04:55:00",
+          "last_extreme_timestamp": "2020-09-01 03:25:00",
+          "run_count": 1140,
+          "run_duration_minutes": {
+            "max": 1280.0,
+            "median": 0.0,
+            "q90": 0.0,
+            "q95": 5.0,
+            "q99": 50.0
+          },
+          "run_rows": {
+            "max": 257.0,
+            "median": 1.0,
+            "q90": 1.0,
+            "q95": 2.0,
+            "q99": 11.0
+          }
+        },
+        "50.0": {
+          "extreme_fraction": 0.01573104518130696,
+          "extreme_row_count": 649,
+          "first_extreme_timestamp": "2020-04-06 14:20:00",
+          "last_extreme_timestamp": "2020-06-08 13:05:00",
+          "run_count": 32,
+          "run_duration_minutes": {
+            "max": 1280.0,
+            "median": 5.0,
+            "q90": 115.0,
+            "q95": 700.0,
+            "q99": 1280.0
+          },
+          "run_rows": {
+            "max": 257.0,
+            "median": 2.0,
+            "q90": 24.0,
+            "q95": 141.0,
+            "q99": 257.0
+          }
+        }
+      },
+      "dv_pressure__min": {
+        "10.0": {
+          "extreme_fraction": 0.027268760907504363,
+          "extreme_row_count": 1125,
+          "first_extreme_timestamp": "2020-03-05 04:20:00",
+          "last_extreme_timestamp": "2020-06-08 13:05:00",
+          "run_count": 37,
+          "run_duration_minutes": {
+            "max": 1275.0,
+            "median": 15.0,
+            "q90": 680.0,
+            "q95": 1240.0,
+            "q99": 1275.0
+          },
+          "run_rows": {
+            "max": 256.0,
+            "median": 4.0,
+            "q90": 137.0,
+            "q95": 249.0,
+            "q99": 256.0
+          }
+        },
+        "5.0": {
+          "extreme_fraction": 0.027535388791933294,
+          "extreme_row_count": 1136,
+          "first_extreme_timestamp": "2020-03-05 04:20:00",
+          "last_extreme_timestamp": "2020-06-08 13:05:00",
+          "run_count": 38,
+          "run_duration_minutes": {
+            "max": 1275.0,
+            "median": 17.5,
+            "q90": 680.0,
+            "q95": 1240.0,
+            "q99": 1275.0
+          },
+          "run_rows": {
+            "max": 256.0,
+            "median": 4.5,
+            "q90": 137.0,
+            "q95": 249.0,
+            "q99": 256.0
+          }
+        },
+        "50.0": {
+          "extreme_fraction": 0.027220283110335468,
+          "extreme_row_count": 1123,
+          "first_extreme_timestamp": "2020-03-05 04:20:00",
+          "last_extreme_timestamp": "2020-06-08 13:05:00",
+          "run_count": 36,
+          "run_duration_minutes": {
+            "max": 1275.0,
+            "median": 17.5,
+            "q90": 680.0,
+            "q95": 1235.0,
+            "q99": 1275.0
+          },
+          "run_rows": {
+            "max": 256.0,
+            "median": 4.5,
+            "q90": 137.0,
+            "q95": 248.0,
+            "q99": 256.0
+          }
+        }
+      },
+      "pressure_switch__active_ratio": {
+        "10.0": {
+          "extreme_fraction": 0.05155613728912158,
+          "extreme_row_count": 2127,
+          "first_extreme_timestamp": "2020-03-01 05:35:00",
+          "last_extreme_timestamp": "2020-08-31 13:45:00",
+          "run_count": 262,
+          "run_duration_minutes": {
+            "max": 3710.0,
+            "median": 0.0,
+            "q90": 0.0,
+            "q95": 5.0,
+            "q99": 1220.0
+          },
+          "run_rows": {
+            "max": 743.0,
+            "median": 1.0,
+            "q90": 1.0,
+            "q95": 2.0,
+            "q99": 245.0
+          }
+        },
+        "5.0": {
+          "extreme_fraction": 0.09542854372697304,
+          "extreme_row_count": 3937,
+          "first_extreme_timestamp": "2020-03-01 04:55:00",
+          "last_extreme_timestamp": "2020-09-01 03:50:00",
+          "run_count": 1964,
+          "run_duration_minutes": {
+            "max": 3710.0,
+            "median": 0.0,
+            "q90": 0.0,
+            "q95": 5.0,
+            "q99": 10.0
+          },
+          "run_rows": {
+            "max": 743.0,
+            "median": 1.0,
+            "q90": 1.0,
+            "q95": 2.0,
+            "q99": 3.0
+          }
+        },
+        "50.0": {
+          "extreme_fraction": 0.0017936784952491758,
+          "extreme_row_count": 74,
+          "first_extreme_timestamp": "2020-04-13 19:15:00",
+          "last_extreme_timestamp": "2020-07-22 09:30:00",
+          "run_count": 72,
+          "run_duration_minutes": {
+            "max": 5.0,
+            "median": 0.0,
+            "q90": 0.0,
+            "q95": 0.0,
+            "q99": 5.0
+          },
+          "run_rows": {
+            "max": 2.0,
+            "median": 1.0,
+            "q90": 1.0,
+            "q95": 1.0,
+            "q99": 2.0
+          }
+        }
+      },
+      "pressure_switch__last": {
+        "10.0": {
+          "extreme_fraction": 0.010640876478572814,
+          "extreme_row_count": 439,
+          "first_extreme_timestamp": "2020-03-02 14:20:00",
+          "last_extreme_timestamp": "2020-08-31 15:20:00",
+          "run_count": 358,
+          "run_duration_minutes": {
+            "max": 15.0,
+            "median": 0.0,
+            "q90": 5.0,
+            "q95": 5.0,
+            "q99": 10.0
+          },
+          "run_rows": {
+            "max": 4.0,
+            "median": 1.0,
+            "q90": 2.0,
+            "q95": 2.0,
+            "q99": 3.0
+          }
+        },
+        "5.0": {
+          "extreme_fraction": 0.010640876478572814,
+          "extreme_row_count": 439,
+          "first_extreme_timestamp": "2020-03-02 14:20:00",
+          "last_extreme_timestamp": "2020-08-31 15:20:00",
+          "run_count": 358,
+          "run_duration_minutes": {
+            "max": 15.0,
+            "median": 0.0,
+            "q90": 5.0,
+            "q95": 5.0,
+            "q99": 10.0
+          },
+          "run_rows": {
+            "max": 4.0,
+            "median": 1.0,
+            "q90": 2.0,
+            "q95": 2.0,
+            "q99": 3.0
+          }
+        },
+        "50.0": {
+          "extreme_fraction": 0.0,
+          "extreme_row_count": 0,
+          "run_count": 0
+        }
+      },
+      "pressure_switch__transitions": {
+        "10.0": {
+          "extreme_fraction": 0.05097440372309482,
+          "extreme_row_count": 2103,
+          "first_extreme_timestamp": "2020-03-01 05:35:00",
+          "last_extreme_timestamp": "2020-08-31 13:45:00",
+          "run_count": 239,
+          "run_duration_minutes": {
+            "max": 3710.0,
+            "median": 0.0,
+            "q90": 0.0,
+            "q95": 5.0,
+            "q99": 1220.0
+          },
+          "run_rows": {
+            "max": 743.0,
+            "median": 1.0,
+            "q90": 1.0,
+            "q95": 2.0,
+            "q99": 245.0
+          }
+        },
+        "5.0": {
+          "extreme_fraction": 0.09239868140391701,
+          "extreme_row_count": 3812,
+          "first_extreme_timestamp": "2020-03-01 04:55:00",
+          "last_extreme_timestamp": "2020-09-01 03:50:00",
+          "run_count": 1864,
+          "run_duration_minutes": {
+            "max": 3710.0,
+            "median": 0.0,
+            "q90": 0.0,
+            "q95": 0.0,
+            "q99": 10.0
+          },
+          "run_rows": {
+            "max": 743.0,
+            "median": 1.0,
+            "q90": 1.0,
+            "q95": 1.0,
+            "q99": 3.0
+          }
+        },
+        "50.0": {
+          "extreme_fraction": 0.0,
+          "extreme_row_count": 0,
+          "run_count": 0
+        }
+      },
+      "tp2__last": {
+        "10.0": {
+          "extreme_fraction": 0.0,
+          "extreme_row_count": 0,
+          "run_count": 0
+        },
+        "5.0": {
+          "extreme_fraction": 0.0,
+          "extreme_row_count": 0,
+          "run_count": 0
+        },
+        "50.0": {
+          "extreme_fraction": 0.0,
+          "extreme_row_count": 0,
+          "run_count": 0
+        }
+      },
+      "tp2__mean": {
+        "10.0": {
+          "extreme_fraction": 0.0,
+          "extreme_row_count": 0,
+          "run_count": 0
+        },
+        "5.0": {
+          "extreme_fraction": 0.05029571456273027,
+          "extreme_row_count": 2075,
+          "first_extreme_timestamp": "2020-03-02 07:40:00",
+          "last_extreme_timestamp": "2020-08-23 19:00:00",
+          "run_count": 199,
+          "run_duration_minutes": {
+            "max": 3715.0,
+            "median": 0.0,
+            "q90": 20.0,
+            "q95": 70.0,
+            "q99": 1280.0
+          },
+          "run_rows": {
+            "max": 744.0,
+            "median": 1.0,
+            "q90": 5.0,
+            "q95": 15.0,
+            "q99": 257.0
+          }
+        },
+        "50.0": {
+          "extreme_fraction": 0.0,
+          "extreme_row_count": 0,
+          "run_count": 0
+        }
+      },
+      "tp2__min": {
+        "10.0": {
+          "extreme_fraction": 0.048089974791545476,
+          "extreme_row_count": 1984,
+          "first_extreme_timestamp": "2020-03-05 04:20:00",
+          "last_extreme_timestamp": "2020-08-23 18:55:00",
+          "run_count": 112,
+          "run_duration_minutes": {
+            "max": 3710.0,
+            "median": 0.0,
+            "q90": 55.0,
+            "q95": 665.0,
+            "q99": 1275.0
+          },
+          "run_rows": {
+            "max": 743.0,
+            "median": 1.0,
+            "q90": 12.0,
+            "q95": 134.0,
+            "q99": 256.0
+          }
+        },
+        "5.0": {
+          "extreme_fraction": 0.04811421369012992,
+          "extreme_row_count": 1985,
+          "first_extreme_timestamp": "2020-03-05 04:20:00",
+          "last_extreme_timestamp": "2020-08-23 18:55:00",
+          "run_count": 113,
+          "run_duration_minutes": {
+            "max": 3710.0,
+            "median": 0.0,
+            "q90": 55.0,
+            "q95": 665.0,
+            "q99": 1275.0
+          },
+          "run_rows": {
+            "max": 743.0,
+            "median": 1.0,
+            "q90": 12.0,
+            "q95": 134.0,
+            "q99": 256.0
+          }
+        },
+        "50.0": {
+          "extreme_fraction": 0.048089974791545476,
+          "extreme_row_count": 1984,
+          "first_extreme_timestamp": "2020-03-05 04:20:00",
+          "last_extreme_timestamp": "2020-08-23 18:55:00",
+          "run_count": 112,
+          "run_duration_minutes": {
+            "max": 3710.0,
+            "median": 0.0,
+            "q90": 55.0,
+            "q95": 665.0,
+            "q99": 1275.0
+          },
+          "run_rows": {
+            "max": 743.0,
+            "median": 1.0,
+            "q90": 12.0,
+            "q95": 134.0,
+            "q99": 256.0
+          }
+        }
+      }
+    }
+  },
+  "guardrails": {
+    "no_alert_intervention": true,
+    "no_feature_removed_or_modified": true,
+    "no_model_intervention": true,
+    "posthoc_reused_test": true
+  },
+  "reproduction": {
+    "calibration_regime_raw_q995": 0.2218319476372591,
+    "current_threshold": 3.3312096774193547,
+    "pressure_threshold": 9.452193548387097,
+    "regime_component_count": 11,
+    "status": "PASS"
+  },
+  "study": {
+    "evidence_class": "REAL",
+    "production_promotion_allowed": false,
+    "role": "posthoc_reused_test_feature_stationarity_shortcut_diagnostic"
+  }
+}
