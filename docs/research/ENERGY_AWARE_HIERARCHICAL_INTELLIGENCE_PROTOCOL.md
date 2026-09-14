@@ -1,6 +1,6 @@
 # AeroXAI Energy-Aware Hierarchical Intelligence Study
 
-Status: **preregister before execution**
+Status: **preregistered — no experiment executed yet**
 
 Target branch:
 
@@ -57,7 +57,16 @@ System C does not modify the frozen operational alert.
 Before interpreting any energy result, reproduce the known
 frozen Robust-PCA metrics within 1e-12.
 
-[List the seven frozen values from the YAML.]
+The frozen Robust-PCA reference metrics are:
+
+```text
+timely incident recall        = 1.0
+pre-onset incident recall     = 0.5
+incident overlap recall       = 1.0
+false alerts / 24h            = 0.8862358575692373
+time in alert fraction        = 0.07549570810485644
+relevant episode precision    = 0.06338028169014084
+PR-AUC                        = 0.24916826514697024
 
 Failure invalidates the benchmark.
 
