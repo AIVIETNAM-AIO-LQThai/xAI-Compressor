@@ -1,0 +1,313 @@
+study:
+  name: "evidence_aware_compute_routing"
+  branch: "research/evidence-aware-compute-routing"
+  base_commit: "7561a8acdd1e9e03fd6212272bae95908bb3dd45"
+  parent_study: "support_aware_energy_routing"
+  parent_failure_commit: "7561a8acdd1e9e03fd6212272bae95908bb3dd45"
+  role: "new_preregistered_followup"
+  production_promotion_allowed: false
+
+research_question: >
+  Can a cheap calibration-trained escalation model predict when temporal
+  inference is valuable, achieving at least 80% TCN evidence coverage while
+  minimizing TCN invocation under cross-dataset support shift?
+
+motivation:
+  structural_failure: >
+    The closed support-aware q99/q95/q90 controller could route only a
+    subset of fixed q90. Fixed q90 itself covered only 20.690% of
+    MetroPT-3 CAL high-TCN-evidence bins and 10.432% of MetroPT2 CAL
+    high-TCN-evidence bins, making the 80% target unreachable.
+  design_change: >
+    The new router predicts temporal-evidence value directly and may invoke
+    the TCN even when the PCA anomaly score is below q90.
+
+development_data:
+  tests_forbidden_for_router_development: true
+  incident_labels_forbidden_for_router_development: true
+
+  metropt3:
+    train_file: "data/processed/train.parquet"
+    calibration_file: "data/processed/calibration.parquet"
+    forbidden_test_file: "data/processed/test.parquet"
+    feature_reference: "docs/research/energy_aware_tcn_calibration.json"
+    tcn_checkpoint: "artifacts/research/energy_aware_tcn.pt"
+    tcn_checkpoint_sha256: "3a2a98fd65ae91014aba89b04b953b984d6763003351ec03724d682632bc8f60"
+
+  metropt2:
+    train_file: "data/processed/metropt2/train_features.parquet"
+    calibration_file: "data/processed/metropt2/calibration_features.parquet"
+    forbidden_test_file: "data/processed/metropt2/test_features.parquet"
+    feature_variant: "flowmeter_excluded"
+    expected_feature_count: 63
+    tcn_checkpoint: "artifacts/research/energy_aware_tcn_metropt2.pt"
+    tcn_checkpoint_sha256: "8709a5ce5e08225b2573e95960086c1e7641c31f752f656b9e50c0b23a7e2bf0"
+
+development_split:
+  unit: "valid_TCN_CAL_target_rows_after_exact_causal_sequence_construction"
+  order: "chronological"
+  router_fit_fraction: 0.60
+  router_validation_fraction: 0.40
+  split_index_rule: "floor(0.60 * N_valid_TCN_CAL_targets)"
+  shuffle: false
+  validation_may_use_past_fit_rows_for_causal_rolling_history: true
+  validation_may_not_affect_fit_transform_parameters: true
+
+teacher:
+  source: "frozen_dataset_specific_TCN_raw_score"
+  threshold_source: "router_fit_subset_only"
+  quantile_interpolation: "higher"
+
+  high_evidence:
+    quantile: 0.90
+    role: "primary_router_training_target"
+
+  alert_evidence:
+    quantile: 0.995
+    role: "secondary_high_severity_coverage_constraint"
+
+cheap_router_features:
+  rule: >
+    Every feature must be causal and computable without running the TCN,
+    without incident labels, and without reused TEST data.
+
+  rolling_history_bins: 12
+
+  features:
+    - id: "pca_ewma_percentile"
+      definition: >
+        Right-inclusive empirical percentile of frozen Robust-PCA
+        causal-EWMA score using that dataset's router-fit reference only.
+
+    - id: "pca_ewma_delta_robust_z"
+      definition: >
+        First difference of causal-EWMA PCA score, centered by router-fit
+        median and divided by router-fit IQR. If router-fit IQR is zero,
+        use scale 1.0.
+
+    - id: "pca_ewma_volatility_percentile"
+      definition: >
+        Right-inclusive router-fit empirical percentile of the causal
+        rolling 12-bin standard deviation of PCA causal-EWMA score.
+
+    - id: "feature_support_percentile"
+      definition: >
+        TRAIN-StandardScaler row q0.95 absolute standardized feature
+        statistic, converted to a right-inclusive empirical percentile
+        using router-fit CAL reference only.
+
+    - id: "pca_latent_support_percentile"
+      definition: >
+        Robust-PCA latent support distance
+        sqrt(sum(z_k^2 / explained_variance_k)), converted to a
+        right-inclusive empirical percentile using router-fit CAL
+        reference only.
+
+    - id: "combined_support_percentile"
+      definition: >
+        max(feature_support_percentile,
+            pca_latent_support_percentile).
+
+    - id: "recent_q90_hit_fraction"
+      definition: >
+        Fraction of the current and previous 11 PCA causal-EWMA rows
+        greater than or equal to the router-fit q90 PCA threshold.
+
+    - id: "recent_q95_hit_fraction"
+      definition: >
+        Fraction of the current and previous 11 PCA causal-EWMA rows
+        greater than or equal to the router-fit q95 PCA threshold.
+
+  feature_preprocessing:
+    final_router_feature_scaler: "StandardScaler_fit_on_pooled_router_fit_rows_only"
+    missing_values: "not_allowed"
+    nonfinite_values: "not_allowed"
+
+router_model:
+  family: "logistic_regression"
+  solver: "liblinear"
+  max_iter: 2000
+  random_state: 20260915
+  target: "high_evidence"
+
+  pooled_training:
+    datasets:
+      - "metropt3_router_fit"
+      - "metropt2_router_fit"
+    dataset_weighting: >
+      Each router-fit row has equal weight; class_weight is controlled by
+      the frozen candidate grid.
+
+candidate_grid:
+  C:
+    - 0.01
+    - 0.1
+    - 1.0
+    - 10.0
+
+  class_weight:
+    - null
+    - "balanced"
+
+  probability_threshold:
+    - 0.05
+    - 0.10
+    - 0.20
+    - 0.30
+    - 0.40
+    - 0.50
+
+  total_candidates: 48
+  adding_candidates_after_results: false
+
+selection:
+  evaluation_partition: "chronological_router_validation_only"
+
+  data_adequacy:
+    minimum_high_evidence_bins_each_validation_dataset: 20
+    minimum_alert_bins_for_alert_constraint: 3
+
+  constraints:
+    minimum_high_evidence_coverage_each_validation_dataset: 0.80
+    minimum_tcn_alert_coverage_each_validation_dataset: 0.80
+
+  objective: >
+    Minimize mean TCN invocation fraction across MetroPT-3 and MetroPT2
+    router-validation subsets among eligible candidates.
+
+  tie_breaks:
+    - "maximize_worst_dataset_tcn_alert_coverage"
+    - "maximize_worst_dataset_high_evidence_coverage"
+    - "prefer_lower_C"
+    - "prefer_higher_probability_threshold"
+    - "prefer_class_weight_none"
+
+  no_eligible_candidate_rule: >
+    Close this router family. Do not alter the feature set, grid, split,
+    teacher quantiles, or 80% evidence constraints in the same study.
+
+baselines_for_development_reporting:
+  - "always_on_tcn"
+  - "fixed_pca_route_q90"
+  - "fixed_pca_route_q95"
+  - "fixed_pca_route_q99"
+  - "closed_support_aware_q99_q95_q90_family"
+  - "selected_evidence_aware_router"
+
+policy_freeze:
+  required_before_simulation_or_new_data_evaluation: true
+  artifacts:
+    - "router feature-transform parameters"
+    - "logistic coefficients and intercept"
+    - "C"
+    - "class_weight"
+    - "probability threshold"
+    - "development teacher thresholds"
+    - "development validation metrics"
+
+simulated_stress_tests:
+  allowed_after_policy_freeze: true
+  evidence_class: "SIMULATED"
+  role: "mechanism_diagnostic_only"
+  cannot_satisfy_primary_claim: true
+  allowed_types:
+    - "feature_location_shift"
+    - "feature_scale_shift"
+    - "support_tail_inflation"
+    - "operating_mix_shift"
+
+new_evaluation_data:
+  required_for_primary_claim: true
+  status: "not_yet_configured"
+
+  requirement: >
+    Genuinely new chronological compressor data not previously used for
+    feature design, model selection, threshold selection, or policy
+    selection in this project.
+
+  preferred_schema:
+    exact_63_feature_semantics: true
+    reason: >
+      The frozen logistic router is trained on normalized cheap features,
+      while the frozen TCN/PCA architecture assumes the established
+      compressor feature semantics.
+
+  required_split_before_evaluation:
+    - "TRAIN"
+    - "CALIBRATION"
+    - "EVALUATION"
+
+  new_dataset_adaptation_allowed_before_evaluation:
+    - "fit frozen-architecture TCN on new TRAIN"
+    - "fit Robust-PCA on new TRAIN"
+    - "fit StandardScaler-based support transform on new TRAIN"
+    - "derive TCN teacher/anomaly thresholds on new CALIBRATION"
+    - "derive cheap-feature empirical references on new CALIBRATION"
+    - "derive PCA q90/q95/q99 reporting baselines on new CALIBRATION"
+
+  new_dataset_adaptation_forbidden:
+    - "refit logistic router coefficients"
+    - "change logistic C"
+    - "change class_weight"
+    - "change routing probability threshold"
+    - "change router feature definitions"
+    - "use EVALUATION to choose any preprocessing or threshold"
+
+primary_evaluation:
+  systems:
+    - "always_on_tcn"
+    - "fixed_pca_route_q90"
+    - "fixed_pca_route_q95"
+    - "fixed_pca_route_q99"
+    - "selected_evidence_aware_router"
+
+  primary_metrics:
+    - "tcn_invocation_fraction"
+    - "high_tcn_evidence_bin_coverage"
+    - "tcn_alert_bin_coverage"
+    - "gross_gpu_energy_reduction_vs_always_on_tcn"
+
+  secondary_metrics:
+    - "incremental_gpu_energy_reduction_vs_always_on_tcn"
+    - "router_cpu_wall_time"
+    - "tcn_alert_episode_coverage"
+    - "incident_related_metrics_if_trusted_labels_exist"
+
+success_criteria:
+  minimum_high_tcn_evidence_bin_coverage: 0.80
+  minimum_tcn_alert_bin_coverage: 0.80
+  minimum_mean_gross_gpu_energy_reduction: 0.50
+  gross_energy_reduction_positive_each_repetition: true
+
+energy_measurement:
+  source_protocol: "configs/energy_aware_inference_benchmark.yaml"
+  scope: "gpu_device_tcn_scoring_only"
+  nvml_sampling_interval_seconds: 0.10
+  warmup_runs_per_condition: 2
+  measured_repetitions: 5
+  matched_idle_seconds: 10.0
+  minimum_metered_workload_seconds: 20.0
+  router_cpu_energy: "UNKNOWN"
+  whole_system_energy: "UNKNOWN"
+  physical_plant_energy: "NOT_MEASURED"
+
+outputs:
+  development_calibration: "docs/research/evidence_aware_router_development.json"
+  policy_preflight: "docs/research/evidence_aware_router_preflight.json"
+  simulation_result: "docs/research/evidence_aware_router_simulation.json"
+  new_data_result: "docs/research/evidence_aware_router_new_data_result.json"
+  decision: "docs/research/EVIDENCE_AWARE_COMPUTE_ROUTING_DECISION.md"
+
+guardrails:
+  - "MetroPT-3 TEST is forbidden for router development or selection."
+  - "MetroPT2 TEST is forbidden for router development or selection."
+  - "Incident labels are forbidden as router inputs and selection targets."
+  - "The online router cannot use TCN outputs as inputs."
+  - "The operational Robust-PCA alert source remains unchanged."
+  - "The TCN remains second-stage research evidence and does not alter operational alerts."
+  - "No router feature may be added after development results are observed."
+  - "No candidate-grid value may be added after development results are observed."
+  - "No primary generalization claim is allowed without genuinely new chronological data."
+  - "Simulated stress tests cannot be called validation."
+  - "GPU-device TCN energy is not whole-system compute energy."
+  - "No physical compressor-energy or carbon-saving claim is allowed."
