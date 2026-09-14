@@ -1,0 +1,110 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+  test_file: "data/processed/test.parquet"
+  incidents_config: "configs/metropt.yaml"
+
+study:
+  role: "posthoc_reused_test_coverage_conditioned_stationarity_diagnostic"
+  evidence_class: "REAL"
+  production_promotion_allowed: false
+
+representation:
+  features: "model_feature_columns"
+  variance_retained: 0.95
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+
+support_flags:
+  tp2_min_above_train_max:
+    feature: "tp2__min"
+    direction: "above_train_max"
+  tp2_mean_above_train_max:
+    feature: "tp2__mean"
+    direction: "above_train_max"
+  dv_pressure_min_above_train_max:
+    feature: "dv_pressure__min"
+    direction: "above_train_max"
+  dv_pressure_mean_above_train_max:
+    feature: "dv_pressure__mean"
+    direction: "above_train_max"
+  pressure_switch_transitions_above_train_max:
+    feature: "pressure_switch__transitions"
+    direction: "above_train_max"
+  pressure_switch_active_ratio_below_train_min:
+    feature: "pressure_switch__active_ratio"
+    direction: "below_train_min"
+
+composite_flags:
+  analog_cycle_novel:
+    any_of:
+      - "tp2_min_above_train_max"
+      - "tp2_mean_above_train_max"
+      - "dv_pressure_min_above_train_max"
+      - "dv_pressure_mean_above_train_max"
+  digital_cycle_novel:
+    any_of:
+      - "pressure_switch_transitions_above_train_max"
+      - "pressure_switch_active_ratio_below_train_min"
+  any_cycle_novel:
+    any_of:
+      - "analog_cycle_novel"
+      - "digital_cycle_novel"
+
+quality_strata:
+  coverage:
+    full:
+      minimum: 1.0
+    partial_high:
+      minimum: 0.90
+      maximum_exclusive: 1.0
+    partial_low:
+      maximum_exclusive: 0.90
+  sample_count:
+    complete:
+      minimum: 30
+    mild_underfill:
+      minimum: 27
+      maximum: 29
+    severe_underfill:
+      maximum: 26
+
+diagnostics:
+  relevant_window_hours_before_incident: 24
+  high_score_quantile: 0.995
+  focus_features:
+    - "tp2__min"
+    - "tp2__mean"
+    - "dv_pressure__min"
+    - "dv_pressure__mean"
+    - "pressure_switch__active_ratio"
+    - "pressure_switch__transitions"
+  top_joint_patterns: 20
+
+reproduction:
+  tolerance: 1.0e-12
+  expected:
+    train_rows: 5271
+    calibration_rows: 1796
+    test_rows: 43221
+    feature_count: 63
+    regime_component_count: 11
+    current_threshold: 3.3312096774193547
+    pressure_threshold: 9.452193548387097
+    calibration_regime_raw_q995: 0.2218319476372591
+    background_any_cycle_novel_count: 3380
+
+outputs:
+  result_json: "docs/research/coverage_conditioned_stationarity_audit.json"
+  local_output_dir: "data/processed/coverage_conditioned_stationarity_audit"
+
+guardrails:
+  - "This is a post-hoc reused-TEST diagnostic."
+  - "No row is removed from any detector benchmark; quality conditioning is descriptive only."
+  - "No feature, scaler, router, detector, threshold, smoothing or alert rule is changed."
+  - "Support thresholds remain derived from TRAIN min/max only."
+  - "Full coverage is defined before analysis as coverage_ratio >= 1.0; complete sample count is >= 30."
+  - "Background TEST means outside registered incident windows, not guaranteed healthy."
