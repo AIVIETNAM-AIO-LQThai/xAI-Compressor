@@ -1,0 +1,143 @@
+{
+  "schema_version": "aeroxai.evidence_aware_router_preflight.v1",
+  "study": "evidence_aware_compute_routing",
+  "preregistration_commit": "0b3a3135223e764ca0f3a855b1f18d3788db3d5e",
+  "development_file": "docs/research/evidence_aware_router_development.json",
+  "selected_policy": {
+    "probability_threshold": 0.3,
+    "datasets": {
+      "metropt3": {
+        "validation_rows": 694,
+        "tcn_invocations": 113,
+        "tcn_invocation_fraction": 0.1628242074927954,
+        "high_evidence_bins": 74,
+        "high_evidence_coverage": 0.918918918918919,
+        "tcn_alert_bins": 9,
+        "tcn_alert_coverage": 1.0,
+        "alert_constraint_applied": true,
+        "high_evidence_constraint_passed": true,
+        "alert_constraint_passed": true,
+        "eligible": true
+      },
+      "metropt2": {
+        "validation_rows": 1109,
+        "tcn_invocations": 216,
+        "tcn_invocation_fraction": 0.19477006311992787,
+        "high_evidence_bins": 160,
+        "high_evidence_coverage": 0.83125,
+        "tcn_alert_bins": 17,
+        "tcn_alert_coverage": 0.8823529411764706,
+        "alert_constraint_applied": true,
+        "high_evidence_constraint_passed": true,
+        "alert_constraint_passed": true,
+        "eligible": true
+      }
+    },
+    "mean_tcn_invocation_fraction": 0.17879713530636163,
+    "worst_dataset_high_evidence_coverage": 0.83125,
+    "worst_dataset_alert_coverage": 0.8823529411764706,
+    "eligible": true,
+    "C": 10.0,
+    "class_weight": null
+  },
+  "selected_model": {
+    "feature_names": [
+      "pca_ewma_percentile",
+      "pca_ewma_delta_robust_z",
+      "pca_ewma_volatility_percentile",
+      "feature_support_percentile",
+      "pca_latent_support_percentile",
+      "combined_support_percentile",
+      "recent_q90_hit_fraction",
+      "recent_q95_hit_fraction"
+    ],
+    "feature_scaler": {
+      "mean": [
+        0.5003699593044765,
+        0.6187376220701455,
+        0.5003699593044765,
+        0.5012193501619212,
+        0.5003699593044765,
+        0.603876824069728,
+        0.09899494388950549,
+        0.04895794795905783
+      ],
+      "scale": [
+        0.2886750644397562,
+        15.588030426825865,
+        0.28867506443975616,
+        0.28973976315472905,
+        0.2886750644397562,
+        0.23730641224469678,
+        0.21583650273553065,
+        0.1316987429112309
+      ]
+    },
+    "logistic": {
+      "classes": [
+        0,
+        1
+      ],
+      "coef": [
+        [
+          -0.10379236273035802,
+          0.054657120024315824,
+          0.03715820322422558,
+          5.847079426976601,
+          0.14762299530877587,
+          -2.308916798256242,
+          0.1006129444762061,
+          -0.01811117640899279
+        ]
+      ],
+      "intercept": [
+        -5.611931366507515
+      ],
+      "n_iter": [
+        9
+      ]
+    },
+    "C": 10.0,
+    "class_weight": null,
+    "probability_threshold": 0.3,
+    "solver": "liblinear",
+    "max_iter": 2000,
+    "random_state": 20260915
+  },
+  "checkpoint_verification": {
+    "metropt3": {
+      "path": "artifacts/research/energy_aware_tcn.pt",
+      "sha256": "3a2a98fd65ae91014aba89b04b953b984d6763003351ec03724d682632bc8f60"
+    },
+    "metropt2": {
+      "path": "artifacts/research/energy_aware_tcn_metropt2.pt",
+      "sha256": "8709a5ce5e08225b2573e95960086c1e7641c31f752f656b9e50c0b23a7e2bf0"
+    }
+  },
+  "data_use": {
+    "metropt3_test_opened": false,
+    "metropt2_test_opened": false,
+    "incident_labels_used": false,
+    "new_evaluation_data_opened": false
+  },
+  "success_criteria": {
+    "minimum_high_tcn_evidence_bin_coverage": 0.8,
+    "minimum_tcn_alert_bin_coverage": 0.8,
+    "minimum_mean_gross_gpu_energy_reduction": 0.5,
+    "gross_energy_reduction_positive_each_repetition": true
+  },
+  "energy_protocol": {
+    "scope": "gpu_device_tcn_scoring_only",
+    "nvml_sampling_interval_seconds": 0.1,
+    "warmup_runs_per_condition": 2,
+    "measured_repetitions": 5,
+    "matched_idle_seconds": 10.0,
+    "minimum_metered_workload_seconds": 20.0,
+    "router_cpu_energy": "UNKNOWN",
+    "whole_system_energy": "UNKNOWN"
+  },
+  "new_evaluation_data_status": "not_yet_configured",
+  "ready_to_freeze_policy": true,
+  "ready_for_simulated_mechanism_tests": true,
+  "ready_for_primary_evaluation": false
+}
