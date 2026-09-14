@@ -1,0 +1,566 @@
+{
+  "candidate_reproduction": {
+    "calibration_stability": {
+      "calibration_rows": 1796,
+      "confidence": 0.95,
+      "modes": {
+        "circular_block_1": {
+          "block_length": 1,
+          "lower": 0.08810459338672243,
+          "maximum": 0.8317879563888855,
+          "median": 0.25200852435862636,
+          "minimum": 0.07152852074327996,
+          "relative_95_width": 1.8168757767937145,
+          "replicates": 2000,
+          "std": 0.1319578310508811,
+          "upper": 0.5459727768394395
+        },
+        "circular_block_12": {
+          "block_length": 12,
+          "lower": 0.06553589055842408,
+          "maximum": 1.0367501361833897,
+          "median": 0.20496435052884035,
+          "minimum": 0.060182272435838687,
+          "relative_95_width": 3.738465073820936,
+          "replicates": 2000,
+          "std": 0.22862278172440254,
+          "upper": 0.8317879563888855
+        }
+      },
+      "observed_threshold": 0.25200852435862636,
+      "seed": 20260914
+    },
+    "component_count": 11,
+    "current_threshold": 3.3312096774193547,
+    "global_explained_variance_ratio": 0.9576052415845236,
+    "pooled_calibration_threshold": 0.25200852435862636,
+    "pressure_threshold": 9.452193548387097,
+    "status": "PASS",
+    "train_regime_counts": {
+      "high_current_high_pressure": 720,
+      "high_current_only": 335,
+      "high_pressure_only": 335,
+      "low_current_low_pressure": 3881
+    }
+  },
+  "data": {
+    "calibration_rows": 1796,
+    "feature_count": 63,
+    "train_rows": 5271
+  },
+  "diagnostics": {
+    "autocorrelation": {
+      "by_regime": {
+        "high_current_high_pressure": {
+          "1": {
+            "correlation": null,
+            "pair_count": 0
+          },
+          "12": {
+            "correlation": 0.40028321949255147,
+            "pair_count": 26
+          },
+          "2": {
+            "correlation": -0.5712346164994606,
+            "pair_count": 4
+          },
+          "3": {
+            "correlation": 0.8673626820865125,
+            "pair_count": 8
+          },
+          "6": {
+            "correlation": -0.04582922124110384,
+            "pair_count": 37
+          }
+        },
+        "high_current_only": {
+          "1": {
+            "correlation": 0.719787449855359,
+            "pair_count": 21
+          },
+          "12": {
+            "correlation": 0.36753205036938624,
+            "pair_count": 6
+          },
+          "2": {
+            "correlation": 1.0,
+            "pair_count": 2
+          },
+          "3": {
+            "correlation": null,
+            "pair_count": 0
+          },
+          "6": {
+            "correlation": 0.32473384081279844,
+            "pair_count": 20
+          }
+        },
+        "high_pressure_only": {
+          "1": {
+            "correlation": null,
+            "pair_count": 0
+          },
+          "12": {
+            "correlation": 0.6728587794093595,
+            "pair_count": 5
+          },
+          "2": {
+            "correlation": null,
+            "pair_count": 0
+          },
+          "3": {
+            "correlation": null,
+            "pair_count": 1
+          },
+          "6": {
+            "correlation": 0.22702525824228928,
+            "pair_count": 5
+          }
+        },
+        "low_current_low_pressure": {
+          "1": {
+            "correlation": 0.5771028982820439,
+            "pair_count": 1027
+          },
+          "12": {
+            "correlation": 0.12034466607176404,
+            "pair_count": 945
+          },
+          "2": {
+            "correlation": 0.6154201411008083,
+            "pair_count": 874
+          },
+          "3": {
+            "correlation": 0.43544570858145815,
+            "pair_count": 896
+          },
+          "6": {
+            "correlation": 0.25573824911711385,
+            "pair_count": 1020
+          }
+        }
+      },
+      "pooled": {
+        "1": {
+          "correlation": 0.8005408043142339,
+          "pair_count": 1790
+        },
+        "12": {
+          "correlation": 0.10342777447028192,
+          "pair_count": 1734
+        },
+        "2": {
+          "correlation": 0.6376315026621335,
+          "pair_count": 1784
+        },
+        "3": {
+          "correlation": 0.5097785952933783,
+          "pair_count": 1779
+        },
+        "6": {
+          "correlation": 0.2715028844426105,
+          "pair_count": 1764
+        }
+      }
+    },
+    "bootstrap_mixture_sensitivity": {
+      "circular_block_1": {
+        "block_length": 1,
+        "lower": 0.08810459338672243,
+        "maximum": 0.8317879563888855,
+        "median": 0.25200852435862636,
+        "minimum": 0.07152852074327996,
+        "regime_fraction_threshold_spearman": {
+          "high_current_high_pressure": 0.024560407471031654,
+          "high_current_only": -0.0351437136130224,
+          "high_pressure_only": 0.040244896952558284,
+          "low_current_low_pressure": -0.026765185469073045
+        },
+        "relative_95_width": 1.8168757767937145,
+        "replicates": 2000,
+        "upper": 0.5459727768394395
+      },
+      "circular_block_12": {
+        "block_length": 12,
+        "lower": 0.06553589055842408,
+        "maximum": 1.0367501361833897,
+        "median": 0.20496435052884035,
+        "minimum": 0.060182272435838687,
+        "regime_fraction_threshold_spearman": {
+          "high_current_high_pressure": 0.13276705999398192,
+          "high_current_only": -0.05738142351824014,
+          "high_pressure_only": 0.041090192767522966,
+          "low_current_low_pressure": -0.06048900234313677
+        },
+        "relative_95_width": 3.738465073820936,
+        "replicates": 2000,
+        "upper": 0.8317879563888855
+      }
+    },
+    "conditional_thresholds_diagnostic_only": {
+      "high_current_high_pressure": {
+        "count": 232,
+        "diagnostic_only": true,
+        "q995": 0.44068820165535805,
+        "rows_at_or_above_q995": 2
+      },
+      "high_current_only": {
+        "count": 128,
+        "diagnostic_only": true,
+        "q995": 0.09674240172946211,
+        "rows_at_or_above_q995": 1
+      },
+      "high_pressure_only": {
+        "count": 107,
+        "diagnostic_only": true,
+        "q995": 0.35265359668277985,
+        "rows_at_or_above_q995": 1
+      },
+      "low_current_low_pressure": {
+        "count": 1329,
+        "diagnostic_only": true,
+        "q995": 0.16815884148584342,
+        "rows_at_or_above_q995": 7
+      }
+    },
+    "ewma_score_distributions": {
+      "by_regime": {
+        "high_current_high_pressure": {
+          "count": 232,
+          "iqr": 0.011812700855985098,
+          "max": 1.0367501361833897,
+          "mean": 0.032950470566588015,
+          "median": 0.02437451905880548,
+          "q90": 0.040367733866860316,
+          "q95": 0.05657946376844503,
+          "q99": 0.20496435052884035,
+          "q995": 0.44068820165535805,
+          "std": 0.07349137108170341
+        },
+        "high_current_only": {
+          "count": 128,
+          "iqr": 0.014207365084831306,
+          "max": 0.09674240172946211,
+          "mean": 0.024135109109504782,
+          "median": 0.020405237824482034,
+          "q90": 0.04333360773642219,
+          "q95": 0.04868911900088051,
+          "q99": 0.07152852074327996,
+          "q995": 0.09674240172946211,
+          "std": 0.014011792395256193
+        },
+        "high_pressure_only": {
+          "count": 107,
+          "iqr": 0.01060486594667328,
+          "max": 0.35265359668277985,
+          "mean": 0.02454548192509097,
+          "median": 0.019912493374774864,
+          "q90": 0.033875570179243454,
+          "q95": 0.04354948469598551,
+          "q99": 0.06722703035326952,
+          "q995": 0.35265359668277985,
+          "std": 0.03365794034613431
+        },
+        "low_current_low_pressure": {
+          "count": 1329,
+          "iqr": 0.011058720835257208,
+          "max": 1.2834808496176113,
+          "mean": 0.02173167145217495,
+          "median": 0.016337301461616206,
+          "q90": 0.03163701371115965,
+          "q95": 0.03829873864592782,
+          "q99": 0.07242256718512058,
+          "q995": 0.16815884148584342,
+          "std": 0.04952655336826077
+        }
+      },
+      "pooled": {
+        "count": 1796,
+        "iqr": 0.012367122315769745,
+        "max": 1.2834808496176113,
+        "mean": 0.02351980014665383,
+        "median": 0.017802761801901767,
+        "q90": 0.034089251898350055,
+        "q95": 0.04232859152104894,
+        "q99": 0.08213844467431552,
+        "q995": 0.25200852435862636,
+        "std": 0.051034487177455734
+      }
+    },
+    "occupancy": {
+      "high_current_high_pressure": {
+        "calibration_count": 232,
+        "calibration_fraction": 0.1291759465478842,
+        "fraction_change": -0.007420524709941645,
+        "train_count": 720,
+        "train_fraction": 0.13659647125782584
+      },
+      "high_current_only": {
+        "calibration_count": 128,
+        "calibration_fraction": 0.07126948775055679,
+        "fraction_change": 0.007714185151429492,
+        "train_count": 335,
+        "train_fraction": 0.0635553025991273
+      },
+      "high_pressure_only": {
+        "calibration_count": 107,
+        "calibration_fraction": 0.05957683741648107,
+        "fraction_change": -0.003978465182646225,
+        "train_count": 335,
+        "train_fraction": 0.0635553025991273
+      },
+      "low_current_low_pressure": {
+        "calibration_count": 1329,
+        "calibration_fraction": 0.7399777282850779,
+        "fraction_change": 0.0036848047411583984,
+        "train_count": 3881,
+        "train_fraction": 0.7362929235439195
+      }
+    },
+    "pooled_tail_composition": {
+      "0.99": {
+        "composition": {
+          "high_current_high_pressure": {
+            "calibration_fraction": 0.1291759465478842,
+            "enrichment": 1.7203065134099615,
+            "tail_fraction": 0.2222222222222222
+          },
+          "high_current_only": {
+            "calibration_fraction": 0.07126948775055679,
+            "enrichment": 0.7795138888888888,
+            "tail_fraction": 0.05555555555555555
+          },
+          "high_pressure_only": {
+            "calibration_fraction": 0.05957683741648107,
+            "enrichment": 0.9325025960539978,
+            "tail_fraction": 0.05555555555555555
+          },
+          "low_current_low_pressure": {
+            "calibration_fraction": 0.7399777282850779,
+            "enrichment": 0.9009280160521695,
+            "tail_fraction": 0.6666666666666666
+          }
+        },
+        "cutoff": 0.08213844467431552,
+        "tail_count": 18
+      },
+      "0.995": {
+        "composition": {
+          "high_current_high_pressure": {
+            "calibration_fraction": 0.1291759465478842,
+            "enrichment": 1.7203065134099615,
+            "tail_fraction": 0.2222222222222222
+          },
+          "high_current_only": {
+            "calibration_fraction": 0.07126948775055679,
+            "enrichment": 0.0,
+            "tail_fraction": 0.0
+          },
+          "high_pressure_only": {
+            "calibration_fraction": 0.05957683741648107,
+            "enrichment": 1.8650051921079955,
+            "tail_fraction": 0.1111111111111111
+          },
+          "low_current_low_pressure": {
+            "calibration_fraction": 0.7399777282850779,
+            "enrichment": 0.9009280160521695,
+            "tail_fraction": 0.6666666666666666
+          }
+        },
+        "cutoff": 0.25200852435862636,
+        "tail_count": 9
+      }
+    },
+    "raw_score_distributions": {
+      "by_regime": {
+        "high_current_high_pressure": {
+          "count": 232,
+          "iqr": 0.036371081975713065,
+          "max": 0.12493521666097984,
+          "mean": 0.028890376256663616,
+          "median": 0.020003193189034013,
+          "q90": 0.06258270802232956,
+          "q95": 0.07773532838497425,
+          "q99": 0.10870305515037192,
+          "q995": 0.12146337674041127,
+          "std": 0.025413031192580593
+        },
+        "high_current_only": {
+          "count": 128,
+          "iqr": 0.022834852218227418,
+          "max": 0.3412175502067473,
+          "mean": 0.04099767925684174,
+          "median": 0.029223500601915392,
+          "q90": 0.06575582444555474,
+          "q95": 0.10899036436582508,
+          "q99": 0.2562305628302937,
+          "q995": 0.3412175502067473,
+          "std": 0.04525796835071054
+        },
+        "high_pressure_only": {
+          "count": 107,
+          "iqr": 0.00027663961844338084,
+          "max": 0.003158654495455082,
+          "mean": 0.0003030361634198786,
+          "median": 0.0001442005602503838,
+          "q90": 0.0006278238281405712,
+          "q95": 0.0011767919909631123,
+          "q99": 0.0027988076324308533,
+          "q995": 0.003158654495455082,
+          "std": 0.0004851710387825657
+        },
+        "low_current_low_pressure": {
+          "count": 1329,
+          "iqr": 0.01267175996011266,
+          "max": 6.360499355477008,
+          "mean": 0.02269454382892567,
+          "median": 0.006681080011101297,
+          "q90": 0.05154067531070709,
+          "q95": 0.0822839617765442,
+          "q99": 0.13966131176642557,
+          "q995": 0.16995988210324706,
+          "std": 0.1765912820408749
+        }
+      },
+      "pooled": {
+        "count": 1796,
+        "iqr": 0.019723548635977483,
+        "max": 6.360499355477008,
+        "mean": 0.02346533622190972,
+        "median": 0.007780857458454268,
+        "q90": 0.055208286494881076,
+        "q95": 0.08071579925051053,
+        "q99": 0.13966131176642557,
+        "q995": 0.2218319476372591,
+        "std": 0.15283158354471524
+      }
+    },
+    "regime_runs": {
+      "high_current_high_pressure": {
+        "max_run_length": 1,
+        "mean_run_length": 1.0,
+        "median_run_length": 1.0,
+        "number_of_runs": 232,
+        "q90_run_length": 1.0
+      },
+      "high_current_only": {
+        "max_run_length": 3,
+        "mean_run_length": 1.1962616822429906,
+        "median_run_length": 1.0,
+        "number_of_runs": 107,
+        "q90_run_length": 2.0
+      },
+      "high_pressure_only": {
+        "max_run_length": 1,
+        "mean_run_length": 1.0,
+        "median_run_length": 1.0,
+        "number_of_runs": 107,
+        "q90_run_length": 1.0
+      },
+      "low_current_low_pressure": {
+        "max_run_length": 8,
+        "mean_run_length": 4.400662251655629,
+        "median_run_length": 5.0,
+        "number_of_runs": 302,
+        "q90_run_length": 6.0
+      }
+    },
+    "router_transition": {
+      "ewma_score_absolute_jump": {
+        "non_transition": {
+          "count": 1048,
+          "median": 0.0023458682341248004,
+          "q90": 0.009600751820557155,
+          "q95": 0.0146231059617788,
+          "q99": 0.0323284140111572
+        },
+        "transition": {
+          "count": 742,
+          "median": 0.003474116329965098,
+          "q90": 0.008657502045098617,
+          "q95": 0.011865375652393685,
+          "q99": 0.03800950157343515
+        }
+      },
+      "observed_span_days": 6.954861111111111,
+      "raw_score_absolute_jump": {
+        "non_transition": {
+          "count": 1048,
+          "median": 0.0044267459526025,
+          "q90": 0.05215708051534755,
+          "q95": 0.07602921542390247,
+          "q99": 0.14452582795203636
+        },
+        "transition": {
+          "count": 742,
+          "median": 0.020631861928619433,
+          "q90": 0.0766471575643439,
+          "q95": 0.10081721672958344,
+          "q99": 0.20219147380378194
+        }
+      },
+      "transition_count": 742,
+      "transitions_per_observed_day": 106.68796804792811
+    },
+    "tail_transition_proximity": {
+      "0.99": {
+        "baseline_fraction": {
+          "at_transition": 0.4131403118040089,
+          "within_1": 0.7293986636971047,
+          "within_2": 0.9448775055679287
+        },
+        "cutoff": 0.08213844467431552,
+        "enrichment": {
+          "at_transition": 1.075771188978736,
+          "within_1": 1.1424936386768447,
+          "within_2": 0.9407451057421593
+        },
+        "not_within_2_fraction": 0.1111111111111111,
+        "tail_count": 18,
+        "tail_fraction": {
+          "at_transition": 0.4444444444444444,
+          "within_1": 0.8333333333333334,
+          "within_2": 0.8888888888888888
+        }
+      },
+      "0.995": {
+        "baseline_fraction": {
+          "at_transition": 0.4131403118040089,
+          "within_1": 0.7293986636971047,
+          "within_2": 0.9448775055679287
+        },
+        "cutoff": 0.25200852435862636,
+        "enrichment": {
+          "at_transition": 1.3447139862234203,
+          "within_1": 1.3709923664122137,
+          "within_2": 1.0583382439599294
+        },
+        "not_within_2_fraction": 0.0,
+        "tail_count": 9,
+        "tail_fraction": {
+          "at_transition": 0.5555555555555556,
+          "within_1": 1.0,
+          "within_2": 1.0
+        }
+      }
+    }
+  },
+  "guardrails": {
+    "conditional_thresholds_are_diagnostic_only": true,
+    "no_detector_parameters_changed": true,
+    "no_incidents_loaded": true,
+    "no_test_loaded": true
+  },
+  "study": {
+    "data_boundary": {
+      "calibration_loaded": true,
+      "incident_labels_loaded": false,
+      "test_loaded": false,
+      "train_loaded": true
+    },
+    "evidence_class": "REAL",
+    "posthoc": true,
+    "production_promotion_allowed": false,
+    "role": "posthoc_calibration_routing_diagnostic"
+  }
+}
