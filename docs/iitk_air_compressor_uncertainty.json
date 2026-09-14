@@ -1,0 +1,2868 @@
+{
+  "analysis_status": "post_benchmark_exploratory_uncertainty_analysis",
+  "causal_claim": false,
+  "confidence_level": 0.95,
+  "dataset": "IITK-AirCompressor",
+  "evidence_class": "REAL",
+  "frozen_operating_rule": {
+    "calibration_healthy": 60,
+    "test_retuning": false,
+    "threshold_interpolation": "higher",
+    "threshold_quantile": 0.95
+  },
+  "interpretation_guardrails": [
+    "Bootstrap distributions quantify finite-sample sensitivity; they do not create an independent validation set.",
+    "Calibration-score resampling does not authorize selecting a new threshold from test performance.",
+    "Moving-block calibration bootstrap is a sensitivity analysis for possible local acquisition dependence.",
+    "Wilson intervals are binomial reference intervals and assume recording-level Bernoulli sampling.",
+    "A degenerate bootstrap AUC interval at 1.0 means complete separation in this observed sample, not population AUC exactly equal to 1.",
+    "No uncertainty result may be used to promote a detector without a separate confirmatory dataset."
+  ],
+  "representations": {
+    "robust_feature_energy": {
+      "calibration_bootstrap": {
+        "iid": {
+          "block_length": null,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.5441269841269841,
+              "max": 0.8996825396825396,
+              "mean": 0.6782168253968254,
+              "median": 0.6793650793650794,
+              "min": 0.5441269841269841,
+              "std": 0.05102683402625358,
+              "upper": 0.7266666666666667
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.044444444444444446,
+              "mean": 0.021644444444444445,
+              "median": 0.022222222222222223,
+              "min": 0.0,
+              "std": 0.00811493578423363,
+              "upper": 0.044444444444444446
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.08825396825396825,
+              "max": 0.8438095238095238,
+              "mean": 0.37807809523809527,
+              "median": 0.380952380952381,
+              "min": 0.08825396825396825,
+              "std": 0.10937523151485906,
+              "upper": 0.4977777777777778
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.08825396825396825,
+              "max": 0.8438095238095238,
+              "mean": 0.37807809523809527,
+              "median": 0.38095238095238093,
+              "min": 0.08825396825396825,
+              "std": 0.10937523151485906,
+              "upper": 0.49777777777777776
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.04,
+              "max": 0.8133333333333334,
+              "mean": 0.2104711111111111,
+              "median": 0.20444444444444446,
+              "min": 0.04,
+              "std": 0.09579572704363967,
+              "upper": 0.3244444444444444
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.10222222222222223,
+              "max": 0.6266666666666667,
+              "mean": 0.24210133333333334,
+              "median": 0.24,
+              "min": 0.10222222222222223,
+              "std": 0.05966002417147744,
+              "upper": 0.29333333333333333
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.20444444444444446,
+              "max": 0.9955555555555555,
+              "mean": 0.577752,
+              "median": 0.5866666666666667,
+              "min": 0.20444444444444446,
+              "std": 0.1283186528466174,
+              "upper": 0.72
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.03111111111111111,
+              "max": 0.6933333333333334,
+              "mean": 0.2990791111111111,
+              "median": 0.31555555555555553,
+              "min": 0.03111111111111111,
+              "std": 0.09442336395827274,
+              "upper": 0.38222222222222224
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.13333333333333333,
+              "max": 1.0,
+              "mean": 0.6343066666666666,
+              "median": 0.64,
+              "min": 0.13333333333333333,
+              "std": 0.17088956057225982,
+              "upper": 0.8222222222222222
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 0.022222222222222223,
+              "max": 0.8444444444444444,
+              "mean": 0.21034222222222224,
+              "median": 0.2,
+              "min": 0.022222222222222223,
+              "std": 0.10557359584452904,
+              "upper": 0.3022222222222222
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 0.08444444444444445,
+              "max": 0.9333333333333333,
+              "mean": 0.4724942222222222,
+              "median": 0.48,
+              "min": 0.08444444444444445,
+              "std": 0.1368904535911569,
+              "upper": 0.64
+            }
+          },
+          "seed": 20262914,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 11.868128006642214,
+            "max": 49.59385552065344,
+            "mean": 17.775462162354494,
+            "median": 15.567931484374881,
+            "min": 5.164060964537825,
+            "std": 9.565152860840382,
+            "upper": 49.59385552065344
+          }
+        },
+        "moving_block_10": {
+          "block_length": 10,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.5441269841269841,
+              "max": 0.9425396825396826,
+              "mean": 0.6902911746031746,
+              "median": 0.6793650793650794,
+              "min": 0.5441269841269841,
+              "std": 0.061235133607600356,
+              "upper": 0.8888888888888888
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.1111111111111111,
+              "mean": 0.02500888888888889,
+              "median": 0.022222222222222223,
+              "min": 0.0,
+              "std": 0.010650932473102222,
+              "upper": 0.044444444444444446
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.08825396825396825,
+              "max": 0.9961904761904762,
+              "mean": 0.40559123809523817,
+              "median": 0.380952380952381,
+              "min": 0.08825396825396825,
+              "std": 0.1316144580707789,
+              "upper": 0.8222222222222222
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.08825396825396825,
+              "max": 0.9961904761904762,
+              "mean": 0.40559123809523806,
+              "median": 0.38095238095238093,
+              "min": 0.08825396825396825,
+              "std": 0.1316144580707789,
+              "upper": 0.8222222222222222
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.04,
+              "max": 1.0,
+              "mean": 0.24231111111111114,
+              "median": 0.20444444444444446,
+              "min": 0.04,
+              "std": 0.14005844393676534,
+              "upper": 0.7777777777777778
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.10222222222222223,
+              "max": 1.0,
+              "mean": 0.25876,
+              "median": 0.24,
+              "min": 0.10222222222222223,
+              "std": 0.08043846156441209,
+              "upper": 0.5911111111111111
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.20444444444444446,
+              "max": 1.0,
+              "mean": 0.6081111111111112,
+              "median": 0.5866666666666667,
+              "min": 0.20444444444444446,
+              "std": 0.14313323549627832,
+              "upper": 0.9911111111111112
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.03111111111111111,
+              "max": 0.9733333333333334,
+              "mean": 0.322872,
+              "median": 0.31555555555555553,
+              "min": 0.03111111111111111,
+              "std": 0.10956497331206222,
+              "upper": 0.6577777777777778
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.13333333333333333,
+              "max": 1.0,
+              "mean": 0.661543111111111,
+              "median": 0.64,
+              "min": 0.13333333333333333,
+              "std": 0.17252987795313235,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 0.022222222222222223,
+              "max": 1.0,
+              "mean": 0.24193866666666664,
+              "median": 0.2,
+              "min": 0.022222222222222223,
+              "std": 0.15360334478635318,
+              "upper": 0.8222222222222222
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 0.08444444444444445,
+              "max": 1.0,
+              "mean": 0.5036026666666666,
+              "median": 0.48,
+              "min": 0.08444444444444445,
+              "std": 0.15266074022582418,
+              "upper": 0.9155555555555556
+            }
+          },
+          "seed": 20262916,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 5.575924938011492,
+            "max": 49.59385552065344,
+            "mean": 16.515792980061168,
+            "median": 15.567931484374881,
+            "min": 1.3773728320520475,
+            "std": 8.608100187091376,
+            "upper": 49.59385552065344
+          }
+        },
+        "moving_block_5": {
+          "block_length": 5,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.5441269841269841,
+              "max": 0.9485714285714286,
+              "mean": 0.6836768888888889,
+              "median": 0.6793650793650794,
+              "min": 0.5441269841269841,
+              "std": 0.05737819223383321,
+              "upper": 0.8412698412698413
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.06666666666666667,
+              "mean": 0.02317777777777778,
+              "median": 0.022222222222222223,
+              "min": 0.0,
+              "std": 0.009593935266821743,
+              "upper": 0.044444444444444446
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.08825396825396825,
+              "max": 0.9638095238095238,
+              "mean": 0.3905315555555556,
+              "median": 0.380952380952381,
+              "min": 0.08825396825396825,
+              "std": 0.12329591739940739,
+              "upper": 0.726984126984127
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.08825396825396825,
+              "max": 0.9638095238095238,
+              "mean": 0.3905315555555556,
+              "median": 0.38095238095238093,
+              "min": 0.08825396825396825,
+              "std": 0.1232959173994074,
+              "upper": 0.726984126984127
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.04,
+              "max": 0.9955555555555555,
+              "mean": 0.22584799999999997,
+              "median": 0.20444444444444446,
+              "min": 0.04,
+              "std": 0.12137629145326878,
+              "upper": 0.6311111111111111
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.10222222222222223,
+              "max": 0.9022222222222223,
+              "mean": 0.2492764444444444,
+              "median": 0.24,
+              "min": 0.10222222222222223,
+              "std": 0.06933508126202999,
+              "upper": 0.4222222222222222
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.20444444444444446,
+              "max": 1.0,
+              "mean": 0.5914391111111112,
+              "median": 0.5866666666666667,
+              "min": 0.20444444444444446,
+              "std": 0.13961262151449833,
+              "upper": 0.9422222222222222
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.03111111111111111,
+              "max": 0.8711111111111111,
+              "mean": 0.3101804444444444,
+              "median": 0.31555555555555553,
+              "min": 0.03111111111111111,
+              "std": 0.10446543959658547,
+              "upper": 0.5822222222222222
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.13333333333333333,
+              "max": 1.0,
+              "mean": 0.6450453333333332,
+              "median": 0.64,
+              "min": 0.13333333333333333,
+              "std": 0.1753141357355263,
+              "upper": 0.9822222222222222
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 0.022222222222222223,
+              "max": 0.9777777777777777,
+              "mean": 0.22596800000000003,
+              "median": 0.2,
+              "min": 0.022222222222222223,
+              "std": 0.13443958025488917,
+              "upper": 0.6977777777777778
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 0.08444444444444445,
+              "max": 1.0,
+              "mean": 0.48596355555555554,
+              "median": 0.48,
+              "min": 0.08444444444444445,
+              "std": 0.147799460407644,
+              "upper": 0.8311111111111111
+            }
+          },
+          "seed": 20262915,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 7.322991247580365,
+            "max": 49.59385552065344,
+            "mean": 17.283022916761094,
+            "median": 15.567931484374881,
+            "min": 2.558766970009159,
+            "std": 9.32312967604654,
+            "upper": 49.59385552065344
+          }
+        }
+      },
+      "frozen_reproduction": {
+        "healthy_fpr": 0.022222222222222223,
+        "overall_fault_recall": 0.38095238095238093,
+        "roc_auc": 0.9702716049382716,
+        "threshold": 15.567931484374881,
+        "threshold_absolute_difference": 0.0
+      },
+      "leave_one_out_calibration": {
+        "operating_metrics": {
+          "balanced_accuracy": {
+            "confidence_level": 0.95,
+            "lower": 0.6793650793650794,
+            "max": 0.7006349206349206,
+            "mean": 0.6804285714285714,
+            "median": 0.6793650793650794,
+            "min": 0.6793650793650794,
+            "std": 0.004674774572261114,
+            "upper": 0.7006349206349206
+          },
+          "heldout_healthy_false_positive_rate": {
+            "confidence_level": 0.95,
+            "lower": 0.022222222222222223,
+            "max": 0.022222222222222223,
+            "mean": 0.022222222222222216,
+            "median": 0.022222222222222223,
+            "min": 0.022222222222222223,
+            "std": 6.997451008761295e-18,
+            "upper": 0.022222222222222223
+          },
+          "macro_fault_recall": {
+            "confidence_level": 0.95,
+            "lower": 0.380952380952381,
+            "max": 0.42349206349206353,
+            "mean": 0.3830793650793651,
+            "median": 0.380952380952381,
+            "min": 0.380952380952381,
+            "std": 0.009349549144522254,
+            "upper": 0.42349206349206353
+          },
+          "overall_fault_recall": {
+            "confidence_level": 0.95,
+            "lower": 0.38095238095238093,
+            "max": 0.4234920634920635,
+            "mean": 0.38307936507936496,
+            "median": 0.38095238095238093,
+            "min": 0.38095238095238093,
+            "std": 0.009349549144522252,
+            "upper": 0.4234920634920635
+          },
+          "per_fault_recall::bearing": {
+            "confidence_level": 0.95,
+            "lower": 0.20444444444444446,
+            "max": 0.2311111111111111,
+            "mean": 0.20577777777777778,
+            "median": 0.20444444444444446,
+            "min": 0.20444444444444446,
+            "std": 0.005860911404028868,
+            "upper": 0.2311111111111111
+          },
+          "per_fault_recall::flywheel": {
+            "confidence_level": 0.95,
+            "lower": 0.24,
+            "max": 0.2577777777777778,
+            "mean": 0.24088888888888887,
+            "median": 0.24,
+            "min": 0.24,
+            "std": 0.003907274269352584,
+            "upper": 0.2577777777777778
+          },
+          "per_fault_recall::leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.5866666666666667,
+            "max": 0.6266666666666667,
+            "mean": 0.5886666666666667,
+            "median": 0.5866666666666667,
+            "min": 0.5866666666666667,
+            "std": 0.008791367106043318,
+            "upper": 0.6266666666666667
+          },
+          "per_fault_recall::leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.31555555555555553,
+            "max": 0.3288888888888889,
+            "mean": 0.3162222222222221,
+            "median": 0.31555555555555553,
+            "min": 0.31555555555555553,
+            "std": 0.0029304557020144433,
+            "upper": 0.3288888888888889
+          },
+          "per_fault_recall::non_return_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.64,
+            "max": 0.7422222222222222,
+            "mean": 0.6451111111111113,
+            "median": 0.64,
+            "min": 0.64,
+            "std": 0.022466827048777352,
+            "upper": 0.7422222222222222
+          },
+          "per_fault_recall::piston_ring": {
+            "confidence_level": 0.95,
+            "lower": 0.2,
+            "max": 0.24,
+            "mean": 0.20199999999999996,
+            "median": 0.2,
+            "min": 0.2,
+            "std": 0.008791367106043307,
+            "upper": 0.24
+          },
+          "per_fault_recall::rider_belt": {
+            "confidence_level": 0.95,
+            "lower": 0.48,
+            "max": 0.5377777777777778,
+            "mean": 0.4828888888888889,
+            "median": 0.48,
+            "min": 0.48,
+            "std": 0.012698641375395902,
+            "upper": 0.5377777777777778
+          }
+        },
+        "threshold": {
+          "confidence_level": 0.95,
+          "lower": 14.131523569333943,
+          "max": 15.567931484374881,
+          "mean": 15.496111088622834,
+          "median": 15.567931484374881,
+          "min": 14.131523569333943,
+          "std": 0.3156997323787789,
+          "upper": 15.567931484374881
+        }
+      },
+      "roc_auc_bootstrap": {
+        "iterations": 1000,
+        "overall_roc_auc": {
+          "confidence_level": 0.95,
+          "lower": 0.9286906525573192,
+          "max": 0.9998306878306878,
+          "mean": 0.9694947865961199,
+          "median": 0.9708289241622574,
+          "min": 0.8890299823633157,
+          "std": 0.019058695092606156,
+          "upper": 0.9988867724867725
+        },
+        "per_fault_roc_auc": {
+          "bearing": {
+            "confidence_level": 0.95,
+            "lower": 0.9116864197530864,
+            "max": 1.0,
+            "mean": 0.9633037037037036,
+            "median": 0.9646913580246914,
+            "min": 0.8546172839506172,
+            "std": 0.024531465041416744,
+            "upper": 1.0
+          },
+          "flywheel": {
+            "confidence_level": 0.95,
+            "lower": 0.9099950617283951,
+            "max": 1.0,
+            "mean": 0.9601011358024691,
+            "median": 0.9626666666666666,
+            "min": 0.8601481481481481,
+            "std": 0.02377390245103379,
+            "upper": 0.9987185185185186
+          },
+          "leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.955553086419753,
+            "max": 1.0,
+            "mean": 0.9817106172839506,
+            "median": 0.9827654320987653,
+            "min": 0.9324444444444444,
+            "std": 0.012645349992611873,
+            "upper": 1.0
+          },
+          "leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9081358024691358,
+            "max": 0.9988148148148148,
+            "mean": 0.9583518024691356,
+            "median": 0.9610864197530864,
+            "min": 0.8680493827160495,
+            "std": 0.022137180250840247,
+            "upper": 0.994372839506173
+          },
+          "non_return_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9597037037037037,
+            "max": 1.0,
+            "mean": 0.9844718024691358,
+            "median": 0.9854814814814814,
+            "min": 0.9407407407407408,
+            "std": 0.010976789131878275,
+            "upper": 1.0
+          },
+          "piston_ring": {
+            "confidence_level": 0.95,
+            "lower": 0.9108148148148149,
+            "max": 1.0,
+            "mean": 0.962109037037037,
+            "median": 0.9636543209876542,
+            "min": 0.8577777777777778,
+            "std": 0.024686286691649035,
+            "upper": 0.9998024691358024
+          },
+          "rider_belt": {
+            "confidence_level": 0.95,
+            "lower": 0.9437901234567901,
+            "max": 1.0,
+            "mean": 0.9764154074074074,
+            "median": 0.9777777777777779,
+            "min": 0.9071604938271606,
+            "std": 0.016143784170356425,
+            "upper": 1.0
+          }
+        },
+        "seed": 20260917
+      },
+      "threshold_order": {
+        "higher_index_zero_based": 57,
+        "higher_rank_one_based": 58,
+        "quantile": 0.95,
+        "sample_count": 60,
+        "upper_order_statistics_including_threshold": 3
+      },
+      "top_calibration_scores": [
+        {
+          "reading": 164,
+          "score": 49.59385552065344
+        },
+        {
+          "reading": 132,
+          "score": 16.964267901736658
+        },
+        {
+          "reading": 125,
+          "score": 15.567931484374881
+        },
+        {
+          "reading": 127,
+          "score": 14.131523569333943
+        },
+        {
+          "reading": 128,
+          "score": 14.10387862575073
+        },
+        {
+          "reading": 124,
+          "score": 13.764526557379448
+        }
+      ],
+      "wilson_reference_intervals": {
+        "heldout_healthy_false_positive_rate": {
+          "confidence_level": 0.95,
+          "estimate": 0.022222222222222223,
+          "lower": 0.003933598882833435,
+          "successes": 1,
+          "trials": 45,
+          "upper": 0.11566681768414877
+        },
+        "overall_fault_recall": {
+          "confidence_level": 0.95,
+          "estimate": 0.38095238095238093,
+          "lower": 0.3572863844887012,
+          "successes": 600,
+          "trials": 1575,
+          "upper": 0.4051976838736129
+        },
+        "per_fault_recall": {
+          "bearing": {
+            "confidence_level": 0.95,
+            "estimate": 0.20444444444444446,
+            "lower": 0.15691870169470284,
+            "successes": 46,
+            "trials": 225,
+            "upper": 0.2618929040108416
+          },
+          "flywheel": {
+            "confidence_level": 0.95,
+            "estimate": 0.24,
+            "lower": 0.1888585054581208,
+            "successes": 54,
+            "trials": 225,
+            "upper": 0.29987050106480173
+          },
+          "leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "estimate": 0.5866666666666667,
+            "lower": 0.5213943687677511,
+            "successes": 132,
+            "trials": 225,
+            "upper": 0.649029295724608
+          },
+          "leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "estimate": 0.31555555555555553,
+            "lower": 0.258359538160253,
+            "successes": 71,
+            "trials": 225,
+            "upper": 0.378943945099598
+          },
+          "non_return_valve": {
+            "confidence_level": 0.95,
+            "estimate": 0.64,
+            "lower": 0.5754152911736375,
+            "successes": 144,
+            "trials": 225,
+            "upper": 0.6998844745447889
+          },
+          "piston_ring": {
+            "confidence_level": 0.95,
+            "estimate": 0.2,
+            "lower": 0.15296669310186534,
+            "successes": 45,
+            "trials": 225,
+            "upper": 0.2571052375015068
+          },
+          "rider_belt": {
+            "confidence_level": 0.95,
+            "estimate": 0.48,
+            "lower": 0.4156052447997798,
+            "successes": 108,
+            "trials": 225,
+            "upper": 0.545066217240445
+          }
+        }
+      }
+    },
+    "robust_pca": {
+      "calibration_bootstrap": {
+        "iid": {
+          "block_length": null,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.9936507936507937,
+              "max": 1.0,
+              "mean": 0.9974432380952382,
+              "median": 0.9987301587301587,
+              "min": 0.9666666666666667,
+              "std": 0.002636723468546262,
+              "upper": 1.0
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.06666666666666667,
+              "mean": 0.0002,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.003024403178827653,
+              "upper": 0.0
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9873015873015873,
+              "max": 1.0,
+              "mean": 0.9950864761904762,
+              "median": 0.9974603174603175,
+              "min": 0.9873015873015873,
+              "std": 0.0045418091873805425,
+              "upper": 1.0
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9873015873015873,
+              "max": 1.0,
+              "mean": 0.9950864761904762,
+              "median": 0.9974603174603175,
+              "min": 0.9873015873015873,
+              "std": 0.0045418091873805425,
+              "upper": 1.0
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.96,
+              "max": 1.0,
+              "mean": 0.9870746666666665,
+              "median": 0.9955555555555555,
+              "min": 0.96,
+              "std": 0.01447244701634192,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.9555555555555556,
+              "max": 1.0,
+              "mean": 0.9824986666666667,
+              "median": 0.9911111111111112,
+              "min": 0.9555555555555556,
+              "std": 0.016887028273945434,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9955555555555555,
+              "max": 1.0,
+              "mean": 0.9960319999999999,
+              "median": 0.9955555555555555,
+              "min": 0.9955555555555555,
+              "std": 0.001375103537012061,
+              "upper": 1.0
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            }
+          },
+          "seed": 20260914,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 0.19616600284054753,
+            "max": 0.29032909283419056,
+            "mean": 0.2442814264523031,
+            "median": 0.23280884394490256,
+            "min": 0.1296388602542719,
+            "std": 0.03304399273497382,
+            "upper": 0.29032909283419056
+          }
+        },
+        "moving_block_10": {
+          "block_length": 10,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.9936507936507937,
+              "max": 1.0,
+              "mean": 0.9974109841269841,
+              "median": 0.9987301587301587,
+              "min": 0.9666666666666667,
+              "std": 0.002785019915968532,
+              "upper": 1.0
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.06666666666666667,
+              "mean": 0.0002577777777777777,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.0037099142582911384,
+              "upper": 0.0
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9873015873015873,
+              "max": 1.0,
+              "mean": 0.9950797460317462,
+              "median": 0.9974603174603175,
+              "min": 0.9873015873015873,
+              "std": 0.004449612525592752,
+              "upper": 1.0
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9873015873015873,
+              "max": 1.0,
+              "mean": 0.9950797460317462,
+              "median": 0.9974603174603175,
+              "min": 0.9873015873015873,
+              "std": 0.004449612525592752,
+              "upper": 1.0
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.96,
+              "max": 1.0,
+              "mean": 0.9871395555555554,
+              "median": 0.9955555555555555,
+              "min": 0.96,
+              "std": 0.014150587972806751,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.9555555555555556,
+              "max": 1.0,
+              "mean": 0.9823786666666668,
+              "median": 0.9911111111111112,
+              "min": 0.9555555555555556,
+              "std": 0.016539025630672284,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9955555555555555,
+              "max": 1.0,
+              "mean": 0.9960400000000001,
+              "median": 0.9955555555555555,
+              "min": 0.9955555555555555,
+              "std": 0.001385201702551428,
+              "upper": 1.0
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            }
+          },
+          "seed": 20260916,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 0.19616600284054753,
+            "max": 0.29032909283419056,
+            "mean": 0.2443197642656914,
+            "median": 0.23280884394490256,
+            "min": 0.12435916458077446,
+            "std": 0.03306800360732189,
+            "upper": 0.29032909283419056
+          }
+        },
+        "moving_block_5": {
+          "block_length": 5,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.9936507936507937,
+              "max": 1.0,
+              "mean": 0.9973725714285713,
+              "median": 0.9987301587301587,
+              "min": 0.9666666666666667,
+              "std": 0.0027538406771704235,
+              "upper": 1.0
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.06666666666666667,
+              "mean": 0.00023111111111111108,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.0035483913509080146,
+              "upper": 0.0
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9873015873015873,
+              "max": 1.0,
+              "mean": 0.9949762539682541,
+              "median": 0.9974603174603175,
+              "min": 0.9873015873015873,
+              "std": 0.004479511612524515,
+              "upper": 1.0
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9873015873015873,
+              "max": 1.0,
+              "mean": 0.9949762539682541,
+              "median": 0.9974603174603175,
+              "min": 0.9873015873015873,
+              "std": 0.004479511612524515,
+              "upper": 1.0
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.96,
+              "max": 1.0,
+              "mean": 0.986816,
+              "median": 0.9955555555555555,
+              "min": 0.96,
+              "std": 0.01434705985350666,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.9555555555555556,
+              "max": 1.0,
+              "mean": 0.9820346666666668,
+              "median": 0.9911111111111112,
+              "min": 0.9555555555555556,
+              "std": 0.016607962916759967,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9955555555555555,
+              "max": 1.0,
+              "mean": 0.9959831111111113,
+              "median": 0.9955555555555555,
+              "min": 0.9955555555555555,
+              "std": 0.0013106436273211024,
+              "upper": 1.0
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            }
+          },
+          "seed": 20260915,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 0.19616600284054753,
+            "max": 0.29032909283419056,
+            "mean": 0.2452188572304667,
+            "median": 0.23280884394490256,
+            "min": 0.12435916458077446,
+            "std": 0.032549550101505995,
+            "upper": 0.29032909283419056
+          }
+        }
+      },
+      "frozen_reproduction": {
+        "healthy_fpr": 0.0,
+        "overall_fault_recall": 0.9974603174603175,
+        "roc_auc": 1.0,
+        "threshold": 0.23280884394490256,
+        "threshold_absolute_difference": 2.7755575615628914e-17
+      },
+      "leave_one_out_calibration": {
+        "operating_metrics": {
+          "balanced_accuracy": {
+            "confidence_level": 0.95,
+            "lower": 0.9987301587301587,
+            "max": 0.9987301587301587,
+            "mean": 0.998730158730159,
+            "median": 0.9987301587301587,
+            "min": 0.9987301587301587,
+            "std": 3.358776484205422e-16,
+            "upper": 0.9987301587301587
+          },
+          "heldout_healthy_false_positive_rate": {
+            "confidence_level": 0.95,
+            "lower": 0.0,
+            "max": 0.0,
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "std": 0.0,
+            "upper": 0.0
+          },
+          "macro_fault_recall": {
+            "confidence_level": 0.95,
+            "lower": 0.9974603174603175,
+            "max": 0.9974603174603175,
+            "mean": 0.9974603174603175,
+            "median": 0.9974603174603175,
+            "min": 0.9974603174603175,
+            "std": 0.0,
+            "upper": 0.9974603174603175
+          },
+          "overall_fault_recall": {
+            "confidence_level": 0.95,
+            "lower": 0.9974603174603175,
+            "max": 0.9974603174603175,
+            "mean": 0.9974603174603175,
+            "median": 0.9974603174603175,
+            "min": 0.9974603174603175,
+            "std": 0.0,
+            "upper": 0.9974603174603175
+          },
+          "per_fault_recall::bearing": {
+            "confidence_level": 0.95,
+            "lower": 0.9955555555555555,
+            "max": 0.9955555555555555,
+            "mean": 0.9955555555555555,
+            "median": 0.9955555555555555,
+            "min": 0.9955555555555555,
+            "std": 0.0,
+            "upper": 0.9955555555555555
+          },
+          "per_fault_recall::flywheel": {
+            "confidence_level": 0.95,
+            "lower": 0.9911111111111112,
+            "max": 0.9911111111111112,
+            "mean": 0.9911111111111112,
+            "median": 0.9911111111111112,
+            "min": 0.9911111111111112,
+            "std": 0.0,
+            "upper": 0.9911111111111112
+          },
+          "per_fault_recall::leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9955555555555555,
+            "max": 0.9955555555555555,
+            "mean": 0.9955555555555555,
+            "median": 0.9955555555555555,
+            "min": 0.9955555555555555,
+            "std": 0.0,
+            "upper": 0.9955555555555555
+          },
+          "per_fault_recall::non_return_valve": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::piston_ring": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::rider_belt": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          }
+        },
+        "threshold": {
+          "confidence_level": 0.95,
+          "lower": 0.228844672604734,
+          "max": 0.23280884394490256,
+          "mean": 0.2326106353778941,
+          "median": 0.23280884394490256,
+          "min": 0.228844672604734,
+          "std": 0.0008712621380669351,
+          "upper": 0.23280884394490256
+        }
+      },
+      "roc_auc_bootstrap": {
+        "iterations": 1000,
+        "overall_roc_auc": {
+          "confidence_level": 0.95,
+          "lower": 0.9999999999999999,
+          "max": 1.0,
+          "mean": 1.0,
+          "median": 1.0,
+          "min": 0.9999999999999999,
+          "std": 2.788032040423453e-17,
+          "upper": 1.0
+        },
+        "per_fault_roc_auc": {
+          "bearing": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.6980717301560517e-17,
+            "upper": 1.0
+          },
+          "flywheel": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.765816291637541e-17,
+            "upper": 1.0
+          },
+          "leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.5812161018339116e-17,
+            "upper": 1.0
+          },
+          "leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.651947447138993e-17,
+            "upper": 1.0
+          },
+          "non_return_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.5329648173013392e-17,
+            "upper": 1.0
+          },
+          "piston_ring": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.5329648173013392e-17,
+            "upper": 1.0
+          },
+          "rider_belt": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.6980717301560517e-17,
+            "upper": 1.0
+          }
+        },
+        "seed": 20260915
+      },
+      "threshold_order": {
+        "higher_index_zero_based": 57,
+        "higher_rank_one_based": 58,
+        "quantile": 0.95,
+        "sample_count": 60,
+        "upper_order_statistics_including_threshold": 3
+      },
+      "top_calibration_scores": [
+        {
+          "reading": 151,
+          "score": 0.29032909283419056
+        },
+        {
+          "reading": 126,
+          "score": 0.28752576188726886
+        },
+        {
+          "reading": 157,
+          "score": 0.23280884394490256
+        },
+        {
+          "reading": 180,
+          "score": 0.228844672604734
+        },
+        {
+          "reading": 159,
+          "score": 0.21571153016314076
+        },
+        {
+          "reading": 152,
+          "score": 0.2051020945603947
+        }
+      ],
+      "wilson_reference_intervals": {
+        "heldout_healthy_false_positive_rate": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "lower": 0.0,
+          "successes": 0,
+          "trials": 45,
+          "upper": 0.07865159873288834
+        },
+        "overall_fault_recall": {
+          "confidence_level": 0.95,
+          "estimate": 0.9974603174603175,
+          "lower": 0.9934879688782717,
+          "successes": 1571,
+          "trials": 1575,
+          "upper": 0.9990119374584044
+        },
+        "per_fault_recall": {
+          "bearing": {
+            "confidence_level": 0.95,
+            "estimate": 0.9955555555555555,
+            "lower": 0.9752587587701537,
+            "successes": 224,
+            "trials": 225,
+            "upper": 0.9992150151220537
+          },
+          "flywheel": {
+            "confidence_level": 0.95,
+            "estimate": 0.9911111111111112,
+            "lower": 0.9681751470156603,
+            "successes": 223,
+            "trials": 225,
+            "upper": 0.997558951774375
+          },
+          "leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "estimate": 0.9955555555555555,
+            "lower": 0.9752587587701537,
+            "successes": 224,
+            "trials": 225,
+            "upper": 0.9992150151220537
+          },
+          "non_return_valve": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "piston_ring": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "rider_belt": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          }
+        }
+      }
+    },
+    "standard_feature_energy": {
+      "calibration_bootstrap": {
+        "iid": {
+          "block_length": null,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.8228571428571428,
+              "max": 0.979047619047619,
+              "mean": 0.9335284444444445,
+              "median": 0.9742857142857143,
+              "min": 0.8228571428571428,
+              "std": 0.06095798471476247,
+              "upper": 0.979047619047619
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.08888888888888889,
+              "mean": 0.0035422222222222218,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.011992793926436538,
+              "upper": 0.022222222222222223
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.6457142857142858,
+              "max": 0.9974603174603175,
+              "mean": 0.8705991111111111,
+              "median": 0.9485714285714286,
+              "min": 0.6457142857142858,
+              "std": 0.12462748821592431,
+              "upper": 0.9771428571428572
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.6457142857142857,
+              "max": 0.9974603174603175,
+              "mean": 0.8705991111111111,
+              "median": 0.9485714285714286,
+              "min": 0.6457142857142857,
+              "std": 0.12462748821592436,
+              "upper": 0.9771428571428571
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.52,
+              "max": 1.0,
+              "mean": 0.8658062222222223,
+              "median": 0.9911111111111112,
+              "min": 0.52,
+              "std": 0.18733262374180462,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.3511111111111111,
+              "max": 1.0,
+              "mean": 0.750240888888889,
+              "median": 0.8844444444444445,
+              "min": 0.3511111111111111,
+              "std": 0.2339720415665139,
+              "upper": 0.9777777777777777
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9377777777777778,
+              "max": 1.0,
+              "mean": 0.9861653333333332,
+              "median": 1.0,
+              "min": 0.9377777777777778,
+              "std": 0.021085869295857294,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.35555555555555557,
+              "max": 0.9822222222222222,
+              "mean": 0.6756719999999999,
+              "median": 0.7911111111111111,
+              "min": 0.35555555555555557,
+              "std": 0.1955963025697641,
+              "upper": 0.8666666666666667
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9911111111111112,
+              "max": 1.0,
+              "mean": 0.9992284444444446,
+              "median": 1.0,
+              "min": 0.9911111111111112,
+              "std": 0.0025028436776843533,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 0.5555555555555556,
+              "max": 1.0,
+              "mean": 0.8720284444444445,
+              "median": 0.9777777777777777,
+              "min": 0.5555555555555556,
+              "std": 0.16125423703546873,
+              "upper": 0.9955555555555555
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 0.8088888888888889,
+              "max": 1.0,
+              "mean": 0.9450524444444445,
+              "median": 0.9955555555555555,
+              "min": 0.8088888888888889,
+              "std": 0.07469710752440667,
+              "upper": 1.0
+            }
+          },
+          "seed": 20263914,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 2.7871478341947062,
+            "max": 10.99793377596682,
+            "mean": 5.714200539239819,
+            "median": 3.96124829820208,
+            "min": 1.6743631494946811,
+            "std": 3.015017135524436,
+            "upper": 10.99793377596682
+          }
+        },
+        "moving_block_10": {
+          "block_length": 10,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.8228571428571428,
+              "max": 0.979047619047619,
+              "mean": 0.9329865396825399,
+              "median": 0.9742857142857143,
+              "min": 0.8228571428571428,
+              "std": 0.059689774617332936,
+              "upper": 0.979047619047619
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.26666666666666666,
+              "mean": 0.004208888888888889,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.016701306345322464,
+              "upper": 0.06666666666666667
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.6457142857142858,
+              "max": 1.0,
+              "mean": 0.8701819682539682,
+              "median": 0.9485714285714286,
+              "min": 0.6457142857142858,
+              "std": 0.12246595413130079,
+              "upper": 0.9968253968253968
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.6457142857142857,
+              "max": 1.0,
+              "mean": 0.8701819682539682,
+              "median": 0.9485714285714286,
+              "min": 0.6457142857142857,
+              "std": 0.12246595413130085,
+              "upper": 0.9968253968253968
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.52,
+              "max": 1.0,
+              "mean": 0.8655573333333334,
+              "median": 0.9911111111111112,
+              "min": 0.52,
+              "std": 0.18355788249745392,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.3511111111111111,
+              "max": 1.0,
+              "mean": 0.7473946666666667,
+              "median": 0.8844444444444445,
+              "min": 0.3511111111111111,
+              "std": 0.23037050175800142,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9377777777777778,
+              "max": 1.0,
+              "mean": 0.9865955555555557,
+              "median": 1.0,
+              "min": 0.9377777777777778,
+              "std": 0.019947076938996593,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.35555555555555557,
+              "max": 1.0,
+              "mean": 0.674824,
+              "median": 0.7911111111111111,
+              "min": 0.35555555555555557,
+              "std": 0.19588005364425376,
+              "upper": 0.9777777777777777
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9911111111111112,
+              "max": 1.0,
+              "mean": 0.9994595555555554,
+              "median": 1.0,
+              "min": 0.9911111111111112,
+              "std": 0.002124328829147668,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 0.5555555555555556,
+              "max": 1.0,
+              "mean": 0.8725351111111112,
+              "median": 0.9777777777777777,
+              "min": 0.5555555555555556,
+              "std": 0.15659243132517423,
+              "upper": 1.0
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 0.8088888888888889,
+              "max": 1.0,
+              "mean": 0.9449075555555555,
+              "median": 0.9955555555555555,
+              "min": 0.8088888888888889,
+              "std": 0.07332826714311268,
+              "upper": 1.0
+            }
+          },
+          "seed": 20263916,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 1.9176942523787366,
+            "max": 10.99793377596682,
+            "mean": 5.728648419003801,
+            "median": 3.96124829820208,
+            "min": 0.9137931038993412,
+            "std": 2.977351800261675,
+            "upper": 10.99793377596682
+          }
+        },
+        "moving_block_5": {
+          "block_length": 5,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.8228571428571428,
+              "max": 0.979047619047619,
+              "mean": 0.9353356190476192,
+              "median": 0.9742857142857143,
+              "min": 0.8228571428571428,
+              "std": 0.05942654921195156,
+              "upper": 0.979047619047619
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.15555555555555556,
+              "mean": 0.003128888888888889,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.013098767239513798,
+              "upper": 0.06666666666666667
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.6457142857142858,
+              "max": 1.0,
+              "mean": 0.8738001269841268,
+              "median": 0.9485714285714286,
+              "min": 0.6457142857142858,
+              "std": 0.12115870368870509,
+              "upper": 0.9968253968253968
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.6457142857142857,
+              "max": 1.0,
+              "mean": 0.8738001269841268,
+              "median": 0.9485714285714286,
+              "min": 0.6457142857142857,
+              "std": 0.12115870368870514,
+              "upper": 0.9968253968253968
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.52,
+              "max": 1.0,
+              "mean": 0.871816888888889,
+              "median": 0.9911111111111112,
+              "min": 0.52,
+              "std": 0.18257917888785144,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.3511111111111111,
+              "max": 1.0,
+              "mean": 0.7542195555555556,
+              "median": 0.8844444444444445,
+              "min": 0.3511111111111111,
+              "std": 0.22699395730200975,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9377777777777778,
+              "max": 1.0,
+              "mean": 0.9870773333333333,
+              "median": 1.0,
+              "min": 0.9377777777777778,
+              "std": 0.020191865037438847,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.35555555555555557,
+              "max": 1.0,
+              "mean": 0.6793848888888888,
+              "median": 0.7911111111111111,
+              "min": 0.35555555555555557,
+              "std": 0.19095431494937018,
+              "upper": 0.9777777777777777
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9911111111111112,
+              "max": 1.0,
+              "mean": 0.9993831111111111,
+              "median": 1.0,
+              "min": 0.9911111111111112,
+              "std": 0.002259186949772779,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 0.5555555555555556,
+              "max": 1.0,
+              "mean": 0.8772737777777778,
+              "median": 0.9777777777777777,
+              "min": 0.5555555555555556,
+              "std": 0.1562395058951764,
+              "upper": 1.0
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 0.8088888888888889,
+              "max": 1.0,
+              "mean": 0.9474453333333333,
+              "median": 0.9955555555555555,
+              "min": 0.8088888888888889,
+              "std": 0.07288253191486484,
+              "upper": 1.0
+            }
+          },
+          "seed": 20263915,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 1.9176942523787366,
+            "max": 10.99793377596682,
+            "mean": 5.65306249709368,
+            "median": 3.96124829820208,
+            "min": 1.1636920745322712,
+            "std": 2.927181825137606,
+            "upper": 10.99793377596682
+          }
+        }
+      },
+      "frozen_reproduction": {
+        "healthy_fpr": 0.0,
+        "overall_fault_recall": 0.9485714285714286,
+        "roc_auc": 0.998984126984127,
+        "threshold": 3.96124829820208,
+        "threshold_absolute_difference": 0.0
+      },
+      "leave_one_out_calibration": {
+        "operating_metrics": {
+          "balanced_accuracy": {
+            "confidence_level": 0.95,
+            "lower": 0.9742857142857143,
+            "max": 0.9752380952380952,
+            "mean": 0.9743333333333334,
+            "median": 0.9742857142857143,
+            "min": 0.9742857142857143,
+            "std": 0.000209318264429597,
+            "upper": 0.9752380952380952
+          },
+          "heldout_healthy_false_positive_rate": {
+            "confidence_level": 0.95,
+            "lower": 0.0,
+            "max": 0.0,
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "std": 0.0,
+            "upper": 0.0
+          },
+          "macro_fault_recall": {
+            "confidence_level": 0.95,
+            "lower": 0.9485714285714286,
+            "max": 0.9504761904761905,
+            "mean": 0.9486666666666665,
+            "median": 0.9485714285714286,
+            "min": 0.9485714285714286,
+            "std": 0.00041863652885919397,
+            "upper": 0.9504761904761905
+          },
+          "overall_fault_recall": {
+            "confidence_level": 0.95,
+            "lower": 0.9485714285714286,
+            "max": 0.9504761904761905,
+            "mean": 0.9486666666666665,
+            "median": 0.9485714285714286,
+            "min": 0.9485714285714286,
+            "std": 0.00041863652885919397,
+            "upper": 0.9504761904761905
+          },
+          "per_fault_recall::bearing": {
+            "confidence_level": 0.95,
+            "lower": 0.9911111111111112,
+            "max": 0.9911111111111112,
+            "mean": 0.9911111111111112,
+            "median": 0.9911111111111112,
+            "min": 0.9911111111111112,
+            "std": 0.0,
+            "upper": 0.9911111111111112
+          },
+          "per_fault_recall::flywheel": {
+            "confidence_level": 0.95,
+            "lower": 0.8844444444444445,
+            "max": 0.8977777777777778,
+            "mean": 0.8851111111111112,
+            "median": 0.8844444444444445,
+            "min": 0.8844444444444445,
+            "std": 0.0029304557020144316,
+            "upper": 0.8977777777777778
+          },
+          "per_fault_recall::leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.7911111111111111,
+            "max": 0.7911111111111111,
+            "mean": 0.7911111111111114,
+            "median": 0.7911111111111111,
+            "min": 0.7911111111111111,
+            "std": 3.358776484205422e-16,
+            "upper": 0.7911111111111111
+          },
+          "per_fault_recall::non_return_valve": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::piston_ring": {
+            "confidence_level": 0.95,
+            "lower": 0.9777777777777777,
+            "max": 0.9777777777777777,
+            "mean": 0.9777777777777775,
+            "median": 0.9777777777777777,
+            "min": 0.9777777777777777,
+            "std": 2.2391843228036144e-16,
+            "upper": 0.9777777777777777
+          },
+          "per_fault_recall::rider_belt": {
+            "confidence_level": 0.95,
+            "lower": 0.9955555555555555,
+            "max": 0.9955555555555555,
+            "mean": 0.9955555555555555,
+            "median": 0.9955555555555555,
+            "min": 0.9955555555555555,
+            "std": 0.0,
+            "upper": 0.9955555555555555
+          }
+        },
+        "threshold": {
+          "confidence_level": 0.95,
+          "lower": 3.8313148119492038,
+          "max": 3.96124829820208,
+          "mean": 3.9547516238894365,
+          "median": 3.96124829820208,
+          "min": 3.8313148119492038,
+          "std": 0.028557324425426633,
+          "upper": 3.96124829820208
+        }
+      },
+      "roc_auc_bootstrap": {
+        "iterations": 1000,
+        "overall_roc_auc": {
+          "confidence_level": 0.95,
+          "lower": 0.9973333333333334,
+          "max": 1.0,
+          "mean": 0.9989618765432099,
+          "median": 0.9990828924162258,
+          "min": 0.9960070546737213,
+          "std": 0.0006684696615274657,
+          "upper": 0.999915343915344
+        },
+        "per_fault_roc_auc": {
+          "bearing": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 3.001158384995533e-17,
+            "upper": 1.0
+          },
+          "flywheel": {
+            "confidence_level": 0.95,
+            "lower": 0.9972345679012345,
+            "max": 1.0,
+            "mean": 0.9992640987654321,
+            "median": 0.9994074074074074,
+            "min": 0.9940740740740741,
+            "std": 0.0007976849896088837,
+            "upper": 1.0
+          },
+          "leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.60500661490653e-17,
+            "upper": 1.0
+          },
+          "leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9837012345679013,
+            "max": 1.0,
+            "mean": 0.9936802962962963,
+            "median": 0.9943703703703703,
+            "min": 0.976,
+            "std": 0.0038868126195665824,
+            "upper": 0.9994074074074073
+          },
+          "non_return_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.810072162377309e-17,
+            "upper": 1.0
+          },
+          "piston_ring": {
+            "confidence_level": 0.95,
+            "lower": 0.9990123456790123,
+            "max": 1.0,
+            "mean": 0.9997887407407406,
+            "median": 0.9999012345679013,
+            "min": 0.9972345679012345,
+            "std": 0.00028648944393688515,
+            "upper": 1.0
+          },
+          "rider_belt": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.896556085272367e-17,
+            "upper": 1.0
+          }
+        },
+        "seed": 20260918
+      },
+      "threshold_order": {
+        "higher_index_zero_based": 57,
+        "higher_rank_one_based": 58,
+        "quantile": 0.95,
+        "sample_count": 60,
+        "upper_order_statistics_including_threshold": 3
+      },
+      "top_calibration_scores": [
+        {
+          "reading": 151,
+          "score": 10.99793377596682
+        },
+        {
+          "reading": 157,
+          "score": 9.637540832001386
+        },
+        {
+          "reading": 178,
+          "score": 3.96124829820208
+        },
+        {
+          "reading": 125,
+          "score": 3.8313148119492038
+        },
+        {
+          "reading": 161,
+          "score": 3.6617997012984884
+        },
+        {
+          "reading": 164,
+          "score": 2.8852682167745343
+        }
+      ],
+      "wilson_reference_intervals": {
+        "heldout_healthy_false_positive_rate": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "lower": 0.0,
+          "successes": 0,
+          "trials": 45,
+          "upper": 0.07865159873288834
+        },
+        "overall_fault_recall": {
+          "confidence_level": 0.95,
+          "estimate": 0.9485714285714286,
+          "lower": 0.9365307635960842,
+          "successes": 1494,
+          "trials": 1575,
+          "upper": 0.9584292668147156
+        },
+        "per_fault_recall": {
+          "bearing": {
+            "confidence_level": 0.95,
+            "estimate": 0.9911111111111112,
+            "lower": 0.9681751470156603,
+            "successes": 223,
+            "trials": 225,
+            "upper": 0.997558951774375
+          },
+          "flywheel": {
+            "confidence_level": 0.95,
+            "estimate": 0.8844444444444445,
+            "lower": 0.8360710892089506,
+            "successes": 199,
+            "trials": 225,
+            "upper": 0.9199108071289505
+          },
+          "leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "estimate": 0.7911111111111111,
+            "lower": 0.7333288926020083,
+            "successes": 178,
+            "trials": 225,
+            "upper": 0.8391198265902751
+          },
+          "non_return_valve": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "piston_ring": {
+            "confidence_level": 0.95,
+            "estimate": 0.9777777777777777,
+            "lower": 0.9490435540670101,
+            "successes": 220,
+            "trials": 225,
+            "upper": 0.9904715194165084
+          },
+          "rider_belt": {
+            "confidence_level": 0.95,
+            "estimate": 0.9955555555555555,
+            "lower": 0.9752587587701537,
+            "successes": 224,
+            "trials": 225,
+            "upper": 0.9992150151220537
+          }
+        }
+      }
+    },
+    "standard_pca": {
+      "calibration_bootstrap": {
+        "iid": {
+          "block_length": null,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.9777777777777779,
+              "max": 1.0,
+              "mean": 0.9966822857142857,
+              "median": 0.9996825396825397,
+              "min": 0.9222222222222223,
+              "std": 0.006684561421658057,
+              "upper": 1.0
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.15555555555555556,
+              "mean": 0.004142222222222222,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.013686632320882674,
+              "upper": 0.044444444444444446
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.987936507936508,
+              "max": 1.0,
+              "mean": 0.9975067936507938,
+              "median": 0.9993650793650793,
+              "min": 0.987936507936508,
+              "std": 0.003473975042143905,
+              "upper": 1.0
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9879365079365079,
+              "max": 1.0,
+              "mean": 0.9975067936507938,
+              "median": 0.9993650793650793,
+              "min": 0.9879365079365079,
+              "std": 0.0034739750421439296,
+              "upper": 1.0
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.9777777777777777,
+              "max": 1.0,
+              "mean": 0.9940817777777778,
+              "median": 0.9955555555555555,
+              "min": 0.9777777777777777,
+              "std": 0.00574688464855466,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.9644444444444444,
+              "max": 1.0,
+              "mean": 0.9949493333333334,
+              "median": 1.0,
+              "min": 0.9644444444444444,
+              "std": 0.009827723903718591,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9733333333333334,
+              "max": 1.0,
+              "mean": 0.9935164444444444,
+              "median": 1.0,
+              "min": 0.9733333333333334,
+              "std": 0.009619773389087398,
+              "upper": 1.0
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            }
+          },
+          "seed": 20261914,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 0.14580197101355577,
+            "max": 0.29661029942053163,
+            "mean": 0.21631627425105607,
+            "median": 0.2083368458423854,
+            "min": 0.09299996363660643,
+            "std": 0.040046807814197415,
+            "upper": 0.29661029942053163
+          }
+        },
+        "moving_block_10": {
+          "block_length": 10,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.9777777777777779,
+              "max": 1.0,
+              "mean": 0.9957148571428572,
+              "median": 0.9996825396825397,
+              "min": 0.9555555555555555,
+              "std": 0.007382918781401182,
+              "upper": 1.0
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.08888888888888889,
+              "mean": 0.006235555555555556,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.015382521296241488,
+              "upper": 0.044444444444444446
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.987936507936508,
+              "max": 1.0,
+              "mean": 0.9976652698412698,
+              "median": 0.9993650793650793,
+              "min": 0.987936507936508,
+              "std": 0.0032450733776716854,
+              "upper": 1.0
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9879365079365079,
+              "max": 1.0,
+              "mean": 0.9976652698412698,
+              "median": 0.9993650793650793,
+              "min": 0.9879365079365079,
+              "std": 0.003245073377671707,
+              "upper": 1.0
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.9777777777777777,
+              "max": 1.0,
+              "mean": 0.9944213333333333,
+              "median": 0.9955555555555555,
+              "min": 0.9777777777777777,
+              "std": 0.0053635518595475185,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.9644444444444444,
+              "max": 1.0,
+              "mean": 0.9954755555555558,
+              "median": 1.0,
+              "min": 0.9644444444444444,
+              "std": 0.008926678357598417,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9733333333333334,
+              "max": 1.0,
+              "mean": 0.9937600000000001,
+              "median": 1.0,
+              "min": 0.9733333333333334,
+              "std": 0.00932705059751708,
+              "upper": 1.0
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            }
+          },
+          "seed": 20261916,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 0.1314590778324513,
+            "max": 0.29661029942053163,
+            "mean": 0.2132824995140223,
+            "median": 0.2083368458423854,
+            "min": 0.10447942971419168,
+            "std": 0.04127908077107076,
+            "upper": 0.29661029942053163
+          }
+        },
+        "moving_block_5": {
+          "block_length": 5,
+          "iterations": 5000,
+          "operating_metrics": {
+            "balanced_accuracy": {
+              "confidence_level": 0.95,
+              "lower": 0.9777777777777779,
+              "max": 1.0,
+              "mean": 0.9962911111111112,
+              "median": 0.9996825396825397,
+              "min": 0.9222222222222223,
+              "std": 0.0067392648967674,
+              "upper": 1.0
+            },
+            "heldout_healthy_false_positive_rate": {
+              "confidence_level": 0.95,
+              "lower": 0.0,
+              "max": 0.15555555555555556,
+              "mean": 0.005084444444444444,
+              "median": 0.0,
+              "min": 0.0,
+              "std": 0.013951049978223913,
+              "upper": 0.044444444444444446
+            },
+            "macro_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.987936507936508,
+              "max": 1.0,
+              "mean": 0.9976666666666666,
+              "median": 0.9993650793650793,
+              "min": 0.987936507936508,
+              "std": 0.003281939021139647,
+              "upper": 1.0
+            },
+            "overall_fault_recall": {
+              "confidence_level": 0.95,
+              "lower": 0.9879365079365079,
+              "max": 1.0,
+              "mean": 0.9976666666666666,
+              "median": 0.9993650793650793,
+              "min": 0.9879365079365079,
+              "std": 0.0032819390211396692,
+              "upper": 1.0
+            },
+            "per_fault_recall::bearing": {
+              "confidence_level": 0.95,
+              "lower": 0.9777777777777777,
+              "max": 1.0,
+              "mean": 0.9943262222222223,
+              "median": 0.9955555555555555,
+              "min": 0.9777777777777777,
+              "std": 0.005395905603595501,
+              "upper": 1.0
+            },
+            "per_fault_recall::flywheel": {
+              "confidence_level": 0.95,
+              "lower": 0.9644444444444444,
+              "max": 1.0,
+              "mean": 0.9954542222222222,
+              "median": 1.0,
+              "min": 0.9644444444444444,
+              "std": 0.00912608355108755,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_inlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::leakage_outlet_valve": {
+              "confidence_level": 0.95,
+              "lower": 0.9733333333333334,
+              "max": 1.0,
+              "mean": 0.9938862222222223,
+              "median": 1.0,
+              "min": 0.9733333333333334,
+              "std": 0.009338630921445538,
+              "upper": 1.0
+            },
+            "per_fault_recall::non_return_valve": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::piston_ring": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            },
+            "per_fault_recall::rider_belt": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "max": 1.0,
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 1.0,
+              "std": 0.0,
+              "upper": 1.0
+            }
+          },
+          "seed": 20261915,
+          "threshold": {
+            "confidence_level": 0.95,
+            "lower": 0.1314590778324513,
+            "max": 0.29661029942053163,
+            "mean": 0.21423544882445802,
+            "median": 0.2083368458423854,
+            "min": 0.09299996363660643,
+            "std": 0.03984540490861308,
+            "upper": 0.29661029942053163
+          }
+        }
+      },
+      "frozen_reproduction": {
+        "healthy_fpr": 0.0,
+        "overall_fault_recall": 0.9993650793650793,
+        "roc_auc": 1.0,
+        "threshold": 0.2083368458423854,
+        "threshold_absolute_difference": 0.0
+      },
+      "leave_one_out_calibration": {
+        "operating_metrics": {
+          "balanced_accuracy": {
+            "confidence_level": 0.95,
+            "lower": 0.9996825396825397,
+            "max": 0.9996825396825397,
+            "mean": 0.9996825396825396,
+            "median": 0.9996825396825397,
+            "min": 0.9996825396825397,
+            "std": 1.1195921614018072e-16,
+            "upper": 0.9996825396825397
+          },
+          "heldout_healthy_false_positive_rate": {
+            "confidence_level": 0.95,
+            "lower": 0.0,
+            "max": 0.0,
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "std": 0.0,
+            "upper": 0.0
+          },
+          "macro_fault_recall": {
+            "confidence_level": 0.95,
+            "lower": 0.9993650793650793,
+            "max": 0.9993650793650793,
+            "mean": 0.9993650793650791,
+            "median": 0.9993650793650793,
+            "min": 0.9993650793650793,
+            "std": 2.2391843228036144e-16,
+            "upper": 0.9993650793650793
+          },
+          "overall_fault_recall": {
+            "confidence_level": 0.95,
+            "lower": 0.9993650793650793,
+            "max": 0.9993650793650793,
+            "mean": 0.9993650793650791,
+            "median": 0.9993650793650793,
+            "min": 0.9993650793650793,
+            "std": 2.2391843228036144e-16,
+            "upper": 0.9993650793650793
+          },
+          "per_fault_recall::bearing": {
+            "confidence_level": 0.95,
+            "lower": 0.9955555555555555,
+            "max": 0.9955555555555555,
+            "mean": 0.9955555555555555,
+            "median": 0.9955555555555555,
+            "min": 0.9955555555555555,
+            "std": 0.0,
+            "upper": 0.9955555555555555
+          },
+          "per_fault_recall::flywheel": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::non_return_valve": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::piston_ring": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          },
+          "per_fault_recall::rider_belt": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 1.0,
+            "std": 0.0,
+            "upper": 1.0
+          }
+        },
+        "threshold": {
+          "confidence_level": 0.95,
+          "lower": 0.20334056048811078,
+          "max": 0.2083368458423854,
+          "mean": 0.20808703157467168,
+          "median": 0.2083368458423854,
+          "min": 0.20334056048811078,
+          "std": 0.0010981044678993973,
+          "upper": 0.2083368458423854
+        }
+      },
+      "roc_auc_bootstrap": {
+        "iterations": 1000,
+        "overall_roc_auc": {
+          "confidence_level": 0.95,
+          "lower": 0.9999999999999999,
+          "max": 1.0,
+          "mean": 1.0,
+          "median": 1.0,
+          "min": 0.9999999999999999,
+          "std": 3.0622051449648775e-17,
+          "upper": 1.0
+        },
+        "per_fault_roc_auc": {
+          "bearing": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.60500661490653e-17,
+            "upper": 1.0
+          },
+          "flywheel": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.6285818159317202e-17,
+            "upper": 1.0
+          },
+          "leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 3.200121973492608e-17,
+            "upper": 1.0
+          },
+          "leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.7208406716320955e-17,
+            "upper": 1.0
+          },
+          "non_return_valve": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.60500661490653e-17,
+            "upper": 1.0
+          },
+          "piston_ring": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.6980717301560517e-17,
+            "upper": 1.0
+          },
+          "rider_belt": {
+            "confidence_level": 0.95,
+            "lower": 0.9999999999999999,
+            "max": 1.0,
+            "mean": 1.0,
+            "median": 1.0,
+            "min": 0.9999999999999999,
+            "std": 2.9388438124215835e-17,
+            "upper": 1.0
+          }
+        },
+        "seed": 20260916
+      },
+      "threshold_order": {
+        "higher_index_zero_based": 57,
+        "higher_rank_one_based": 58,
+        "quantile": 0.95,
+        "sample_count": 60,
+        "upper_order_statistics_including_threshold": 3
+      },
+      "top_calibration_scores": [
+        {
+          "reading": 126,
+          "score": 0.29661029942053163
+        },
+        {
+          "reading": 159,
+          "score": 0.2557959818706698
+        },
+        {
+          "reading": 157,
+          "score": 0.2083368458423854
+        },
+        {
+          "reading": 152,
+          "score": 0.20334056048811078
+        },
+        {
+          "reading": 151,
+          "score": 0.1797251123952423
+        },
+        {
+          "reading": 133,
+          "score": 0.16660990938026352
+        }
+      ],
+      "wilson_reference_intervals": {
+        "heldout_healthy_false_positive_rate": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "lower": 0.0,
+          "successes": 0,
+          "trials": 45,
+          "upper": 0.07865159873288834
+        },
+        "overall_fault_recall": {
+          "confidence_level": 0.95,
+          "estimate": 0.9993650793650793,
+          "lower": 0.9964122491190043,
+          "successes": 1574,
+          "trials": 1575,
+          "upper": 0.9998879121238745
+        },
+        "per_fault_recall": {
+          "bearing": {
+            "confidence_level": 0.95,
+            "estimate": 0.9955555555555555,
+            "lower": 0.9752587587701537,
+            "successes": 224,
+            "trials": 225,
+            "upper": 0.9992150151220537
+          },
+          "flywheel": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "leakage_inlet_valve": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "leakage_outlet_valve": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "non_return_valve": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "piston_ring": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          },
+          "rider_belt": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "lower": 0.9832134489943798,
+            "successes": 225,
+            "trials": 225,
+            "upper": 1.0
+          }
+        }
+      }
+    }
+  },
+  "schema_version": "aeroxai.iitk_uncertainty.v1"
+}
