@@ -1,0 +1,215 @@
+{
+  "causal_claim": false,
+  "claim_boundaries": [
+    "This proof is generated from synthetic receiver dynamics, not MetroPT telemetry.",
+    "The synthetic physical state is not an estimate of any real MetroPT incident.",
+    "Leakage remains unidentifiable because independent process demand is absent.",
+    "Energy, pressure, reserve, and safety values are simulated under the current twin.",
+    "The result is advisory-only and does not authorize equipment control."
+  ],
+  "connected_to_real_incident": false,
+  "deployment": {
+    "mode": "advisory",
+    "override_equipment_ctrl": false
+  },
+  "evidence_class": "SIMULATED",
+  "inverse_physics": {
+    "causal_claim": false,
+    "evidence_class": "PHYSICS_MODEL_INFERENCE",
+    "interval_total_outflow_kg_s": [
+      0.10999999999999995,
+      0.11000000000000006,
+      0.10999999999999997,
+      0.11000000000000003,
+      0.10999999999999999,
+      0.11000000000000001,
+      0.10999999999999996,
+      0.11000000000000004,
+      0.11,
+      0.11
+    ],
+    "mean_total_outflow_kg_s": 0.11000000000000001,
+    "physically_consistent": true,
+    "std_total_outflow_kg_s": 3.671717528720129e-17
+  },
+  "physical_state_uncertainty": {
+    "assumptions": [
+      "Receiver dynamics constrain total outflow only.",
+      "Leakage and legitimate demand remain observationally equivalent without independent demand measurement."
+    ],
+    "causal_claim": false,
+    "demand_kg_s": null,
+    "evidence_class": "PHYSICS_MODEL_INFERENCE",
+    "leak_identifiable": false,
+    "leak_kg_s": null,
+    "total_outflow_kg_s": {
+      "center": 0.11000000000000001,
+      "lower": 0.10600000000000001,
+      "upper": 0.11400000000000002
+    }
+  },
+  "proof_id": "sim_a8adc30d02b418f9",
+  "recovery_check": {
+    "absolute_error_kg_s": 1.3877787807814457e-17,
+    "causal_claim": false,
+    "evidence_class": "SIMULATED",
+    "inferred_total_outflow_kg_s": 0.11000000000000001,
+    "passed": true,
+    "tolerance_kg_s": 1e-09,
+    "truth_total_outflow_kg_s": 0.11
+  },
+  "robust_action": {
+    "candidates": [
+      {
+        "commands": [
+          [
+            "fixed_1",
+            1.0
+          ],
+          [
+            "fixed_2",
+            0.0
+          ],
+          [
+            "vsd_1",
+            0.2
+          ]
+        ],
+        "interval_energy_kwh": 0.30666666666666664,
+        "minimum_reserve_kg_s": 0.025999999999999995,
+        "objective_value": 0.4066666666666666,
+        "robust_safe": true,
+        "source_scenarios": [
+          "outflow_low",
+          "outflow_center",
+          "outflow_high"
+        ],
+        "startup_count": 2,
+        "worst_case_max_pressure_bar_g": 6.8459488765000005,
+        "worst_case_min_pressure_bar_g": 6.8048685769
+      }
+    ],
+    "causal_claim": false,
+    "evidence_class": "SIMULATED",
+    "horizon_intervals": 10,
+    "method": "shared_action_robust_milp_with_one_step_safety_gate",
+    "next_runtime_state": [
+      {
+        "compressor_id": "fixed_1",
+        "is_on": true,
+        "seconds_in_state": 60.0
+      },
+      {
+        "compressor_id": "fixed_2",
+        "is_on": false,
+        "seconds_in_state": 120.0
+      },
+      {
+        "compressor_id": "vsd_1",
+        "is_on": true,
+        "seconds_in_state": 60.0
+      }
+    ],
+    "robust_horizon_energy_kwh": 4.412500000000001,
+    "robust_horizon_objective_value": 4.513681058613501,
+    "robust_horizon_startup_count": 2,
+    "scenario_count": 3,
+    "selected": {
+      "commands": [
+        [
+          "fixed_1",
+          1.0
+        ],
+        [
+          "fixed_2",
+          0.0
+        ],
+        [
+          "vsd_1",
+          0.2
+        ]
+      ],
+      "interval_energy_kwh": 0.30666666666666664,
+      "minimum_reserve_kg_s": 0.025999999999999995,
+      "objective_value": 0.4066666666666666,
+      "robust_safe": true,
+      "source_scenarios": [
+        "outflow_low",
+        "outflow_center",
+        "outflow_high"
+      ],
+      "startup_count": 2,
+      "worst_case_max_pressure_bar_g": 6.8459488765000005,
+      "worst_case_min_pressure_bar_g": 6.8048685769
+    },
+    "valid_for_seconds": 60.0
+  },
+  "scenario_set": {
+    "allocation_identifiable": false,
+    "causal_claim": false,
+    "evidence_class": "PHYSICS_MODEL_INFERENCE",
+    "scenarios": [
+      {
+        "allocation_identifiable": false,
+        "causal_claim": false,
+        "demand_kg_s": null,
+        "evidence_class": "PHYSICS_MODEL_INFERENCE",
+        "id": "outflow_low",
+        "leak_kg_s": null,
+        "source": "bounded_total_outflow",
+        "total_outflow_kg_s": 0.10600000000000001
+      },
+      {
+        "allocation_identifiable": false,
+        "causal_claim": false,
+        "demand_kg_s": null,
+        "evidence_class": "PHYSICS_MODEL_INFERENCE",
+        "id": "outflow_center",
+        "leak_kg_s": null,
+        "source": "bounded_total_outflow",
+        "total_outflow_kg_s": 0.11000000000000001
+      },
+      {
+        "allocation_identifiable": false,
+        "causal_claim": false,
+        "demand_kg_s": null,
+        "evidence_class": "PHYSICS_MODEL_INFERENCE",
+        "id": "outflow_high",
+        "leak_kg_s": null,
+        "source": "bounded_total_outflow",
+        "total_outflow_kg_s": 0.11400000000000002
+      }
+    ]
+  },
+  "schema_version": "aeroxai.simulated_action_proof.v1",
+  "scope": "SIMULATION_ONLY",
+  "synthetic_truth": {
+    "inflow_profile_kg_s": [
+      0.105,
+      0.115,
+      0.108,
+      0.112,
+      0.109,
+      0.111,
+      0.106,
+      0.114,
+      0.11,
+      0.11
+    ],
+    "interval_seconds": 60.0,
+    "pressure_trace_bar_g": [
+      7.0,
+      6.97432481275,
+      7.0,
+      6.9897299251,
+      7.0,
+      6.99486496255,
+      7.0,
+      6.9794598502000005,
+      7.0,
+      7.0,
+      7.0
+    ],
+    "total_outflow_kg_s": 0.11
+  }
+}

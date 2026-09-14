@@ -1,0 +1,21 @@
+simulation:
+  initial_pressure_bar_g: 7.0
+  truth_total_outflow_kg_s: 0.110
+  inflow_profile_kg_s:
+    - 0.105
+    - 0.115
+    - 0.108
+    - 0.112
+    - 0.109
+    - 0.111
+    - 0.106
+    - 0.114
+    - 0.110
+    - 0.110
+  interval_seconds: 60
+  outflow_abs_error_kg_s: 0.004
+  recovery_tolerance_kg_s: 1.0e-9
+  robust_horizon_intervals: 10
+
+output:
+  proof_file: "docs/simulated_action_proof.json"
