@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 from typing import Any
 
+from backend.app.canonical_json import canonical_sha256
 from backend.app.runtime import REPO_ROOT
 
 DOCS_DIR = REPO_ROOT / "docs"
@@ -33,18 +33,7 @@ def _load_json(
 def _canonical_digest(
     payload: dict[str, Any],
 ) -> str:
-    encoded = json.dumps(
-        payload,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=True,
-    ).encode(
-        "utf-8"
-    )
-
-    return hashlib.sha256(
-        encoded
-    ).hexdigest()
+    return canonical_sha256(payload)
 
 
 def _validate_real_path(

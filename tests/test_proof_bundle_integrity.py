@@ -13,11 +13,47 @@ from backend.app.proof_bundle import (
 client = TestClient(app)
 
 
+def _browser_number_roundtrip(value):
+    if isinstance(value, dict):
+        return {
+            key: _browser_number_roundtrip(item)
+            for key, item in value.items()
+        }
+
+    if isinstance(value, list):
+        return [
+            _browser_number_roundtrip(item)
+            for item in value
+        ]
+
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+
+    return value
+
+
 def test_fresh_proof_bundle_verifies() -> None:
     bundle = build_proof_bundle()
 
     verification = verify_proof_bundle(
         bundle
+    )
+
+    assert verification["verified"] is True
+    assert all(
+        verification["checks"].values()
+    )
+    assert verification["errors"] == []
+
+
+def test_browser_roundtrip_bundle_verifies() -> None:
+    bundle = build_proof_bundle()
+    browser_bundle = _browser_number_roundtrip(
+        bundle
+    )
+
+    verification = verify_proof_bundle(
+        browser_bundle
     )
 
     assert verification["verified"] is True

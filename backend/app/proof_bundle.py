@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from backend.app.canonical_json import canonical_sha256
 from backend.app.proof_manifest import (
     build_proof_manifest_from_payloads,
 )
@@ -44,21 +45,6 @@ def _load_json(path: Path) -> dict[str, Any]:
     return payload
 
 
-def _canonical_bytes(payload: Any) -> bytes:
-    return json.dumps(
-        payload,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=True,
-    ).encode("utf-8")
-
-
-def _canonical_sha256(payload: Any) -> str:
-    return hashlib.sha256(
-        _canonical_bytes(payload)
-    ).hexdigest()
-
-
 def _file_sha256(path: Path) -> str:
     return hashlib.sha256(
         path.read_bytes()
@@ -82,7 +68,7 @@ def _artifact_entry(
         "role": role,
         "evidence_class": evidence_class,
         "path": _relative_path(path),
-        "canonical_sha256": _canonical_sha256(
+        "canonical_sha256": canonical_sha256(
             payload
         ),
         "file_sha256": _file_sha256(path),
@@ -125,13 +111,15 @@ def build_proof_bundle() -> dict[str, Any]:
         "project": "AeroXAI",
         "manifest": manifest,
         "manifest_sha256": (
-            _canonical_sha256(manifest)
+            canonical_sha256(manifest)
         ),
         "artifacts": artifacts,
         "integrity_policy": {
             "canonicalization": (
-                "JSON sorted keys, compact "
-                "separators, ensure_ascii=true"
+                "JSON semantic normalization "
+                "(integral floats -> integers), "
+                "sorted keys, compact separators, "
+                "ensure_ascii=true"
             ),
             "digest_algorithm": "sha256",
             "source_file_digest_scope": (
@@ -144,7 +132,7 @@ def build_proof_bundle() -> dict[str, Any]:
         },
     }
 
-    bundle_id = _canonical_sha256(
+    bundle_id = canonical_sha256(
         core
     )
 
@@ -164,7 +152,7 @@ def _expected_bundle_id(
         for key, value in bundle.items()
         if key != "bundle_id"
     }
-    digest = _canonical_sha256(core)
+    digest = canonical_sha256(core)
     return f"pbundle_{digest[:16]}"
 
 
@@ -249,7 +237,7 @@ def verify_proof_bundle(
     else:
         checks["manifest_digest"] = (
             bundle.get("manifest_sha256")
-            == _canonical_sha256(manifest)
+            == canonical_sha256(manifest)
         )
         if not checks["manifest_digest"]:
             errors.append(
@@ -290,7 +278,7 @@ def verify_proof_bundle(
             )
             continue
 
-        observed = _canonical_sha256(
+        observed = canonical_sha256(
             payload
         )
         if (
@@ -415,7 +403,7 @@ def verify_proof_bundle(
 
             if (
                 item.get("canonical_sha256")
-                != _canonical_sha256(
+                != canonical_sha256(
                     current_payload
                 )
             ):
