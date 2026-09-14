@@ -1,0 +1,1366 @@
+{
+  "data": {
+    "background_test_rows": 41256,
+    "calibration_rows": 1796,
+    "feature_count": 63,
+    "incident_count": 4,
+    "relevant_test_rows": 1965,
+    "test_rows": 43221,
+    "train_rows": 5271
+  },
+  "diagnostics": {
+    "focus_feature_support_by_quality": {
+      "dv_pressure__mean": {
+        "background_full_coverage": {
+          "above_train_max_fraction": 0.03487187324876458,
+          "below_train_min_fraction": 0.04383819858372816,
+          "raw": {
+            "count": 39258,
+            "max": 2.5052000000000003,
+            "median": -0.020266666666666024,
+            "min": -0.030838709677419876,
+            "q01": -0.02633333333333293,
+            "q99": 1.90501
+          }
+        },
+        "background_partial_coverage": {
+          "above_train_max_fraction": 0.003003003003003003,
+          "below_train_min_fraction": 0.0025025025025025025,
+          "raw": {
+            "count": 1998,
+            "max": 0.829793103448276,
+            "median": -0.0180000000000006,
+            "min": -0.028642857142856547,
+            "q01": -0.0240000000000009,
+            "q99": 0.0
+          }
+        },
+        "calibration": {
+          "above_train_max_fraction": 0.0005567928730512249,
+          "below_train_min_fraction": 0.0,
+          "raw": {
+            "count": 1796,
+            "max": 0.19500000000000012,
+            "median": -0.019066666666666565,
+            "min": -0.02353333333333365,
+            "q01": -0.023096774193548157,
+            "q99": 0.12487666666666812
+          }
+        },
+        "train": {
+          "raw": {
+            "count": 5271,
+            "max": 0.19433333333333355,
+            "median": -0.018266666666667118,
+            "min": -0.024933333333333717,
+            "q01": -0.02362903225806488,
+            "q99": 0.10922000000000236
+          },
+          "train_max": 0.19433333333333355,
+          "train_min": -0.024933333333333717
+        }
+      },
+      "dv_pressure__min": {
+        "background_full_coverage": {
+          "above_train_max_fraction": 0.028580162005196395,
+          "below_train_min_fraction": 0.005349228182790769,
+          "raw": {
+            "count": 39258,
+            "max": 2.1239999999999988,
+            "median": -0.0219999999999984,
+            "min": -0.032,
+            "q01": -0.0279999999999986,
+            "q99": 1.3360000000000003
+          }
+        },
+        "background_partial_coverage": {
+          "above_train_max_fraction": 0.007007007007007007,
+          "below_train_min_fraction": 0.0015015015015015015,
+          "raw": {
+            "count": 1998,
+            "max": 0.5719999999999992,
+            "median": -0.0180000000000006,
+            "min": -0.0300000000000011,
+            "q01": -0.0259999999999998,
+            "q99": -0.0139999999999993
+          }
+        },
+        "calibration": {
+          "above_train_max_fraction": 0.0,
+          "below_train_min_fraction": 0.0,
+          "raw": {
+            "count": 1796,
+            "max": -0.0159999999999982,
+            "median": -0.0199999999999995,
+            "min": -0.0259999999999998,
+            "q01": -0.0240000000000009,
+            "q99": -0.0159999999999982
+          }
+        },
+        "train": {
+          "raw": {
+            "count": 5271,
+            "max": -0.009999999999998,
+            "median": -0.0199999999999995,
+            "min": -0.0279999999999986,
+            "q01": -0.0240000000000009,
+            "q99": -0.0120000000000004
+          },
+          "train_max": -0.009999999999998,
+          "train_min": -0.0279999999999986
+        }
+      },
+      "pressure_switch__active_ratio": {
+        "background_full_coverage": {
+          "above_train_max_fraction": 0.0,
+          "below_train_min_fraction": 0.0010443731214020073,
+          "raw": {
+            "count": 39258,
+            "max": 1.0,
+            "median": 1.0,
+            "min": 0.8333333333333334,
+            "q01": 0.9666666666666667,
+            "q99": 1.0
+          }
+        },
+        "background_partial_coverage": {
+          "above_train_max_fraction": 0.0,
+          "below_train_min_fraction": 0.9304304304304304,
+          "raw": {
+            "count": 1998,
+            "max": 1.0,
+            "median": 0.8,
+            "min": 0.64,
+            "q01": 0.7083333333333334,
+            "q99": 1.0
+          }
+        },
+        "calibration": {
+          "above_train_max_fraction": 0.0,
+          "below_train_min_fraction": 0.0,
+          "raw": {
+            "count": 1796,
+            "max": 1.0,
+            "median": 1.0,
+            "min": 0.9333333333333333,
+            "q01": 0.9666666666666667,
+            "q99": 1.0
+          }
+        },
+        "train": {
+          "raw": {
+            "count": 5271,
+            "max": 1.0,
+            "median": 1.0,
+            "min": 0.9333333333333333,
+            "q01": 0.9666666666666667,
+            "q99": 1.0
+          },
+          "train_max": 1.0,
+          "train_min": 0.9333333333333333
+        }
+      },
+      "pressure_switch__transitions": {
+        "background_full_coverage": {
+          "above_train_max_fraction": 0.0010443731214020073,
+          "below_train_min_fraction": 0.0,
+          "raw": {
+            "count": 39258,
+            "max": 9.0,
+            "median": 0.0,
+            "min": 0.0,
+            "q01": 0.0,
+            "q99": 2.0
+          }
+        },
+        "background_partial_coverage": {
+          "above_train_max_fraction": 0.9294294294294294,
+          "below_train_min_fraction": 0.0,
+          "raw": {
+            "count": 1998,
+            "max": 12.0,
+            "median": 8.0,
+            "min": 0.0,
+            "q01": 0.0,
+            "q99": 10.0
+          }
+        },
+        "calibration": {
+          "above_train_max_fraction": 0.0,
+          "below_train_min_fraction": 0.0,
+          "raw": {
+            "count": 1796,
+            "max": 4.0,
+            "median": 0.0,
+            "min": 0.0,
+            "q01": 0.0,
+            "q99": 2.0
+          }
+        },
+        "train": {
+          "raw": {
+            "count": 5271,
+            "max": 4.0,
+            "median": 0.0,
+            "min": 0.0,
+            "q01": 0.0,
+            "q99": 2.0
+          },
+          "train_max": 4.0,
+          "train_min": 0.0
+        }
+      },
+      "tp2__mean": {
+        "background_full_coverage": {
+          "above_train_max_fraction": 0.029828315247847573,
+          "below_train_min_fraction": 0.006266238728412044,
+          "raw": {
+            "count": 39258,
+            "max": 10.077677419354838,
+            "median": -0.011199999999998857,
+            "min": -0.01966666666666635,
+            "q01": -0.01613333333333216,
+            "q99": 8.9517
+          }
+        },
+        "background_partial_coverage": {
+          "above_train_max_fraction": 0.38038038038038036,
+          "below_train_min_fraction": 0.03803803803803804,
+          "raw": {
+            "count": 1998,
+            "max": 9.0825,
+            "median": -0.009999999999998,
+            "min": -0.0199999999999995,
+            "q01": -0.0199999999999995,
+            "q99": 8.39
+          }
+        },
+        "calibration": {
+          "above_train_max_fraction": 0.0,
+          "below_train_min_fraction": 0.0,
+          "raw": {
+            "count": 1796,
+            "max": 4.538866666666666,
+            "median": -0.011266666666666186,
+            "min": -0.015133333333332126,
+            "q01": -0.014533333333332345,
+            "q99": 3.7320933333333333
+          }
+        },
+        "train": {
+          "raw": {
+            "count": 5271,
+            "max": 7.358066666666667,
+            "median": -0.01079999999999896,
+            "min": -0.01638709677419244,
+            "q01": -0.014599999999999155,
+            "q99": 3.7934167741935494
+          },
+          "train_max": 7.358066666666667,
+          "train_min": -0.01638709677419244
+        }
+      },
+      "tp2__min": {
+        "background_full_coverage": {
+          "above_train_max_fraction": 0.030923633399561872,
+          "below_train_min_fraction": 0.00025472515156146517,
+          "raw": {
+            "count": 39258,
+            "max": 9.232,
+            "median": -0.0159999999999982,
+            "min": -0.032,
+            "q01": -0.0279999999999986,
+            "q99": 7.115440000000002
+          }
+        },
+        "background_partial_coverage": {
+          "above_train_max_fraction": 0.3933933933933934,
+          "below_train_min_fraction": 0.0005005005005005005,
+          "raw": {
+            "count": 1998,
+            "max": 8.39,
+            "median": -0.009999999999998,
+            "min": -0.032,
+            "q01": -0.0240000000000009,
+            "q99": 8.39
+          }
+        },
+        "calibration": {
+          "above_train_max_fraction": 0.0,
+          "below_train_min_fraction": 0.0,
+          "raw": {
+            "count": 1796,
+            "max": -0.009999999999998,
+            "median": -0.0139999999999993,
+            "min": -0.0279999999999986,
+            "q01": -0.0259999999999998,
+            "q99": -0.0120000000000004
+          }
+        },
+        "train": {
+          "raw": {
+            "count": 5271,
+            "max": -0.0060000000000002,
+            "median": -0.0139999999999993,
+            "min": -0.0300000000000011,
+            "q01": -0.0259999999999998,
+            "q99": -0.009999999999998
+          },
+          "train_max": -0.0060000000000002,
+          "train_min": -0.0300000000000011
+        }
+      }
+    },
+    "full_coverage_joint_patterns": {
+      "full_coverage_all": [
+        {
+          "count": 37768,
+          "fraction": 0.9620459524173417,
+          "high_score_fraction": 0.075990256301631,
+          "mean_score": 0.10094860294630659,
+          "pattern": "none",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.21589705570853632,
+            "high_current_only": 0.11260855750900232,
+            "high_pressure_only": 0.03439419614488456,
+            "low_current_low_pressure": 0.6371001906375768
+          }
+        },
+        {
+          "count": 1049,
+          "fraction": 0.026720668398797696,
+          "high_score_fraction": 1.0,
+          "mean_score": 30969.3356971977,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max|dv_pressure_min_above_train_max|dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.19161105815061963,
+            "high_current_only": 0.8083889418493804,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 182,
+          "fraction": 0.004635997758418667,
+          "high_score_fraction": 0.7967032967032966,
+          "mean_score": 3.5462269671046376,
+          "pattern": "dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.521978021978022,
+            "high_current_only": 0.3076923076923077,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.17032967032967034
+          }
+        },
+        {
+          "count": 61,
+          "fraction": 0.0015538234245249375,
+          "high_score_fraction": 1.0,
+          "mean_score": 24697.66772099923,
+          "pattern": "tp2_min_above_train_max|dv_pressure_min_above_train_max|dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.0,
+            "high_current_only": 1.0,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 48,
+          "fraction": 0.0012226807274950328,
+          "high_score_fraction": 0.9375,
+          "mean_score": 11137.929749371622,
+          "pattern": "tp2_min_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.020833333333333332,
+            "high_current_only": 0.9375,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.041666666666666664
+          }
+        },
+        {
+          "count": 36,
+          "fraction": 0.0009170105456212746,
+          "high_score_fraction": 1.0,
+          "mean_score": 19.437816661460705,
+          "pattern": "tp2_mean_above_train_max|dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.6388888888888888,
+            "high_current_only": 0.3611111111111111,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 28,
+          "fraction": 0.0007132304243721025,
+          "high_score_fraction": 0.9285714285714286,
+          "mean_score": 1.0235556189177997,
+          "pattern": "tp2_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.07142857142857142,
+            "high_current_only": 0.9285714285714286,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 25,
+          "fraction": 0.0006368128789036629,
+          "high_score_fraction": 0.56,
+          "mean_score": 1.5222491199962402,
+          "pattern": "pressure_switch_transitions_above_train_max|pressure_switch_active_ratio_below_train_min",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.32,
+            "high_current_only": 0.44,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.24
+          }
+        },
+        {
+          "count": 25,
+          "fraction": 0.0006368128789036629,
+          "high_score_fraction": 1.0,
+          "mean_score": 14157.594270149224,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max|dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.44,
+            "high_current_only": 0.56,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 19,
+          "fraction": 0.00048397778796678385,
+          "high_score_fraction": 1.0,
+          "mean_score": 26475.37580766177,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.05263157894736842,
+            "high_current_only": 0.9473684210526315,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 11,
+          "fraction": 0.0002801976667176117,
+          "high_score_fraction": 1.0,
+          "mean_score": 21397.57291205168,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max|dv_pressure_min_above_train_max|dv_pressure_mean_above_train_max|pressure_switch_transitions_above_train_max|pressure_switch_active_ratio_below_train_min",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.45454545454545453,
+            "high_current_only": 0.5454545454545454,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 3,
+          "fraction": 7.641754546843955e-05,
+          "high_score_fraction": 0.6666666666666666,
+          "mean_score": 1.7855640679546971,
+          "pattern": "dv_pressure_mean_above_train_max|pressure_switch_transitions_above_train_max|pressure_switch_active_ratio_below_train_min",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.6666666666666666,
+            "high_current_only": 0.3333333333333333,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 2,
+          "fraction": 5.0945030312293034e-05,
+          "high_score_fraction": 1.0,
+          "mean_score": 4.526819265251503,
+          "pattern": "tp2_mean_above_train_max|dv_pressure_mean_above_train_max|pressure_switch_transitions_above_train_max|pressure_switch_active_ratio_below_train_min",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.5,
+            "high_current_only": 0.5,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 1,
+          "fraction": 2.5472515156146517e-05,
+          "high_score_fraction": 1.0,
+          "mean_score": 62336.82892800842,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max|dv_pressure_min_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.0,
+            "high_current_only": 1.0,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        }
+      ],
+      "full_coverage_high_score": [
+        {
+          "count": 2870,
+          "fraction": 0.6665118439386902,
+          "high_score_fraction": 1.0,
+          "mean_score": 0.6537452542718439,
+          "pattern": "none",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.0808362369337979,
+            "high_current_only": 0.18397212543554006,
+            "high_pressure_only": 0.0003484320557491289,
+            "low_current_low_pressure": 0.7348432055749129
+          }
+        },
+        {
+          "count": 1049,
+          "fraction": 0.24361356247097074,
+          "high_score_fraction": 1.0,
+          "mean_score": 30969.3356971977,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max|dv_pressure_min_above_train_max|dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.19161105815061963,
+            "high_current_only": 0.8083889418493804,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 145,
+          "fraction": 0.03367394333488156,
+          "high_score_fraction": 1.0,
+          "mean_score": 4.426538809047171,
+          "pattern": "dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.5103448275862069,
+            "high_current_only": 0.27586206896551724,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.21379310344827587
+          }
+        },
+        {
+          "count": 61,
+          "fraction": 0.014166279609846726,
+          "high_score_fraction": 1.0,
+          "mean_score": 24697.66772099923,
+          "pattern": "tp2_min_above_train_max|dv_pressure_min_above_train_max|dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.0,
+            "high_current_only": 1.0,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 45,
+          "fraction": 0.01045053413841152,
+          "high_score_fraction": 1.0,
+          "mean_score": 11880.452652991034,
+          "pattern": "tp2_min_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.0,
+            "high_current_only": 1.0,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 36,
+          "fraction": 0.008360427310729215,
+          "high_score_fraction": 1.0,
+          "mean_score": 19.437816661460705,
+          "pattern": "tp2_mean_above_train_max|dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.6388888888888888,
+            "high_current_only": 0.3611111111111111,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 26,
+          "fraction": 0.006038086391082211,
+          "high_score_fraction": 1.0,
+          "mean_score": 1.0901366564828596,
+          "pattern": "tp2_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.07692307692307693,
+            "high_current_only": 0.9230769230769231,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 25,
+          "fraction": 0.0058058522991175105,
+          "high_score_fraction": 1.0,
+          "mean_score": 14157.594270149224,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max|dv_pressure_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.44,
+            "high_current_only": 0.56,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 19,
+          "fraction": 0.004412447747329308,
+          "high_score_fraction": 1.0,
+          "mean_score": 26475.37580766177,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.05263157894736842,
+            "high_current_only": 0.9473684210526315,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 14,
+          "fraction": 0.003251277287505806,
+          "high_score_fraction": 1.0,
+          "mean_score": 2.610765260747957,
+          "pattern": "pressure_switch_transitions_above_train_max|pressure_switch_active_ratio_below_train_min",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.07142857142857142,
+            "high_current_only": 0.5,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.42857142857142855
+          }
+        },
+        {
+          "count": 11,
+          "fraction": 0.0025545750116117046,
+          "high_score_fraction": 1.0,
+          "mean_score": 21397.57291205168,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max|dv_pressure_min_above_train_max|dv_pressure_mean_above_train_max|pressure_switch_transitions_above_train_max|pressure_switch_active_ratio_below_train_min",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.45454545454545453,
+            "high_current_only": 0.5454545454545454,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 2,
+          "fraction": 0.00046446818392940084,
+          "high_score_fraction": 1.0,
+          "mean_score": 2.644894359864262,
+          "pattern": "dv_pressure_mean_above_train_max|pressure_switch_transitions_above_train_max|pressure_switch_active_ratio_below_train_min",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.5,
+            "high_current_only": 0.5,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 2,
+          "fraction": 0.00046446818392940084,
+          "high_score_fraction": 1.0,
+          "mean_score": 4.526819265251503,
+          "pattern": "tp2_mean_above_train_max|dv_pressure_mean_above_train_max|pressure_switch_transitions_above_train_max|pressure_switch_active_ratio_below_train_min",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.5,
+            "high_current_only": 0.5,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        },
+        {
+          "count": 1,
+          "fraction": 0.00023223409196470042,
+          "high_score_fraction": 1.0,
+          "mean_score": 62336.82892800842,
+          "pattern": "tp2_min_above_train_max|tp2_mean_above_train_max|dv_pressure_min_above_train_max",
+          "regime_distribution": {
+            "high_current_high_pressure": 0.0,
+            "high_current_only": 1.0,
+            "high_pressure_only": 0.0,
+            "low_current_low_pressure": 0.0
+          }
+        }
+      ]
+    },
+    "matched_quality_score_transport": {
+      "complete_sample_count": {
+        "background_test": {
+          "count": 39258,
+          "max": 62336.82892800842,
+          "mean": 909.0614030523977,
+          "median": 0.05225583313198013,
+          "q90": 0.2512358605522579,
+          "q95": 0.5449116778823364,
+          "q99": 36929.31716016215,
+          "q995": 41390.9974244344,
+          "threshold_exceedance_fraction": 0.1096846502623669
+        },
+        "calibration": {
+          "count": 1795,
+          "max": 6.360499355477008,
+          "mean": 0.023471549161458008,
+          "median": 0.00776675742745821,
+          "q90": 0.055208286494881076,
+          "q95": 0.08071579925051053,
+          "q99": 0.13966131176642557,
+          "q995": 0.2218319476372591,
+          "threshold_exceedance_fraction": 0.005013927576601671
+        },
+        "test_to_calibration_q995_ratio": 186587.17946306453,
+        "test_to_calibration_q99_ratio": 264420.52342973853
+      },
+      "full_coverage": {
+        "background_test": {
+          "count": 39258,
+          "max": 62336.82892800842,
+          "mean": 909.0614030523977,
+          "median": 0.05225583313198013,
+          "q90": 0.2512358605522579,
+          "q95": 0.5449116778823364,
+          "q99": 36929.31716016215,
+          "q995": 41390.9974244344,
+          "threshold_exceedance_fraction": 0.1096846502623669
+        },
+        "calibration": {
+          "count": 1795,
+          "max": 6.360499355477008,
+          "mean": 0.023471549161458008,
+          "median": 0.00776675742745821,
+          "q90": 0.055208286494881076,
+          "q95": 0.08071579925051053,
+          "q99": 0.13966131176642557,
+          "q995": 0.2218319476372591,
+          "threshold_exceedance_fraction": 0.005013927576601671
+        },
+        "test_to_calibration_q995_ratio": 186587.17946306453,
+        "test_to_calibration_q99_ratio": 264420.52342973853
+      }
+    },
+    "novelty_by_quality": {
+      "coverage": {
+        "full": {
+          "flag_prevalence": {
+            "analog_cycle_novel": 0.03731723470375465,
+            "any_cycle_novel": 0.037954047582658315,
+            "digital_cycle_novel": 0.0010443731214020073,
+            "dv_pressure_mean_above_train_max": 0.03487187324876458,
+            "dv_pressure_min_above_train_max": 0.028580162005196395,
+            "pressure_switch_active_ratio_below_train_min": 0.0010443731214020073,
+            "pressure_switch_transitions_above_train_max": 0.0010443731214020073,
+            "tp2_mean_above_train_max": 0.029828315247847573,
+            "tp2_min_above_train_max": 0.030923633399561872
+          },
+          "fraction_of_rows": 0.9515706806282722,
+          "rows": 39258
+        },
+        "partial_high": {
+          "flag_prevalence": {
+            "analog_cycle_novel": 0.16483516483516483,
+            "any_cycle_novel": 0.18681318681318682,
+            "digital_cycle_novel": 0.02197802197802198,
+            "dv_pressure_mean_above_train_max": 0.01098901098901099,
+            "dv_pressure_min_above_train_max": 0.02197802197802198,
+            "pressure_switch_active_ratio_below_train_min": 0.02197802197802198,
+            "pressure_switch_transitions_above_train_max": 0.0,
+            "tp2_mean_above_train_max": 0.06593406593406594,
+            "tp2_min_above_train_max": 0.16483516483516483
+          },
+          "fraction_of_rows": 0.0022057397711847974,
+          "rows": 91
+        },
+        "partial_low": {
+          "flag_prevalence": {
+            "analog_cycle_novel": 0.4063974829575249,
+            "any_cycle_novel": 0.9821709491347667,
+            "digital_cycle_novel": 0.9737808075511274,
+            "dv_pressure_mean_above_train_max": 0.0026219192448872575,
+            "dv_pressure_min_above_train_max": 0.006292606187729418,
+            "pressure_switch_active_ratio_below_train_min": 0.9737808075511274,
+            "pressure_switch_transitions_above_train_max": 0.9737808075511274,
+            "tp2_mean_above_train_max": 0.3953854221289984,
+            "tp2_min_above_train_max": 0.4042999475616151
+          },
+          "fraction_of_rows": 0.04622357960054295,
+          "rows": 1907
+        }
+      },
+      "sample_count": {
+        "complete": {
+          "flag_prevalence": {
+            "analog_cycle_novel": 0.03731723470375465,
+            "any_cycle_novel": 0.037954047582658315,
+            "digital_cycle_novel": 0.0010443731214020073,
+            "dv_pressure_mean_above_train_max": 0.03487187324876458,
+            "dv_pressure_min_above_train_max": 0.028580162005196395,
+            "pressure_switch_active_ratio_below_train_min": 0.0010443731214020073,
+            "pressure_switch_transitions_above_train_max": 0.0010443731214020073,
+            "tp2_mean_above_train_max": 0.029828315247847573,
+            "tp2_min_above_train_max": 0.030923633399561872
+          },
+          "fraction_of_rows": 0.9515706806282722,
+          "rows": 39258
+        },
+        "mild_underfill": {
+          "flag_prevalence": {
+            "analog_cycle_novel": 0.16483516483516483,
+            "any_cycle_novel": 0.18681318681318682,
+            "digital_cycle_novel": 0.02197802197802198,
+            "dv_pressure_mean_above_train_max": 0.01098901098901099,
+            "dv_pressure_min_above_train_max": 0.02197802197802198,
+            "pressure_switch_active_ratio_below_train_min": 0.02197802197802198,
+            "pressure_switch_transitions_above_train_max": 0.0,
+            "tp2_mean_above_train_max": 0.06593406593406594,
+            "tp2_min_above_train_max": 0.16483516483516483
+          },
+          "fraction_of_rows": 0.0022057397711847974,
+          "rows": 91
+        },
+        "severe_underfill": {
+          "flag_prevalence": {
+            "analog_cycle_novel": 0.4063974829575249,
+            "any_cycle_novel": 0.9821709491347667,
+            "digital_cycle_novel": 0.9737808075511274,
+            "dv_pressure_mean_above_train_max": 0.0026219192448872575,
+            "dv_pressure_min_above_train_max": 0.006292606187729418,
+            "pressure_switch_active_ratio_below_train_min": 0.9737808075511274,
+            "pressure_switch_transitions_above_train_max": 0.9737808075511274,
+            "tp2_mean_above_train_max": 0.3953854221289984,
+            "tp2_min_above_train_max": 0.4042999475616151
+          },
+          "fraction_of_rows": 0.04622357960054295,
+          "rows": 1907
+        }
+      },
+      "summary": {
+        "novel_complete_sample_count_fraction": 0.4408284023668639,
+        "novel_full_coverage_fraction": 0.4408284023668639,
+        "supported_complete_sample_count_fraction": 0.997148590136234,
+        "supported_full_coverage_fraction": 0.997148590136234
+      }
+    },
+    "quality_novelty_association": {
+      "analog_cycle_novel": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 790,
+          "exposed_nonflag_count": 1208,
+          "flag_prevalence_exposed": 0.3953953953953954,
+          "flag_prevalence_unexposed": 0.03731723470375465,
+          "odds_ratio_haldane_anscombe": 16.868890141436744,
+          "risk_ratio": 10.59551701872521,
+          "unexposed_flag_count": 1465,
+          "unexposed_nonflag_count": 37793
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 790,
+          "exposed_nonflag_count": 1208,
+          "flag_prevalence_exposed": 0.3953953953953954,
+          "flag_prevalence_unexposed": 0.03731723470375465,
+          "odds_ratio_haldane_anscombe": 16.868890141436744,
+          "risk_ratio": 10.59551701872521,
+          "unexposed_flag_count": 1465,
+          "unexposed_nonflag_count": 37793
+        }
+      },
+      "any_cycle_novel": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 1890,
+          "exposed_nonflag_count": 108,
+          "flag_prevalence_exposed": 0.9459459459459459,
+          "flag_prevalence_unexposed": 0.037954047582658315,
+          "odds_ratio_haldane_anscombe": 441.51422449708366,
+          "risk_ratio": 24.923453654997278,
+          "unexposed_flag_count": 1490,
+          "unexposed_nonflag_count": 37768
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 1890,
+          "exposed_nonflag_count": 108,
+          "flag_prevalence_exposed": 0.9459459459459459,
+          "flag_prevalence_unexposed": 0.037954047582658315,
+          "odds_ratio_haldane_anscombe": 441.51422449708366,
+          "risk_ratio": 24.923453654997278,
+          "unexposed_flag_count": 1490,
+          "unexposed_nonflag_count": 37768
+        }
+      },
+      "digital_cycle_novel": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 1859,
+          "exposed_nonflag_count": 139,
+          "flag_prevalence_exposed": 0.9304304304304304,
+          "flag_prevalence_unexposed": 0.0010443731214020073,
+          "odds_ratio_haldane_anscombe": 12596.612903225807,
+          "risk_ratio": 890.8984838497033,
+          "unexposed_flag_count": 41,
+          "unexposed_nonflag_count": 39217
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 1859,
+          "exposed_nonflag_count": 139,
+          "flag_prevalence_exposed": 0.9304304304304304,
+          "flag_prevalence_unexposed": 0.0010443731214020073,
+          "odds_ratio_haldane_anscombe": 12596.612903225807,
+          "risk_ratio": 890.8984838497033,
+          "unexposed_flag_count": 41,
+          "unexposed_nonflag_count": 39217
+        }
+      },
+      "dv_pressure_mean_above_train_max": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 6,
+          "exposed_nonflag_count": 1992,
+          "flag_prevalence_exposed": 0.003003003003003003,
+          "flag_prevalence_unexposed": 0.03487187324876458,
+          "odds_ratio_haldane_anscombe": 0.09025512337933919,
+          "risk_ratio": 0.08611533374133812,
+          "unexposed_flag_count": 1369,
+          "unexposed_nonflag_count": 37889
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 6,
+          "exposed_nonflag_count": 1992,
+          "flag_prevalence_exposed": 0.003003003003003003,
+          "flag_prevalence_unexposed": 0.03487187324876458,
+          "odds_ratio_haldane_anscombe": 0.09025512337933919,
+          "risk_ratio": 0.08611533374133812,
+          "unexposed_flag_count": 1369,
+          "unexposed_nonflag_count": 37889
+        }
+      },
+      "dv_pressure_min_above_train_max": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 14,
+          "exposed_nonflag_count": 1984,
+          "flag_prevalence_exposed": 0.007007007007007007,
+          "flag_prevalence_unexposed": 0.028580162005196395,
+          "odds_ratio_haldane_anscombe": 0.24823978259125146,
+          "risk_ratio": 0.24517030399383338,
+          "unexposed_flag_count": 1122,
+          "unexposed_nonflag_count": 38136
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 14,
+          "exposed_nonflag_count": 1984,
+          "flag_prevalence_exposed": 0.007007007007007007,
+          "flag_prevalence_unexposed": 0.028580162005196395,
+          "odds_ratio_haldane_anscombe": 0.24823978259125146,
+          "risk_ratio": 0.24517030399383338,
+          "unexposed_flag_count": 1122,
+          "unexposed_nonflag_count": 38136
+        }
+      },
+      "pressure_switch_active_ratio_below_train_min": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 1859,
+          "exposed_nonflag_count": 139,
+          "flag_prevalence_exposed": 0.9304304304304304,
+          "flag_prevalence_unexposed": 0.0010443731214020073,
+          "odds_ratio_haldane_anscombe": 12596.612903225807,
+          "risk_ratio": 890.8984838497033,
+          "unexposed_flag_count": 41,
+          "unexposed_nonflag_count": 39217
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 1859,
+          "exposed_nonflag_count": 139,
+          "flag_prevalence_exposed": 0.9304304304304304,
+          "flag_prevalence_unexposed": 0.0010443731214020073,
+          "odds_ratio_haldane_anscombe": 12596.612903225807,
+          "risk_ratio": 890.8984838497033,
+          "unexposed_flag_count": 41,
+          "unexposed_nonflag_count": 39217
+        }
+      },
+      "pressure_switch_transitions_above_train_max": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 1857,
+          "exposed_nonflag_count": 141,
+          "flag_prevalence_exposed": 0.9294294294294294,
+          "flag_prevalence_unexposed": 0.0010443731214020073,
+          "odds_ratio_haldane_anscombe": 12405.212014134275,
+          "risk_ratio": 889.9400131839155,
+          "unexposed_flag_count": 41,
+          "unexposed_nonflag_count": 39217
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 1857,
+          "exposed_nonflag_count": 141,
+          "flag_prevalence_exposed": 0.9294294294294294,
+          "flag_prevalence_unexposed": 0.0010443731214020073,
+          "odds_ratio_haldane_anscombe": 12405.212014134275,
+          "risk_ratio": 889.9400131839155,
+          "unexposed_flag_count": 41,
+          "unexposed_nonflag_count": 39217
+        }
+      },
+      "tp2_mean_above_train_max": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 760,
+          "exposed_nonflag_count": 1238,
+          "flag_prevalence_exposed": 0.38038038038038036,
+          "flag_prevalence_unexposed": 0.029828315247847573,
+          "odds_ratio_haldane_anscombe": 19.963807877543825,
+          "risk_ratio": 12.752325339857363,
+          "unexposed_flag_count": 1171,
+          "unexposed_nonflag_count": 38087
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 760,
+          "exposed_nonflag_count": 1238,
+          "flag_prevalence_exposed": 0.38038038038038036,
+          "flag_prevalence_unexposed": 0.029828315247847573,
+          "odds_ratio_haldane_anscombe": 19.963807877543825,
+          "risk_ratio": 12.752325339857363,
+          "unexposed_flag_count": 1171,
+          "unexposed_nonflag_count": 38087
+        }
+      },
+      "tp2_min_above_train_max": {
+        "partial_vs_full_coverage": {
+          "exposed_flag_count": 786,
+          "exposed_nonflag_count": 1212,
+          "flag_prevalence_exposed": 0.3933933933933934,
+          "flag_prevalence_unexposed": 0.030923633399561872,
+          "odds_ratio_haldane_anscombe": 20.319421593884886,
+          "risk_ratio": 12.721447971859835,
+          "unexposed_flag_count": 1214,
+          "unexposed_nonflag_count": 38044
+        },
+        "underfilled_vs_complete_sample_count": {
+          "exposed_flag_count": 786,
+          "exposed_nonflag_count": 1212,
+          "flag_prevalence_exposed": 0.3933933933933934,
+          "flag_prevalence_unexposed": 0.030923633399561872,
+          "odds_ratio_haldane_anscombe": 20.319421593884886,
+          "risk_ratio": 12.721447971859835,
+          "unexposed_flag_count": 1214,
+          "unexposed_nonflag_count": 38044
+        }
+      }
+    },
+    "quality_x_novelty_score_cells": {
+      "full_novel": {
+        "fraction_of_background": 0.036115958890828,
+        "regime_distribution": {
+          "high_current_high_pressure": 0.2348993288590604,
+          "high_current_only": 0.7389261744966443,
+          "high_pressure_only": 0.0,
+          "low_current_low_pressure": 0.026174496644295303
+        },
+        "rows": 1490,
+        "score": {
+          "count": 1490,
+          "max": 62336.82892800842,
+          "mean": 23949.073781338895,
+          "median": 27806.280260558007,
+          "q90": 42575.20177655047,
+          "q95": 45482.0314083034,
+          "q99": 51699.290211792606,
+          "q995": 52410.654446877685,
+          "threshold_exceedance_fraction": 0.963758389261745
+        },
+        "share_of_background_score_mass": 0.4788295192743095,
+        "within_regime": {
+          "high_current_high_pressure": {
+            "rows": 350,
+            "score": {
+              "count": 350,
+              "max": 19516.342344703677,
+              "mean": 6719.123548819809,
+              "median": 8793.498148637707,
+              "q90": 13357.643393088852,
+              "q95": 14091.657637178663,
+              "q99": 16508.01047179659,
+              "q995": 18881.783162631757,
+              "threshold_exceedance_fraction": 0.9142857142857143
+            }
+          },
+          "high_current_only": {
+            "rows": 1101,
+            "score": {
+              "count": 1101,
+              "max": 62336.82892800842,
+              "mean": 30274.60395914048,
+              "median": 32954.72643134683,
+              "q90": 43519.793614396,
+              "q95": 46872.694016104215,
+              "q99": 52094.673793902315,
+              "q995": 53432.68424749956,
+              "threshold_exceedance_fraction": 0.9800181653042689
+            }
+          },
+          "high_pressure_only": {
+            "rows": 0,
+            "score": {
+              "count": 0
+            }
+          },
+          "low_current_low_pressure": {
+            "rows": 39,
+            "score": {
+              "count": 39,
+              "max": 14.923785726212929,
+              "mean": 2.2495665216873735,
+              "median": 1.5792445952822796,
+              "q90": 5.21343231930972,
+              "q95": 8.287402090877965,
+              "q99": 14.923785726212929,
+              "q995": 14.923785726212929,
+              "threshold_exceedance_fraction": 0.9487179487179487
+            }
+          }
+        }
+      },
+      "full_supported": {
+        "fraction_of_background": 0.9154547217374442,
+        "regime_distribution": {
+          "high_current_high_pressure": 0.21589705570853632,
+          "high_current_only": 0.11260855750900232,
+          "high_pressure_only": 0.03439419614488456,
+          "low_current_low_pressure": 0.6371001906375768
+        },
+        "rows": 37768,
+        "score": {
+          "count": 37768,
+          "max": 49.330076954262715,
+          "mean": 0.10094860294630659,
+          "median": 0.050016997739371745,
+          "q90": 0.17475664958721662,
+          "q95": 0.307182259222803,
+          "q99": 0.6492627405475379,
+          "q995": 1.1000473737509435,
+          "threshold_exceedance_fraction": 0.075990256301631
+        },
+        "share_of_background_score_mass": 5.1159963548414196e-05,
+        "within_regime": {
+          "high_current_high_pressure": {
+            "rows": 8154,
+            "score": {
+              "count": 8154,
+              "max": 3.4271420687403933,
+              "mean": 0.05703513527498966,
+              "median": 0.037151200478550375,
+              "q90": 0.09993710270911128,
+              "q95": 0.14506438632529214,
+              "q99": 0.39364709614633403,
+              "q995": 0.6317808688980431,
+              "threshold_exceedance_fraction": 0.028452293352955606
+            }
+          },
+          "high_current_only": {
+            "rows": 4253,
+            "score": {
+              "count": 4253,
+              "max": 42.05536031123647,
+              "mean": 0.18338337997798831,
+              "median": 0.09230629328748646,
+              "q90": 0.2851118368403442,
+              "q95": 0.41267439774452563,
+              "q99": 0.950529845012438,
+              "q995": 1.4661927022704353,
+              "threshold_exceedance_fraction": 0.12414766047495886
+            }
+          },
+          "high_pressure_only": {
+            "rows": 1299,
+            "score": {
+              "count": 1299,
+              "max": 0.9624764152480401,
+              "mean": 0.0058935925813727265,
+              "median": 0.0007191459609914474,
+              "q90": 0.032250828890124435,
+              "q95": 0.032725664845341715,
+              "q99": 0.03328024356382791,
+              "q995": 0.03386129709063117,
+              "threshold_exceedance_fraction": 0.0007698229407236335
+            }
+          },
+          "low_current_low_pressure": {
+            "rows": 24062,
+            "score": {
+              "count": 24062,
+              "max": 49.330076954262715,
+              "mean": 0.10639086739399277,
+              "median": 0.05136764848342191,
+              "q90": 0.19733340271574762,
+              "q95": 0.32915475284211515,
+              "q99": 0.6720602666973171,
+              "q995": 1.2192198542373436,
+              "threshold_exceedance_fraction": 0.08764857451583409
+            }
+          }
+        }
+      },
+      "partial_novel": {
+        "fraction_of_background": 0.04581151832460733,
+        "regime_distribution": {
+          "high_current_high_pressure": 0.17724867724867724,
+          "high_current_only": 0.4105820105820106,
+          "high_pressure_only": 0.0,
+          "low_current_low_pressure": 0.4121693121693122
+        },
+        "rows": 1890,
+        "score": {
+          "count": 1890,
+          "max": 51475.106560084096,
+          "mean": 20547.97854798683,
+          "median": 19.686629946895263,
+          "q90": 51457.88336516128,
+          "q95": 51462.424660179444,
+          "q99": 51464.07561121581,
+          "q995": 51464.99750588322,
+          "threshold_exceedance_fraction": 1.0
+        },
+        "share_of_background_score_mass": 0.5211189111222001,
+        "within_regime": {
+          "high_current_high_pressure": {
+            "rows": 335,
+            "score": {
+              "count": 335,
+              "max": 33.63965382868414,
+              "mean": 10.925064766244162,
+              "median": 6.977733918495005,
+              "q90": 26.073983036347453,
+              "q95": 26.434395662790624,
+              "q99": 30.41929732479575,
+              "q995": 32.64868665761711,
+              "threshold_exceedance_fraction": 1.0
+            }
+          },
+          "high_current_only": {
+            "rows": 776,
+            "score": {
+              "count": 776,
+              "max": 51475.106560084096,
+              "mean": 50023.99208550794,
+              "median": 51446.63357921079,
+              "q90": 51462.961972736106,
+              "q95": 51464.07561121581,
+              "q99": 51466.17668662091,
+              "q995": 51470.252991860194,
+              "threshold_exceedance_fraction": 1.0
+            }
+          },
+          "high_pressure_only": {
+            "rows": 0,
+            "score": {
+              "count": 0
+            }
+          },
+          "low_current_low_pressure": {
+            "rows": 779,
+            "score": {
+              "count": 779,
+              "max": 28.743066327852762,
+              "mean": 17.203723548466265,
+              "median": 18.773021159587227,
+              "q90": 21.017775380511814,
+              "q95": 23.07921425324108,
+              "q99": 27.576262525375316,
+              "q995": 27.95253117828005,
+              "threshold_exceedance_fraction": 1.0
+            }
+          }
+        }
+      },
+      "partial_supported": {
+        "fraction_of_background": 0.002617801047120419,
+        "regime_distribution": {
+          "high_current_high_pressure": 0.3148148148148148,
+          "high_current_only": 0.2222222222222222,
+          "high_pressure_only": 0.009259259259259259,
+          "low_current_low_pressure": 0.4537037037037037
+        },
+        "rows": 108,
+        "score": {
+          "count": 108,
+          "max": 5.86101633633549,
+          "mean": 0.28266537615464415,
+          "median": 0.06837583678541925,
+          "q90": 0.3925969457126399,
+          "q95": 0.9962294848685824,
+          "q99": 4.390407476808947,
+          "q995": 5.86101633633549,
+          "threshold_exceedance_fraction": 0.1388888888888889
+        },
+        "share_of_background_score_mass": 4.096399422027319e-07,
+        "within_regime": {
+          "high_current_high_pressure": {
+            "rows": 34,
+            "score": {
+              "count": 34,
+              "max": 0.4530190881398106,
+              "mean": 0.06577705220670964,
+              "median": 0.05153075670120135,
+              "q90": 0.11524722616069139,
+              "q95": 0.13131531548192021,
+              "q99": 0.4530190881398106,
+              "q995": 0.4530190881398106,
+              "threshold_exceedance_fraction": 0.029411764705882353
+            }
+          },
+          "high_current_only": {
+            "rows": 24,
+            "score": {
+              "count": 24,
+              "max": 1.0839561503018893,
+              "mean": 0.22679484361828092,
+              "median": 0.11961379511789598,
+              "q90": 0.4931562834444035,
+              "q95": 0.7184155169133508,
+              "q99": 1.0839561503018893,
+              "q995": 1.0839561503018893,
+              "threshold_exceedance_fraction": 0.2916666666666667
+            }
+          },
+          "high_pressure_only": {
+            "rows": 1,
+            "score": {
+              "count": 1,
+              "max": 0.0022505469349788755,
+              "mean": 0.0022505469349788755,
+              "median": 0.0022505469349788755,
+              "q90": 0.0022505469349788755,
+              "q95": 0.0022505469349788755,
+              "q99": 0.0022505469349788755,
+              "q995": 0.0022505469349788755,
+              "threshold_exceedance_fraction": 0.0
+            }
+          },
+          "low_current_low_pressure": {
+            "rows": 49,
+            "score": {
+              "count": 49,
+              "max": 5.86101633633549,
+              "mean": 0.46624722563060655,
+              "median": 0.05802460514906571,
+              "q90": 0.9962294848685824,
+              "q95": 4.342741128378858,
+              "q99": 5.86101633633549,
+              "q995": 5.86101633633549,
+              "threshold_exceedance_fraction": 0.14285714285714285
+            }
+          }
+        }
+      }
+    }
+  },
+  "guardrails": {
+    "descriptive_conditioning_only": true,
+    "no_detector_or_alert_intervention": true,
+    "no_rows_removed_from_detector": true,
+    "posthoc_reused_test": true
+  },
+  "reproduction": {
+    "background_any_cycle_novel_count": 3380,
+    "calibration_regime_raw_q995": 0.2218319476372591,
+    "current_threshold": 3.3312096774193547,
+    "pressure_threshold": 9.452193548387097,
+    "regime_component_count": 11,
+    "status": "PASS"
+  },
+  "study": {
+    "evidence_class": "REAL",
+    "production_promotion_allowed": false,
+    "role": "posthoc_reused_test_coverage_conditioned_stationarity_diagnostic"
+  }
+}
