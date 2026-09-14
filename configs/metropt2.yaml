@@ -4,11 +4,7 @@ dataset:
   doi: "10.5281/zenodo.7766691"
   source_url: "https://zenodo.org/records/7766691/files/MetroPT2.csv?download=1"
 
-  # Integrity value published by the Zenodo record.
   expected_md5: "056e04fd1874eaef4697d6b6657502c3"
-
-  # Published record metadata. The audit reports mismatches
-  # instead of silently forcing these values.
   expected_rows: 7116940
   expected_attributes: 21
   sampling_hz: 1
@@ -47,3 +43,37 @@ audit:
 concentration:
   source_report: "docs/xai_verification_report.json"
   report_file: "docs/metropt3_explanation_concentration.json"
+
+preprocessing:
+  bin_minutes: 5
+  expected_samples_per_bin: 300
+  minimum_coverage: 0.80
+  max_gap_seconds: 10.0
+
+  processed_dir: "data/processed/metropt2"
+  train_file: "data/processed/metropt2/train_features.parquet"
+  calibration_file: "data/processed/metropt2/calibration_features.parquet"
+  test_file: "data/processed/metropt2/test_features.parquet"
+  report_file: "docs/metropt2_preprocessing_report.json"
+
+  feature_variants:
+    full:
+      excluded_groups: []
+    flowmeter_excluded:
+      excluded_groups:
+        - flowmeter
+    strict_flow_blind:
+      excluded_groups:
+        - flowmeter
+        - caudal_impulses
+
+split:
+  train:
+    start: "2022-04-28 12:33:29.120"
+    end: "2022-05-20 23:59:59.999"
+  calibration:
+    start: "2022-05-21 00:00:00.000"
+    end: "2022-05-31 23:59:59.999"
+  test:
+    start: "2022-06-01 00:00:00.000"
+    end: "2022-07-28 12:24:34.839"

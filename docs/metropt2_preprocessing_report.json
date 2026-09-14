@@ -1,0 +1,124 @@
+{
+  "causal_claim": false,
+  "dataset": "MetroPT2",
+  "evidence_class": "REAL",
+  "feature_variants": {
+    "flowmeter_excluded": {
+      "excluded_groups": [
+        "flowmeter"
+      ],
+      "model_feature_count": 63
+    },
+    "full": {
+      "excluded_groups": [],
+      "model_feature_count": 68
+    },
+    "strict_flow_blind": {
+      "excluded_groups": [
+        "flowmeter",
+        "caudal_impulses"
+      ],
+      "model_feature_count": 60
+    }
+  },
+  "incident_split_membership": [
+    {
+      "condition": "air_leak",
+      "entirely_in_test": true,
+      "id": 1,
+      "overlaps_calibration": false,
+      "overlaps_train": false
+    },
+    {
+      "condition": "oil_leak",
+      "entirely_in_test": true,
+      "id": 2,
+      "overlaps_calibration": false,
+      "overlaps_train": false
+    }
+  ],
+  "interpretation": "Preprocessing and split validation only. Detector performance has not been inspected in this checkpoint.",
+  "outputs": {
+    "calibration": "/mnt/c/Users/Dell ProMax Tower T2/Downloads/code/xAI-Compressor/data/processed/metropt2/calibration_features.parquet",
+    "test": "/mnt/c/Users/Dell ProMax Tower T2/Downloads/code/xAI-Compressor/data/processed/metropt2/test_features.parquet",
+    "train": "/mnt/c/Users/Dell ProMax Tower T2/Downloads/code/xAI-Compressor/data/processed/metropt2/train_features.parquet"
+  },
+  "protocol": {
+    "aggregation": "5-minute causal bins, label=right, closed=right",
+    "expected_samples_per_bin": 300,
+    "gps_used": false,
+    "large_gap_handling": "Any 5-minute bin containing the first observation after a raw gap above the threshold is excluded. Empty and under-covered bins are also excluded. No interpolation or forward fill is used.",
+    "large_gap_rule_seconds": 10.0,
+    "minimum_coverage": 0.8,
+    "split_aggregation": "Each chronological split is aggregated independently to prevent cross-split bin leakage."
+  },
+  "schema_version": "aeroxai.metropt2_preprocessing.v1",
+  "splits": {
+    "calibration": {
+      "candidate_bins": 3103,
+      "coverage_rejected_bins": 221,
+      "empty_bins": 210,
+      "first_valid_bin": "2022-05-21 05:30:00",
+      "gap_tainted_bins": 10,
+      "incomplete_rejected_bins": 210,
+      "last_valid_bin": "2022-05-31 23:55:00",
+      "raw_end": "2022-05-31 23:59:59.966000",
+      "raw_rows": 873764,
+      "raw_start": "2022-05-21 05:21:35.224000",
+      "valid_bins": 2878,
+      "valid_exposure_days": 9.993055555555555
+    },
+    "test": {
+      "candidate_bins": 16564,
+      "coverage_rejected_bins": 1871,
+      "empty_bins": 1771,
+      "first_valid_bin": "2022-06-01 00:05:00",
+      "gap_tainted_bins": 63,
+      "incomplete_rejected_bins": 1771,
+      "last_valid_bin": "2022-07-28 12:20:00",
+      "raw_end": "2022-07-28 12:24:34.839000",
+      "raw_rows": 4458071,
+      "raw_start": "2022-06-01 00:00:00.957000",
+      "valid_bins": 14681,
+      "valid_exposure_days": 50.97569444444444
+    },
+    "train": {
+      "candidate_bins": 6471,
+      "coverage_rejected_bins": 588,
+      "empty_bins": 544,
+      "first_valid_bin": "2022-04-28 12:40:00",
+      "gap_tainted_bins": 29,
+      "incomplete_rejected_bins": 544,
+      "last_valid_bin": "2022-05-20 23:45:00",
+      "raw_end": "2022-05-20 23:44:43.638000",
+      "raw_rows": 1785105,
+      "raw_start": "2022-04-28 12:33:29.120000",
+      "valid_bins": 5878,
+      "valid_exposure_days": 20.40972222222222
+    }
+  },
+  "test_incident_coverage": [
+    {
+      "condition": "air_leak",
+      "end": "2022-06-04 14:22:39.188000",
+      "expected_24h_pre_bins": 288,
+      "id": 1,
+      "pre_onset_coverage_fraction": 0.8229166666666666,
+      "pre_onset_window_start": "2022-06-03 10:19:24.300000",
+      "start": "2022-06-04 10:19:24.300000",
+      "valid_24h_pre_bins": 237,
+      "valid_bins_during_incident": 49
+    },
+    {
+      "condition": "oil_leak",
+      "end": "2022-07-14 10:22:08.046000",
+      "expected_24h_pre_bins": 288,
+      "id": 2,
+      "pre_onset_coverage_fraction": 0.84375,
+      "pre_onset_window_start": "2022-07-10 10:10:18.948000",
+      "start": "2022-07-11 10:10:18.948000",
+      "valid_24h_pre_bins": 243,
+      "valid_bins_during_incident": 722
+    }
+  ]
+}
