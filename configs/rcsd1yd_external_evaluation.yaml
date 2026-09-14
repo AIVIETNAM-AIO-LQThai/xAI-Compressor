@@ -263,3 +263,13 @@ stop_conditions:
   - "TCN training does not produce both finite CAL teacher thresholds"
   - "adaptation artifact is not frozen before EVALUATION metrics"
   - "any EVALUATION-derived tuning is proposed"
+
+evaluation_adequacy:
+  high_evidence_coverage_definition: >
+    routed high-evidence bins divided by all EVALUATION high-evidence bins
+  alert_evidence_coverage_definition: >
+    routed alert-evidence bins divided by all EVALUATION alert-evidence bins
+  zero_high_evidence_bins: "INCONCLUSIVE_EXTERNAL_EVALUATION"
+  zero_alert_evidence_bins: "INCONCLUSIVE_EXTERNAL_EVALUATION"
+  minimum_positive_bins_for_defined_coverage: 1
+  success_not_allowed_when_inconclusive: true

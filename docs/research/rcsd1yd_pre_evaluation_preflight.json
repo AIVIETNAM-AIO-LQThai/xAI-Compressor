@@ -1,0 +1,42 @@
+{
+  "schema_version": "aeroxai.rcsd1yd_pre_evaluation_preflight.v1",
+  "study": "rcsd1yd_external_evaluation",
+  "preregistration_commit": "7dc7bd2d9a44758075dab286cc3d674949a876bd",
+  "adaptation_freeze_file": "docs/research/rcsd1yd_adaptation_freeze.json",
+  "adaptation_freeze_sha256": "1180c8cb5a47d2d0580b6e4d8d99868469db3cfcb77a978c7baa3c9fd65e03ba",
+  "source_md5": "9ebf0bf829d2567f279f385523a765c5",
+  "schema_validation_passed": true,
+  "split_hashes_verified": true,
+  "tcn_checkpoint_sha256": "a4ebea11a3f0a1a4de3afc633a7dbee6a9e612740139636b39c77d7d421c8c50",
+  "calibration_high_evidence_threshold_q90": 0.8942223191261292,
+  "calibration_alert_evidence_threshold_q995": 311.1317443847656,
+  "frozen_router_identity_sha256": "569acf048316327e36478066566b54225e9dc2bcae54c84d21ea00f9fc1bc04a",
+  "evaluation": {
+    "rows": 8832,
+    "frozen_calendar_bounds": {
+      "start": "2022-10-01T00:00:00",
+      "end": "2022-12-31T23:45:00"
+    },
+    "metrics_computed_before_freeze": false,
+    "sensor_summary_computed_before_freeze": false
+  },
+  "energy_protocol": {
+    "scope": "gpu_device_tcn_scoring_only",
+    "nvml_sampling_interval_seconds": 0.1,
+    "warmup_runs_per_condition": 2,
+    "measured_repetitions": 5,
+    "matched_idle_seconds": 10.0,
+    "minimum_metered_workload_seconds": 20.0,
+    "cpu_router_energy": "UNKNOWN",
+    "whole_system_energy": "UNKNOWN",
+    "physical_compressor_energy": "NOT_MEASURED"
+  },
+  "success_criteria": {
+    "minimum_high_tcn_evidence_bin_coverage": 0.8,
+    "minimum_tcn_alert_bin_coverage": 0.8,
+    "minimum_mean_gross_gpu_energy_reduction": 0.5,
+    "gross_energy_reduction_positive_each_repetition": true
+  },
+  "ready_to_commit_adaptation_freeze": true,
+  "ready_for_one_shot_evaluation_after_commit": true
+}

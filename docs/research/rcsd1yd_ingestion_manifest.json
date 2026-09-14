@@ -1,0 +1,79 @@
+{
+  "schema_version": "aeroxai.rcsd1yd_ingestion.v1",
+  "study": "rcsd1yd_external_evaluation",
+  "preregistration_commit": "7dc7bd2d9a44758075dab286cc3d674949a876bd",
+  "source": {
+    "file_name": "Centrifugal compressor _2022.xlsx",
+    "md5": "9ebf0bf829d2567f279f385523a765c5",
+    "dataset_doi": "10.5281/zenodo.14866092",
+    "timestamp_column": "Timestamp",
+    "source_rows": 35036,
+    "sensor_count": 25,
+    "sensor_columns": [
+      "75ZI800BA.pv",
+      "75ZI800BB.pv",
+      "75ZI801BA.pv",
+      "75ZI801BB.pv",
+      "75PI808.pv",
+      "75PI823.pv",
+      "75PI870.pv",
+      "75PI845.pv",
+      "75PDI853.pv",
+      "75TI821.pv",
+      "75TI822.pv",
+      "75TI827.pv",
+      "75TI828.pv",
+      "75TI824.pv",
+      "75TI829.pv",
+      "75TI830.pv",
+      "75TI831.pv",
+      "75TI832.pv",
+      "75TI836.pv",
+      "75TI834.pv",
+      "75XI821BX.pv",
+      "75XI822BY.pv",
+      "75XI823BX.pv",
+      "75XI824BX.pv",
+      "75SI865R.pv"
+    ],
+    "schema_validation_passed": true
+  },
+  "data_use": {
+    "evaluation_rows_written": true,
+    "evaluation_sensor_summary_computed": false,
+    "evaluation_anomaly_metrics_computed": false,
+    "evaluation_router_metrics_computed": false,
+    "evaluation_tcn_metrics_computed": false
+  },
+  "train": {
+    "path": "data/processed/rcsd1yd/train.parquet",
+    "rows": 17372,
+    "bounds": {
+      "start": "2022-01-01 00:00:00",
+      "end": "2022-06-30 23:45:00"
+    },
+    "dropped_nonfinite_rows": 0,
+    "gaps_greater_than_30_minutes": 1,
+    "sha256": "64728344af07e3615707953f5d69ee5b0d40f6ae044ec850bd22de6f1b4e7793"
+  },
+  "calibration": {
+    "path": "data/processed/rcsd1yd/calibration.parquet",
+    "rows": 8832,
+    "bounds": {
+      "start": "2022-07-01 00:00:00",
+      "end": "2022-09-30 23:45:00"
+    },
+    "dropped_nonfinite_rows": 0,
+    "gaps_greater_than_30_minutes": 0,
+    "sha256": "a96d5989d63ca2f73d19764e56c3f21d542ecd540c57308778edfc7b10d05b3e"
+  },
+  "evaluation": {
+    "path": "data/processed/rcsd1yd/evaluation.parquet",
+    "rows": 8832,
+    "frozen_calendar_bounds": {
+      "start": "2022-10-01T00:00:00",
+      "end": "2022-12-31T23:45:00"
+    },
+    "sha256": "cb57841ee1f73944af59d227a7de109e0e23e7afea5384261ab966d71373a734"
+  }
+}
