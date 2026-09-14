@@ -1,0 +1,98 @@
+{
+  "allowed_claims": [
+    "Real telemetry supports anomaly detection, verified detector evidence, and candidate waste hypotheses.",
+    "The current prototype withholds real-asset action reasoning when site calibration and required physical observations are absent.",
+    "The synthetic digital-twin chain recovers known total outflow and produces a robust-safe simulated 60-second advisory across the bounded scenario set."
+  ],
+  "causal_claim": false,
+  "contains_evidence_classes": [
+    "REAL",
+    "SIMULATED"
+  ],
+  "deployment": {
+    "mode": "advisory",
+    "override_equipment_ctrl": false
+  },
+  "forbidden_claims": [
+    "Do not claim that the synthetic physical state describes the real MetroPT incident.",
+    "Do not claim measured MetroPT energy savings from the simulated optimizer.",
+    "Do not claim that detector evidence establishes physical root cause.",
+    "Do not claim that leakage is identified without independent process-demand information."
+  ],
+  "manifest_id": "manifest_1afa509d419818f5",
+  "project": "AeroXAI",
+  "real_evidence_path": {
+    "bridge_status": "WITHHOLD_REAL_ASSET_ADVISORY_MISSING_VALIDATED_PHYSICAL_BRIDGE",
+    "candidate_hypotheses": [
+      "leak_like_persistent_outflow",
+      "demand_surge",
+      "sensor_inconsistency",
+      "compressor_performance_degradation",
+      "pressure_regulation_instability"
+    ],
+    "detector_evidence_class": "REAL",
+    "downstream_physics_executed": false,
+    "incident_id": 1,
+    "missing_requirements": [
+      "site_calibrated_receiver_and_compressor_model",
+      "calibrated_compressor_inflow_observation",
+      "receiver_pressure_trace"
+    ],
+    "physical_bridge_available": false,
+    "recommendation": null,
+    "robust_control_executed": false,
+    "source": "docs/evidence_action_replay.json"
+  },
+  "schema_version": "aeroxai.proof_manifest.v1",
+  "separation_assertions": [
+    "The REAL MetroPT evidence path stops at the validated physical bridge boundary.",
+    "The SIMULATED action proof is not connected to the MetroPT incident and must not be used as measured site evidence.",
+    "No simulated leakage, energy, pressure, reserve, or compressor command is attributed to a real MetroPT incident."
+  ],
+  "simulated_validation_path": {
+    "connected_to_real_incident": false,
+    "evidence_class": "SIMULATED",
+    "inverse_physics_recovery": {
+      "absolute_error_kg_s": 1.3877787807814457e-17,
+      "inferred_total_outflow_kg_s": 0.11000000000000001,
+      "passed": true,
+      "truth_total_outflow_kg_s": 0.11
+    },
+    "physical_state": {
+      "leak_identifiable": false,
+      "leak_kg_s": null,
+      "total_outflow_kg_s": {
+        "center": 0.11000000000000001,
+        "lower": 0.10600000000000001,
+        "upper": 0.11400000000000002
+      }
+    },
+    "proof_id": "sim_a8adc30d02b418f9",
+    "robust_action": {
+      "commands": [
+        [
+          "fixed_1",
+          1.0
+        ],
+        [
+          "fixed_2",
+          0.0
+        ],
+        [
+          "vsd_1",
+          0.2
+        ]
+      ],
+      "horizon_energy_kwh": 4.412500000000001,
+      "horizon_objective_value": 4.513681058613501,
+      "minimum_reserve_kg_s": 0.025999999999999995,
+      "robust_safe": true,
+      "scenario_count": 3,
+      "valid_for_seconds": 60.0,
+      "worst_case_max_pressure_bar_g": 6.8459488765000005,
+      "worst_case_min_pressure_bar_g": 6.8048685769
+    },
+    "scope": "SIMULATION_ONLY",
+    "source": "docs/simulated_action_proof.json"
+  }
+}

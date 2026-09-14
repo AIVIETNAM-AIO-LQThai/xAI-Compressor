@@ -6,6 +6,9 @@ from backend.app.evidence import (
 from backend.app.models import (
     EvidenceSummaryResponse,
 )
+from backend.app.proof_manifest import (
+    build_proof_manifest,
+)
 
 router = APIRouter(
     prefix="/evidence",
@@ -19,3 +22,10 @@ router = APIRouter(
 )
 def get_evidence_summary() -> dict:
     return build_evidence_summary()
+
+
+@router.get(
+    "/proof-manifest",
+)
+def get_proof_manifest() -> dict:
+    return build_proof_manifest()
