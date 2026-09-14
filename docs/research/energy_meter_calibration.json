@@ -1,0 +1,220 @@
+{
+  "schema_version": "aeroxai.energy_meter_calibration.v1",
+  "purpose": "measurement calibration only; no MetroPT or TCN result",
+  "energy_provenance": {
+    "gpu_power": "MEASURED_NVML",
+    "gpu_energy": "DERIVED_FROM_MEASURED_POWER_TRAPEZOIDAL_INTEGRATION",
+    "cpu_energy": "UNKNOWN"
+  },
+  "hardware": {
+    "gpu_name": "NVIDIA GeForce RTX 4090",
+    "driver_version": "610.88",
+    "device_index": 0,
+    "torch_version": "2.13.0+cu130",
+    "torch_cuda_build": "13.0",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35"
+  },
+  "measurement": {
+    "sampling_interval_ms": 100.0,
+    "baseline_seconds": 10.0,
+    "workload_seconds": 20.0,
+    "cooldown_seconds": 5.0,
+    "warmups": 2,
+    "repetitions": 5,
+    "matrix_size": 2048,
+    "primary_power_field": "NVML_FI_DEV_POWER_INSTANT",
+    "secondary_power_field": "NVML_FI_DEV_POWER_AVERAGE"
+  },
+  "runs": [
+    {
+      "pair_index": 1,
+      "idle": {
+        "duration_s": 10.002849885990145,
+        "sample_count": 99,
+        "instant_energy_j": 90.08419174668185,
+        "average_field_energy_j": 92.00204252238134,
+        "mean_instant_w": 9.004515151515152,
+        "mean_average_w": 9.197232323232322,
+        "peak_instant_w": 10.715,
+        "peak_average_w": 10.622
+      },
+      "workload": {
+        "duration_s": 20.00691657399875,
+        "sample_count": 198,
+        "instant_energy_j": 8728.052828258147,
+        "average_field_energy_j": 8498.530622669321,
+        "mean_instant_w": 435.4250606060606,
+        "mean_average_w": 424.12664646464646,
+        "peak_instant_w": 452.61,
+        "peak_average_w": 446.606
+      },
+      "iterations": 59380,
+      "derived": {
+        "idle_power_w": 9.005852609350116,
+        "gross_workload_energy_j": 8728.052828258147,
+        "baseline_equivalent_energy_j": 180.17934183299673,
+        "incremental_workload_energy_j": 8547.873486425151,
+        "gross_energy_per_iteration_j": 0.14698640667325946,
+        "incremental_energy_per_iteration_j": 0.14395206275555997
+      }
+    },
+    {
+      "pair_index": 2,
+      "idle": {
+        "duration_s": 10.003259969991632,
+        "sample_count": 98,
+        "instant_energy_j": 87.41783421392145,
+        "average_field_energy_j": 89.62653485219339,
+        "mean_instant_w": 8.744448979591837,
+        "mean_average_w": 8.965071428571429,
+        "peak_instant_w": 10.417,
+        "peak_average_w": 10.841
+      },
+      "workload": {
+        "duration_s": 20.003317318012705,
+        "sample_count": 198,
+        "instant_energy_j": 8767.403013711952,
+        "average_field_energy_j": 8531.363422307952,
+        "mean_instant_w": 437.29149494949496,
+        "mean_average_w": 426.1806262626262,
+        "peak_instant_w": 456.753,
+        "peak_average_w": 450.51
+      },
+      "iterations": 59130,
+      "derived": {
+        "idle_power_w": 8.738934554951348,
+        "gross_workload_energy_j": 8767.403013711952,
+        "baseline_equivalent_energy_j": 174.80768092403795,
+        "incremental_workload_energy_j": 8592.595332787914,
+        "gross_energy_per_iteration_j": 0.14827334709473958,
+        "incremental_energy_per_iteration_j": 0.14531701898846464
+      }
+    },
+    {
+      "pair_index": 3,
+      "idle": {
+        "duration_s": 10.002483697011485,
+        "sample_count": 99,
+        "instant_energy_j": 92.20281229071938,
+        "average_field_energy_j": 95.44102889089376,
+        "mean_instant_w": 9.217040404040404,
+        "mean_average_w": 9.53469696969697,
+        "peak_instant_w": 12.068,
+        "peak_average_w": 10.926
+      },
+      "workload": {
+        "duration_s": 20.004808311001398,
+        "sample_count": 197,
+        "instant_energy_j": 8773.147874212105,
+        "average_field_energy_j": 8515.53976833142,
+        "mean_instant_w": 437.607192893401,
+        "mean_average_w": 424.8859543147208,
+        "peak_instant_w": 464.077,
+        "peak_average_w": 450.515
+      },
+      "iterations": 59200,
+      "derived": {
+        "idle_power_w": 9.217991759213513,
+        "gross_workload_energy_j": 8773.147874212105,
+        "baseline_equivalent_energy_j": 184.40415815545688,
+        "incremental_workload_energy_j": 8588.743716056648,
+        "gross_energy_per_iteration_j": 0.14819506544277206,
+        "incremental_energy_per_iteration_j": 0.14508013033879472
+      }
+    },
+    {
+      "pair_index": 4,
+      "idle": {
+        "duration_s": 10.002374161005719,
+        "sample_count": 99,
+        "instant_energy_j": 107.59886344009469,
+        "average_field_energy_j": 110.44996711712446,
+        "mean_instant_w": 10.748212121212122,
+        "mean_average_w": 11.038424242424243,
+        "peak_instant_w": 12.116,
+        "peak_average_w": 12.676
+      },
+      "workload": {
+        "duration_s": 20.006104840998887,
+        "sample_count": 197,
+        "instant_energy_j": 8781.580016210615,
+        "average_field_energy_j": 8544.287643400634,
+        "mean_instant_w": 438.0050609137056,
+        "mean_average_w": 426.32943147208124,
+        "peak_instant_w": 458.224,
+        "peak_average_w": 450.635
+      },
+      "iterations": 59510,
+      "derived": {
+        "idle_power_w": 10.757332380103229,
+        "gross_workload_energy_j": 8781.580016210615,
+        "baseline_equivalent_energy_j": 215.21231940581728,
+        "incremental_workload_energy_j": 8566.367696804798,
+        "gross_energy_per_iteration_j": 0.1475647793011362,
+        "incremental_energy_per_iteration_j": 0.14394837332893293
+      }
+    },
+    {
+      "pair_index": 5,
+      "idle": {
+        "duration_s": 10.003995136998128,
+        "sample_count": 98,
+        "instant_energy_j": 103.21600768060459,
+        "average_field_energy_j": 105.8681624586423,
+        "mean_instant_w": 10.317622448979591,
+        "mean_average_w": 10.588948979591837,
+        "peak_instant_w": 11.55,
+        "peak_average_w": 12.819
+      },
+      "workload": {
+        "duration_s": 20.00825486300164,
+        "sample_count": 198,
+        "instant_energy_j": 8790.562680052255,
+        "average_field_energy_j": 8554.299382640344,
+        "mean_instant_w": 438.43739898989895,
+        "mean_average_w": 426.8498232323232,
+        "peak_instant_w": 458.629,
+        "peak_average_w": 450.378
+      },
+      "iterations": 59280,
+      "derived": {
+        "idle_power_w": 10.317478793934754,
+        "gross_workload_energy_j": 8790.562680052255,
+        "baseline_equivalent_energy_j": 206.43474525266132,
+        "incremental_workload_energy_j": 8584.127934799593,
+        "gross_energy_per_iteration_j": 0.14828884413043614,
+        "incremental_energy_per_iteration_j": 0.14480647663292162
+      }
+    }
+  ],
+  "repeatability": {
+    "gross_energy_j": {
+      "mean": 8768.149282489016,
+      "stdev": 24.06248884061157,
+      "cv": 0.0027443064739633345,
+      "min": 8728.052828258147,
+      "max": 8790.562680052255
+    },
+    "incremental_energy_j": {
+      "mean": 8575.94163337482,
+      "stdev": 18.626162318002503,
+      "cv": 0.0021719087086035475,
+      "min": 8547.873486425151,
+      "max": 8592.595332787914
+    },
+    "gross_energy_per_iteration_j": {
+      "mean": 0.14786168852846868,
+      "stdev": 0.0005738767868193678,
+      "cv": 0.003881172956501683,
+      "min": 0.14698640667325946,
+      "max": 0.14828884413043614
+    },
+    "incremental_energy_per_iteration_j": {
+      "mean": 0.14462081240893476,
+      "stdev": 0.0006382687876872065,
+      "cv": 0.004413395119662416,
+      "min": 0.14394837332893293,
+      "max": 0.14531701898846464
+    }
+  }
+}

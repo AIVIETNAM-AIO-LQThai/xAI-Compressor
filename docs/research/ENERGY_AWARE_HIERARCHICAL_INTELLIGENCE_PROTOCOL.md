@@ -186,7 +186,51 @@ Advance the hierarchical-compute idea only if:
 Otherwise close the branch or revise only through a new
 preregistered study.
 
-## 13. Stop condition
+## 13. Measurement calibration decision
+
+The GPU energy meter was calibrated before any TCN or MetroPT
+energy benchmark.
+
+Calibration configuration:
+
+- NVIDIA GeForce RTX 4090
+- in-process NVML sampling
+- 100 ms sampling interval
+- 2 warm-up workloads
+- 5 measured repetitions
+- 10 s matched idle baseline
+- 20 s synthetic GPU workload
+- 2048 x 2048 FP32 matrix multiplication workload
+
+Observed repeatability:
+
+- gross energy CV: 0.274%
+- incremental energy CV: 0.217%
+- gross energy per iteration CV: 0.388%
+- incremental energy per iteration CV: 0.441%
+
+The largest observed calibration CV was 0.441%.
+
+Before observing any TCN or MetroPT benchmark result, the study
+therefore freezes a minimum material measured GPU-energy reduction
+of 3%.
+
+This threshold is intentionally greater than five times the largest
+observed calibration CV:
+
+5 x 0.441% = 2.205%.
+
+A routed system will not be described as materially reducing measured
+GPU energy unless its mean measured GPU-energy reduction relative to
+the always-on TCN reference is at least 3%.
+
+All individual repetitions, mean values, dispersion, gross GPU energy,
+and incremental GPU energy must still be reported.
+
+This threshold applies only to measured GPU energy. CPU energy remains
+UNKNOWN under the current WSL hardware interface.
+
+## 14. Stop condition
 
 After TEST results are observed:
 
