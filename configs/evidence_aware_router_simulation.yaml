@@ -1,0 +1,123 @@
+study:
+  name: "evidence_aware_router_simulation"
+  parent_study: "evidence_aware_compute_routing"
+  policy_freeze_commit: "aa3863080493c19483d536a2f9d2da1613a651b7"
+  evidence_class: "SIMULATED"
+  promotion_allowed: false
+
+data:
+  use_only_development_calibration: true
+  metropt3_test_forbidden: true
+  metropt2_test_forbidden: true
+  new_evaluation_data_forbidden: true
+  incident_labels_used: false
+  evaluation_rows: "frozen_router_validation_target_rows_only"
+
+frozen_policy:
+  source: "docs/research/evidence_aware_router_preflight.json"
+  C: 10.0
+  class_weight: null
+  probability_threshold: 0.30
+  refit_allowed: false
+  feature_changes_allowed: false
+
+shift_feature_scope:
+  prefixes:
+    - "tp2__"
+    - "tp3__"
+    - "h1__"
+    - "dv_pressure__"
+    - "reservoirs__"
+    - "oil_temperature__"
+    - "motor_current__"
+    - "tp3_minus_reservoirs__"
+    - "tp2_minus_tp3__"
+  note: >
+    Synthetic raw-feature perturbations are restricted to continuous analog
+    and pressure-relationship features. Digital-state features are unchanged.
+
+stress_tests:
+  feature_location_shift:
+    definition: "x_shifted = x + severity * TRAIN_std"
+    direction: "positive"
+    severity_sigma:
+      - 0.25
+      - 0.50
+      - 1.00
+    mechanism_expectation: >
+      Frozen-router invocation fraction should be nondecreasing as synthetic
+      location-shift severity increases.
+
+  feature_scale_shift:
+    definition: "x_shifted = TRAIN_mean + factor * (x - TRAIN_mean)"
+    factors:
+      - 1.10
+      - 1.25
+      - 1.50
+    mechanism_expectation: >
+      Frozen-router invocation fraction should be nondecreasing as synthetic
+      scale-shift severity increases.
+
+  support_tail_inflation:
+    tail_reference: "feature_support_router_fit_reference"
+    tail_quantile: 0.90
+    definition: >
+      On rows whose baseline feature-support statistic is at or above the
+      frozen router-fit q0.90 reference, inflate continuous-feature deviation
+      from TRAIN mean by the specified factor.
+    factors:
+      - 1.25
+      - 1.50
+      - 2.00
+    mechanism_expectation: >
+      Frozen-router invocation fraction should be nondecreasing as synthetic
+      support-tail inflation increases.
+
+  operating_mix_shift:
+    regime_feature: "motor_current__mean"
+    train_quantiles:
+      low_upper: 0.33
+      high_lower: 0.67
+    regimes:
+      - "low"
+      - "middle"
+      - "high"
+    scenarios:
+      low_dominant:
+        low: 0.60
+        middle: 0.30
+        high: 0.10
+      balanced:
+        low: 0.3333333333333333
+        middle: 0.3333333333333333
+        high: 0.3333333333333334
+      high_dominant:
+        low: 0.10
+        middle: 0.30
+        high: 0.60
+    mechanism_expectation: >
+      Report counterfactual aggregate invocation under frozen regime-specific
+      routing rates. No direction is preregistered.
+
+router_runtime:
+  measure: true
+  scope: >
+    CPU wall time for final 8-feature StandardScaler transform plus frozen
+    logistic probability and threshold decision only. Upstream PCA/support
+    signal computation is excluded.
+  repetitions: 5
+  minimum_seconds_per_repetition: 1.0
+  cpu_energy: "UNKNOWN"
+
+outputs:
+  result_json: "docs/research/evidence_aware_router_simulation.json"
+
+guardrails:
+  - "All results are SIMULATED mechanism diagnostics."
+  - "Do not refit or retune the frozen logistic router."
+  - "Do not use MetroPT-3 TEST or MetroPT2 TEST."
+  - "Do not use incident labels."
+  - "Do not evaluate synthetic TCN evidence as if it were real fault evidence."
+  - "Do not use simulation to satisfy the primary generalization claim."
+  - "Do not infer physical compressor-energy savings."
+  - "CPU router energy remains UNKNOWN."

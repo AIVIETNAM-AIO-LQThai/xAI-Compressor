@@ -1,0 +1,491 @@
+{
+  "schema_version": "aeroxai.evidence_aware_router_simulation.v1",
+  "study": {
+    "name": "evidence_aware_router_simulation",
+    "parent_study": "evidence_aware_compute_routing",
+    "policy_freeze_commit": "aa3863080493c19483d536a2f9d2da1613a651b7",
+    "evidence_class": "SIMULATED",
+    "promotion_allowed": false
+  },
+  "data_use": {
+    "metropt3_test_opened": false,
+    "metropt2_test_opened": false,
+    "new_evaluation_data_opened": false,
+    "incident_labels_used": false
+  },
+  "policy": {
+    "C": 10.0,
+    "class_weight": null,
+    "probability_threshold": 0.3,
+    "refit_performed": false,
+    "feature_changes_performed": false
+  },
+  "datasets": {
+    "metropt3": {
+      "baseline": {
+        "rows": 694,
+        "tcn_invocations": 113,
+        "tcn_invocation_fraction": 0.1628242074927954,
+        "probability_mean": 0.1049305070037322,
+        "probability_median": 0.009736381062493684,
+        "probability_p90": 0.44000214795744147,
+        "probability_p99": 0.7305082655554695
+      },
+      "baseline_reproduction_passed": true,
+      "shift_feature_count": 39,
+      "feature_location_shift": [
+        {
+          "rows": 694,
+          "tcn_invocations": 121,
+          "tcn_invocation_fraction": 0.17435158501440923,
+          "probability_mean": 0.10186511115153855,
+          "probability_median": 0.006548042546849682,
+          "probability_p90": 0.42422391990956904,
+          "probability_p99": 0.7305944320511166,
+          "severity_sigma": 0.25,
+          "delta_invocation_fraction_vs_baseline": 0.01152737752161384
+        },
+        {
+          "rows": 694,
+          "tcn_invocations": 132,
+          "tcn_invocation_fraction": 0.19020172910662825,
+          "probability_mean": 0.1131079090707458,
+          "probability_median": 0.007101663736191227,
+          "probability_p90": 0.46153046271056414,
+          "probability_p99": 0.7322262924076385,
+          "severity_sigma": 0.5,
+          "delta_invocation_fraction_vs_baseline": 0.02737752161383286
+        },
+        {
+          "rows": 694,
+          "tcn_invocations": 164,
+          "tcn_invocation_fraction": 0.23631123919308358,
+          "probability_mean": 0.15588255492815872,
+          "probability_median": 0.046859855977797335,
+          "probability_p90": 0.47820409228550614,
+          "probability_p99": 0.7353695929954944,
+          "severity_sigma": 1.0,
+          "delta_invocation_fraction_vs_baseline": 0.0734870317002882
+        }
+      ],
+      "feature_scale_shift": [
+        {
+          "rows": 694,
+          "tcn_invocations": 118,
+          "tcn_invocation_fraction": 0.17002881844380405,
+          "probability_mean": 0.11329307436917477,
+          "probability_median": 0.008167140498824037,
+          "probability_p90": 0.4732008726065598,
+          "probability_p99": 0.7409795251646003,
+          "factor": 1.1,
+          "delta_invocation_fraction_vs_baseline": 0.007204610951008661
+        },
+        {
+          "rows": 694,
+          "tcn_invocations": 135,
+          "tcn_invocation_fraction": 0.19452449567723343,
+          "probability_mean": 0.1394307095357597,
+          "probability_median": 0.02465620368528782,
+          "probability_p90": 0.5103976028129507,
+          "probability_p99": 0.7583974007044403,
+          "factor": 1.25,
+          "delta_invocation_fraction_vs_baseline": 0.03170028818443804
+        },
+        {
+          "rows": 694,
+          "tcn_invocations": 177,
+          "tcn_invocation_fraction": 0.25504322766570603,
+          "probability_mean": 0.1839691361009573,
+          "probability_median": 0.09402371151684974,
+          "probability_p90": 0.6100792220813163,
+          "probability_p99": 0.799407511616438,
+          "factor": 1.5,
+          "delta_invocation_fraction_vs_baseline": 0.09221902017291064
+        }
+      ],
+      "support_tail_inflation": [
+        {
+          "rows": 694,
+          "tcn_invocations": 113,
+          "tcn_invocation_fraction": 0.1628242074927954,
+          "probability_mean": 0.11229581630584834,
+          "probability_median": 0.00957498504963073,
+          "probability_p90": 0.4735225140395531,
+          "probability_p99": 0.758807867464159,
+          "factor": 1.25,
+          "tail_threshold": 2.7319878938054556,
+          "affected_calibration_fraction": 0.10244988864142539,
+          "delta_invocation_fraction_vs_baseline": 0.0
+        },
+        {
+          "rows": 694,
+          "tcn_invocations": 113,
+          "tcn_invocation_fraction": 0.1628242074927954,
+          "probability_mean": 0.11290489471959246,
+          "probability_median": 0.009443842232124036,
+          "probability_p90": 0.44792690297958665,
+          "probability_p99": 0.7944869631455219,
+          "factor": 1.5,
+          "tail_threshold": 2.7319878938054556,
+          "affected_calibration_fraction": 0.10244988864142539,
+          "delta_invocation_fraction_vs_baseline": 0.0
+        },
+        {
+          "rows": 694,
+          "tcn_invocations": 114,
+          "tcn_invocation_fraction": 0.1642651296829971,
+          "probability_mean": 0.11558128236344725,
+          "probability_median": 0.009574674426679806,
+          "probability_p90": 0.6121716521636733,
+          "probability_p99": 0.8651331340887484,
+          "factor": 2.0,
+          "tail_threshold": 2.7319878938054556,
+          "affected_calibration_fraction": 0.10244988864142539,
+          "delta_invocation_fraction_vs_baseline": 0.0014409221902017266
+        }
+      ],
+      "operating_mix_shift": {
+        "train_thresholds": {
+          "low_upper": 0.03741666666666712,
+          "high_lower": 1.6460250000000003
+        },
+        "observed_validation_weights": {
+          "low": 0.18587896253602307,
+          "middle": 0.4510086455331412,
+          "high": 0.3631123919308357
+        },
+        "scenarios": {
+          "low_dominant": {
+            "weights": {
+              "low": 0.6,
+              "middle": 0.3,
+              "high": 0.1
+            },
+            "conditional_regime_rates": {
+              "low": {
+                "rows": 129,
+                "invocation_fraction": 0.0
+              },
+              "middle": {
+                "rows": 313,
+                "invocation_fraction": 0.09584664536741214
+              },
+              "high": {
+                "rows": 252,
+                "invocation_fraction": 0.32936507936507936
+              }
+            },
+            "counterfactual_invocation_fraction": 0.06169050154673158
+          },
+          "balanced": {
+            "weights": {
+              "low": 0.3333333333333333,
+              "middle": 0.3333333333333333,
+              "high": 0.3333333333333334
+            },
+            "conditional_regime_rates": {
+              "low": {
+                "rows": 129,
+                "invocation_fraction": 0.0
+              },
+              "middle": {
+                "rows": 313,
+                "invocation_fraction": 0.09584664536741214
+              },
+              "high": {
+                "rows": 252,
+                "invocation_fraction": 0.32936507936507936
+              }
+            },
+            "counterfactual_invocation_fraction": 0.1417372415774972
+          },
+          "high_dominant": {
+            "weights": {
+              "low": 0.1,
+              "middle": 0.3,
+              "high": 0.6
+            },
+            "conditional_regime_rates": {
+              "low": {
+                "rows": 129,
+                "invocation_fraction": 0.0
+              },
+              "middle": {
+                "rows": 313,
+                "invocation_fraction": 0.09584664536741214
+              },
+              "high": {
+                "rows": 252,
+                "invocation_fraction": 0.32936507936507936
+              }
+            },
+            "counterfactual_invocation_fraction": 0.22637304122927127
+          }
+        }
+      },
+      "mechanism_checks": {
+        "feature_location_shift_nondecreasing": true,
+        "feature_scale_shift_nondecreasing": true,
+        "support_tail_inflation_nondecreasing": true
+      }
+    },
+    "metropt2": {
+      "baseline": {
+        "rows": 1109,
+        "tcn_invocations": 216,
+        "tcn_invocation_fraction": 0.19477006311992787,
+        "probability_mean": 0.11142370396523207,
+        "probability_median": 0.0024582199726674464,
+        "probability_p90": 0.4849921974974918,
+        "probability_p99": 0.700482390965647
+      },
+      "baseline_reproduction_passed": true,
+      "shift_feature_count": 39,
+      "feature_location_shift": [
+        {
+          "rows": 1109,
+          "tcn_invocations": 226,
+          "tcn_invocation_fraction": 0.2037871956717764,
+          "probability_mean": 0.1175050846228874,
+          "probability_median": 0.0032142371267459054,
+          "probability_p90": 0.46718622349095024,
+          "probability_p99": 0.6993168982409503,
+          "severity_sigma": 0.25,
+          "delta_invocation_fraction_vs_baseline": 0.009017132551848522
+        },
+        {
+          "rows": 1109,
+          "tcn_invocations": 260,
+          "tcn_invocation_fraction": 0.2344454463480613,
+          "probability_mean": 0.1327073653341963,
+          "probability_median": 0.006293736029151778,
+          "probability_p90": 0.4747701101564969,
+          "probability_p99": 0.7197831512845583,
+          "severity_sigma": 0.5,
+          "delta_invocation_fraction_vs_baseline": 0.03967538322813344
+        },
+        {
+          "rows": 1109,
+          "tcn_invocations": 351,
+          "tcn_invocation_fraction": 0.31650135256988277,
+          "probability_mean": 0.2228558024925135,
+          "probability_median": 0.11180072300791111,
+          "probability_p90": 0.6375737214397738,
+          "probability_p99": 0.7533253223073462,
+          "severity_sigma": 1.0,
+          "delta_invocation_fraction_vs_baseline": 0.1217312894499549
+        }
+      ],
+      "feature_scale_shift": [
+        {
+          "rows": 1109,
+          "tcn_invocations": 228,
+          "tcn_invocation_fraction": 0.20559062218214608,
+          "probability_mean": 0.12846441102999726,
+          "probability_median": 0.0011676043910716523,
+          "probability_p90": 0.520343749788073,
+          "probability_p99": 0.7167384185656495,
+          "factor": 1.1,
+          "delta_invocation_fraction_vs_baseline": 0.01082055906221821
+        },
+        {
+          "rows": 1109,
+          "tcn_invocations": 266,
+          "tcn_invocation_fraction": 0.23985572587917042,
+          "probability_mean": 0.15362608371545666,
+          "probability_median": 0.0065728360013068395,
+          "probability_p90": 0.669189121221059,
+          "probability_p99": 0.7340888992994647,
+          "factor": 1.25,
+          "delta_invocation_fraction_vs_baseline": 0.045085662759242556
+        },
+        {
+          "rows": 1109,
+          "tcn_invocations": 316,
+          "tcn_invocation_fraction": 0.284941388638413,
+          "probability_mean": 0.20745355001665444,
+          "probability_median": 0.07421266400968118,
+          "probability_p90": 0.6823971941850316,
+          "probability_p99": 0.7477158616089089,
+          "factor": 1.5,
+          "delta_invocation_fraction_vs_baseline": 0.09017132551848514
+        }
+      ],
+      "support_tail_inflation": [
+        {
+          "rows": 1109,
+          "tcn_invocations": 216,
+          "tcn_invocation_fraction": 0.19477006311992787,
+          "probability_mean": 0.12353281602936052,
+          "probability_median": 0.0024998248130517786,
+          "probability_p90": 0.6688405288020173,
+          "probability_p99": 0.7268226579946628,
+          "factor": 1.25,
+          "tail_threshold": 2.6815171565107487,
+          "affected_calibration_fraction": 0.12091730368311328,
+          "delta_invocation_fraction_vs_baseline": 0.0
+        },
+        {
+          "rows": 1109,
+          "tcn_invocations": 217,
+          "tcn_invocation_fraction": 0.1956717763751127,
+          "probability_mean": 0.13136787716491014,
+          "probability_median": 0.00247812399514233,
+          "probability_p90": 0.6786114784215779,
+          "probability_p99": 0.7381375443529994,
+          "factor": 1.5,
+          "tail_threshold": 2.6815171565107487,
+          "affected_calibration_fraction": 0.12091730368311328,
+          "delta_invocation_fraction_vs_baseline": 0.0009017132551848439
+        },
+        {
+          "rows": 1109,
+          "tcn_invocations": 217,
+          "tcn_invocation_fraction": 0.1956717763751127,
+          "probability_mean": 0.13437422121320308,
+          "probability_median": 0.002478577657473351,
+          "probability_p90": 0.6793226134612877,
+          "probability_p99": 0.7488153601209662,
+          "factor": 2.0,
+          "tail_threshold": 2.6815171565107487,
+          "affected_calibration_fraction": 0.12091730368311328,
+          "delta_invocation_fraction_vs_baseline": 0.0009017132551848439
+        }
+      ],
+      "operating_mix_shift": {
+        "train_thresholds": {
+          "low_upper": 0.03985099121928215,
+          "high_lower": 2.3389108538627625
+        },
+        "observed_validation_weights": {
+          "low": 0.3958521190261497,
+          "middle": 0.2651036970243463,
+          "high": 0.3390441839495041
+        },
+        "scenarios": {
+          "low_dominant": {
+            "weights": {
+              "low": 0.6,
+              "middle": 0.3,
+              "high": 0.1
+            },
+            "conditional_regime_rates": {
+              "low": {
+                "rows": 439,
+                "invocation_fraction": 0.0
+              },
+              "middle": {
+                "rows": 294,
+                "invocation_fraction": 0.29591836734693877
+              },
+              "high": {
+                "rows": 376,
+                "invocation_fraction": 0.34308510638297873
+              }
+            },
+            "counterfactual_invocation_fraction": 0.1230840208423795
+          },
+          "balanced": {
+            "weights": {
+              "low": 0.3333333333333333,
+              "middle": 0.3333333333333333,
+              "high": 0.3333333333333334
+            },
+            "conditional_regime_rates": {
+              "low": {
+                "rows": 439,
+                "invocation_fraction": 0.0
+              },
+              "middle": {
+                "rows": 294,
+                "invocation_fraction": 0.29591836734693877
+              },
+              "high": {
+                "rows": 376,
+                "invocation_fraction": 0.34308510638297873
+              }
+            },
+            "counterfactual_invocation_fraction": 0.21300115790997254
+          },
+          "high_dominant": {
+            "weights": {
+              "low": 0.1,
+              "middle": 0.3,
+              "high": 0.6
+            },
+            "conditional_regime_rates": {
+              "low": {
+                "rows": 439,
+                "invocation_fraction": 0.0
+              },
+              "middle": {
+                "rows": 294,
+                "invocation_fraction": 0.29591836734693877
+              },
+              "high": {
+                "rows": 376,
+                "invocation_fraction": 0.34308510638297873
+              }
+            },
+            "counterfactual_invocation_fraction": 0.2946265740338689
+          }
+        }
+      },
+      "mechanism_checks": {
+        "feature_location_shift_nondecreasing": true,
+        "feature_scale_shift_nondecreasing": true,
+        "support_tail_inflation_nondecreasing": true
+      }
+    }
+  },
+  "router_runtime": {
+    "scope": "final_8_feature_standardization_plus_frozen_logistic_probability_and_threshold_decision",
+    "rows_per_logical_pass": 1803,
+    "repetitions": 5,
+    "duration_seconds": [
+      1.0001166989968624,
+      1.00007998199726,
+      1.000017651997041,
+      1.0001201709965244,
+      1.0001387669908581
+    ],
+    "logical_passes": [
+      5338,
+      5417,
+      5379,
+      5206,
+      5056
+    ],
+    "microseconds_per_row": [
+      0.10391455510921106,
+      0.10239533520038956,
+      0.1031122812083186,
+      0.10654971587633583,
+      0.1097128431112152
+    ],
+    "mean_microseconds_per_row": 0.10513694610109406,
+    "sample_sd_microseconds_per_row": 0.00300186150084444,
+    "checksum": 8684284,
+    "cpu_energy": "UNKNOWN"
+  },
+  "all_baseline_reproductions_passed": true,
+  "all_support_shift_mechanism_checks_passed": true,
+  "interpretation": {
+    "evidence_class": "SIMULATED",
+    "tcn_evidence_on_synthetic_inputs_evaluated": false,
+    "primary_generalization_claim_satisfied": false,
+    "router_cpu_energy": "UNKNOWN",
+    "whole_system_energy": "UNKNOWN",
+    "physical_compressor_energy": "NOT_MEASURED"
+  },
+  "guardrails": [
+    "All results are SIMULATED mechanism diagnostics.",
+    "Do not refit or retune the frozen logistic router.",
+    "Do not use MetroPT-3 TEST or MetroPT2 TEST.",
+    "Do not use incident labels.",
+    "Do not evaluate synthetic TCN evidence as if it were real fault evidence.",
+    "Do not use simulation to satisfy the primary generalization claim.",
+    "Do not infer physical compressor-energy savings.",
+    "CPU router energy remains UNKNOWN."
+  ]
+}
