@@ -80,11 +80,20 @@ Then explicitly say:
 
 Open **Evidence Proof**.
 
-Start with the REAL panel.
+First point to the integrity panel at the top.
 
-Say:
+Confirm that the page shows:
 
-> This is the V3 difference. AeroXAI does not jump from an anomaly to a compressor command. Real detector evidence generates multiple candidate hypotheses, then the physical-bridge gate asks whether the asset is calibrated well enough to support real physical reasoning.
+```text
+VERIFIED
+
+Bundle ID                 PASS
+Manifest Digest           PASS
+Artifact Roles            PASS
+Embedded Payload Digests  PASS
+Semantic Rebuild          PASS
+Current Source Files      PASS
+```
 
 Point to:
 

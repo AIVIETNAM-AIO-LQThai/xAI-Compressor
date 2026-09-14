@@ -2,13 +2,15 @@
 
 ## Release branch
 
-Create the release branch from the audited proof-manifest UI tip:
+Create the final release branch only after all completed feature
+work has been fast-forwarded into `main`.
 
 ```bash
-git switch feat/proof-manifest-ui
-git pull --ff-only origin feat/proof-manifest-ui
+git switch main
+git pull --ff-only origin main
 git status --short
-git switch -c release/esic-2026-v3
+git switch -c release/esic-2026-v3.1
+git push -u origin release/esic-2026-v3.1
 ```
 
 `git status --short` must be empty before applying release documentation.
@@ -67,6 +69,22 @@ Manual browser checks:
 4. **Energy Recommendation** returns an advisory action and shows no-write / re-optimization posture.
 5. **Evidence Proof** renders the REAL path as withheld and the SIMULATED path as `SIMULATION_ONLY`.
 
+### Proof-bundle API verification
+
+With the backend running:
+
+```bash
+curl -s \
+  http://127.0.0.1:8000/evidence/proof-bundle \
+  -o /tmp/aeroxai-proof-bundle.json
+
+curl -s \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data-binary @/tmp/aeroxai-proof-bundle.json \
+  http://127.0.0.1:8000/evidence/proof-bundle/verify \
+  | python -m json.tool
+
 Evidence Proof acceptance:
 
 ```text
@@ -87,7 +105,7 @@ This browser smoke test cannot be verified from GitHub alone.
 
 ## Proof artifact integrity
 
-These committed files must remain present:
+These committed source artifacts must remain present:
 
 ```text
 docs/evidence_action_replay.json

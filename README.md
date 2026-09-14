@@ -203,6 +203,9 @@ PROOF LAYER
 real evidence replay
 + simulated action proof
 -> machine-readable proof manifest
+-> SHA-256-bound proof bundle
+-> source-artifact integrity verification
+-> semantic manifest rebuild
 -> API
 -> Evidence Proof UI
 ```
@@ -249,9 +252,21 @@ GET  /health
 GET  /evidence/detection
 GET  /evidence/summary
 GET  /evidence/proof-manifest
+GET  /evidence/proof-bundle
+POST /evidence/proof-bundle/verify
 POST /twin/simulate
 POST /optimization/recommend
 ```
+
+The proof bundle embeds the frozen REAL evidence replay and
+SIMULATED action proof together with SHA-256 fingerprints.
+The verifier checks the bundle ID, manifest digest, embedded
+artifact digests, current source-file hashes, and whether the
+embedded source artifacts rebuild the manifest exactly.
+
+This integrity mechanism verifies provenance and reproducibility.
+It does not turn simulated evidence into real evidence and does
+not establish physical causality.
 
 There is intentionally no PLC/control-write endpoint.
 
