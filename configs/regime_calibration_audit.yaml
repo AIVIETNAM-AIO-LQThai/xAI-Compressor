@@ -1,0 +1,83 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+
+study:
+  role: "posthoc_calibration_routing_diagnostic"
+  evidence_class: "REAL"
+  production_promotion_allowed: false
+
+representation:
+  features: "model_feature_columns"
+  scaler: "standard"
+  variance_retained: 0.95
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+
+alerting:
+  ewma_alpha: 0.20
+  threshold_quantile: 0.995
+  reset_gap_minutes: 10
+
+calibration_stability:
+  bootstrap_replicates: 2000
+  seed: 20260914
+  confidence: 0.95
+  circular_block_lengths:
+    - 1
+    - 12
+
+diagnostics:
+  score_quantiles:
+    - 0.50
+    - 0.90
+    - 0.95
+    - 0.99
+    - 0.995
+  tail_quantiles:
+    - 0.99
+    - 0.995
+  transition_window_rows: 2
+  autocorrelation_lags:
+    - 1
+    - 2
+    - 3
+    - 6
+    - 12
+
+candidate_reproduction:
+  tolerance: 1.0e-12
+  stability_tolerance: 1.0e-9
+  expected:
+    train_rows: 5271
+    calibration_rows: 1796
+    feature_count: 63
+    component_count: 11
+    global_explained_variance_ratio: 0.9576052415845236
+    current_threshold: 3.3312096774193547
+    pressure_threshold: 9.452193548387097
+    pooled_calibration_threshold: 0.25200852435862636
+    train_regime_counts:
+      low_current_low_pressure: 3881
+      high_current_only: 335
+      high_pressure_only: 335
+      high_current_high_pressure: 720
+    calibration_relative_width:
+      circular_block_1: 1.8168757767937145
+      circular_block_12: 3.738465073820936
+
+outputs:
+  result_json: "docs/research/regime_calibration_audit.json"
+  local_output_dir: "data/processed/regime_calibration_audit"
+
+guardrails:
+  - "This is a post-hoc diagnostic prompted by the already-observed regime-PCA benchmark."
+  - "The diagnostic methods are frozen before this audit is run."
+  - "The audit may load TRAIN and CALIBRATION only."
+  - "The audit must not load TEST, incident labels, or incident timestamps."
+  - "No detector, router, threshold, PCA dimension, scaler, EWMA parameter, or persistence rule is changed."
+  - "Regime-specific thresholds are descriptive diagnostics only and are not candidate alert thresholds."
+  - "No result from this audit changes the frozen V3 detector."
