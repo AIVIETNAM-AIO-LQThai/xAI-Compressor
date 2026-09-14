@@ -1,0 +1,84 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+  test_file: "data/processed/test.parquet"
+  incidents_config: "configs/metropt.yaml"
+
+study:
+  role: "posthoc_reused_test_operating_cycle_support_diagnostic"
+  evidence_class: "REAL"
+  production_promotion_allowed: false
+
+representation:
+  features: "model_feature_columns"
+  variance_retained: 0.95
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+
+support_flags:
+  tp2_min_above_train_max:
+    feature: "tp2__min"
+    direction: "above_train_max"
+  tp2_mean_above_train_max:
+    feature: "tp2__mean"
+    direction: "above_train_max"
+  dv_pressure_min_above_train_max:
+    feature: "dv_pressure__min"
+    direction: "above_train_max"
+  dv_pressure_mean_above_train_max:
+    feature: "dv_pressure__mean"
+    direction: "above_train_max"
+  pressure_switch_transitions_above_train_max:
+    feature: "pressure_switch__transitions"
+    direction: "above_train_max"
+  pressure_switch_active_ratio_below_train_min:
+    feature: "pressure_switch__active_ratio"
+    direction: "below_train_min"
+
+composite_flags:
+  analog_cycle_novel:
+    any_of:
+      - "tp2_min_above_train_max"
+      - "tp2_mean_above_train_max"
+      - "dv_pressure_min_above_train_max"
+      - "dv_pressure_mean_above_train_max"
+  digital_cycle_novel:
+    any_of:
+      - "pressure_switch_transitions_above_train_max"
+      - "pressure_switch_active_ratio_below_train_min"
+  any_cycle_novel:
+    any_of:
+      - "analog_cycle_novel"
+      - "digital_cycle_novel"
+
+diagnostics:
+  relevant_window_hours_before_incident: 24
+  high_score_quantile: 0.995
+  run_gap_minutes: 10
+  top_joint_patterns: 20
+
+reproduction:
+  tolerance: 1.0e-12
+  expected:
+    train_rows: 5271
+    calibration_rows: 1796
+    test_rows: 43221
+    feature_count: 63
+    regime_component_count: 11
+    current_threshold: 3.3312096774193547
+    pressure_threshold: 9.452193548387097
+    calibration_regime_raw_q995: 0.2218319476372591
+
+outputs:
+  result_json: "docs/research/operating_cycle_support_audit.json"
+  local_output_dir: "data/processed/operating_cycle_support_audit"
+
+guardrails:
+  - "This is a post-hoc reused-TEST diagnostic."
+  - "Every support threshold is derived only from TRAIN min/max support."
+  - "No new router, detector, feature set, scaler, threshold, or alert rule is fitted."
+  - "Background TEST is outside registered incident windows, not guaranteed healthy."
+  - "Support violation is evidence of distribution shift, not proof of a physical fault."
