@@ -1,0 +1,2936 @@
+{
+  "benchmark_role": "independent_cross_asset_cross_modality_representation_stress_test",
+  "causal_claim": false,
+  "dataset": "IITK-AirCompressor",
+  "evidence_class": "REAL",
+  "interpretation_guardrails": [
+    "IITK is a recording-level seeded-fault benchmark, not a temporal precursor benchmark.",
+    "Global average precision has a high prevalence baseline because 1575 of 1620 test recordings are faults.",
+    "Per-fault ROC-AUC against the same 45 held-out healthy recordings is a primary class-wise ranking check.",
+    "Explanation groups are five acoustic feature families; raw N_eff is not directly comparable to MetroPT sensor-group N_eff.",
+    "Feature-family contribution is detector evidence, not physical root cause.",
+    "No detector or representation is promoted from this exploratory research branch."
+  ],
+  "protocol": {
+    "calibration_healthy": 60,
+    "feature_count": 31,
+    "feature_group_count": 5,
+    "temporal_alert_logic": false,
+    "test_fault": 1575,
+    "test_healthy": 45,
+    "test_recordings": 1620,
+    "test_retuning": false,
+    "threshold_interpolation": "higher",
+    "threshold_quantile": 0.95,
+    "train_healthy": 120
+  },
+  "representations": {
+    "robust_feature_energy": {
+      "explanations_all_test": {
+        "bearing": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 104,
+            "spectral_band_energy": 16,
+            "spectral_shape": 105
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.4622222222222222,
+            "spectral_band_energy": 0.07111111111111111,
+            "spectral_shape": 0.4666666666666667
+          },
+          "effective_group_count": {
+            "mean": 3.788459224934674,
+            "median": 3.9387885941338223,
+            "q25": 3.423615886900974,
+            "q75": 4.358106438161794
+          },
+          "herfindahl_index": {
+            "mean": 0.3272645187598394,
+            "median": 0.2968237370720498,
+            "q25": 0.2518003187391782,
+            "q75": 0.3570434312189123
+          },
+          "normalized_entropy": {
+            "mean": 0.8146042811431079,
+            "median": 0.8517714178499538,
+            "q25": 0.76467520735938,
+            "q75": 0.9146284230522487
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.45520315620576046,
+            "median": 0.4368006256630291,
+            "q25": 0.3567673148674488,
+            "q75": 0.5259335423811891
+          },
+          "top3_concentration": {
+            "mean": 0.8551286418834245,
+            "median": 0.8452471829129514,
+            "q25": 0.8065903711543779,
+            "q75": 0.9011263981253725
+          }
+        },
+        "flywheel": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 2,
+            "distribution_shape": 123,
+            "spectral_band_energy": 38,
+            "spectral_shape": 62
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.008888888888888889,
+            "distribution_shape": 0.5466666666666666,
+            "spectral_band_energy": 0.1688888888888889,
+            "spectral_shape": 0.27555555555555555
+          },
+          "effective_group_count": {
+            "mean": 3.594848841994242,
+            "median": 3.7514243644439054,
+            "q25": 3.152567574478845,
+            "q75": 4.225019547589067
+          },
+          "herfindahl_index": {
+            "mean": 0.3530513137209813,
+            "median": 0.3048403302988449,
+            "q25": 0.2619249744339783,
+            "q75": 0.39547830034655457
+          },
+          "normalized_entropy": {
+            "mean": 0.7734139399962854,
+            "median": 0.8214890355004482,
+            "q25": 0.7134274736290342,
+            "q75": 0.8953584828055541
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4724166411576588,
+            "median": 0.4357853102367069,
+            "q25": 0.3580620458151504,
+            "q75": 0.566304599067776
+          },
+          "top3_concentration": {
+            "mean": 0.8706184757136359,
+            "median": 0.8751838676844519,
+            "q25": 0.8132844024368963,
+            "q75": 0.9318801418080352
+          }
+        },
+        "healthy": {
+          "available_explanations": 45,
+          "dominant_group_counts": {
+            "amplitude": 13,
+            "distribution_shape": 10,
+            "spectral_band_energy": 9,
+            "spectral_shape": 13
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.28888888888888886,
+            "distribution_shape": 0.2222222222222222,
+            "spectral_band_energy": 0.2,
+            "spectral_shape": 0.28888888888888886
+          },
+          "effective_group_count": {
+            "mean": 3.6900528784334075,
+            "median": 3.8039802525406397,
+            "q25": 3.430626724665231,
+            "q75": 4.245588885794091
+          },
+          "herfindahl_index": {
+            "mean": 0.3443063878300066,
+            "median": 0.3058978956436475,
+            "q25": 0.26310429078831216,
+            "q75": 0.34393029377734535
+          },
+          "normalized_entropy": {
+            "mean": 0.7880239332148112,
+            "median": 0.8301332677156016,
+            "q25": 0.7659462682743363,
+            "q75": 0.8983760874154508
+          },
+          "recordings": 45,
+          "top1_concentration": {
+            "mean": 0.4563420598878889,
+            "median": 0.41943163892151203,
+            "q25": 0.36041139579420933,
+            "q75": 0.49267488077166927
+          },
+          "top3_concentration": {
+            "mean": 0.8593107963324738,
+            "median": 0.864436575009516,
+            "q25": 0.8070877715624557,
+            "q75": 0.9160733366870056
+          }
+        },
+        "leakage_inlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 114,
+            "spectral_band_energy": 23,
+            "spectral_shape": 88
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.5066666666666667,
+            "spectral_band_energy": 0.10222222222222223,
+            "spectral_shape": 0.39111111111111113
+          },
+          "effective_group_count": {
+            "mean": 3.3302031331616875,
+            "median": 3.325248277958837,
+            "q25": 2.656467883572057,
+            "q75": 4.107269791188696
+          },
+          "herfindahl_index": {
+            "mean": 0.39760319477347544,
+            "median": 0.3562348149091183,
+            "q25": 0.277150015101209,
+            "q75": 0.49214621118246066
+          },
+          "normalized_entropy": {
+            "mean": 0.72492866778201,
+            "median": 0.7465614747236504,
+            "q25": 0.6070426013548519,
+            "q75": 0.877796224679806
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5265775963406005,
+            "median": 0.49087946744504457,
+            "q25": 0.383412405492273,
+            "q75": 0.6673026349071963
+          },
+          "top3_concentration": {
+            "mean": 0.8957537140759186,
+            "median": 0.9182132974012087,
+            "q25": 0.8297423501158169,
+            "q75": 0.9485271299900689
+          }
+        },
+        "leakage_outlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 4,
+            "distribution_shape": 81,
+            "spectral_band_energy": 67,
+            "spectral_shape": 73
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.017777777777777778,
+            "distribution_shape": 0.36,
+            "spectral_band_energy": 0.29777777777777775,
+            "spectral_shape": 0.3244444444444444
+          },
+          "effective_group_count": {
+            "mean": 3.300263569977453,
+            "median": 3.4463716170772765,
+            "q25": 2.7472668547393395,
+            "q75": 4.037769246247317
+          },
+          "herfindahl_index": {
+            "mean": 0.4111700702313858,
+            "median": 0.3357154766508261,
+            "q25": 0.2806287981557218,
+            "q75": 0.4747313614422359
+          },
+          "normalized_entropy": {
+            "mean": 0.7082696533077801,
+            "median": 0.7687913667616963,
+            "q25": 0.6279251524085813,
+            "q75": 0.8671924290583838
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5276926510647926,
+            "median": 0.4643942845305824,
+            "q25": 0.37989684025544634,
+            "q75": 0.6396312818156155
+          },
+          "top3_concentration": {
+            "mean": 0.8908497176713748,
+            "median": 0.8954125071123318,
+            "q25": 0.8253581911015357,
+            "q75": 0.9535584438123341
+          }
+        },
+        "non_return_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 191,
+            "spectral_band_energy": 1,
+            "spectral_shape": 33
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.8488888888888889,
+            "spectral_band_energy": 0.0044444444444444444,
+            "spectral_shape": 0.14666666666666667
+          },
+          "effective_group_count": {
+            "mean": 2.918564568509555,
+            "median": 2.9694006375935453,
+            "q25": 2.5723801450075454,
+            "q75": 3.28120712070557
+          },
+          "herfindahl_index": {
+            "mean": 0.44967156974626415,
+            "median": 0.42219653606010876,
+            "q25": 0.37339317363254965,
+            "q75": 0.5108427823369036
+          },
+          "normalized_entropy": {
+            "mean": 0.652260202817751,
+            "median": 0.6762361682402821,
+            "q25": 0.5870568783543443,
+            "q75": 0.7382772395984658
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.6025773211346874,
+            "median": 0.5965348594015715,
+            "q25": 0.5164305094323298,
+            "q75": 0.6806148081803921
+          },
+          "top3_concentration": {
+            "mean": 0.9302553329153627,
+            "median": 0.9368819727853456,
+            "q25": 0.9098734217481267,
+            "q75": 0.9610367666798846
+          }
+        },
+        "piston_ring": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 71,
+            "spectral_band_energy": 42,
+            "spectral_shape": 112
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.31555555555555553,
+            "spectral_band_energy": 0.18666666666666668,
+            "spectral_shape": 0.49777777777777776
+          },
+          "effective_group_count": {
+            "mean": 3.9623871308565963,
+            "median": 4.031185906466022,
+            "q25": 3.554788999436786,
+            "q75": 4.4647996714127824
+          },
+          "herfindahl_index": {
+            "mean": 0.2981179408487718,
+            "median": 0.2827641182552137,
+            "q25": 0.24429406417785116,
+            "q75": 0.3289531419337537
+          },
+          "normalized_entropy": {
+            "mean": 0.8475360373823421,
+            "median": 0.8661785530800425,
+            "q25": 0.7880364309258976,
+            "q75": 0.9296564566657614
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4184860268018244,
+            "median": 0.40853250173252287,
+            "q25": 0.3351273177451942,
+            "q75": 0.48361932192819995
+          },
+          "top3_concentration": {
+            "mean": 0.8444584543830547,
+            "median": 0.831769200000508,
+            "q25": 0.7835400605488194,
+            "q75": 0.9032379391928944
+          }
+        },
+        "rider_belt": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 194,
+            "spectral_band_energy": 13,
+            "spectral_shape": 18
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.8622222222222222,
+            "spectral_band_energy": 0.057777777777777775,
+            "spectral_shape": 0.08
+          },
+          "effective_group_count": {
+            "mean": 3.2467520111854977,
+            "median": 3.2294238146447998,
+            "q25": 2.8466463324351614,
+            "q75": 3.6620813294196193
+          },
+          "herfindahl_index": {
+            "mean": 0.40010995097738866,
+            "median": 0.38605985585459557,
+            "q25": 0.3318934468645077,
+            "q75": 0.45222295443937144
+          },
+          "normalized_entropy": {
+            "mean": 0.720242020306239,
+            "median": 0.728393264944344,
+            "q25": 0.6500043076231631,
+            "q75": 0.8065124134297278
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5546729217670575,
+            "median": 0.5563157083118988,
+            "q25": 0.4749478879678848,
+            "q75": 0.6291438820127212
+          },
+          "top3_concentration": {
+            "mean": 0.9087786233244618,
+            "median": 0.9196561619900342,
+            "q25": 0.8747713717850041,
+            "q75": 0.9511011862590869
+          }
+        }
+      },
+      "explanations_detected_faults_only": {
+        "bearing": {
+          "available_explanations": 46,
+          "dominant_group_counts": {
+            "distribution_shape": 38,
+            "spectral_band_energy": 1,
+            "spectral_shape": 7
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.8260869565217391,
+            "spectral_band_energy": 0.021739130434782608,
+            "spectral_shape": 0.15217391304347827
+          },
+          "effective_group_count": {
+            "mean": 2.9543537874339414,
+            "median": 2.836601531841332,
+            "q25": 2.331762938908261,
+            "q75": 3.6741595851907833
+          },
+          "herfindahl_index": {
+            "mean": 0.4620051001955273,
+            "median": 0.4506493067920042,
+            "q25": 0.3367385518549446,
+            "q75": 0.542991256296758
+          },
+          "normalized_entropy": {
+            "mean": 0.6484243974459275,
+            "median": 0.6478070303262478,
+            "q25": 0.5259343764246895,
+            "q75": 0.8085150219524376
+          },
+          "recordings": 46,
+          "top1_concentration": {
+            "mean": 0.6134255001524418,
+            "median": 0.6260339301150231,
+            "q25": 0.5084221744551771,
+            "q75": 0.7005733097151186
+          },
+          "top3_concentration": {
+            "mean": 0.9190025245045849,
+            "median": 0.9468098634105853,
+            "q25": 0.8723629898611318,
+            "q75": 0.9685034610051994
+          }
+        },
+        "flywheel": {
+          "available_explanations": 54,
+          "dominant_group_counts": {
+            "distribution_shape": 54
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 1.0
+          },
+          "effective_group_count": {
+            "mean": 2.434210400781631,
+            "median": 2.4156021224207427,
+            "q25": 1.9577701711484352,
+            "q75": 2.9101595455013705
+          },
+          "herfindahl_index": {
+            "mean": 0.5453910276947852,
+            "median": 0.523742233892011,
+            "q25": 0.43160609863918964,
+            "q75": 0.6359029436418016
+          },
+          "normalized_entropy": {
+            "mean": 0.5310129914646642,
+            "median": 0.5479822709726839,
+            "q25": 0.4174165733668539,
+            "q75": 0.6636977490604041
+          },
+          "recordings": 54,
+          "top1_concentration": {
+            "mean": 0.6869753469110637,
+            "median": 0.6734617829640738,
+            "q25": 0.5986045202322186,
+            "q75": 0.7761142264035386
+          },
+          "top3_concentration": {
+            "mean": 0.9593961249546913,
+            "median": 0.9722843907225815,
+            "q25": 0.9371400119136735,
+            "q75": 0.9872877400595075
+          }
+        },
+        "leakage_inlet_valve": {
+          "available_explanations": 132,
+          "dominant_group_counts": {
+            "distribution_shape": 48,
+            "spectral_band_energy": 4,
+            "spectral_shape": 80
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.36363636363636365,
+            "spectral_band_energy": 0.030303030303030304,
+            "spectral_shape": 0.6060606060606061
+          },
+          "effective_group_count": {
+            "mean": 2.7861496643242254,
+            "median": 2.888919241125894,
+            "q25": 2.2780051372385284,
+            "q75": 3.2730454801476743
+          },
+          "herfindahl_index": {
+            "mean": 0.4782075697962814,
+            "median": 0.44586975312362576,
+            "q25": 0.36359802941362374,
+            "q75": 0.5912658445074955
+          },
+          "normalized_entropy": {
+            "mean": 0.6202540266317556,
+            "median": 0.6591632941639566,
+            "q25": 0.5115321541468734,
+            "q75": 0.7367298116043597
+          },
+          "recordings": 132,
+          "top1_concentration": {
+            "mean": 0.6173340074705251,
+            "median": 0.6203402459264673,
+            "q25": 0.4872341721640979,
+            "q75": 0.7519914981367869
+          },
+          "top3_concentration": {
+            "mean": 0.9395906013344114,
+            "median": 0.9439721812825289,
+            "q25": 0.9253259358052552,
+            "q75": 0.9661708294185571
+          }
+        },
+        "leakage_outlet_valve": {
+          "available_explanations": 71,
+          "dominant_group_counts": {
+            "distribution_shape": 12,
+            "spectral_band_energy": 2,
+            "spectral_shape": 57
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.16901408450704225,
+            "spectral_band_energy": 0.028169014084507043,
+            "spectral_shape": 0.8028169014084507
+          },
+          "effective_group_count": {
+            "mean": 2.235395855111507,
+            "median": 2.3064645310701413,
+            "q25": 1.5568305628648118,
+            "q75": 2.8181934601742817
+          },
+          "herfindahl_index": {
+            "mean": 0.6298515340913836,
+            "median": 0.589609422631451,
+            "q25": 0.46204238176589163,
+            "q75": 0.8133358395326972
+          },
+          "normalized_entropy": {
+            "mean": 0.4635696690461096,
+            "median": 0.5192594505362179,
+            "q25": 0.2750286217378448,
+            "q75": 0.6437315067884104
+          },
+          "recordings": 71,
+          "top1_concentration": {
+            "mean": 0.7503816613034846,
+            "median": 0.7536133872657745,
+            "q25": 0.6466635070523219,
+            "q75": 0.8999853794127461
+          },
+          "top3_concentration": {
+            "mean": 0.9527407580335251,
+            "median": 0.9566953766268738,
+            "q25": 0.9269969443371713,
+            "q75": 0.9824001961126747
+          }
+        },
+        "non_return_valve": {
+          "available_explanations": 144,
+          "dominant_group_counts": {
+            "distribution_shape": 111,
+            "spectral_shape": 33
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.7708333333333334,
+            "spectral_shape": 0.22916666666666666
+          },
+          "effective_group_count": {
+            "mean": 2.6877822138660443,
+            "median": 2.726396071395219,
+            "q25": 2.3936626683969964,
+            "q75": 3.0903855412723513
+          },
+          "herfindahl_index": {
+            "mean": 0.4924014847257447,
+            "median": 0.46942871632823224,
+            "q25": 0.3977466576272102,
+            "q75": 0.5465300943080191
+          },
+          "normalized_entropy": {
+            "mean": 0.6010625845644584,
+            "median": 0.6231864318249554,
+            "q25": 0.542316468812473,
+            "q75": 0.7010495559466503
+          },
+          "recordings": 144,
+          "top1_concentration": {
+            "mean": 0.6433119366839188,
+            "median": 0.6434777008799475,
+            "q25": 0.5555252209628071,
+            "q75": 0.7210614901666347
+          },
+          "top3_concentration": {
+            "mean": 0.9477033624248148,
+            "median": 0.9498455710421205,
+            "q25": 0.9276463590467425,
+            "q75": 0.9715237707351063
+          }
+        },
+        "piston_ring": {
+          "available_explanations": 45,
+          "dominant_group_counts": {
+            "distribution_shape": 40,
+            "spectral_band_energy": 5
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.8888888888888888,
+            "spectral_band_energy": 0.1111111111111111
+          },
+          "effective_group_count": {
+            "mean": 3.6853791510821656,
+            "median": 3.894656570314069,
+            "q25": 3.234900841476929,
+            "q75": 4.303969660448713
+          },
+          "herfindahl_index": {
+            "mean": 0.34817558158898554,
+            "median": 0.31311391198616056,
+            "q25": 0.26247399901467383,
+            "q75": 0.4091723524846062
+          },
+          "normalized_entropy": {
+            "mean": 0.7955516609822963,
+            "median": 0.8447703965444133,
+            "q25": 0.7294461418042385,
+            "q75": 0.9068618070982276
+          },
+          "recordings": 45,
+          "top1_concentration": {
+            "mean": 0.4945403495550737,
+            "median": 0.4904144507679964,
+            "q25": 0.381939825727882,
+            "q75": 0.5959001630812856
+          },
+          "top3_concentration": {
+            "mean": 0.8517497178866119,
+            "median": 0.8369711390000549,
+            "q25": 0.7974465804622553,
+            "q75": 0.8862002341903161
+          }
+        },
+        "rider_belt": {
+          "available_explanations": 108,
+          "dominant_group_counts": {
+            "distribution_shape": 90,
+            "spectral_band_energy": 1,
+            "spectral_shape": 17
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.8333333333333334,
+            "spectral_band_energy": 0.009259259259259259,
+            "spectral_shape": 0.1574074074074074
+          },
+          "effective_group_count": {
+            "mean": 2.920168700521957,
+            "median": 2.9376462208221823,
+            "q25": 2.6320035650007454,
+            "q75": 3.238786381618053
+          },
+          "herfindahl_index": {
+            "mean": 0.45183233791864846,
+            "median": 0.43355892535688645,
+            "q25": 0.3733370504973279,
+            "q75": 0.5018843840083981
+          },
+          "normalized_entropy": {
+            "mean": 0.654656447149102,
+            "median": 0.6695532232106702,
+            "q25": 0.6012937191422667,
+            "q75": 0.7301919617820222
+          },
+          "recordings": 108,
+          "top1_concentration": {
+            "mean": 0.6066587037487041,
+            "median": 0.6061106609283743,
+            "q25": 0.5231941632951916,
+            "q75": 0.6816857425597675
+          },
+          "top3_concentration": {
+            "mean": 0.9348141708594241,
+            "median": 0.9336153482677898,
+            "q25": 0.9157934980155373,
+            "q75": 0.9626295561553255
+          }
+        }
+      },
+      "metrics": {
+        "average_precision": 0.9987158014818164,
+        "average_precision_prevalence_baseline": 0.9722222222222222,
+        "balanced_accuracy": 0.6793650793650794,
+        "fault_prevalence": 0.9722222222222222,
+        "fault_recordings": 1575,
+        "healthy_recordings": 45,
+        "heldout_healthy_false_positive_rate": 0.022222222222222223,
+        "heldout_healthy_specificity": 0.9777777777777777,
+        "macro_fault_recall": 0.380952380952381,
+        "overall_fault_recall": 0.38095238095238093,
+        "per_fault_average_precision": {
+          "bearing": 0.9861419271527747,
+          "flywheel": 0.986703709402981,
+          "leakage_inlet_valve": 0.9954958917202795,
+          "leakage_outlet_valve": 0.9876471683746395,
+          "non_return_valve": 0.9962313865655857,
+          "piston_ring": 0.9857141826659543,
+          "rider_belt": 0.9935649246621178
+        },
+        "per_fault_recall": {
+          "bearing": 0.20444444444444446,
+          "flywheel": 0.24,
+          "leakage_inlet_valve": 0.5866666666666667,
+          "leakage_outlet_valve": 0.31555555555555553,
+          "non_return_valve": 0.64,
+          "piston_ring": 0.2,
+          "rider_belt": 0.48
+        },
+        "per_fault_roc_auc": {
+          "bearing": 0.964246913580247,
+          "flywheel": 0.9611851851851851,
+          "leakage_inlet_valve": 0.9822222222222222,
+          "leakage_outlet_valve": 0.9594074074074074,
+          "non_return_valve": 0.9847901234567902,
+          "piston_ring": 0.9630617283950617,
+          "rider_belt": 0.9769876543209877
+        },
+        "roc_auc": 0.9702716049382716,
+        "test_recordings": 1620
+      },
+      "model": {
+        "calibration_score_max": 49.59385552065344,
+        "calibration_score_median": 0.8074746042995764,
+        "calibration_score_min": 0.18948759282940686,
+        "family": "feature_energy",
+        "feature_count": 31,
+        "scaler": "robust",
+        "threshold": 15.567931484374881
+      }
+    },
+    "robust_pca": {
+      "explanations_all_test": {
+        "bearing": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 89,
+            "spectral_band_energy": 70,
+            "spectral_shape": 65
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.0044444444444444444,
+            "distribution_shape": 0.39555555555555555,
+            "spectral_band_energy": 0.3111111111111111,
+            "spectral_shape": 0.28888888888888886
+          },
+          "effective_group_count": {
+            "mean": 3.5356256917985935,
+            "median": 3.618071357782904,
+            "q25": 3.271046592328515,
+            "q75": 3.8779063840494565
+          },
+          "herfindahl_index": {
+            "mean": 0.34796746768147285,
+            "median": 0.3239187295920902,
+            "q25": 0.2941193612686111,
+            "q75": 0.38039291708472583
+          },
+          "normalized_entropy": {
+            "mean": 0.777437688496965,
+            "median": 0.7990001352864655,
+            "q25": 0.7363502396466941,
+            "q75": 0.8420923887729231
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.47393783075815543,
+            "median": 0.44734436240955044,
+            "q25": 0.37893618300058324,
+            "q75": 0.5461533338356828
+          },
+          "top3_concentration": {
+            "mean": 0.894579070694514,
+            "median": 0.9022544169576555,
+            "q25": 0.8660197169143314,
+            "q75": 0.9257636268962119
+          }
+        },
+        "flywheel": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 3,
+            "distribution_shape": 48,
+            "spectral_band_energy": 162,
+            "spectral_shape": 12
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.013333333333333334,
+            "distribution_shape": 0.21333333333333335,
+            "spectral_band_energy": 0.72,
+            "spectral_shape": 0.05333333333333334
+          },
+          "effective_group_count": {
+            "mean": 3.2612487089890805,
+            "median": 3.30382296240167,
+            "q25": 2.770970328756232,
+            "q75": 3.764495012499421
+          },
+          "herfindahl_index": {
+            "mean": 0.40610264312323746,
+            "median": 0.3786805662358499,
+            "q25": 0.30699501162680065,
+            "q75": 0.475273663294451
+          },
+          "normalized_entropy": {
+            "mean": 0.7190262241362867,
+            "median": 0.7425451222330666,
+            "q25": 0.6332630480335586,
+            "q75": 0.8236501173412896
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5516999547742416,
+            "median": 0.5395491870202722,
+            "q25": 0.4370099962203238,
+            "q75": 0.6568131476021941
+          },
+          "top3_concentration": {
+            "mean": 0.8965074822396684,
+            "median": 0.9073460265453014,
+            "q25": 0.8637417064017018,
+            "q75": 0.9331005002934505
+          }
+        },
+        "healthy": {
+          "available_explanations": 45,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 9,
+            "spectral_band_energy": 21,
+            "spectral_shape": 14
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.022222222222222223,
+            "distribution_shape": 0.2,
+            "spectral_band_energy": 0.4666666666666667,
+            "spectral_shape": 0.3111111111111111
+          },
+          "effective_group_count": {
+            "mean": 3.7598139075750017,
+            "median": 3.916273442544094,
+            "q25": 3.443855561714545,
+            "q75": 4.125629092930299
+          },
+          "herfindahl_index": {
+            "mean": 0.3227538055829911,
+            "median": 0.297487253848108,
+            "q25": 0.26678159078001035,
+            "q75": 0.34026020184578953
+          },
+          "normalized_entropy": {
+            "mean": 0.814081284370649,
+            "median": 0.8482095138227069,
+            "q25": 0.7683375898039644,
+            "q75": 0.8805673736069939
+          },
+          "recordings": 45,
+          "top1_concentration": {
+            "mean": 0.4439897298537689,
+            "median": 0.42641122716228,
+            "q25": 0.35484843485345263,
+            "q75": 0.4843520153663342
+          },
+          "top3_concentration": {
+            "mean": 0.8581749362283105,
+            "median": 0.8637692301626315,
+            "q25": 0.8186830821394334,
+            "q75": 0.8942366325514728
+          }
+        },
+        "leakage_inlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 161,
+            "spectral_band_energy": 24,
+            "spectral_shape": 40
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.7155555555555555,
+            "spectral_band_energy": 0.10666666666666667,
+            "spectral_shape": 0.17777777777777778
+          },
+          "effective_group_count": {
+            "mean": 3.630917325177665,
+            "median": 3.7397617411862,
+            "q25": 3.439574063527032,
+            "q75": 3.928331927904466
+          },
+          "herfindahl_index": {
+            "mean": 0.3338483645925747,
+            "median": 0.30813465621915137,
+            "q25": 0.2832911938809862,
+            "q75": 0.35380084701303743
+          },
+          "normalized_entropy": {
+            "mean": 0.7953849674698346,
+            "median": 0.8195543883001303,
+            "q25": 0.7675646481501498,
+            "q75": 0.8501197091122523
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4609360669278285,
+            "median": 0.43018159412405116,
+            "q25": 0.3756701439077528,
+            "q75": 0.519349569177284
+          },
+          "top3_concentration": {
+            "mean": 0.8755390109949462,
+            "median": 0.8805066063412453,
+            "q25": 0.8520833776028108,
+            "q75": 0.906227986094534
+          }
+        },
+        "leakage_outlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 43,
+            "spectral_band_energy": 129,
+            "spectral_shape": 53
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.19111111111111112,
+            "spectral_band_energy": 0.5733333333333334,
+            "spectral_shape": 0.23555555555555555
+          },
+          "effective_group_count": {
+            "mean": 3.482423704749417,
+            "median": 3.5918436866502903,
+            "q25": 3.1016221699827393,
+            "q75": 3.9036338974223304
+          },
+          "herfindahl_index": {
+            "mean": 0.35938961007852427,
+            "median": 0.3309286185655032,
+            "q25": 0.29445613205558335,
+            "q75": 0.40186781274663974
+          },
+          "normalized_entropy": {
+            "mean": 0.7659885335673216,
+            "median": 0.7944796270392773,
+            "q25": 0.7033047044077699,
+            "q75": 0.8462009483912433
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.49130388617329196,
+            "median": 0.46407035186250467,
+            "q25": 0.4002424248210199,
+            "q75": 0.5682988780165018
+          },
+          "top3_concentration": {
+            "mean": 0.8907746893642982,
+            "median": 0.8945083246981679,
+            "q25": 0.8643660257054838,
+            "q75": 0.9223045667866954
+          }
+        },
+        "non_return_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 172,
+            "spectral_band_energy": 30,
+            "spectral_shape": 23
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.7644444444444445,
+            "spectral_band_energy": 0.13333333333333333,
+            "spectral_shape": 0.10222222222222223
+          },
+          "effective_group_count": {
+            "mean": 3.827792786556258,
+            "median": 3.925279290629961,
+            "q25": 3.6795891093189206,
+            "q75": 4.1279109579731434
+          },
+          "herfindahl_index": {
+            "mean": 0.31038047595120505,
+            "median": 0.28846519548903804,
+            "q25": 0.2656776783296578,
+            "q75": 0.32346341532836853
+          },
+          "normalized_entropy": {
+            "mean": 0.8284207405263276,
+            "median": 0.8496366930260393,
+            "q25": 0.8094758305402547,
+            "q75": 0.8809109358831686
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.435129221024997,
+            "median": 0.4176754831770796,
+            "q25": 0.3597670192077788,
+            "q75": 0.48398115776053297
+          },
+          "top3_concentration": {
+            "mean": 0.8532875329969928,
+            "median": 0.850913650567157,
+            "q25": 0.8213342588912917,
+            "q75": 0.8808935285482757
+          }
+        },
+        "piston_ring": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 4,
+            "distribution_shape": 33,
+            "spectral_band_energy": 105,
+            "spectral_shape": 83
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.017777777777777778,
+            "distribution_shape": 0.14666666666666667,
+            "spectral_band_energy": 0.4666666666666667,
+            "spectral_shape": 0.3688888888888889
+          },
+          "effective_group_count": {
+            "mean": 3.346650834405787,
+            "median": 3.393727262108908,
+            "q25": 2.8286114202329866,
+            "q75": 3.8749212923730525
+          },
+          "herfindahl_index": {
+            "mean": 0.3728087052572965,
+            "median": 0.35479297579679836,
+            "q25": 0.2971836673704876,
+            "q75": 0.4281841866736974
+          },
+          "normalized_entropy": {
+            "mean": 0.7379394563203537,
+            "median": 0.7592270539337254,
+            "q25": 0.6460553209156562,
+            "q75": 0.8416139202939426
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.49130619668431097,
+            "median": 0.4750964538834067,
+            "q25": 0.40623238550209534,
+            "q75": 0.5556114795590236
+          },
+          "top3_concentration": {
+            "mean": 0.9010756471373201,
+            "median": 0.9041968442470651,
+            "q25": 0.8572353053207389,
+            "q75": 0.943099426287959
+          }
+        },
+        "rider_belt": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 2,
+            "distribution_shape": 124,
+            "spectral_band_energy": 98,
+            "temporal_structure": 1
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.008888888888888889,
+            "distribution_shape": 0.5511111111111111,
+            "spectral_band_energy": 0.43555555555555553,
+            "temporal_structure": 0.0044444444444444444
+          },
+          "effective_group_count": {
+            "mean": 4.103369045659785,
+            "median": 4.225319836135096,
+            "q25": 3.9091119695136376,
+            "q75": 4.460138037602038
+          },
+          "herfindahl_index": {
+            "mean": 0.2896235441195103,
+            "median": 0.268512144729666,
+            "q25": 0.2423869918930041,
+            "q75": 0.3075657441911098
+          },
+          "normalized_entropy": {
+            "mean": 0.8713322993260182,
+            "median": 0.8954026419228869,
+            "q25": 0.8470722728090956,
+            "q75": 0.9290073908018707
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.41515026125873067,
+            "median": 0.3919515603954484,
+            "q25": 0.33622850096784646,
+            "q75": 0.47164785404639425
+          },
+          "top3_concentration": {
+            "mean": 0.8155226799007687,
+            "median": 0.8160623139371832,
+            "q25": 0.7725008653002365,
+            "q75": 0.8517420140638459
+          }
+        }
+      },
+      "explanations_detected_faults_only": {
+        "bearing": {
+          "available_explanations": 224,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 89,
+            "spectral_band_energy": 69,
+            "spectral_shape": 65
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.004464285714285714,
+            "distribution_shape": 0.39732142857142855,
+            "spectral_band_energy": 0.3080357142857143,
+            "spectral_shape": 0.29017857142857145
+          },
+          "effective_group_count": {
+            "mean": 3.536106098055078,
+            "median": 3.6188485936808634,
+            "q25": 3.2692473563302356,
+            "q75": 3.878293553986094
+          },
+          "herfindahl_index": {
+            "mean": 0.34796828429427734,
+            "median": 0.32298411573714075,
+            "q25": 0.294035966091969,
+            "q75": 0.38043678865584807
+          },
+          "normalized_entropy": {
+            "mean": 0.7774911022322504,
+            "median": 0.799133582102689,
+            "q25": 0.7360080984429015,
+            "q75": 0.8421544104312041
+          },
+          "recordings": 224,
+          "top1_concentration": {
+            "mean": 0.4741365180096593,
+            "median": 0.4495233129117475,
+            "q25": 0.3786681824353956,
+            "q75": 0.5463044848171152
+          },
+          "top3_concentration": {
+            "mean": 0.8945441572155379,
+            "median": 0.9019960478002476,
+            "q25": 0.8659338693156845,
+            "q75": 0.9258346205472738
+          }
+        },
+        "flywheel": {
+          "available_explanations": 223,
+          "dominant_group_counts": {
+            "amplitude": 3,
+            "distribution_shape": 48,
+            "spectral_band_energy": 160,
+            "spectral_shape": 12
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.013452914798206279,
+            "distribution_shape": 0.21524663677130046,
+            "spectral_band_energy": 0.7174887892376681,
+            "spectral_shape": 0.053811659192825115
+          },
+          "effective_group_count": {
+            "mean": 3.2601610941639008,
+            "median": 3.30382296240167,
+            "q25": 2.7670855638295064,
+            "q75": 3.7700442584826606
+          },
+          "herfindahl_index": {
+            "mean": 0.40639671701325886,
+            "median": 0.3786805662358499,
+            "q25": 0.30660083127737175,
+            "q75": 0.47547702098209277
+          },
+          "normalized_entropy": {
+            "mean": 0.7187045840993441,
+            "median": 0.7425451222330666,
+            "q25": 0.632390743331854,
+            "q75": 0.8245646803128457
+          },
+          "recordings": 223,
+          "top1_concentration": {
+            "mean": 0.5517936857277401,
+            "median": 0.5395491870202722,
+            "q25": 0.43630210329310815,
+            "q75": 0.6569149385005257
+          },
+          "top3_concentration": {
+            "mean": 0.8965087641854013,
+            "median": 0.9073460265453014,
+            "q25": 0.8638424682245307,
+            "q75": 0.9330022814079428
+          }
+        },
+        "leakage_inlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 161,
+            "spectral_band_energy": 24,
+            "spectral_shape": 40
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.7155555555555555,
+            "spectral_band_energy": 0.10666666666666667,
+            "spectral_shape": 0.17777777777777778
+          },
+          "effective_group_count": {
+            "mean": 3.630917325177665,
+            "median": 3.7397617411862,
+            "q25": 3.439574063527032,
+            "q75": 3.928331927904466
+          },
+          "herfindahl_index": {
+            "mean": 0.3338483645925747,
+            "median": 0.30813465621915137,
+            "q25": 0.2832911938809862,
+            "q75": 0.35380084701303743
+          },
+          "normalized_entropy": {
+            "mean": 0.7953849674698346,
+            "median": 0.8195543883001303,
+            "q25": 0.7675646481501498,
+            "q75": 0.8501197091122523
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4609360669278285,
+            "median": 0.43018159412405116,
+            "q25": 0.3756701439077528,
+            "q75": 0.519349569177284
+          },
+          "top3_concentration": {
+            "mean": 0.8755390109949462,
+            "median": 0.8805066063412453,
+            "q25": 0.8520833776028108,
+            "q75": 0.906227986094534
+          }
+        },
+        "leakage_outlet_valve": {
+          "available_explanations": 224,
+          "dominant_group_counts": {
+            "distribution_shape": 43,
+            "spectral_band_energy": 128,
+            "spectral_shape": 53
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.19196428571428573,
+            "spectral_band_energy": 0.5714285714285714,
+            "spectral_shape": 0.23660714285714285
+          },
+          "effective_group_count": {
+            "mean": 3.4793743405867312,
+            "median": 3.5898350742379908,
+            "q25": 3.101404507351304,
+            "q75": 3.9005331513291557
+          },
+          "herfindahl_index": {
+            "mean": 0.3597729382492187,
+            "median": 0.3309500444228415,
+            "q25": 0.29607190847482584,
+            "q75": 0.40274887844686025
+          },
+          "normalized_entropy": {
+            "mean": 0.7654503553396876,
+            "median": 0.7941319728528919,
+            "q25": 0.7032610948464895,
+            "q75": 0.8457071462387148
+          },
+          "recordings": 224,
+          "top1_concentration": {
+            "mean": 0.49187175617880313,
+            "median": 0.46488228215788513,
+            "q25": 0.4012730287099455,
+            "q75": 0.5687605481086485
+          },
+          "top3_concentration": {
+            "mean": 0.8910983503883694,
+            "median": 0.8947322639433293,
+            "q25": 0.8644533434430481,
+            "q75": 0.9223175702375983
+          }
+        },
+        "non_return_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 172,
+            "spectral_band_energy": 30,
+            "spectral_shape": 23
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.7644444444444445,
+            "spectral_band_energy": 0.13333333333333333,
+            "spectral_shape": 0.10222222222222223
+          },
+          "effective_group_count": {
+            "mean": 3.827792786556258,
+            "median": 3.925279290629961,
+            "q25": 3.6795891093189206,
+            "q75": 4.1279109579731434
+          },
+          "herfindahl_index": {
+            "mean": 0.31038047595120505,
+            "median": 0.28846519548903804,
+            "q25": 0.2656776783296578,
+            "q75": 0.32346341532836853
+          },
+          "normalized_entropy": {
+            "mean": 0.8284207405263276,
+            "median": 0.8496366930260393,
+            "q25": 0.8094758305402547,
+            "q75": 0.8809109358831686
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.435129221024997,
+            "median": 0.4176754831770796,
+            "q25": 0.3597670192077788,
+            "q75": 0.48398115776053297
+          },
+          "top3_concentration": {
+            "mean": 0.8532875329969928,
+            "median": 0.850913650567157,
+            "q25": 0.8213342588912917,
+            "q75": 0.8808935285482757
+          }
+        },
+        "piston_ring": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 4,
+            "distribution_shape": 33,
+            "spectral_band_energy": 105,
+            "spectral_shape": 83
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.017777777777777778,
+            "distribution_shape": 0.14666666666666667,
+            "spectral_band_energy": 0.4666666666666667,
+            "spectral_shape": 0.3688888888888889
+          },
+          "effective_group_count": {
+            "mean": 3.346650834405787,
+            "median": 3.393727262108908,
+            "q25": 2.8286114202329866,
+            "q75": 3.8749212923730525
+          },
+          "herfindahl_index": {
+            "mean": 0.3728087052572965,
+            "median": 0.35479297579679836,
+            "q25": 0.2971836673704876,
+            "q75": 0.4281841866736974
+          },
+          "normalized_entropy": {
+            "mean": 0.7379394563203537,
+            "median": 0.7592270539337254,
+            "q25": 0.6460553209156562,
+            "q75": 0.8416139202939426
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.49130619668431097,
+            "median": 0.4750964538834067,
+            "q25": 0.40623238550209534,
+            "q75": 0.5556114795590236
+          },
+          "top3_concentration": {
+            "mean": 0.9010756471373201,
+            "median": 0.9041968442470651,
+            "q25": 0.8572353053207389,
+            "q75": 0.943099426287959
+          }
+        },
+        "rider_belt": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 2,
+            "distribution_shape": 124,
+            "spectral_band_energy": 98,
+            "temporal_structure": 1
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.008888888888888889,
+            "distribution_shape": 0.5511111111111111,
+            "spectral_band_energy": 0.43555555555555553,
+            "temporal_structure": 0.0044444444444444444
+          },
+          "effective_group_count": {
+            "mean": 4.103369045659785,
+            "median": 4.225319836135096,
+            "q25": 3.9091119695136376,
+            "q75": 4.460138037602038
+          },
+          "herfindahl_index": {
+            "mean": 0.2896235441195103,
+            "median": 0.268512144729666,
+            "q25": 0.2423869918930041,
+            "q75": 0.3075657441911098
+          },
+          "normalized_entropy": {
+            "mean": 0.8713322993260182,
+            "median": 0.8954026419228869,
+            "q25": 0.8470722728090956,
+            "q75": 0.9290073908018707
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.41515026125873067,
+            "median": 0.3919515603954484,
+            "q25": 0.33622850096784646,
+            "q75": 0.47164785404639425
+          },
+          "top3_concentration": {
+            "mean": 0.8155226799007687,
+            "median": 0.8160623139371832,
+            "q25": 0.7725008653002365,
+            "q75": 0.8517420140638459
+          }
+        }
+      },
+      "metrics": {
+        "average_precision": 1.0,
+        "average_precision_prevalence_baseline": 0.9722222222222222,
+        "balanced_accuracy": 0.9987301587301587,
+        "fault_prevalence": 0.9722222222222222,
+        "fault_recordings": 1575,
+        "healthy_recordings": 45,
+        "heldout_healthy_false_positive_rate": 0.0,
+        "heldout_healthy_specificity": 1.0,
+        "macro_fault_recall": 0.9974603174603175,
+        "overall_fault_recall": 0.9974603174603175,
+        "per_fault_average_precision": {
+          "bearing": 0.9999999999999999,
+          "flywheel": 0.9999999999999999,
+          "leakage_inlet_valve": 0.9999999999999999,
+          "leakage_outlet_valve": 0.9999999999999999,
+          "non_return_valve": 0.9999999999999999,
+          "piston_ring": 0.9999999999999999,
+          "rider_belt": 0.9999999999999999
+        },
+        "per_fault_recall": {
+          "bearing": 0.9955555555555555,
+          "flywheel": 0.9911111111111112,
+          "leakage_inlet_valve": 1.0,
+          "leakage_outlet_valve": 0.9955555555555555,
+          "non_return_valve": 1.0,
+          "piston_ring": 1.0,
+          "rider_belt": 1.0
+        },
+        "per_fault_roc_auc": {
+          "bearing": 1.0,
+          "flywheel": 1.0,
+          "leakage_inlet_valve": 1.0,
+          "leakage_outlet_valve": 1.0,
+          "non_return_valve": 1.0,
+          "piston_ring": 1.0,
+          "rider_belt": 1.0
+        },
+        "roc_auc": 1.0,
+        "test_recordings": 1620
+      },
+      "model": {
+        "calibration_score_max": 0.2903290928341905,
+        "calibration_score_median": 0.0737620579864102,
+        "calibration_score_min": 0.023585367747065458,
+        "components": 9,
+        "explained_variance_ratio": 0.9581351985484031,
+        "family": "pca_reconstruction",
+        "feature_count": 31,
+        "scaler": "robust",
+        "threshold": 0.23280884394490253,
+        "variance_retained": 0.95
+      }
+    },
+    "standard_feature_energy": {
+      "explanations_all_test": {
+        "bearing": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 103,
+            "spectral_band_energy": 38,
+            "spectral_shape": 84
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.4577777777777778,
+            "spectral_band_energy": 0.1688888888888889,
+            "spectral_shape": 0.37333333333333335
+          },
+          "effective_group_count": {
+            "mean": 3.7658136744915223,
+            "median": 3.8918764158981816,
+            "q25": 3.4805412203682606,
+            "q75": 4.237066768604631
+          },
+          "herfindahl_index": {
+            "mean": 0.3239496374272896,
+            "median": 0.2977088739499595,
+            "q25": 0.2621930369133072,
+            "q75": 0.34943570733564316
+          },
+          "normalized_entropy": {
+            "mean": 0.8135896440706384,
+            "median": 0.8443267055875974,
+            "q25": 0.7749213530716521,
+            "q75": 0.8971276361937
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.44400866839930864,
+            "median": 0.4221192856913034,
+            "q25": 0.36035887031093183,
+            "q75": 0.49917411607406853
+          },
+          "top3_concentration": {
+            "mean": 0.8657669149190275,
+            "median": 0.8552648588327743,
+            "q25": 0.8249743906588954,
+            "q75": 0.9023797445575437
+          }
+        },
+        "flywheel": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 104,
+            "spectral_band_energy": 73,
+            "spectral_shape": 48
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.4622222222222222,
+            "spectral_band_energy": 0.3244444444444444,
+            "spectral_shape": 0.21333333333333335
+          },
+          "effective_group_count": {
+            "mean": 3.5203286053826197,
+            "median": 3.7034345643023716,
+            "q25": 3.162354450845456,
+            "q75": 4.084356188533501
+          },
+          "herfindahl_index": {
+            "mean": 0.3623714142910122,
+            "median": 0.31539336318687894,
+            "q25": 0.2742732500581255,
+            "q75": 0.38996046884607416
+          },
+          "normalized_entropy": {
+            "mean": 0.762038106415362,
+            "median": 0.8134893801059199,
+            "q25": 0.7153533669436234,
+            "q75": 0.8743202215094042
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.48267017641439414,
+            "median": 0.4423911725733914,
+            "q25": 0.37323361309893793,
+            "q75": 0.5499588582981025
+          },
+          "top3_concentration": {
+            "mean": 0.8795275176011947,
+            "median": 0.8778765473199014,
+            "q25": 0.8309408054323986,
+            "q75": 0.9295993138485941
+          }
+        },
+        "healthy": {
+          "available_explanations": 45,
+          "dominant_group_counts": {
+            "amplitude": 11,
+            "distribution_shape": 11,
+            "spectral_band_energy": 14,
+            "spectral_shape": 9
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.24444444444444444,
+            "distribution_shape": 0.24444444444444444,
+            "spectral_band_energy": 0.3111111111111111,
+            "spectral_shape": 0.2
+          },
+          "effective_group_count": {
+            "mean": 3.7456605479446767,
+            "median": 3.763144924287196,
+            "q25": 3.3706659851347305,
+            "q75": 4.085773561689387
+          },
+          "herfindahl_index": {
+            "mean": 0.31792094727313924,
+            "median": 0.3067993718613379,
+            "q25": 0.2633394148402315,
+            "q75": 0.3524402777767387
+          },
+          "normalized_entropy": {
+            "mean": 0.8145079271370951,
+            "median": 0.8234272435091108,
+            "q25": 0.7549905076509923,
+            "q75": 0.8745358027774668
+          },
+          "recordings": 45,
+          "top1_concentration": {
+            "mean": 0.4386714826244765,
+            "median": 0.44078438446291857,
+            "q25": 0.37116268667903446,
+            "q75": 0.4920295019608946
+          },
+          "top3_concentration": {
+            "mean": 0.8663018668502378,
+            "median": 0.8783876715962319,
+            "q25": 0.8172698189358789,
+            "q75": 0.9092347095314589
+          }
+        },
+        "leakage_inlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 149,
+            "spectral_band_energy": 73,
+            "spectral_shape": 3
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.6622222222222223,
+            "spectral_band_energy": 0.3244444444444444,
+            "spectral_shape": 0.013333333333333334
+          },
+          "effective_group_count": {
+            "mean": 3.619004564895157,
+            "median": 3.7561348441913545,
+            "q25": 3.1818913380519014,
+            "q75": 4.10452755255129
+          },
+          "herfindahl_index": {
+            "mean": 0.33627156746288656,
+            "median": 0.30869459076567507,
+            "q25": 0.2715476842630703,
+            "q75": 0.37203512222067514
+          },
+          "normalized_entropy": {
+            "mean": 0.788900526168002,
+            "median": 0.8222687259240209,
+            "q25": 0.7191801382604095,
+            "q75": 0.8773812488453248
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.45909866065848215,
+            "median": 0.4351074377372438,
+            "q25": 0.370140833894044,
+            "q75": 0.5283802704999307
+          },
+          "top3_concentration": {
+            "mean": 0.8825248751949984,
+            "median": 0.8652171057177206,
+            "q25": 0.836817257524636,
+            "q75": 0.9299872135003461
+          }
+        },
+        "leakage_outlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 79,
+            "spectral_band_energy": 127,
+            "spectral_shape": 18
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.0044444444444444444,
+            "distribution_shape": 0.3511111111111111,
+            "spectral_band_energy": 0.5644444444444444,
+            "spectral_shape": 0.08
+          },
+          "effective_group_count": {
+            "mean": 3.6292248709643617,
+            "median": 3.6786928989795524,
+            "q25": 3.2989969481937935,
+            "q75": 4.052571408137636
+          },
+          "herfindahl_index": {
+            "mean": 0.3274291338870669,
+            "median": 0.30836359269212793,
+            "q25": 0.2721943385986727,
+            "q75": 0.3571584305900036
+          },
+          "normalized_entropy": {
+            "mean": 0.7927930617386576,
+            "median": 0.8093244781472129,
+            "q25": 0.7416368521919023,
+            "q75": 0.8694660318508292
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.44201613947614077,
+            "median": 0.4190454671593224,
+            "q25": 0.3682872404264804,
+            "q75": 0.49826965804487555
+          },
+          "top3_concentration": {
+            "mean": 0.8823787212123779,
+            "median": 0.8841667711764555,
+            "q25": 0.8291922503693776,
+            "q75": 0.9301197673376399
+          }
+        },
+        "non_return_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 206,
+            "spectral_band_energy": 16,
+            "spectral_shape": 3
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.9155555555555556,
+            "spectral_band_energy": 0.07111111111111111,
+            "spectral_shape": 0.013333333333333334
+          },
+          "effective_group_count": {
+            "mean": 3.180843547341172,
+            "median": 3.227318660217848,
+            "q25": 2.865045607630548,
+            "q75": 3.4983790751864725
+          },
+          "herfindahl_index": {
+            "mean": 0.39194178029385224,
+            "median": 0.37220513740495015,
+            "q25": 0.33161377928437785,
+            "q75": 0.43464269875434647
+          },
+          "normalized_entropy": {
+            "mean": 0.7100190218926804,
+            "median": 0.7279881052095246,
+            "q25": 0.6540073778564176,
+            "q75": 0.7780975769063878
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5388563270103677,
+            "median": 0.5248386593492945,
+            "q25": 0.46025833025201784,
+            "q75": 0.6000641772887995
+          },
+          "top3_concentration": {
+            "mean": 0.9217442462158026,
+            "median": 0.9288007630978417,
+            "q25": 0.8872585039300412,
+            "q75": 0.9544747740438702
+          }
+        },
+        "piston_ring": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 54,
+            "spectral_band_energy": 79,
+            "spectral_shape": 92
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.24,
+            "spectral_band_energy": 0.3511111111111111,
+            "spectral_shape": 0.4088888888888889
+          },
+          "effective_group_count": {
+            "mean": 3.852909350273881,
+            "median": 3.9401568786051273,
+            "q25": 3.5025343730435066,
+            "q75": 4.316570870985802
+          },
+          "herfindahl_index": {
+            "mean": 0.3108383815084673,
+            "median": 0.29524157891111824,
+            "q25": 0.25956097686903445,
+            "q75": 0.34270314273246616
+          },
+          "normalized_entropy": {
+            "mean": 0.8303205370877527,
+            "median": 0.8519872241285796,
+            "q25": 0.7788351469518822,
+            "q75": 0.9086783005936245
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4339698031288262,
+            "median": 0.42249461212924944,
+            "q25": 0.3664617643676891,
+            "q75": 0.483637058982719
+          },
+          "top3_concentration": {
+            "mean": 0.8538624920126971,
+            "median": 0.8453479272719551,
+            "q25": 0.7975458121759551,
+            "q75": 0.9052333046771852
+          }
+        },
+        "rider_belt": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 201,
+            "spectral_band_energy": 24
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.8933333333333333,
+            "spectral_band_energy": 0.10666666666666667
+          },
+          "effective_group_count": {
+            "mean": 3.249906965799636,
+            "median": 3.247937897228893,
+            "q25": 2.8926873801931707,
+            "q75": 3.6121777519730798
+          },
+          "herfindahl_index": {
+            "mean": 0.37682603110191754,
+            "median": 0.36253643568581756,
+            "q25": 0.3197140339013497,
+            "q75": 0.4110291931751306
+          },
+          "normalized_entropy": {
+            "mean": 0.7244602902401337,
+            "median": 0.7319451671321118,
+            "q25": 0.6599732435647929,
+            "q75": 0.797987195362649
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5188592786522225,
+            "median": 0.5159148476555456,
+            "q25": 0.44034038741768394,
+            "q75": 0.5785002051781117
+          },
+          "top3_concentration": {
+            "mean": 0.9306538609112146,
+            "median": 0.9449871553302139,
+            "q25": 0.9072269741098189,
+            "q75": 0.9657022922785476
+          }
+        }
+      },
+      "explanations_detected_faults_only": {
+        "bearing": {
+          "available_explanations": 223,
+          "dominant_group_counts": {
+            "distribution_shape": 103,
+            "spectral_band_energy": 37,
+            "spectral_shape": 83
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.4618834080717489,
+            "spectral_band_energy": 0.16591928251121077,
+            "spectral_shape": 0.3721973094170404
+          },
+          "effective_group_count": {
+            "mean": 3.7657231104055833,
+            "median": 3.8918764158981816,
+            "q25": 3.4701015920512557,
+            "q75": 4.239151903820628
+          },
+          "herfindahl_index": {
+            "mean": 0.3240616023665621,
+            "median": 0.2976707846579916,
+            "q25": 0.26181856185365415,
+            "q75": 0.3500306909287343
+          },
+          "normalized_entropy": {
+            "mean": 0.8134857463226595,
+            "median": 0.8443267055875974,
+            "q25": 0.7730520921366306,
+            "q75": 0.8974332556871405
+          },
+          "recordings": 223,
+          "top1_concentration": {
+            "mean": 0.44446694896876937,
+            "median": 0.4229494933760086,
+            "q25": 0.35789098692194554,
+            "q75": 0.4993367836303796
+          },
+          "top3_concentration": {
+            "mean": 0.8657917197835721,
+            "median": 0.8552648588327743,
+            "q25": 0.8247192275096389,
+            "q75": 0.9026290035057365
+          }
+        },
+        "flywheel": {
+          "available_explanations": 199,
+          "dominant_group_counts": {
+            "distribution_shape": 104,
+            "spectral_band_energy": 54,
+            "spectral_shape": 41
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.5226130653266332,
+            "spectral_band_energy": 0.271356783919598,
+            "spectral_shape": 0.20603015075376885
+          },
+          "effective_group_count": {
+            "mean": 3.5244590534784845,
+            "median": 3.7446236405645856,
+            "q25": 3.088086883564266,
+            "q75": 4.1356149930971755
+          },
+          "herfindahl_index": {
+            "mean": 0.3660151340225927,
+            "median": 0.31155154341547525,
+            "q25": 0.2711933134511092,
+            "q75": 0.39713624086789867
+          },
+          "normalized_entropy": {
+            "mean": 0.7606881896726607,
+            "median": 0.8203616338394616,
+            "q25": 0.7005871201524074,
+            "q75": 0.8820694565923559
+          },
+          "recordings": 199,
+          "top1_concentration": {
+            "mean": 0.4880565198205605,
+            "median": 0.4423911725733914,
+            "q25": 0.3718130579101453,
+            "q75": 0.5629541699509439
+          },
+          "top3_concentration": {
+            "mean": 0.8766635897800076,
+            "median": 0.8728866347500663,
+            "q25": 0.8269740050372869,
+            "q75": 0.9306066826410941
+          }
+        },
+        "leakage_inlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 149,
+            "spectral_band_energy": 73,
+            "spectral_shape": 3
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.6622222222222223,
+            "spectral_band_energy": 0.3244444444444444,
+            "spectral_shape": 0.013333333333333334
+          },
+          "effective_group_count": {
+            "mean": 3.619004564895157,
+            "median": 3.7561348441913545,
+            "q25": 3.1818913380519014,
+            "q75": 4.10452755255129
+          },
+          "herfindahl_index": {
+            "mean": 0.33627156746288656,
+            "median": 0.30869459076567507,
+            "q25": 0.2715476842630703,
+            "q75": 0.37203512222067514
+          },
+          "normalized_entropy": {
+            "mean": 0.788900526168002,
+            "median": 0.8222687259240209,
+            "q25": 0.7191801382604095,
+            "q75": 0.8773812488453248
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.45909866065848215,
+            "median": 0.4351074377372438,
+            "q25": 0.370140833894044,
+            "q75": 0.5283802704999307
+          },
+          "top3_concentration": {
+            "mean": 0.8825248751949984,
+            "median": 0.8652171057177206,
+            "q25": 0.836817257524636,
+            "q75": 0.9299872135003461
+          }
+        },
+        "leakage_outlet_valve": {
+          "available_explanations": 178,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 79,
+            "spectral_band_energy": 85,
+            "spectral_shape": 13
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.0056179775280898875,
+            "distribution_shape": 0.4438202247191011,
+            "spectral_band_energy": 0.47752808988764045,
+            "spectral_shape": 0.07303370786516854
+          },
+          "effective_group_count": {
+            "mean": 3.754903271737002,
+            "median": 3.7946113515434714,
+            "q25": 3.4941756103762307,
+            "q75": 4.151255720496357
+          },
+          "herfindahl_index": {
+            "mean": 0.30952885288978566,
+            "median": 0.29611603436518286,
+            "q25": 0.2664741998607598,
+            "q75": 0.33496607526804767
+          },
+          "normalized_entropy": {
+            "mean": 0.8160536962877785,
+            "median": 0.8286005859455665,
+            "q25": 0.7773406487439162,
+            "q75": 0.8844143958259014
+          },
+          "recordings": 178,
+          "top1_concentration": {
+            "mean": 0.4176241466344392,
+            "median": 0.40114525887839714,
+            "q25": 0.3611740799716031,
+            "q75": 0.45432349627752017
+          },
+          "top3_concentration": {
+            "mean": 0.8741504999833197,
+            "median": 0.8670122562149853,
+            "q25": 0.824557984934264,
+            "q75": 0.9241621124813308
+          }
+        },
+        "non_return_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 206,
+            "spectral_band_energy": 16,
+            "spectral_shape": 3
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.9155555555555556,
+            "spectral_band_energy": 0.07111111111111111,
+            "spectral_shape": 0.013333333333333334
+          },
+          "effective_group_count": {
+            "mean": 3.180843547341172,
+            "median": 3.227318660217848,
+            "q25": 2.865045607630548,
+            "q75": 3.4983790751864725
+          },
+          "herfindahl_index": {
+            "mean": 0.39194178029385224,
+            "median": 0.37220513740495015,
+            "q25": 0.33161377928437785,
+            "q75": 0.43464269875434647
+          },
+          "normalized_entropy": {
+            "mean": 0.7100190218926804,
+            "median": 0.7279881052095246,
+            "q25": 0.6540073778564176,
+            "q75": 0.7780975769063878
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5388563270103677,
+            "median": 0.5248386593492945,
+            "q25": 0.46025833025201784,
+            "q75": 0.6000641772887995
+          },
+          "top3_concentration": {
+            "mean": 0.9217442462158026,
+            "median": 0.9288007630978417,
+            "q25": 0.8872585039300412,
+            "q75": 0.9544747740438702
+          }
+        },
+        "piston_ring": {
+          "available_explanations": 220,
+          "dominant_group_counts": {
+            "distribution_shape": 54,
+            "spectral_band_energy": 74,
+            "spectral_shape": 92
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.24545454545454545,
+            "spectral_band_energy": 0.33636363636363636,
+            "spectral_shape": 0.41818181818181815
+          },
+          "effective_group_count": {
+            "mean": 3.8766382790600207,
+            "median": 3.9597310469203593,
+            "q25": 3.5226264642726672,
+            "q75": 4.319948355834564
+          },
+          "herfindahl_index": {
+            "mean": 0.3079559404483083,
+            "median": 0.29285584514431673,
+            "q25": 0.2588106671270251,
+            "q75": 0.3371846858719728
+          },
+          "normalized_entropy": {
+            "mean": 0.8347799018377815,
+            "median": 0.855066283254569,
+            "q25": 0.7823891428349773,
+            "q75": 0.9091642266382693
+          },
+          "recordings": 220,
+          "top1_concentration": {
+            "mean": 0.43076747190268583,
+            "median": 0.419489180188086,
+            "q25": 0.36419678986655746,
+            "q75": 0.47981785142267186
+          },
+          "top3_concentration": {
+            "mean": 0.8517735741405147,
+            "median": 0.8404340858086308,
+            "q25": 0.7973894120524827,
+            "q75": 0.9009890638179733
+          }
+        },
+        "rider_belt": {
+          "available_explanations": 224,
+          "dominant_group_counts": {
+            "distribution_shape": 201,
+            "spectral_band_energy": 23
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.8973214285714286,
+            "spectral_band_energy": 0.10267857142857142
+          },
+          "effective_group_count": {
+            "mean": 3.2481475500346733,
+            "median": 3.247690952827316,
+            "q25": 2.8924693835562088,
+            "q75": 3.6061773775078008
+          },
+          "herfindahl_index": {
+            "mean": 0.3770464185782183,
+            "median": 0.3626565288309711,
+            "q25": 0.3195003309679844,
+            "q75": 0.41104563202943745
+          },
+          "normalized_entropy": {
+            "mean": 0.7241077033583797,
+            "median": 0.7318979227402906,
+            "q25": 0.6599264119070056,
+            "q75": 0.796953919200151
+          },
+          "recordings": 224,
+          "top1_concentration": {
+            "mean": 0.5190253984625445,
+            "median": 0.5166327942445889,
+            "q25": 0.439810656185439,
+            "q75": 0.578548930488268
+          },
+          "top3_concentration": {
+            "mean": 0.9307555145509431,
+            "median": 0.9450364197334855,
+            "q25": 0.9063975826056729,
+            "q75": 0.965824333481031
+          }
+        }
+      },
+      "metrics": {
+        "average_precision": 0.9999707657019706,
+        "average_precision_prevalence_baseline": 0.9722222222222222,
+        "balanced_accuracy": 0.9742857142857143,
+        "fault_prevalence": 0.9722222222222222,
+        "fault_recordings": 1575,
+        "healthy_recordings": 45,
+        "heldout_healthy_false_positive_rate": 0.0,
+        "heldout_healthy_specificity": 1.0,
+        "macro_fault_recall": 0.9485714285714286,
+        "overall_fault_recall": 0.9485714285714286,
+        "per_fault_average_precision": {
+          "bearing": 0.9999999999999999,
+          "flywheel": 0.9998604770676429,
+          "leakage_inlet_valve": 0.9999999999999999,
+          "leakage_outlet_valve": 0.9987081032992138,
+          "non_return_valve": 0.9999999999999999,
+          "piston_ring": 0.9999605812301976,
+          "rider_belt": 0.9999999999999999
+        },
+        "per_fault_recall": {
+          "bearing": 0.9911111111111112,
+          "flywheel": 0.8844444444444445,
+          "leakage_inlet_valve": 1.0,
+          "leakage_outlet_valve": 0.7911111111111111,
+          "non_return_valve": 1.0,
+          "piston_ring": 0.9777777777777777,
+          "rider_belt": 0.9955555555555555
+        },
+        "per_fault_roc_auc": {
+          "bearing": 1.0,
+          "flywheel": 0.9993086419753087,
+          "leakage_inlet_valve": 1.0,
+          "leakage_outlet_valve": 0.9937777777777778,
+          "non_return_valve": 1.0,
+          "piston_ring": 0.9998024691358024,
+          "rider_belt": 1.0
+        },
+        "roc_auc": 0.998984126984127,
+        "test_recordings": 1620
+      },
+      "model": {
+        "calibration_score_max": 10.99793377596682,
+        "calibration_score_median": 0.7254638870621717,
+        "calibration_score_min": 0.24203857773289383,
+        "family": "feature_energy",
+        "feature_count": 31,
+        "scaler": "standard",
+        "threshold": 3.96124829820208
+      }
+    },
+    "standard_pca": {
+      "explanations_all_test": {
+        "bearing": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 2,
+            "distribution_shape": 55,
+            "spectral_band_energy": 34,
+            "spectral_shape": 134
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.008888888888888889,
+            "distribution_shape": 0.24444444444444444,
+            "spectral_band_energy": 0.1511111111111111,
+            "spectral_shape": 0.5955555555555555
+          },
+          "effective_group_count": {
+            "mean": 3.2478834623913313,
+            "median": 3.2968360142902595,
+            "q25": 2.9629464189375816,
+            "q75": 3.580676359377065
+          },
+          "herfindahl_index": {
+            "mean": 0.39037278084061366,
+            "median": 0.3649922353996947,
+            "q25": 0.32571574703705425,
+            "q75": 0.42256000795812854
+          },
+          "normalized_entropy": {
+            "mean": 0.7225112396559208,
+            "median": 0.7412297273355831,
+            "q25": 0.6748841795348677,
+            "q75": 0.7925448381163562
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5211658488960267,
+            "median": 0.4961973945248258,
+            "q25": 0.4370509721231359,
+            "q75": 0.5986625563879051
+          },
+          "top3_concentration": {
+            "mean": 0.9095677507948344,
+            "median": 0.9178896955193919,
+            "q25": 0.8880770711806731,
+            "q75": 0.9383307337283172
+          }
+        },
+        "flywheel": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 2,
+            "distribution_shape": 43,
+            "spectral_band_energy": 112,
+            "spectral_shape": 68
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.008888888888888889,
+            "distribution_shape": 0.19111111111111112,
+            "spectral_band_energy": 0.49777777777777776,
+            "spectral_shape": 0.3022222222222222
+          },
+          "effective_group_count": {
+            "mean": 3.2231976139339436,
+            "median": 3.272252337688746,
+            "q25": 2.9517952701811976,
+            "q75": 3.631271757314814
+          },
+          "herfindahl_index": {
+            "mean": 0.39321685847483684,
+            "median": 0.3620104190776588,
+            "q25": 0.3175046752875434,
+            "q75": 0.40944492556264717
+          },
+          "normalized_entropy": {
+            "mean": 0.7137003194440429,
+            "median": 0.736579228641691,
+            "q25": 0.6725413531339768,
+            "q75": 0.8012629274633926
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5121530144661739,
+            "median": 0.4750673536203981,
+            "q25": 0.4314570818739081,
+            "q75": 0.5416504628389665
+          },
+          "top3_concentration": {
+            "mean": 0.909451737795132,
+            "median": 0.9112074272886499,
+            "q25": 0.881838224173586,
+            "q75": 0.9446619903356772
+          }
+        },
+        "healthy": {
+          "available_explanations": 45,
+          "dominant_group_counts": {
+            "amplitude": 2,
+            "distribution_shape": 3,
+            "spectral_band_energy": 14,
+            "spectral_shape": 26
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.044444444444444446,
+            "distribution_shape": 0.06666666666666667,
+            "spectral_band_energy": 0.3111111111111111,
+            "spectral_shape": 0.5777777777777777
+          },
+          "effective_group_count": {
+            "mean": 3.69777362847723,
+            "median": 3.752568210875254,
+            "q25": 3.2403184814385746,
+            "q75": 4.130364318683403
+          },
+          "herfindahl_index": {
+            "mean": 0.32549433238955316,
+            "median": 0.3171298627121679,
+            "q25": 0.27219198191312327,
+            "q75": 0.3779908819147455
+          },
+          "normalized_entropy": {
+            "mean": 0.8040398981039465,
+            "median": 0.8216784577968962,
+            "q25": 0.7304858501410937,
+            "q75": 0.8812801070987404
+          },
+          "recordings": 45,
+          "top1_concentration": {
+            "mean": 0.4503121702116631,
+            "median": 0.4390791283039213,
+            "q25": 0.36128277345848386,
+            "q75": 0.5286155010356122
+          },
+          "top3_concentration": {
+            "mean": 0.8646058199604915,
+            "median": 0.8733296040912939,
+            "q25": 0.8245640252093049,
+            "q75": 0.9152523648342245
+          }
+        },
+        "leakage_inlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 121,
+            "spectral_band_energy": 9,
+            "spectral_shape": 95
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.5377777777777778,
+            "spectral_band_energy": 0.04,
+            "spectral_shape": 0.4222222222222222
+          },
+          "effective_group_count": {
+            "mean": 3.343382070856398,
+            "median": 3.4368065137036914,
+            "q25": 3.158411043362643,
+            "q75": 3.659129031034969
+          },
+          "herfindahl_index": {
+            "mean": 0.37605571249339936,
+            "median": 0.3527036706436002,
+            "q25": 0.3133614678190142,
+            "q75": 0.3973105990596527
+          },
+          "normalized_entropy": {
+            "mean": 0.7433960454027857,
+            "median": 0.7670645084438289,
+            "q25": 0.7145780883320649,
+            "q75": 0.8060113033310572
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.51534275582916,
+            "median": 0.5020529736082474,
+            "q25": 0.4244084171472923,
+            "q75": 0.5803107911580897
+          },
+          "top3_concentration": {
+            "mean": 0.9035260101545581,
+            "median": 0.9034875264373383,
+            "q25": 0.8885535319969894,
+            "q75": 0.9228891443111803
+          }
+        },
+        "leakage_outlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 33,
+            "spectral_band_energy": 27,
+            "spectral_shape": 164
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.0044444444444444444,
+            "distribution_shape": 0.14666666666666667,
+            "spectral_band_energy": 0.12,
+            "spectral_shape": 0.7288888888888889
+          },
+          "effective_group_count": {
+            "mean": 3.2578572994919672,
+            "median": 3.26746176296856,
+            "q25": 2.913668217667634,
+            "q75": 3.5979706004836958
+          },
+          "herfindahl_index": {
+            "mean": 0.38154856584902325,
+            "median": 0.3776834867245018,
+            "q25": 0.3329309718058684,
+            "q75": 0.4219764150160161
+          },
+          "normalized_entropy": {
+            "mean": 0.7271919039920021,
+            "median": 0.7356689283084134,
+            "q25": 0.664463558977567,
+            "q75": 0.795538588056961
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5157514078317738,
+            "median": 0.5102881781864542,
+            "q25": 0.4588945200487098,
+            "q75": 0.5650044510440265
+          },
+          "top3_concentration": {
+            "mean": 0.9090329445557849,
+            "median": 0.9125607655104178,
+            "q25": 0.8780516896512178,
+            "q75": 0.9428558815342193
+          }
+        },
+        "non_return_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 99,
+            "spectral_band_energy": 37,
+            "spectral_shape": 89
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.44,
+            "spectral_band_energy": 0.16444444444444445,
+            "spectral_shape": 0.39555555555555555
+          },
+          "effective_group_count": {
+            "mean": 3.6000717850164223,
+            "median": 3.6904173723897817,
+            "q25": 3.437954484657092,
+            "q75": 3.9080324583858173
+          },
+          "herfindahl_index": {
+            "mean": 0.33044842157789023,
+            "median": 0.304367543964208,
+            "q25": 0.28017729506530575,
+            "q75": 0.34937568573970407
+          },
+          "normalized_entropy": {
+            "mean": 0.7896028011335863,
+            "median": 0.8113016045024201,
+            "q25": 0.7672720136833586,
+            "q75": 0.8469006659041929
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4434439172206142,
+            "median": 0.4202640397616256,
+            "q25": 0.35484086882966265,
+            "q75": 0.49497494716636475
+          },
+          "top3_concentration": {
+            "mean": 0.8898692599694189,
+            "median": 0.8953008106799641,
+            "q25": 0.8642003725918688,
+            "q75": 0.9166793007359672
+          }
+        },
+        "piston_ring": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 22,
+            "spectral_band_energy": 42,
+            "spectral_shape": 160
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.0044444444444444444,
+            "distribution_shape": 0.09777777777777778,
+            "spectral_band_energy": 0.18666666666666668,
+            "spectral_shape": 0.7111111111111111
+          },
+          "effective_group_count": {
+            "mean": 3.0988116206646543,
+            "median": 3.1031863530469437,
+            "q25": 2.6714866639045893,
+            "q75": 3.454394687419678
+          },
+          "herfindahl_index": {
+            "mean": 0.4085039399951059,
+            "median": 0.404658668224429,
+            "q25": 0.3433381923188292,
+            "q75": 0.47224913393181084
+          },
+          "normalized_entropy": {
+            "mean": 0.6938491907751431,
+            "median": 0.7036179716419859,
+            "q25": 0.6105455282392962,
+            "q75": 0.7702361385195893
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5420872250467321,
+            "median": 0.5310064051358231,
+            "q25": 0.4540201305187827,
+            "q75": 0.6351629898160149
+          },
+          "top3_concentration": {
+            "mean": 0.9199995827290736,
+            "median": 0.9257576908194123,
+            "q25": 0.8998043241460266,
+            "q75": 0.94682447090362
+          }
+        },
+        "rider_belt": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 91,
+            "spectral_band_energy": 46,
+            "spectral_shape": 88
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.40444444444444444,
+            "spectral_band_energy": 0.20444444444444446,
+            "spectral_shape": 0.39111111111111113
+          },
+          "effective_group_count": {
+            "mean": 3.9596218566715438,
+            "median": 4.0526773497772055,
+            "q25": 3.8020166202205004,
+            "q75": 4.2613085992838515
+          },
+          "herfindahl_index": {
+            "mean": 0.30124832653013667,
+            "median": 0.2792728727414816,
+            "q25": 0.26060847880822774,
+            "q75": 0.30758386920959385
+          },
+          "normalized_entropy": {
+            "mean": 0.8489956651264644,
+            "median": 0.8694822744717919,
+            "q25": 0.8298124489178424,
+            "q75": 0.9006723930396403
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4166787349493403,
+            "median": 0.3894935126679714,
+            "q25": 0.3489926528121964,
+            "q75": 0.4511666776432344
+          },
+          "top3_concentration": {
+            "mean": 0.8442979833680566,
+            "median": 0.8454800828568363,
+            "q25": 0.8155717059969231,
+            "q75": 0.874207988117067
+          }
+        }
+      },
+      "explanations_detected_faults_only": {
+        "bearing": {
+          "available_explanations": 224,
+          "dominant_group_counts": {
+            "amplitude": 2,
+            "distribution_shape": 55,
+            "spectral_band_energy": 34,
+            "spectral_shape": 133
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.008928571428571428,
+            "distribution_shape": 0.24553571428571427,
+            "spectral_band_energy": 0.15178571428571427,
+            "spectral_shape": 0.59375
+          },
+          "effective_group_count": {
+            "mean": 3.247629828928003,
+            "median": 3.2948405119511683,
+            "q25": 2.961814009425909,
+            "q75": 3.581418598094257
+          },
+          "herfindahl_index": {
+            "mean": 0.3904787669921194,
+            "median": 0.364985370234507,
+            "q25": 0.3255073945260365,
+            "q75": 0.4230009214062097
+          },
+          "normalized_entropy": {
+            "mean": 0.7224210686539108,
+            "median": 0.7408534191463481,
+            "q25": 0.6746465296210459,
+            "q75": 0.7926735813225336
+          },
+          "recordings": 224,
+          "top1_concentration": {
+            "mean": 0.5211270371344507,
+            "median": 0.4957579996642065,
+            "q25": 0.4367462746071541,
+            "q75": 0.5988216783439835
+          },
+          "top3_concentration": {
+            "mean": 0.9094353100828813,
+            "median": 0.9178622611730469,
+            "q25": 0.8878270600852147,
+            "q75": 0.9373021760400692
+          }
+        },
+        "flywheel": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 2,
+            "distribution_shape": 43,
+            "spectral_band_energy": 112,
+            "spectral_shape": 68
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.008888888888888889,
+            "distribution_shape": 0.19111111111111112,
+            "spectral_band_energy": 0.49777777777777776,
+            "spectral_shape": 0.3022222222222222
+          },
+          "effective_group_count": {
+            "mean": 3.2231976139339436,
+            "median": 3.272252337688746,
+            "q25": 2.9517952701811976,
+            "q75": 3.631271757314814
+          },
+          "herfindahl_index": {
+            "mean": 0.39321685847483684,
+            "median": 0.3620104190776588,
+            "q25": 0.3175046752875434,
+            "q75": 0.40944492556264717
+          },
+          "normalized_entropy": {
+            "mean": 0.7137003194440429,
+            "median": 0.736579228641691,
+            "q25": 0.6725413531339768,
+            "q75": 0.8012629274633926
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5121530144661739,
+            "median": 0.4750673536203981,
+            "q25": 0.4314570818739081,
+            "q75": 0.5416504628389665
+          },
+          "top3_concentration": {
+            "mean": 0.909451737795132,
+            "median": 0.9112074272886499,
+            "q25": 0.881838224173586,
+            "q75": 0.9446619903356772
+          }
+        },
+        "leakage_inlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 121,
+            "spectral_band_energy": 9,
+            "spectral_shape": 95
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.5377777777777778,
+            "spectral_band_energy": 0.04,
+            "spectral_shape": 0.4222222222222222
+          },
+          "effective_group_count": {
+            "mean": 3.343382070856398,
+            "median": 3.4368065137036914,
+            "q25": 3.158411043362643,
+            "q75": 3.659129031034969
+          },
+          "herfindahl_index": {
+            "mean": 0.37605571249339936,
+            "median": 0.3527036706436002,
+            "q25": 0.3133614678190142,
+            "q75": 0.3973105990596527
+          },
+          "normalized_entropy": {
+            "mean": 0.7433960454027857,
+            "median": 0.7670645084438289,
+            "q25": 0.7145780883320649,
+            "q75": 0.8060113033310572
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.51534275582916,
+            "median": 0.5020529736082474,
+            "q25": 0.4244084171472923,
+            "q75": 0.5803107911580897
+          },
+          "top3_concentration": {
+            "mean": 0.9035260101545581,
+            "median": 0.9034875264373383,
+            "q25": 0.8885535319969894,
+            "q75": 0.9228891443111803
+          }
+        },
+        "leakage_outlet_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 33,
+            "spectral_band_energy": 27,
+            "spectral_shape": 164
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.0044444444444444444,
+            "distribution_shape": 0.14666666666666667,
+            "spectral_band_energy": 0.12,
+            "spectral_shape": 0.7288888888888889
+          },
+          "effective_group_count": {
+            "mean": 3.2578572994919672,
+            "median": 3.26746176296856,
+            "q25": 2.913668217667634,
+            "q75": 3.5979706004836958
+          },
+          "herfindahl_index": {
+            "mean": 0.38154856584902325,
+            "median": 0.3776834867245018,
+            "q25": 0.3329309718058684,
+            "q75": 0.4219764150160161
+          },
+          "normalized_entropy": {
+            "mean": 0.7271919039920021,
+            "median": 0.7356689283084134,
+            "q25": 0.664463558977567,
+            "q75": 0.795538588056961
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5157514078317738,
+            "median": 0.5102881781864542,
+            "q25": 0.4588945200487098,
+            "q75": 0.5650044510440265
+          },
+          "top3_concentration": {
+            "mean": 0.9090329445557849,
+            "median": 0.9125607655104178,
+            "q25": 0.8780516896512178,
+            "q75": 0.9428558815342193
+          }
+        },
+        "non_return_valve": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 99,
+            "spectral_band_energy": 37,
+            "spectral_shape": 89
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.44,
+            "spectral_band_energy": 0.16444444444444445,
+            "spectral_shape": 0.39555555555555555
+          },
+          "effective_group_count": {
+            "mean": 3.6000717850164223,
+            "median": 3.6904173723897817,
+            "q25": 3.437954484657092,
+            "q75": 3.9080324583858173
+          },
+          "herfindahl_index": {
+            "mean": 0.33044842157789023,
+            "median": 0.304367543964208,
+            "q25": 0.28017729506530575,
+            "q75": 0.34937568573970407
+          },
+          "normalized_entropy": {
+            "mean": 0.7896028011335863,
+            "median": 0.8113016045024201,
+            "q25": 0.7672720136833586,
+            "q75": 0.8469006659041929
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4434439172206142,
+            "median": 0.4202640397616256,
+            "q25": 0.35484086882966265,
+            "q75": 0.49497494716636475
+          },
+          "top3_concentration": {
+            "mean": 0.8898692599694189,
+            "median": 0.8953008106799641,
+            "q25": 0.8642003725918688,
+            "q75": 0.9166793007359672
+          }
+        },
+        "piston_ring": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "amplitude": 1,
+            "distribution_shape": 22,
+            "spectral_band_energy": 42,
+            "spectral_shape": 160
+          },
+          "dominant_group_fractions": {
+            "amplitude": 0.0044444444444444444,
+            "distribution_shape": 0.09777777777777778,
+            "spectral_band_energy": 0.18666666666666668,
+            "spectral_shape": 0.7111111111111111
+          },
+          "effective_group_count": {
+            "mean": 3.0988116206646543,
+            "median": 3.1031863530469437,
+            "q25": 2.6714866639045893,
+            "q75": 3.454394687419678
+          },
+          "herfindahl_index": {
+            "mean": 0.4085039399951059,
+            "median": 0.404658668224429,
+            "q25": 0.3433381923188292,
+            "q75": 0.47224913393181084
+          },
+          "normalized_entropy": {
+            "mean": 0.6938491907751431,
+            "median": 0.7036179716419859,
+            "q25": 0.6105455282392962,
+            "q75": 0.7702361385195893
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.5420872250467321,
+            "median": 0.5310064051358231,
+            "q25": 0.4540201305187827,
+            "q75": 0.6351629898160149
+          },
+          "top3_concentration": {
+            "mean": 0.9199995827290736,
+            "median": 0.9257576908194123,
+            "q25": 0.8998043241460266,
+            "q75": 0.94682447090362
+          }
+        },
+        "rider_belt": {
+          "available_explanations": 225,
+          "dominant_group_counts": {
+            "distribution_shape": 91,
+            "spectral_band_energy": 46,
+            "spectral_shape": 88
+          },
+          "dominant_group_fractions": {
+            "distribution_shape": 0.40444444444444444,
+            "spectral_band_energy": 0.20444444444444446,
+            "spectral_shape": 0.39111111111111113
+          },
+          "effective_group_count": {
+            "mean": 3.9596218566715438,
+            "median": 4.0526773497772055,
+            "q25": 3.8020166202205004,
+            "q75": 4.2613085992838515
+          },
+          "herfindahl_index": {
+            "mean": 0.30124832653013667,
+            "median": 0.2792728727414816,
+            "q25": 0.26060847880822774,
+            "q75": 0.30758386920959385
+          },
+          "normalized_entropy": {
+            "mean": 0.8489956651264644,
+            "median": 0.8694822744717919,
+            "q25": 0.8298124489178424,
+            "q75": 0.9006723930396403
+          },
+          "recordings": 225,
+          "top1_concentration": {
+            "mean": 0.4166787349493403,
+            "median": 0.3894935126679714,
+            "q25": 0.3489926528121964,
+            "q75": 0.4511666776432344
+          },
+          "top3_concentration": {
+            "mean": 0.8442979833680566,
+            "median": 0.8454800828568363,
+            "q25": 0.8155717059969231,
+            "q75": 0.874207988117067
+          }
+        }
+      },
+      "metrics": {
+        "average_precision": 1.0,
+        "average_precision_prevalence_baseline": 0.9722222222222222,
+        "balanced_accuracy": 0.9996825396825397,
+        "fault_prevalence": 0.9722222222222222,
+        "fault_recordings": 1575,
+        "healthy_recordings": 45,
+        "heldout_healthy_false_positive_rate": 0.0,
+        "heldout_healthy_specificity": 1.0,
+        "macro_fault_recall": 0.9993650793650793,
+        "overall_fault_recall": 0.9993650793650793,
+        "per_fault_average_precision": {
+          "bearing": 0.9999999999999999,
+          "flywheel": 0.9999999999999999,
+          "leakage_inlet_valve": 0.9999999999999999,
+          "leakage_outlet_valve": 0.9999999999999999,
+          "non_return_valve": 0.9999999999999999,
+          "piston_ring": 0.9999999999999999,
+          "rider_belt": 0.9999999999999999
+        },
+        "per_fault_recall": {
+          "bearing": 0.9955555555555555,
+          "flywheel": 1.0,
+          "leakage_inlet_valve": 1.0,
+          "leakage_outlet_valve": 1.0,
+          "non_return_valve": 1.0,
+          "piston_ring": 1.0,
+          "rider_belt": 1.0
+        },
+        "per_fault_roc_auc": {
+          "bearing": 1.0,
+          "flywheel": 1.0,
+          "leakage_inlet_valve": 1.0,
+          "leakage_outlet_valve": 1.0,
+          "non_return_valve": 1.0,
+          "piston_ring": 1.0,
+          "rider_belt": 1.0
+        },
+        "roc_auc": 1.0,
+        "test_recordings": 1620
+      },
+      "model": {
+        "calibration_score_max": 0.2966102994205315,
+        "calibration_score_median": 0.04957045108751314,
+        "calibration_score_min": 0.012507446416672292,
+        "components": 12,
+        "explained_variance_ratio": 0.9546089897635409,
+        "family": "pca_reconstruction",
+        "feature_count": 31,
+        "scaler": "standard",
+        "threshold": 0.2083368458423854,
+        "variance_retained": 0.95
+      }
+    }
+  },
+  "schema_version": "aeroxai.iitk_external_benchmark.v1"
+}
