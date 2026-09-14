@@ -1,0 +1,265 @@
+study:
+  name: "rcsd1yd_external_evaluation"
+  parent_study: "evidence_aware_compute_routing"
+  parent_simulation_commit: "03f16e15c63f1292ed8fcad345ce38547d66bb23"
+  branch: "research/rcsd1yd-external-evaluation"
+  evidence_role: "genuinely_new_chronological_external_evaluation"
+  production_promotion_allowed: false
+
+dataset:
+  name: "RCSD-1YD"
+  title: "Refinery Compressor Sensor Data, One-Year Dataset"
+  dataset_doi: "10.5281/zenodo.14866092"
+  descriptor_doi: "10.1109/IEEEDATA.2025.3571011"
+  source_file_name: "Centrifugal compressor _2022.xlsx"
+  expected_source_md5: "9ebf0bf829d2567f279f385523a765c5"
+  equipment: "centrifugal gas compressor in a Greek oil refinery"
+  data_origin: "industrial distributed control system"
+  expected_start: "2022-01-01T00:00:00"
+  expected_end: "2022-12-31T23:45:00"
+  expected_interval_minutes: 15
+  expected_sensor_count: 25
+  expected_total_columns: 26
+  known_gap:
+    date: "2022-03-27"
+    description: "one hour missing due to summertime/daylight-saving change"
+  data_opened_before_protocol_freeze: false
+
+sensor_columns:
+  - "75ZI800BA.pv"
+  - "75ZI800BB.pv"
+  - "75ZI801BA.pv"
+  - "75ZI801BB.pv"
+  - "75PI808.pv"
+  - "75PI823.pv"
+  - "75PI870.pv"
+  - "75PI845.pv"
+  - "75PDI853.pv"
+  - "75TI821.pv"
+  - "75TI822.pv"
+  - "75TI827.pv"
+  - "75TI828.pv"
+  - "75TI824.pv"
+  - "75TI829.pv"
+  - "75TI830.pv"
+  - "75TI831.pv"
+  - "75TI832.pv"
+  - "75TI836.pv"
+  - "75TI834.pv"
+  - "75XI821BX.pv"
+  - "75XI822BY.pv"
+  - "75XI823BX.pv"
+  - "75XI824BX.pv"
+  - "75SI865R.pv"
+
+chronological_split:
+  train:
+    start: "2022-01-01T00:00:00"
+    end_exclusive: "2022-07-01T00:00:00"
+  calibration:
+    start: "2022-07-01T00:00:00"
+    end_exclusive: "2022-10-01T00:00:00"
+  evaluation:
+    start: "2022-10-01T00:00:00"
+    end_inclusive: "2022-12-31T23:45:00"
+  rule: "calendar boundaries frozen before source-data inspection"
+  shuffle: false
+
+ingestion:
+  timestamp_column_rule: >
+    Require exactly one timestamp column corresponding to the descriptor's
+    first Timestamp column. Parse without timezone conversion and preserve
+    source-local chronological ordering.
+  duplicate_timestamps: "stop"
+  nonnumeric_sensor_values: "coerce_to_nan_then_apply_missing_rule"
+  missing_sensor_rule: >
+    Drop any row containing a missing or non-finite value in any of the 25
+    frozen process channels. Do not impute, forward-fill, interpolate, or
+    back-fill.
+  gap_rule: >
+    After missing-row removal, treat any timestamp difference greater than
+    30 minutes as a sequence boundary.
+  evaluation_blinding: >
+    A deterministic split-only ingestion step may write EVALUATION rows to a
+    separate file after this protocol is committed, but must not report sensor
+    distributions, anomaly metrics, router metrics, or TCN metrics from
+    EVALUATION before the adaptation-freeze commit.
+
+model_features:
+  raw_feature_count: 25
+  rule: "use the 25 frozen sensor columns directly"
+  additional_engineered_raw_features: false
+  source_threshold_metadata_as_model_input: false
+
+dataset_specific_tcn:
+  role: "expensive temporal evidence model only"
+  model_family: "same TCN topology family as development"
+  input_dim: 25
+  input_dim_rule: "schema-determined, not tuned"
+  hidden_dim: 32
+  kernel_size: 3
+  dilations:
+    - 1
+    - 2
+    - 4
+  dropout: 0.10
+  sequence_length_bins: 12
+  native_bin_minutes: 15
+  physical_history_minutes: 180
+  objective: "causal next-step prediction"
+  loss: "MSE"
+  optimizer: "AdamW"
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  batch_size: 256
+  max_epochs: 50
+  early_stopping_patience: 5
+  seed: 20260915
+  train_validation_split:
+    first_fraction_for_fit: 0.80
+    last_fraction_for_validation: 0.20
+    chronological: true
+  input_scaler: "StandardScaler_fit_on_TRAIN_fit_only"
+  architecture_search: false
+  hyperparameter_search: false
+
+dataset_specific_pca:
+  role: "cheap anomaly/support signal"
+  scaler: "RobustScaler_fit_on_full_TRAIN_only"
+  variance_retained: 0.95
+  architecture_search: false
+  causal_ewma:
+    alpha: 0.20
+    reset_gap_minutes: 30
+    rationale: "twice the native 15-minute cadence, preserving prior reset semantics"
+
+support_transform:
+  standard_scaler: "fit_on_full_TRAIN_only"
+  feature_support_statistic: "row_q95_absolute_standardized_features"
+  latent_support_statistic: >
+    sqrt(sum(component_score_squared / TRAIN_PCA_explained_variance))
+  empirical_reference_partition: "CALIBRATION"
+  empirical_cdf: "right_inclusive"
+
+cheap_router_features:
+  frozen_from_parent: true
+  rolling_history_bins: 12
+  physical_history_minutes: 180
+  features:
+    - "pca_ewma_percentile"
+    - "pca_ewma_delta_robust_z"
+    - "pca_ewma_volatility_percentile"
+    - "feature_support_percentile"
+    - "pca_latent_support_percentile"
+    - "combined_support_percentile"
+    - "recent_q90_hit_fraction"
+    - "recent_q95_hit_fraction"
+
+frozen_router:
+  source_commit: "aa3863080493c19483d536a2f9d2da1613a651b7"
+  model: "logistic_regression"
+  C: 10.0
+  class_weight: null
+  probability_threshold: 0.30
+  coefficients_refit_allowed: false
+  intercept_refit_allowed: false
+  router_feature_scaler_refit_allowed: false
+  probability_threshold_change_allowed: false
+  feature_definition_change_allowed: false
+
+calibration_only_adaptation:
+  allowed:
+    - "derive raw TCN q0.90 high-evidence threshold"
+    - "derive raw TCN q0.995 alert-evidence threshold"
+    - "derive PCA-EWMA empirical percentile reference"
+    - "derive PCA-EWMA delta median and IQR"
+    - "derive PCA-EWMA volatility empirical reference"
+    - "derive feature-support empirical reference"
+    - "derive latent-support empirical reference"
+    - "derive PCA-EWMA q0.90 threshold"
+    - "derive PCA-EWMA q0.95 threshold"
+    - "derive PCA-EWMA q0.99 reporting baseline"
+  forbidden:
+    - "fit or refit logistic router"
+    - "change any logistic coefficient"
+    - "change probability threshold"
+    - "select a different router feature subset"
+    - "change TCN architecture hyperparameters"
+    - "change TCN training hyperparameters based on EVALUATION"
+    - "change missing/gap handling after EVALUATION inspection"
+
+adaptation_freeze:
+  required_before_evaluation_metrics: true
+  must_record:
+    - "source file MD5"
+    - "schema validation"
+    - "TRAIN row count and date bounds"
+    - "CALIBRATION row count and date bounds"
+    - "EVALUATION row count and frozen date bounds only"
+    - "dropped TRAIN/CAL row counts"
+    - "gap counts in TRAIN/CAL"
+    - "TCN checkpoint SHA256"
+    - "TCN TRAIN-validation result"
+    - "CAL q0.90 and q0.995 TCN thresholds"
+    - "PCA model/scaler parameters or hashes"
+    - "all CAL empirical-reference parameters"
+    - "frozen parent logistic model identity"
+
+evaluation:
+  one_shot: true
+  systems:
+    - "always_on_tcn"
+    - "fixed_pca_route_q90"
+    - "fixed_pca_route_q95"
+    - "fixed_pca_route_q99"
+    - "frozen_evidence_aware_router"
+  teacher:
+    high_evidence: "EVAL raw TCN score >= CAL q0.90"
+    alert_evidence: "EVAL raw TCN score >= CAL q0.995"
+  primary_metrics:
+    - "tcn_invocation_fraction"
+    - "high_tcn_evidence_bin_coverage"
+    - "tcn_alert_bin_coverage"
+    - "gross_gpu_device_tcn_scoring_energy_reduction_vs_always_on"
+  secondary_metrics:
+    - "incremental_gpu_device_tcn_scoring_energy_reduction_vs_always_on"
+    - "tcn_alert_episode_coverage_if_episode_definition_is_preflighted"
+    - "source_threshold_deviation_overlap_descriptive_only"
+
+success_criteria:
+  minimum_high_tcn_evidence_bin_coverage: 0.80
+  minimum_tcn_alert_bin_coverage: 0.80
+  minimum_mean_gross_gpu_energy_reduction: 0.50
+  gross_energy_reduction_positive_each_repetition: true
+
+energy_measurement:
+  scope: "gpu_device_tcn_scoring_only"
+  nvml_sampling_interval_seconds: 0.10
+  warmup_runs_per_condition: 2
+  measured_repetitions: 5
+  matched_idle_seconds: 10.0
+  minimum_metered_workload_seconds: 20.0
+  cpu_router_energy: "UNKNOWN"
+  whole_system_energy: "UNKNOWN"
+  physical_compressor_energy: "NOT_MEASURED"
+
+interpretation:
+  if_pass: >
+    Supports external cross-domain transport of the frozen evidence-aware
+    compute-routing mechanism from MetroPT development data to RCSD-1YD.
+  if_fail: >
+    Record external transport failure without retuning on RCSD-1YD EVALUATION.
+  not_supported_even_if_pass:
+    - "universal compressor generalization"
+    - "physical fault diagnosis"
+    - "physical compressor energy savings"
+    - "whole-system compute energy savings"
+    - "carbon savings"
+
+stop_conditions:
+  - "source MD5 differs from the archived Zenodo file"
+  - "25 frozen sensor tags cannot be matched exactly"
+  - "timestamp ordering or schema cannot be resolved without subjective choices"
+  - "TCN training does not produce both finite CAL teacher thresholds"
+  - "adaptation artifact is not frozen before EVALUATION metrics"
+  - "any EVALUATION-derived tuning is proposed"
