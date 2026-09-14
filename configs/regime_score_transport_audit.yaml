@@ -1,0 +1,55 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+  test_file: "data/processed/test.parquet"
+  incidents_config: "configs/metropt.yaml"
+
+study:
+  role: "posthoc_reused_test_score_transport_diagnostic"
+  evidence_class: "REAL"
+  production_promotion_allowed: false
+
+representation:
+  features: "model_feature_columns"
+  variance_retained: 0.95
+  comparison:
+    - "global_robust_pca"
+    - "global_standard_pca"
+    - "regime_standard_pca"
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+
+diagnostics:
+  raw_score_threshold_quantile: 0.995
+  relevant_window_hours_before_incident: 24
+  feature_abs_z_thresholds:
+    - 5.0
+    - 10.0
+    - 50.0
+  top_feature_count: 20
+  high_score_run_gap_minutes: 10
+
+reproduction:
+  tolerance: 1.0e-12
+  expected:
+    train_rows: 5271
+    calibration_rows: 1796
+    test_rows: 43221
+    feature_count: 63
+    regime_component_count: 11
+    current_threshold: 3.3312096774193547
+    pressure_threshold: 9.452193548387097
+
+outputs:
+  result_json: "docs/research/regime_score_transport_audit.json"
+  local_output_dir: "data/processed/regime_score_transport_audit"
+
+guardrails:
+  - "This is a post-hoc diagnostic after reused TEST has already been observed."
+  - "No detector, scaler, PCA dimension, router, threshold, smoothing or alert rule is changed."
+  - "Raw reconstruction scores are analyzed before EWMA/persistence to isolate representation transport."
+  - "Incident windows are used only to separate known-event-related TEST rows from background TEST rows."
+  - "No candidate is promoted or tuned from this audit."
