@@ -129,6 +129,72 @@ export interface EvidenceSummary {
   };
 }
 
+export interface ProofManifestRealPath {
+  source: string;
+  incident_id: number;
+  detector_evidence_class: "REAL";
+  candidate_hypotheses: string[];
+  bridge_status: string;
+  physical_bridge_available: boolean;
+  missing_requirements: string[];
+  downstream_physics_executed: boolean;
+  robust_control_executed: boolean;
+  recommendation: null;
+}
+
+export interface ProofManifestSimulatedPath {
+  source: string;
+  scope: "SIMULATION_ONLY";
+  evidence_class: "SIMULATED";
+  connected_to_real_incident: false;
+  proof_id: string;
+  inverse_physics_recovery: {
+    passed: boolean;
+    truth_total_outflow_kg_s: number;
+    inferred_total_outflow_kg_s: number;
+    absolute_error_kg_s: number;
+  };
+  physical_state: {
+    total_outflow_kg_s: {
+      lower: number;
+      center: number;
+      upper: number;
+    };
+    leak_identifiable: boolean;
+    leak_kg_s: null;
+  };
+  robust_action: {
+    commands: Array<[string, number]>;
+    scenario_count: number;
+    robust_safe: boolean;
+    valid_for_seconds: number;
+    worst_case_min_pressure_bar_g: number;
+    worst_case_max_pressure_bar_g: number;
+    minimum_reserve_kg_s: number;
+    horizon_energy_kwh: number;
+    horizon_objective_value: number;
+  };
+}
+
+export interface ProofManifestResponse {
+  schema_version: string;
+  manifest_id: string;
+  project: "AeroXAI";
+  causal_claim: false;
+  deployment: {
+    mode: "advisory";
+    override_equipment_ctrl: false;
+  };
+  contains_evidence_classes: Array<
+    "REAL" | "SIMULATED"
+  >;
+  real_evidence_path: ProofManifestRealPath;
+  simulated_validation_path: ProofManifestSimulatedPath;
+  separation_assertions: string[];
+  allowed_claims: string[];
+  forbidden_claims: string[];
+}
+
 export interface TwinRequest {
   initial_pressure_bar_g: number;
   mass_flow_in_kg_s: number;

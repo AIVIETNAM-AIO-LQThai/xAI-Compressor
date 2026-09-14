@@ -5,6 +5,7 @@ import {
   Gauge,
   LayoutDashboard,
   Menu,
+  ShieldCheck,
   X,
   Zap,
 } from "lucide-react";
@@ -13,12 +14,14 @@ import { DigitalTwinLab } from "./pages/DigitalTwinLab";
 import { EnergyRecommendation } from "./pages/EnergyRecommendation";
 import { IncidentReplay } from "./pages/IncidentReplay";
 import { Overview } from "./pages/Overview";
+import { ProofManifest } from "./pages/ProofManifest";
 
 type Route =
   | "overview"
   | "incident"
   | "twin"
-  | "recommendation";
+  | "recommendation"
+  | "proof";
 
 const ROUTES: Array<{
   id: Route;
@@ -44,6 +47,11 @@ const ROUTES: Array<{
     id: "recommendation",
     label: "Energy Recommendation",
     icon: Zap,
+  },
+  {
+    id: "proof",
+    label: "Evidence Proof",
+    icon: ShieldCheck,
   },
 ];
 
@@ -87,6 +95,8 @@ export default function App() {
       <DigitalTwinLab />
     ) : route === "recommendation" ? (
       <EnergyRecommendation />
+    ) : route === "proof" ? (
+      <ProofManifest />
     ) : (
       <Overview />
     );

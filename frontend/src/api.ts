@@ -3,6 +3,7 @@ import type {
   EvidenceSummary,
   OptimizationRequest,
   OptimizationResponse,
+  ProofManifestResponse,
   TwinRequest,
   TwinResponse,
 } from "./types";
@@ -45,6 +46,12 @@ export function getEvidenceSummary() {
 
 export function getDetectionEvidence() {
   return request<DetectionEvidence>("/evidence/detection");
+}
+
+export function getProofManifest() {
+  return request<ProofManifestResponse>(
+    "/evidence/proof-manifest",
+  );
 }
 
 export function simulateTwin(payload: TwinRequest) {

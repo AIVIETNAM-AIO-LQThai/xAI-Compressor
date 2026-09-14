@@ -1,0 +1,595 @@
+.proof-page {
+  padding-bottom: 72px;
+}
+
+.proof-identity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 18px;
+  margin: 4px 0 22px;
+  border: 1px solid rgba(145, 255, 118, 0.18);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(145, 255, 118, 0.055),
+      rgba(95, 201, 255, 0.025)
+    );
+  border-radius: 14px;
+}
+
+.proof-identity code,
+.proof-integrity-strip code {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(238, 248, 255, 0.78);
+  letter-spacing: 0.05em;
+}
+
+.proof-overline {
+  display: block;
+  color: rgba(188, 209, 221, 0.56);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.proof-identity-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #b9ff9e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.proof-path-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.proof-track {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  padding: 22px;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 28, 36, 0.94),
+      rgba(8, 18, 25, 0.98)
+    );
+  border: 1px solid rgba(151, 188, 207, 0.13);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 22px 55px rgba(0, 0, 0, 0.18);
+}
+
+.proof-track::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 2px;
+  opacity: 0.85;
+}
+
+.proof-track-real::before {
+  background:
+    linear-gradient(
+      90deg,
+      #8dfc73,
+      rgba(141, 252, 115, 0)
+    );
+}
+
+.proof-track-sim::before {
+  background:
+    linear-gradient(
+      90deg,
+      #5ecaff,
+      rgba(94, 202, 255, 0)
+    );
+}
+
+.proof-track-head,
+.proof-command-head,
+.proof-claims-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.proof-track-head > span:last-child {
+  color: rgba(191, 213, 225, 0.56);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.proof-track-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 24px 0 20px;
+}
+
+.proof-track-title > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: rgba(214, 235, 245, 0.8);
+}
+
+.proof-track-title h2,
+.proof-command-head h3,
+.proof-claims h2 {
+  margin: 0;
+  color: #f2f8fb;
+}
+
+.proof-track-title h2 {
+  font-size: 21px;
+}
+
+.proof-track-title p,
+.proof-disconnect p {
+  margin: 6px 0 0;
+  color: rgba(192, 211, 222, 0.62);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.proof-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: stretch;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.proof-node {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(141, 175, 193, 0.13);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.proof-node svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: rgba(194, 219, 232, 0.66);
+}
+
+.proof-node-good {
+  border-color: rgba(141, 252, 115, 0.2);
+  background: rgba(141, 252, 115, 0.035);
+}
+
+.proof-node-good svg {
+  color: #9cff84;
+}
+
+.proof-node-stop {
+  border-color: rgba(255, 186, 89, 0.22);
+  background: rgba(255, 186, 89, 0.035);
+}
+
+.proof-node-stop svg {
+  color: #ffc36f;
+}
+
+.proof-node strong,
+.proof-node span {
+  display: block;
+}
+
+.proof-node strong {
+  color: #eaf4f8;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.proof-node span {
+  margin-top: 5px;
+  color: rgba(181, 204, 215, 0.55);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.proof-arrow {
+  align-self: center;
+  color: rgba(166, 193, 205, 0.34);
+}
+
+.proof-hypotheses {
+  padding: 16px 0 4px;
+  border-top: 1px solid rgba(147, 179, 195, 0.1);
+}
+
+.proof-hypotheses > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.proof-chip {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: rgba(141, 252, 115, 0.06);
+  border: 1px solid rgba(141, 252, 115, 0.13);
+  color: rgba(223, 239, 229, 0.75);
+  font-size: 10px;
+}
+
+.proof-boundary {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 13px;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255, 190, 94, 0.3);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 190, 94, 0.055),
+      rgba(255, 190, 94, 0.015)
+    );
+}
+
+.proof-boundary-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 190, 94, 0.09);
+  color: #ffc36f;
+}
+
+.proof-boundary h3 {
+  margin: 4px 0 8px;
+  color: #ffe1b2;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.proof-boundary p,
+.proof-boundary li {
+  color: rgba(211, 218, 215, 0.61);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.proof-boundary p {
+  margin: 0 0 7px;
+}
+
+.proof-boundary ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.proof-state-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.proof-state-row span,
+.proof-safety-grid span {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: rgba(180, 204, 216, 0.48);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.proof-state-row span {
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.022);
+}
+
+.proof-state-row strong {
+  color: #dbe8ee;
+  font-size: 11px;
+}
+
+.proof-sim-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.proof-sim-metrics > div {
+  min-width: 0;
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(94, 202, 255, 0.12);
+  background: rgba(94, 202, 255, 0.035);
+}
+
+.proof-sim-metrics span,
+.proof-sim-metrics strong,
+.proof-sim-metrics small {
+  display: block;
+}
+
+.proof-sim-metrics span {
+  color: rgba(183, 208, 220, 0.5);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.proof-sim-metrics strong {
+  margin-top: 6px;
+  color: #ebf9ff;
+  font-size: 18px;
+}
+
+.proof-sim-metrics small {
+  margin-top: 4px;
+  color: rgba(176, 202, 215, 0.55);
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.proof-command-panel {
+  padding: 16px;
+  border-radius: 15px;
+  border: 1px solid rgba(94, 202, 255, 0.16);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(94, 202, 255, 0.045),
+      rgba(255, 255, 255, 0.012)
+    );
+}
+
+.proof-command-head h3 {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.proof-safe-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border-radius: 999px;
+  color: #a8ff91;
+  background: rgba(142, 252, 115, 0.06);
+  border: 1px solid rgba(142, 252, 115, 0.16);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.proof-command-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 15px 0 12px;
+}
+
+.proof-command {
+  padding: 13px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.proof-command span,
+.proof-command strong {
+  display: block;
+}
+
+.proof-command span {
+  color: rgba(177, 203, 216, 0.53);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.proof-command strong {
+  margin-top: 4px;
+  color: #eef8fb;
+  font-size: 17px;
+}
+
+.proof-safety-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.proof-safety-grid span {
+  padding: 10px 0 0;
+  border-top: 1px solid rgba(147, 180, 197, 0.09);
+}
+
+.proof-safety-grid strong {
+  color: rgba(222, 238, 246, 0.8);
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.proof-disconnect {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 190, 94, 0.16);
+  background: rgba(255, 190, 94, 0.025);
+}
+
+.proof-disconnect svg {
+  flex: 0 0 auto;
+  color: #ffc36f;
+}
+
+.proof-disconnect strong {
+  color: #f5e6ce;
+  font-size: 12px;
+}
+
+.proof-claims-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.proof-claims {
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(149, 182, 199, 0.12);
+  background: rgba(10, 22, 29, 0.84);
+}
+
+.proof-claims-head {
+  justify-content: flex-start;
+}
+
+.proof-claims-head svg {
+  flex: 0 0 auto;
+}
+
+.proof-claims-allowed .proof-claims-head svg {
+  color: #9cff84;
+}
+
+.proof-claims-forbidden .proof-claims-head svg {
+  color: #ffb85c;
+}
+
+.proof-claims h2 {
+  margin-top: 4px;
+  font-size: 16px;
+}
+
+.proof-claims ol {
+  margin: 17px 0 0;
+  padding-left: 20px;
+}
+
+.proof-claims li {
+  padding: 8px 0 8px 4px;
+  color: rgba(208, 224, 232, 0.68);
+  font-size: 12px;
+  line-height: 1.55;
+  border-bottom: 1px solid rgba(143, 177, 193, 0.07);
+}
+
+.proof-claims li:last-child {
+  border-bottom: 0;
+}
+
+.proof-integrity-strip {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 13px;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid rgba(142, 252, 115, 0.13);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(142, 252, 115, 0.04),
+      rgba(94, 202, 255, 0.025)
+    );
+}
+
+.proof-integrity-strip > svg {
+  color: #9cff84;
+}
+
+.proof-integrity-strip strong,
+.proof-integrity-strip span {
+  display: block;
+}
+
+.proof-integrity-strip strong {
+  color: #eaf4ee;
+  font-size: 12px;
+}
+
+.proof-integrity-strip span {
+  margin-top: 4px;
+  color: rgba(191, 210, 219, 0.58);
+  font-size: 11px;
+}
+
+.proof-integrity-strip code {
+  margin: 0;
+  text-align: right;
+}
+
+@media (max-width: 1180px) {
+  .proof-path-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-sim-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .proof-identity,
+  .proof-integrity-strip {
+    align-items: flex-start;
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .proof-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-arrow {
+    transform: rotate(90deg);
+    justify-self: center;
+  }
+
+  .proof-state-row,
+  .proof-command-grid,
+  .proof-safety-grid,
+  .proof-claims-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-sim-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .proof-command-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .proof-integrity-strip code {
+    text-align: left;
+  }
+}
