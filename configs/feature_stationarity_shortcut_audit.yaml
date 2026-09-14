@@ -1,0 +1,71 @@
+dataset:
+  train_file: "data/processed/train.parquet"
+  calibration_file: "data/processed/calibration.parquet"
+  test_file: "data/processed/test.parquet"
+  incidents_config: "configs/metropt.yaml"
+
+study:
+  role: "posthoc_reused_test_feature_stationarity_shortcut_diagnostic"
+  evidence_class: "REAL"
+  production_promotion_allowed: false
+
+representation:
+  features: "model_feature_columns"
+  variance_retained: 0.95
+
+regime_router:
+  current_feature: "motor_current__mean"
+  pressure_feature: "reservoirs__mean"
+  high_quantile: 0.80
+
+focus:
+  analog_sensors:
+    - "tp2"
+    - "dv_pressure"
+  digital_sensors:
+    - "pressure_switch"
+  explicit_features:
+    - "tp2__min"
+    - "tp2__mean"
+    - "tp2__last"
+    - "dv_pressure__min"
+    - "dv_pressure__mean"
+    - "dv_pressure__last"
+    - "pressure_switch__active_ratio"
+    - "pressure_switch__last"
+    - "pressure_switch__transitions"
+
+diagnostics:
+  relevant_window_hours_before_incident: 24
+  standard_abs_z_thresholds:
+    - 5.0
+    - 10.0
+    - 50.0
+  analog_min_excursion_z_threshold: 10.0
+  analog_context_z_threshold: 5.0
+  high_score_quantile: 0.995
+  run_gap_minutes: 10
+  top_feature_count: 20
+
+reproduction:
+  tolerance: 1.0e-12
+  expected:
+    train_rows: 5271
+    calibration_rows: 1796
+    test_rows: 43221
+    feature_count: 63
+    regime_component_count: 11
+    current_threshold: 3.3312096774193547
+    pressure_threshold: 9.452193548387097
+    calibration_regime_raw_q995: 0.2218319476372591
+
+outputs:
+  result_json: "docs/research/feature_stationarity_shortcut_audit.json"
+  local_output_dir: "data/processed/feature_stationarity_shortcut_audit"
+
+guardrails:
+  - "This is a post-hoc reused-TEST diagnostic."
+  - "No feature is removed, clipped, winsorized, rescaled, or replaced."
+  - "No detector or alert rule is retrained as an intervention."
+  - "Feature-level residual shares are detector evidence, not physical root-cause claims."
+  - "Background TEST means outside registered 24h-pre-incident-through-incident-end windows, not guaranteed healthy."
