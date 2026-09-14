@@ -1,0 +1,213 @@
+study:
+  name: "support_aware_energy_routing"
+  branch: "research/support-aware-energy-routing"
+  base_commit: "98ab0c74a1603f4def72b962a596282ff60a3b6b"
+  role: "new_preregistered_followup"
+  production_promotion_allowed: false
+
+research_question: >
+  Can a calibration-only support-aware router adapt temporal-model compute
+  expenditure under operating-support shift while preserving a preregistered
+  minimum level of temporal-model evidence on genuinely new chronological
+  compressor data?
+
+motivation:
+  prior_results:
+    metropt3_commit: "de4dfec05167358d385c3fd21e12f195135db3fd"
+    metropt2_transport_commit: "98ab0c74a1603f4def72b962a596282ff60a3b6b"
+  prior_conclusion: >
+    Selective TCN execution produced large GPU-device energy reductions on
+    both MetroPT-3 and MetroPT2, but fixed calibration-quantile routing did
+    not preserve the same evidence-retention trade-off across datasets.
+  role_of_prior_results: "study_design_only_not_confirmation"
+
+development_data:
+  rule: >
+    Development and router-policy selection may use TRAIN and CALIBRATION
+    only. Reused MetroPT-3 and MetroPT2 TEST partitions are excluded from
+    policy development and selection.
+  metropt3:
+    train_file: "data/processed/train.parquet"
+    calibration_file: "data/processed/calibration.parquet"
+    forbidden_test_file: "data/processed/test.parquet"
+    feature_reference: "docs/research/energy_aware_tcn_calibration.json"
+    tcn_checkpoint: "artifacts/research/energy_aware_tcn.pt"
+    tcn_checkpoint_sha256: "3a2a98fd65ae91014aba89b04b953b984d6763003351ec03724d682632bc8f60"
+  metropt2:
+    train_file: "data/processed/metropt2/train_features.parquet"
+    calibration_file: "data/processed/metropt2/calibration_features.parquet"
+    forbidden_test_file: "data/processed/metropt2/test_features.parquet"
+    feature_variant: "flowmeter_excluded"
+    expected_feature_count: 63
+    tcn_checkpoint: "artifacts/research/energy_aware_tcn_metropt2.pt"
+    tcn_checkpoint_sha256: "8709a5ce5e08225b2573e95960086c1e7641c31f752f656b9e50c0b23a7e2bf0"
+
+new_evaluation_data:
+  required_for_primary_claim: true
+  status: "not_yet_configured"
+  requirement: >
+    Genuinely new chronological compressor data not previously used for
+    model, router, threshold, feature, or policy selection in this project.
+  labels:
+    incident_labels_required_for_primary_success: false
+    incident_labels_if_available: "secondary_analysis"
+  rule: >
+    No primary generalization claim may be made until this field is replaced
+    by a concrete new dataset protocol before its evaluation split is opened.
+
+frozen_models:
+  operational_alert_source: "frozen_robust_pca"
+  temporal_model_role: "second_stage_research_evidence"
+  temporal_model_changes_operational_alert: false
+  pca:
+    scaler: "robust"
+    variance_retained: 0.95
+    ewma_alpha: 0.20
+    reset_gap_minutes: 10
+  tcn:
+    scaler: "standard"
+    architecture: "same_as_completed_energy_aware_hierarchical_study"
+    anomaly_score: "raw_mean_squared_next_step_prediction_error"
+    score_smoothing: "none"
+    persistence: "none"
+
+support_signal:
+  principle: >
+    Support estimation must use only cheap statistics derived from TRAIN and
+    CALIBRATION and must not require a TCN invocation online.
+  components:
+    feature_support:
+      scaler: "StandardScaler_fit_on_TRAIN"
+      per_row_statistic: "q95_absolute_standardized_feature_value"
+    pca_latent_support:
+      representation: "frozen_RobustPCA_latent_coordinates"
+      per_row_statistic: >
+        sqrt(sum(component_score_squared / TRAIN_PCA_explained_variance))
+  normalization:
+    reference: "official_CALIBRATION_only"
+    method: "empirical_percentile"
+  combined_score:
+    definition: >
+      max(feature_support_calibration_percentile,
+          pca_latent_support_calibration_percentile)
+    range: [0.0, 1.0]
+
+router:
+  score: "frozen_pca_causal_ewma_score"
+  dataset_specific_numeric_thresholds: true
+  threshold_source: "official_CALIBRATION_only"
+  threshold_quantiles:
+    route_q90: 0.90
+    route_q95: 0.95
+    route_q99: 0.99
+  quantile_interpolation: "higher"
+
+support_aware_policy:
+  action_rule: >
+    Use q99 under low support shift, q95 under intermediate support shift,
+    and q90 under high support shift. Numeric PCA thresholds remain
+    calibration-only for each dataset.
+  calibration_candidate_grid:
+    mid_support_percentile:
+      - 0.80
+      - 0.90
+      - 0.95
+    high_support_percentile:
+      - 0.95
+      - 0.975
+      - 0.99
+    validity_rule: "mid_support_percentile < high_support_percentile"
+  offline_teacher:
+    score: "raw_TCN_calibration_score"
+    high_evidence_quantile: 0.90
+    anomaly_alert_quantile: 0.995
+    quantile_interpolation: "higher"
+  eligibility_constraints:
+    minimum_high_evidence_bin_coverage_each_development_dataset: 0.80
+    minimum_tcn_alert_bin_coverage_each_development_dataset: 0.80
+    minimum_alert_bins_for_alert_constraint: 5
+  selection:
+    primary_objective: >
+      Minimize mean TCN invocation fraction across MetroPT-3 CALIBRATION
+      and MetroPT2 CALIBRATION among eligible policies.
+    tie_break_1: >
+      Maximize the minimum TCN alert-bin coverage across the two
+      development calibration datasets.
+    tie_break_2: "prefer_higher_high_support_percentile"
+    tie_break_3: "prefer_higher_mid_support_percentile"
+  after_selection:
+    freeze_before_new_evaluation: true
+    no_test_retuning: true
+
+baselines:
+  - "always_on_tcn"
+  - "fixed_route_q90"
+  - "fixed_route_q95"
+  - "fixed_route_q99"
+  - "selected_support_aware_router"
+
+primary_evaluation:
+  dataset: "genuinely_new_chronological_compressor_data"
+  primary_metrics:
+    - "tcn_invocation_fraction"
+    - "high_tcn_evidence_bin_coverage"
+    - "tcn_alert_bin_coverage"
+    - "gross_gpu_energy_reduction_vs_always_on_tcn"
+    - "incremental_gpu_energy_reduction_vs_always_on_tcn"
+  secondary_metrics:
+    - "router_wall_time"
+    - "tcn_alert_episode_coverage"
+    - "incident_related_tcn_alert_bin_coverage_if_labels_exist"
+    - "incident_related_tcn_episode_coverage_if_labels_exist"
+
+success_criteria:
+  minimum_high_tcn_evidence_bin_coverage: 0.80
+  minimum_tcn_alert_bin_coverage: 0.80
+  minimum_mean_gross_gpu_energy_reduction: 0.50
+  energy_reduction_directionally_consistent_across_repetitions: true
+  note: >
+    The 80% evidence-retention and 50% energy-reduction targets are
+    preregistered follow-up targets informed by the completed exploratory
+    MetroPT studies. They are not claimed to be universal standards.
+
+energy_measurement:
+  scope: "gpu_device_tcn_scoring_only"
+  source_protocol: "configs/energy_aware_inference_benchmark.yaml"
+  nvml_sampling_interval_seconds: 0.10
+  warmup_runs_per_condition: 2
+  measured_repetitions: 5
+  matched_idle_seconds: 10.0
+  minimum_metered_workload_seconds: 20.0
+  cpu_router_energy: "UNKNOWN"
+  whole_system_energy: "UNKNOWN"
+  physical_plant_energy: "NOT_MEASURED"
+
+simulated_stress_tests:
+  allowed_before_new_real_evaluation: true
+  evidence_class: "SIMULATED"
+  purpose: >
+    Mechanism/debugging checks only. They cannot satisfy the primary
+    evaluation or generalization claim.
+  allowed_shift_types:
+    - "feature_location_shift"
+    - "feature_scale_shift"
+    - "support_tail_inflation"
+    - "operating_mix_shift"
+
+outputs:
+  calibration_policy: "docs/research/support_aware_router_calibration.json"
+  preflight: "docs/research/support_aware_router_preflight.json"
+  new_data_result: "docs/research/support_aware_router_new_data_result.json"
+  decision: "docs/research/SUPPORT_AWARE_ENERGY_ROUTING_DECISION.md"
+
+guardrails:
+  - "Do not use MetroPT-3 TEST to select or tune the new router."
+  - "Do not use MetroPT2 TEST to select or tune the new router."
+  - "Do not use incident labels during router-policy calibration."
+  - "Do not change the frozen operational Robust-PCA alert source."
+  - "Do not let the TCN alter operational alerts in this study."
+  - "Do not interpret support shift as physical fault diagnosis."
+  - "Do not claim whole-system compute energy when only GPU-device TCN energy is measured."
+  - "Do not claim physical compressor-energy or carbon savings."
+  - "Do not promote a router from simulated stress tests."
+  - "A primary generalization claim requires genuinely new chronological compressor data."
