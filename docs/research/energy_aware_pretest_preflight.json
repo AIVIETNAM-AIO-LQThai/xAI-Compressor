@@ -1,0 +1,118 @@
+{
+  "schema_version": "aeroxai.energy_aware_pretest_preflight.v1",
+  "study": "energy_aware_hierarchical_intelligence",
+  "purpose": "Freeze and verify the hierarchical inference benchmark before primary TEST.",
+  "test_file_opened": false,
+  "ready_for_primary_test": true,
+  "tcn_checkpoint": {
+    "file": "artifacts/research/energy_aware_tcn.pt",
+    "sha256": "3a2a98fd65ae91014aba89b04b953b984d6763003351ec03724d682632bc8f60",
+    "scaler": "standard",
+    "model_config": {
+      "input_dim": 63,
+      "hidden_dim": 32,
+      "kernel_size": 3,
+      "dilations": [
+        1,
+        2,
+        4
+      ],
+      "dropout": 0.1
+    }
+  },
+  "router_calibration_file": "docs/research/energy_aware_router_calibration.json",
+  "router_operating_points": {
+    "route_q90": {
+      "calibration_quantile": 0.9,
+      "threshold": 12084.5581981822,
+      "calibration_rows": 1796,
+      "routed_rows": 180,
+      "routed_fraction": 0.10022271714922049
+    },
+    "route_q95": {
+      "calibration_quantile": 0.95,
+      "threshold": 22540.85700625775,
+      "calibration_rows": 1796,
+      "routed_rows": 90,
+      "routed_fraction": 0.05011135857461024
+    },
+    "route_q99": {
+      "calibration_quantile": 0.99,
+      "threshold": 43918.1667549955,
+      "calibration_rows": 1796,
+      "routed_rows": 18,
+      "routed_fraction": 0.01002227171492205
+    }
+  },
+  "measurement": {
+    "scope": "gpu_device",
+    "gpu": {
+      "gpu_device_index": 0,
+      "gpu_name": "NVIDIA GeForce RTX 4090",
+      "driver_version": "610.88",
+      "power_fields": [
+        {
+          "field": "NVML_FI_DEV_POWER_INSTANT",
+          "nvml_return": 0,
+          "supported": true,
+          "power_w": 63.008
+        },
+        {
+          "field": "NVML_FI_DEV_POWER_AVERAGE",
+          "nvml_return": 0,
+          "supported": true,
+          "power_w": 63.076
+        }
+      ]
+    },
+    "sampling_interval_seconds": 0.1,
+    "warmup_runs_per_condition": 2,
+    "measured_repetitions": 5,
+    "cooldown_seconds": 5.0,
+    "matched_idle_seconds": 10.0,
+    "minimum_workload_seconds": 20.0,
+    "condition_orders": [
+      [
+        "route_q90",
+        "route_q99",
+        "route_q95",
+        "always_on_tcn"
+      ],
+      [
+        "route_q95",
+        "route_q99",
+        "route_q90",
+        "always_on_tcn"
+      ],
+      [
+        "route_q95",
+        "always_on_tcn",
+        "route_q90",
+        "route_q99"
+      ],
+      [
+        "route_q90",
+        "always_on_tcn",
+        "route_q95",
+        "route_q99"
+      ],
+      [
+        "route_q90",
+        "route_q95",
+        "route_q99",
+        "always_on_tcn"
+      ]
+    ],
+    "materiality_fraction": 0.03,
+    "cpu_energy": "UNKNOWN",
+    "whole_system_energy": "UNKNOWN"
+  },
+  "study_guardrails_present": true,
+  "tcn_evidence_definition": {
+    "score_smoothing": "none",
+    "persistence": "none",
+    "episode_merge_minutes": 30,
+    "episode_reset_gap_minutes": 10,
+    "episode_coverage_rule": "An always-on TCN alert episode is covered when at least one always-on TCN alert bin inside that episode is routed to the TCN."
+  }
+}

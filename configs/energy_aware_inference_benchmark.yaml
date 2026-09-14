@@ -1,0 +1,113 @@
+benchmark:
+  name: energy_aware_hierarchical_inference
+  schema_version: aeroxai.energy_aware_inference_benchmark.v1
+  frozen_before_primary_test: true
+  primary_dataset: MetroPT-3
+  evidence_role: exploratory_reused_test_benchmark
+tcn:
+  checkpoint_file: artifacts/research/energy_aware_tcn.pt
+  checkpoint_sha256: 3a2a98fd65ae91014aba89b04b953b984d6763003351ec03724d682632bc8f60
+  scaler: standard
+  inference_batch_size: 1024
+  operational_alert_source: false
+router:
+  source_model: frozen_robust_pca
+  scaler: robust
+  variance_retained: 0.95
+  signal: causal_ewma_pca_reconstruction_mse
+  ewma_alpha: 0.2
+  reset_gap_minutes: 10
+  threshold_source: official_calibration_split_only
+  quantile_interpolation: higher
+  operating_points:
+    route_q90: 0.9
+    route_q95: 0.95
+    route_q99: 0.99
+  comparison_rule: greater_than_or_equal
+  test_tuning_allowed: false
+energy_measurement:
+  scope: gpu_device
+  gpu_device_index: 0
+  power_backend: NVML
+  primary_power_field: NVML_FI_DEV_POWER_INSTANT
+  secondary_power_field: NVML_FI_DEV_POWER_AVERAGE
+  sampling_interval_seconds: 0.1
+  warmup_runs_per_condition: 2
+  measured_repetitions: 5
+  paired_measurement:
+    cooldown_seconds: 5.0
+    matched_idle_seconds: 10.0
+    minimum_workload_seconds: 20.0
+  workload_duration_policy: 'Repeat the complete logical inference condition until the metered workload
+    interval is at least 20 seconds. Report the number of complete logical passes and normalize energy
+    by logical pass and by TCN invocation count where applicable.
+
+    '
+  condition_order:
+    method: seeded_permutation_each_repetition
+    seed: 20260915
+    conditions:
+    - always_on_tcn
+    - route_q90
+    - route_q95
+    - route_q99
+  accounting:
+    gross_gpu_energy: trapezoidal_integral_of_measured_instant_power
+    matched_idle_baseline: 'Mean measured matched-idle GPU power multiplied by the actual metered workload
+      duration.
+
+      '
+    incremental_gpu_energy: gross_gpu_energy_minus_matched_idle_baseline
+    negative_incremental_values: retain_and_report
+    cpu_energy: UNKNOWN
+    whole_system_energy: UNKNOWN
+    primary_comparison: gross_gpu_energy_per_logical_dataset_pass
+    incremental_comparison: secondary_and_reported_separately
+    pca_router_cpu_energy: UNKNOWN
+  latency:
+    clock: time.perf_counter
+    synchronize_cuda_before_and_after_timed_logical_pass: true
+    definition: logical_pass_seconds is wall time for one complete condition pass. throughput_normalized_ms_per_tcn_window
+      equals logical_pass_seconds divided by the number of TCN windows invoked in that condition; it is
+      not single-request latency.
+    report:
+    - logical_pass_seconds
+    - throughput_normalized_ms_per_tcn_window
+    - median_throughput_normalized_ms_per_tcn_window
+    - p95_throughput_normalized_ms_per_tcn_window
+  materiality:
+    minimum_mean_gpu_energy_reduction_fraction: 0.03
+    directionally_consistent_across_repetitions: true
+    primary_metric: gross_gpu_energy_per_logical_dataset_pass
+  scope_note: Measured GPU energy covers the TCN scoring workload only. Frozen PCA routing is computed
+    on CPU outside the GPU meter; CPU/router energy is UNKNOWN under the current WSL hardware interface.
+  metered_workload: Host-to-device transfer of selected TCN inputs and targets, TCN forward inference,
+    MSE anomaly-score computation, and score transfer back to CPU.
+outputs:
+  router_calibration_file: docs/research/energy_aware_router_calibration.json
+  pretest_preflight_file: docs/research/energy_aware_pretest_preflight.json
+  primary_result_file: docs/research/energy_aware_hierarchical_routing.json
+  decision_file: docs/research/ENERGY_AWARE_HIERARCHICAL_DECISION.md
+  primary_evidence_file: docs/research/energy_aware_primary_evidence.json
+guardrails:
+- MetroPT-3 TEST must not be opened by router calibration or preflight.
+- TCN checkpoint SHA256 must match before primary TEST evaluation.
+- Frozen Robust-PCA remains the operational alert source.
+- TCN output does not change operational alerts.
+- Router thresholds are derived only from official CALIBRATION.
+- No TEST-derived threshold, architecture, feature, scaler, or energy-accounting change is allowed.
+- Measured energy claims refer to GPU-device energy only.
+- CPU and whole-system energy remain UNKNOWN without validated hardware measurement.
+tcn_evidence:
+  score: mean_squared_next_step_prediction_error_over_features
+  threshold_source: frozen_tcn_checkpoint_calibration_threshold
+  alert_bin_rule: raw_tcn_score_greater_than_or_equal_to_threshold
+  score_smoothing: none
+  persistence: none
+  episode_merge_minutes: 30
+  episode_reset_gap_minutes: 10
+  incident_related_window:
+    start: incident_start_minus_24_hours
+    end: incident_end
+  episode_coverage_rule: An always-on TCN alert episode is covered when at least one always-on TCN alert
+    bin inside that episode is routed to the TCN.

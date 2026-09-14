@@ -218,5 +218,33 @@ secondary_transport:
 
 decision:
   primary_question: >
-    Does selective TCN routing materially reduce measured GPU
-    inference energy while retaining incident-relevant TCN evidence?
+    Does routing materially reduce TCN inference compute while
+    still routing most incident-relevant TCN evidence?
+
+  promotion_allowed: false
+
+  success_guardrails:
+    frozen_pca_reproduction_required: true
+    no_operational_alert_changes: true
+    no_test_tuned_router: true
+    no_test_tuned_tcn: true
+
+outputs:
+  baseline_result:
+    "docs/research/energy_compute_baseline.json"
+  routing_result:
+    "docs/research/energy_aware_hierarchical_routing.json"
+  final_decision:
+    "docs/research/ENERGY_AWARE_HIERARCHICAL_DECISION.md"
+
+guardrails:
+  - "No MetroPT-3 TEST result may change TCN architecture or training."
+  - "No MetroPT-3 TEST result may change routing quantiles."
+  - "MetroPT-3 TEST is reused exploratory evidence."
+  - "MetroPT2 has also been previously inspected and is not untouched confirmation evidence."
+  - "The frozen Robust-PCA detector remains the operational alert source."
+  - "TCN output cannot change operational alerts in this first study."
+  - "No physical compressor-energy saving claim is allowed from this study."
+  - "AI compute energy and compressor physical energy must remain separate."
+  - "No simulated energy result may be presented as measured plant energy."
+  - "No result from this branch changes release/esic-2026-v3.1."
