@@ -1,0 +1,408 @@
+{
+  "schema_version": "aeroxai.support_aware_router_calibration.v1",
+  "study": "support_aware_energy_routing",
+  "preregistration_commit": "04f906258a910e68d04cb44c2a282a4ebb62e597",
+  "purpose": "Select one support-aware routing policy using TRAIN/CALIBRATION only.",
+  "data_use": {
+    "metropt3_test_opened": false,
+    "metropt2_test_opened": false,
+    "incident_labels_used_for_selection": false,
+    "new_evaluation_data_opened": false
+  },
+  "support_definition": {
+    "feature_statistic": "row q0.95 of absolute TRAIN-Standard-scaled features",
+    "latent_statistic": "sqrt(sum(z_k^2 / TRAIN_PCA_explained_variance_k))",
+    "empirical_percentile": "right-inclusive empirical CDF: count(CAL <= value) / N_CAL",
+    "combined": "max(feature percentile, latent percentile)"
+  },
+  "development_datasets": {
+    "metropt3": {
+      "train_rows": 5271,
+      "calibration_rows": 1796,
+      "tcn_score_rows": 1734,
+      "feature_count": 63,
+      "checkpoint_sha256": "3a2a98fd65ae91014aba89b04b953b984d6763003351ec03724d682632bc8f60",
+      "device": "cuda",
+      "teacher_thresholds": {
+        "high_evidence_q90": 1.2071349620819092,
+        "anomaly_alert_q995": 5.4152655601501465
+      },
+      "teacher_counts": {
+        "high_evidence_bins": 174,
+        "tcn_alert_bins": 9
+      },
+      "router_thresholds": {
+        "route_q90": 12084.5581981822,
+        "route_q95": 22540.85700625775,
+        "route_q99": 43918.1667549955
+      },
+      "support_raw_summary": {
+        "feature": {
+          "minimum": 0.5245006010639349,
+          "median": 1.2352080311450555,
+          "maximum": 8.396480242696
+        },
+        "latent": {
+          "minimum": 0.5663857166836186,
+          "median": 0.5818023681656892,
+          "maximum": 5.763851086473601
+        }
+      },
+      "fixed_baselines": {
+        "route_q90": {
+          "tcn_invocations": 178,
+          "tcn_invocation_fraction": 0.10265282583621683,
+          "high_evidence_bin_coverage": 0.20689655172413793,
+          "tcn_alert_bin_coverage": 0.8888888888888888
+        },
+        "route_q95": {
+          "tcn_invocations": 90,
+          "tcn_invocation_fraction": 0.05190311418685121,
+          "high_evidence_bin_coverage": 0.1724137931034483,
+          "tcn_alert_bin_coverage": 0.8888888888888888
+        },
+        "route_q99": {
+          "tcn_invocations": 18,
+          "tcn_invocation_fraction": 0.010380622837370242,
+          "high_evidence_bin_coverage": 0.05747126436781609,
+          "tcn_alert_bin_coverage": 0.6666666666666666
+        }
+      }
+    },
+    "metropt2": {
+      "train_rows": 5878,
+      "calibration_rows": 2878,
+      "tcn_score_rows": 2772,
+      "feature_count": 63,
+      "checkpoint_sha256": "8709a5ce5e08225b2573e95960086c1e7641c31f752f656b9e50c0b23a7e2bf0",
+      "device": "cuda",
+      "teacher_thresholds": {
+        "high_evidence_q90": 1.0534791946411133,
+        "anomaly_alert_q995": 3.5982227325439453
+      },
+      "teacher_counts": {
+        "high_evidence_bins": 278,
+        "tcn_alert_bins": 14
+      },
+      "router_thresholds": {
+        "route_q90": 9.490034886378899,
+        "route_q95": 18.32664006331794,
+        "route_q99": 43.35613425150058
+      },
+      "support_raw_summary": {
+        "feature": {
+          "minimum": 0.6165526755277799,
+          "median": 1.286028737463729,
+          "maximum": 5.041185966935973
+        },
+        "latent": {
+          "minimum": 0.5326312198083287,
+          "median": 0.6393727337873754,
+          "maximum": 4.792221024830325
+        }
+      },
+      "fixed_baselines": {
+        "route_q90": {
+          "tcn_invocations": 287,
+          "tcn_invocation_fraction": 0.10353535353535354,
+          "high_evidence_bin_coverage": 0.10431654676258993,
+          "tcn_alert_bin_coverage": 0.14285714285714285
+        },
+        "route_q95": {
+          "tcn_invocations": 144,
+          "tcn_invocation_fraction": 0.05194805194805195,
+          "high_evidence_bin_coverage": 0.03597122302158273,
+          "tcn_alert_bin_coverage": 0.14285714285714285
+        },
+        "route_q99": {
+          "tcn_invocations": 29,
+          "tcn_invocation_fraction": 0.010461760461760462,
+          "high_evidence_bin_coverage": 0.017985611510791366,
+          "tcn_alert_bin_coverage": 0.07142857142857142
+        }
+      }
+    }
+  },
+  "candidate_grid": [
+    {
+      "mid_support_percentile": 0.8,
+      "high_support_percentile": 0.95,
+      "datasets": {
+        "metropt3": {
+          "tcn_invocations": 45,
+          "tcn_invocation_fraction": 0.025951557093425604,
+          "high_evidence_bins": 174,
+          "high_evidence_bin_coverage": 0.19540229885057472,
+          "tcn_alert_bins": 9,
+          "tcn_alert_bin_coverage": 0.8888888888888888,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": true,
+          "eligible": false
+        },
+        "metropt2": {
+          "tcn_invocations": 73,
+          "tcn_invocation_fraction": 0.026334776334776336,
+          "high_evidence_bins": 278,
+          "high_evidence_bin_coverage": 0.0683453237410072,
+          "tcn_alert_bins": 14,
+          "tcn_alert_bin_coverage": 0.14285714285714285,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": false,
+          "eligible": false
+        }
+      },
+      "mean_tcn_invocation_fraction": 0.026143166714100968,
+      "worst_dataset_alert_coverage": 0.14285714285714285,
+      "eligible": false
+    },
+    {
+      "mid_support_percentile": 0.8,
+      "high_support_percentile": 0.975,
+      "datasets": {
+        "metropt3": {
+          "tcn_invocations": 44,
+          "tcn_invocation_fraction": 0.025374855824682813,
+          "high_evidence_bins": 174,
+          "high_evidence_bin_coverage": 0.1896551724137931,
+          "tcn_alert_bins": 9,
+          "tcn_alert_bin_coverage": 0.8888888888888888,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": true,
+          "eligible": false
+        },
+        "metropt2": {
+          "tcn_invocations": 69,
+          "tcn_invocation_fraction": 0.024891774891774892,
+          "high_evidence_bins": 278,
+          "high_evidence_bin_coverage": 0.06115107913669065,
+          "tcn_alert_bins": 14,
+          "tcn_alert_bin_coverage": 0.14285714285714285,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": false,
+          "eligible": false
+        }
+      },
+      "mean_tcn_invocation_fraction": 0.025133315358228853,
+      "worst_dataset_alert_coverage": 0.14285714285714285,
+      "eligible": false
+    },
+    {
+      "mid_support_percentile": 0.8,
+      "high_support_percentile": 0.99,
+      "datasets": {
+        "metropt3": {
+          "tcn_invocations": 42,
+          "tcn_invocation_fraction": 0.02422145328719723,
+          "high_evidence_bins": 174,
+          "high_evidence_bin_coverage": 0.1781609195402299,
+          "tcn_alert_bins": 9,
+          "tcn_alert_bin_coverage": 0.8888888888888888,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": true,
+          "eligible": false
+        },
+        "metropt2": {
+          "tcn_invocations": 68,
+          "tcn_invocation_fraction": 0.024531024531024532,
+          "high_evidence_bins": 278,
+          "high_evidence_bin_coverage": 0.05755395683453238,
+          "tcn_alert_bins": 14,
+          "tcn_alert_bin_coverage": 0.14285714285714285,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": false,
+          "eligible": false
+        }
+      },
+      "mean_tcn_invocation_fraction": 0.024376238909110882,
+      "worst_dataset_alert_coverage": 0.14285714285714285,
+      "eligible": false
+    },
+    {
+      "mid_support_percentile": 0.9,
+      "high_support_percentile": 0.95,
+      "datasets": {
+        "metropt3": {
+          "tcn_invocations": 42,
+          "tcn_invocation_fraction": 0.02422145328719723,
+          "high_evidence_bins": 174,
+          "high_evidence_bin_coverage": 0.19540229885057472,
+          "tcn_alert_bins": 9,
+          "tcn_alert_bin_coverage": 0.8888888888888888,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": true,
+          "eligible": false
+        },
+        "metropt2": {
+          "tcn_invocations": 47,
+          "tcn_invocation_fraction": 0.016955266955266956,
+          "high_evidence_bins": 278,
+          "high_evidence_bin_coverage": 0.05755395683453238,
+          "tcn_alert_bins": 14,
+          "tcn_alert_bin_coverage": 0.07142857142857142,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": false,
+          "eligible": false
+        }
+      },
+      "mean_tcn_invocation_fraction": 0.020588360121232094,
+      "worst_dataset_alert_coverage": 0.07142857142857142,
+      "eligible": false
+    },
+    {
+      "mid_support_percentile": 0.9,
+      "high_support_percentile": 0.975,
+      "datasets": {
+        "metropt3": {
+          "tcn_invocations": 41,
+          "tcn_invocation_fraction": 0.02364475201845444,
+          "high_evidence_bins": 174,
+          "high_evidence_bin_coverage": 0.1896551724137931,
+          "tcn_alert_bins": 9,
+          "tcn_alert_bin_coverage": 0.8888888888888888,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": true,
+          "eligible": false
+        },
+        "metropt2": {
+          "tcn_invocations": 43,
+          "tcn_invocation_fraction": 0.015512265512265512,
+          "high_evidence_bins": 278,
+          "high_evidence_bin_coverage": 0.050359712230215826,
+          "tcn_alert_bins": 14,
+          "tcn_alert_bin_coverage": 0.07142857142857142,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": false,
+          "eligible": false
+        }
+      },
+      "mean_tcn_invocation_fraction": 0.019578508765359978,
+      "worst_dataset_alert_coverage": 0.07142857142857142,
+      "eligible": false
+    },
+    {
+      "mid_support_percentile": 0.9,
+      "high_support_percentile": 0.99,
+      "datasets": {
+        "metropt3": {
+          "tcn_invocations": 39,
+          "tcn_invocation_fraction": 0.02249134948096886,
+          "high_evidence_bins": 174,
+          "high_evidence_bin_coverage": 0.1781609195402299,
+          "tcn_alert_bins": 9,
+          "tcn_alert_bin_coverage": 0.8888888888888888,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": true,
+          "eligible": false
+        },
+        "metropt2": {
+          "tcn_invocations": 42,
+          "tcn_invocation_fraction": 0.015151515151515152,
+          "high_evidence_bins": 278,
+          "high_evidence_bin_coverage": 0.046762589928057555,
+          "tcn_alert_bins": 14,
+          "tcn_alert_bin_coverage": 0.07142857142857142,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": false,
+          "eligible": false
+        }
+      },
+      "mean_tcn_invocation_fraction": 0.018821432316242004,
+      "worst_dataset_alert_coverage": 0.07142857142857142,
+      "eligible": false
+    },
+    {
+      "mid_support_percentile": 0.95,
+      "high_support_percentile": 0.975,
+      "datasets": {
+        "metropt3": {
+          "tcn_invocations": 41,
+          "tcn_invocation_fraction": 0.02364475201845444,
+          "high_evidence_bins": 174,
+          "high_evidence_bin_coverage": 0.1896551724137931,
+          "tcn_alert_bins": 9,
+          "tcn_alert_bin_coverage": 0.8888888888888888,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": true,
+          "eligible": false
+        },
+        "metropt2": {
+          "tcn_invocations": 39,
+          "tcn_invocation_fraction": 0.01406926406926407,
+          "high_evidence_bins": 278,
+          "high_evidence_bin_coverage": 0.050359712230215826,
+          "tcn_alert_bins": 14,
+          "tcn_alert_bin_coverage": 0.07142857142857142,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": false,
+          "eligible": false
+        }
+      },
+      "mean_tcn_invocation_fraction": 0.018857008043859255,
+      "worst_dataset_alert_coverage": 0.07142857142857142,
+      "eligible": false
+    },
+    {
+      "mid_support_percentile": 0.95,
+      "high_support_percentile": 0.99,
+      "datasets": {
+        "metropt3": {
+          "tcn_invocations": 39,
+          "tcn_invocation_fraction": 0.02249134948096886,
+          "high_evidence_bins": 174,
+          "high_evidence_bin_coverage": 0.1781609195402299,
+          "tcn_alert_bins": 9,
+          "tcn_alert_bin_coverage": 0.8888888888888888,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": true,
+          "eligible": false
+        },
+        "metropt2": {
+          "tcn_invocations": 38,
+          "tcn_invocation_fraction": 0.013708513708513708,
+          "high_evidence_bins": 278,
+          "high_evidence_bin_coverage": 0.046762589928057555,
+          "tcn_alert_bins": 14,
+          "tcn_alert_bin_coverage": 0.07142857142857142,
+          "high_evidence_constraint_passed": false,
+          "alert_constraint_applied": true,
+          "alert_constraint_passed": false,
+          "eligible": false
+        }
+      },
+      "mean_tcn_invocation_fraction": 0.018099931594741284,
+      "worst_dataset_alert_coverage": 0.07142857142857142,
+      "eligible": false
+    }
+  ],
+  "selection": {
+    "selected": null,
+    "selection_error": "No support-aware candidate satisfies the preregistered development evidence constraints."
+  },
+  "guardrails": [
+    "Do not use MetroPT-3 TEST to select or tune the new router.",
+    "Do not use MetroPT2 TEST to select or tune the new router.",
+    "Do not use incident labels during router-policy calibration.",
+    "Do not change the frozen operational Robust-PCA alert source.",
+    "Do not let the TCN alter operational alerts in this study.",
+    "Do not interpret support shift as physical fault diagnosis.",
+    "Do not claim whole-system compute energy when only GPU-device TCN energy is measured.",
+    "Do not claim physical compressor-energy or carbon savings.",
+    "Do not promote a router from simulated stress tests.",
+    "A primary generalization claim requires genuinely new chronological compressor data."
+  ]
+}
