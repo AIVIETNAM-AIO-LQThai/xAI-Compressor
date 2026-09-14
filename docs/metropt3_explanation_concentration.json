@@ -1,0 +1,193 @@
+{
+  "causal_claim": false,
+  "dataset": "MetroPT-3",
+  "detector": {
+    "components": 3,
+    "detector_retrained": false,
+    "detector_retuned": false,
+    "name": "pca_reconstruction",
+    "scaler": "robust",
+    "threshold": 52941.88448793303
+  },
+  "evidence_class": "REAL",
+  "incidents": [
+    {
+      "concentration": {
+        "dominant_group": "tp2",
+        "dominant_share": 0.9397156633866365,
+        "effective_group_count": 1.2568033928795934,
+        "group_count": 16,
+        "herfindahl_index": 0.8866884007807659,
+        "nonzero_group_count": 13,
+        "normalized_entropy": 0.082439745116159,
+        "shannon_entropy_nats": 0.2285715075733845,
+        "top1_concentration": 0.9397156633866365,
+        "top3_concentration": 0.9999571613737759,
+        "top5_concentration": 0.9999904798126406
+      },
+      "explanation_timestamp": "2020-04-18 00:40:00",
+      "id": 1,
+      "timing": "post_onset",
+      "top_groups": [
+        {
+          "group": "tp2",
+          "share": 0.9397156633866367
+        },
+        {
+          "group": "dv_pressure",
+          "share": 0.06019027728881474
+        },
+        {
+          "group": "motor_current",
+          "share": 5.122069832465105e-05
+        },
+        {
+          "group": "h1",
+          "share": 2.281291020593012e-05
+        },
+        {
+          "group": "pressure_relationships",
+          "share": 1.050552865881681e-05
+        }
+      ]
+    },
+    {
+      "concentration": {
+        "dominant_group": "dv_pressure",
+        "dominant_share": 0.7756286007226351,
+        "effective_group_count": 1.9864511293454876,
+        "group_count": 16,
+        "herfindahl_index": 0.6271672365178262,
+        "nonzero_group_count": 13,
+        "normalized_entropy": 0.24754832517273878,
+        "shannon_entropy_nats": 0.6863496945832817,
+        "top1_concentration": 0.7756286007226351,
+        "top3_concentration": 0.9999781316213694,
+        "top5_concentration": 0.9999952913997036
+      },
+      "explanation_timestamp": "2020-05-29 21:20:00",
+      "id": 2,
+      "timing": "pre_onset",
+      "top_groups": [
+        {
+          "group": "dv_pressure",
+          "share": 0.775628600722635
+        },
+        {
+          "group": "tp2",
+          "share": 0.12633728723990428
+        },
+        {
+          "group": "motor_current",
+          "share": 0.09801224365882992
+        },
+        {
+          "group": "oil_temperature",
+          "share": 1.3580132123576457e-05
+        },
+        {
+          "group": "h1",
+          "share": 3.5796462106153886e-06
+        }
+      ]
+    },
+    {
+      "concentration": {
+        "dominant_group": "tp2",
+        "dominant_share": 0.8607272776886175,
+        "effective_group_count": 1.5490664771543643,
+        "group_count": 16,
+        "herfindahl_index": 0.7578789744430081,
+        "nonzero_group_count": 13,
+        "normalized_entropy": 0.15784976443778187,
+        "shannon_entropy_nats": 0.43765247668840007,
+        "top1_concentration": 0.8607272776886175,
+        "top3_concentration": 0.9999468404453613,
+        "top5_concentration": 0.9999858058181558
+      },
+      "explanation_timestamp": "2020-06-05 10:10:00",
+      "id": 3,
+      "timing": "post_onset",
+      "top_groups": [
+        {
+          "group": "tp2",
+          "share": 0.8607272776886175
+        },
+        {
+          "group": "dv_pressure",
+          "share": 0.1301757931945996
+        },
+        {
+          "group": "motor_current",
+          "share": 0.009043769562144203
+        },
+        {
+          "group": "h1",
+          "share": 2.7871756121881813e-05
+        },
+        {
+          "group": "pressure_relationships",
+          "share": 1.109361667261942e-05
+        }
+      ]
+    },
+    {
+      "concentration": {
+        "dominant_group": "dv_pressure",
+        "dominant_share": 0.7449660398454755,
+        "effective_group_count": 2.104392329638577,
+        "group_count": 16,
+        "herfindahl_index": 0.5877066745607572,
+        "nonzero_group_count": 13,
+        "normalized_entropy": 0.26835092416834677,
+        "shannon_entropy_nats": 0.744026745951781,
+        "top1_concentration": 0.7449660398454755,
+        "top3_concentration": 0.9999706052968362,
+        "top5_concentration": 0.9999934926772349
+      },
+      "explanation_timestamp": "2020-07-15 08:45:00",
+      "id": 4,
+      "timing": "pre_onset",
+      "top_groups": [
+        {
+          "group": "dv_pressure",
+          "share": 0.7449660398454754
+        },
+        {
+          "group": "tp2",
+          "share": 0.13795717253058715
+        },
+        {
+          "group": "motor_current",
+          "share": 0.11704739292077362
+        },
+        {
+          "group": "oil_temperature",
+          "share": 1.924589248278443e-05
+        },
+        {
+          "group": "h1",
+          "share": 3.641487915866891e-06
+        }
+      ]
+    }
+  ],
+  "interpretation": "Concentration describes how detector evidence is distributed across operator-level groups. It does not measure physical fault complexity or causal mechanism count.",
+  "metric_definitions": {
+    "effective_group_count": "exp(Shannon entropy); diversity-equivalent number of equally contributing groups.",
+    "herfindahl_index": "sum(p_i^2); larger values indicate more concentrated explanations.",
+    "shannon_entropy_nats": "-sum(p_i * ln(p_i)) over positive group contribution shares.",
+    "top_k_concentration": "Sum of the k largest normalized operator-level contribution shares."
+  },
+  "schema_version": "aeroxai.explanation_concentration.v1",
+  "source_report": "docs/xai_verification_report.json",
+  "summary": {
+    "incident_count": 4,
+    "max_effective_group_count": 2.104392329638577,
+    "max_top3_concentration": 0.9999781316213694,
+    "mean_effective_group_count": 1.7241783322545057,
+    "mean_top3_concentration": 0.9999631846843358,
+    "min_effective_group_count": 1.2568033928795934,
+    "min_top3_concentration": 0.9999468404453613
+  }
+}

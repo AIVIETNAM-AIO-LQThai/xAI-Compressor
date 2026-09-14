@@ -1,0 +1,49 @@
+dataset:
+  name: MetroPT2
+  source: Zenodo
+  doi: "10.5281/zenodo.7766691"
+  source_url: "https://zenodo.org/records/7766691/files/MetroPT2.csv?download=1"
+
+  # Integrity value published by the Zenodo record.
+  expected_md5: "056e04fd1874eaef4697d6b6657502c3"
+
+  # Published record metadata. The audit reports mismatches
+  # instead of silently forcing these values.
+  expected_rows: 7116940
+  expected_attributes: 21
+  sampling_hz: 1
+
+  raw_csv: "data/raw/metropt2/MetroPT2.csv"
+
+  core_analog_columns:
+    - TP2
+    - TP3
+    - H1
+    - DV_pressure
+    - Reservoirs
+    - Oil_temperature
+    - Flowmeter
+    - Motor_current
+
+  core_digital_columns:
+    - COMP
+    - LPS
+
+  reported_incidents:
+    - id: 1
+      start: "2022-06-04 10:19:24.300"
+      end: "2022-06-04 14:22:39.188"
+      condition: "air_leak"
+
+    - id: 2
+      start: "2022-07-11 10:10:18.948"
+      end: "2022-07-14 10:22:08.046"
+      condition: "oil_leak"
+
+audit:
+  chunksize: 250000
+  report_file: "docs/metropt2_data_audit.json"
+
+concentration:
+  source_report: "docs/xai_verification_report.json"
+  report_file: "docs/metropt3_explanation_concentration.json"
