@@ -1,0 +1,237 @@
+study:
+  name: cobra_router_v2_adaptation
+  status: preregistered_before_cobra_sensor_values
+  parent_router_v2_policy_commit: "392c54f4bae7be632c89ef677b09aa44c09dfec5"
+  cobra_protocol_commit: "c18473e7a1ce80fafec04202ce0b61ad8378fe54"
+  cobra_structural_contract_commit: "1000a7e096136c32ecc59844a7ca67966baec8e1"
+
+evidence_role:
+  value: FUTURE_GENUINELY_INDEPENDENT_EXTERNAL_VALIDATION
+  zero_shot_claim: false
+  within_domain_train_cal_adaptation: true
+
+split:
+  train_days: 14
+  calibration_days: 4
+  evaluation_days: 5
+  reassignment_allowed: false
+
+schema:
+  alignment: exact_column_name
+  structural_envelope_source:
+    path: docs/research/cobra_structural_compatibility_contract.json
+    expected_count: 257
+    expected_sha256: "e2c554d8337ea21ed50553277e97ec15365f75e62f9a86bf10fe8c07bf32da9d"
+
+final_raw_feature_rule:
+  source: structural_envelope_only
+  casefold_for_rule_matching: true
+
+  exclude_exact:
+    - Day
+    - Time
+    - Operating_status_PLC
+
+  exclude_if_name_contains:
+    - target
+    - is_on
+    - is_open
+    - is_closed
+    - energy_consumption
+    - energy_output
+    - apparent_energy
+    - reactive_energy
+
+  ordering: lexicographic_exact_name
+  exact_list_must_be_frozen_before_sensor_values: true
+  exact_list_sha256_required: true
+
+numeric_parsing:
+  conversion: strict_numeric_coercion
+  nonnumeric_or_blank_becomes_missing: true
+  infinite_becomes_missing: true
+  imputation: none
+  forward_fill: false
+  backward_fill: false
+  interpolation: false
+
+five_minute_representation:
+  timestamp_source: published_source_timestamp
+  timezone_claim: none
+  bin_minutes: 5
+  bin_assignment: floor_published_timestamp_to_5_minute_boundary
+  aggregation: arithmetic_mean_of_finite_observed_samples
+  minimum_finite_samples_per_feature_per_bin: 1
+  require_every_frozen_raw_feature_present_in_valid_bin: true
+
+  preserve_source_row_order: true
+  fabricate_seconds: false
+  fabricate_rows: false
+  fabricate_bins: false
+  interpolate_missing_bins: false
+
+  minute_resolution_days:
+    preserve_repeated_source_timestamps: true
+    infer_within_minute_elapsed_time: false
+    aggregate_repeated_rows_by_published_5_minute_bin: true
+
+  day_boundary_reset: true
+  windows_cross_day_boundary: false
+
+contiguity:
+  required_step_minutes: 5
+  sequence_requires_exact_step: true
+  any_non_5_minute_gap_breaks_segment: true
+  no_gap_bridging: true
+
+model_feature_representation:
+  one_feature_per_frozen_raw_channel: true
+  statistic: five_minute_arithmetic_mean
+  derived_cross_sensor_features: false
+  data_driven_feature_dropping: false
+  evaluation_specific_feature_dropping: false
+
+pca:
+  family: robust_pca_reconstruction
+  scaler: robust
+  scaler_fit: train_only
+  variance_retained: 0.95
+  features: same_as_model_feature_representation
+
+  ewma:
+    alpha: 0.20
+    causal: true
+    reset_at_day_boundary: true
+    reset_on_noncontiguous_5_minute_gap: true
+
+temporal_model:
+  family: causal_tcn_next_step_prediction
+  features: same_as_model_feature_representation
+  scaler: standard
+  scaler_fit: train_only
+
+  sequence:
+    bin_minutes: 5
+    history_bins: 12
+    history_minutes: 60
+    prediction_horizon_bins: 1
+    exact_contiguity_required: true
+    windows_cross_day_boundary: false
+
+  architecture:
+    residual_blocks: 3
+    channels: [32, 32, 32]
+    kernel_size: 3
+    dilations: [1, 2, 4]
+    dropout: 0.10
+    output_features: same_as_input_features
+
+  training:
+    objective: mean_squared_next_step_prediction_error
+    optimizer: AdamW
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    batch_size: 256
+    max_epochs: 50
+    early_stopping_patience: 5
+    seed: 20260915
+
+    fit_fraction_of_train_sequences: 0.80
+    validation_fraction_of_train_sequences: 0.20
+    validation_split: chronological_tail
+    calibration_used_for_training: false
+    evaluation_used_for_training: false
+    hyperparameter_search_allowed: false
+
+  anomaly_score:
+    definition: mean_squared_prediction_error_over_features
+
+calibration:
+  source_partition: CALIBRATION
+  evaluation_used: false
+
+  tcn_teacher:
+    high_evidence_quantile: 0.90
+    alert_evidence_quantile: 0.995
+    quantile_interpolation: higher
+
+  pca_router_references:
+    percentile_reference: all_eligible_calibration_pca_ewma_bins
+    q90_quantile: 0.90
+    q95_quantile: 0.95
+    quantile_interpolation: higher
+
+router_v2:
+  policy_commit: "392c54f4bae7be632c89ef677b09aa44c09dfec5"
+  family: max3
+  threshold: 0.40
+
+  inputs:
+    - pca_ewma_percentile
+    - recent_q90_hit_fraction
+    - recent_q95_hit_fraction
+
+  pca_ewma_percentile:
+    definition: right_inclusive_empirical_percentile_against_frozen_calibration_reference
+
+  recent_q90_hit_fraction:
+    history_bins: 12
+    includes_current_bin: true
+    definition: fraction_of_current_and_previous_11_contiguous_bins_at_or_above_frozen_cal_q90
+
+  recent_q95_hit_fraction:
+    history_bins: 12
+    includes_current_bin: true
+    definition: fraction_of_current_and_previous_11_contiguous_bins_at_or_above_frozen_cal_q95
+
+  score: max_of_three_inputs
+  route_rule: score_greater_than_or_equal_to_0_40
+
+  missing_input_rule:
+    valid_tcn_target_but_router_input_unavailable: route_tcn
+    invalid_tcn_target: exclude_from_eligible_routing_units
+    imputation_allowed: false
+
+success_criteria:
+  minimum_high_evidence_units: 20
+  minimum_alert_evidence_units: 3
+  minimum_high_evidence_coverage: 0.80
+  minimum_alert_evidence_coverage: 0.80
+
+  gpu_energy:
+    minimum_mean_gross_reduction: 0.50
+    positive_each_of_5_repetitions: true
+
+energy_measurement:
+  scope: gpu_device_tcn_scoring_only
+  measurement: NVML
+  sampling_interval_seconds: 0.10
+  warmup_runs_per_condition: 2
+  measured_repetitions: 5
+  matched_idle_seconds: 10.0
+  minimum_metered_workload_seconds: 20.0
+
+firewall:
+  before_contract_freeze:
+    cobra_sensor_values_allowed: false
+    cobra_sensor_distributions_allowed: false
+    pca_scores_allowed: false
+    tcn_scores_allowed: false
+    router_scores_allowed: false
+    teacher_prevalence_allowed: false
+    routing_metrics_allowed: false
+    energy_metrics_allowed: false
+
+  before_final_evaluation:
+    evaluation_sensor_values_for_tuning: false
+    evaluation_threshold_selection: false
+    evaluation_feature_selection: false
+    evaluation_model_training: false
+    evaluation_rescue_tuning: false
+
+claims:
+  causal_fault_diagnosis: false
+  autonomous_control: false
+  plant_energy_savings: false
+  carbon_savings: false
+  zero_shot_generalization: false
