@@ -1,0 +1,51 @@
+{
+  "schema_version": "aeroxai.evidence_aware_router_v2_policy_freeze.v1",
+  "study": "evidence_aware_router_v2",
+  "status": "FROZEN_FOR_EXTERNAL_ADAPTATION",
+  "development_result_commit": "d91b29f343ac82263e40f81b133b6a2cf68880f7",
+  "development_implementation_commit": "3df19a9b9565433eb7dd5f25ce0e2f924a7bde77",
+  "preregistration_commit": "c59659b8c131fbe28cef8e50b966acabb78cb54e",
+  "selected_policy": {
+    "family": "max3",
+    "threshold": 0.4,
+    "weights": null,
+    "input_order": [
+      "pca_ewma_percentile",
+      "recent_q90_hit_fraction",
+      "recent_q95_hit_fraction"
+    ],
+    "score_definition": "max(pca_ewma_percentile, recent_q90_hit_fraction, recent_q95_hit_fraction)",
+    "route_rule": "score >= 0.40",
+    "missing_input_rule": "valid TCN target with any unavailable router input -> route to TCN"
+  },
+  "development_selection": {
+    "candidate_count": 120,
+    "eligible_candidate_count": 12,
+    "all_eligible_worst_domain_invocation_is_one": true,
+    "worst_domain_tcn_invocation_fraction": 1.0,
+    "mean_domain_tcn_invocation_fraction": 0.8124531711115672,
+    "worst_domain_high_evidence_coverage": 0.8243243243243243,
+    "worst_applicable_alert_coverage": 1.0,
+    "selection_interpretation": "RCSD-1YD saturated worst-domain invocation at 1.0 for every eligible candidate. The frozen max3@0.40 policy was selected by the preregistered downstream ordering, including mean invocation and family preference."
+  },
+  "development_domains": [
+    "metropt3_consumed",
+    "metropt2_consumed",
+    "rcsd1yd_consumed"
+  ],
+  "claim_boundary": {
+    "development_only": true,
+    "independent_validation": false,
+    "physical_fault_truth": false,
+    "plant_energy_saving_claim": false,
+    "gpu_energy_saving_claim_from_development": false
+  },
+  "cobra_firewall": {
+    "cobra_used_for_router_v2_selection": false,
+    "cobra_sensor_values_used": false,
+    "cobra_model_outcomes_used": false,
+    "cobra_evaluation_behavior_used": false,
+    "router_v2_policy_may_change_after_cobra": false
+  },
+  "no_rescue_tuning": true
+}
