@@ -1,0 +1,114 @@
+{
+  "schema_version": "aeroxai.rcsd1yd_one_shot_evaluation.v1",
+  "study": "rcsd1yd_external_evaluation",
+  "evidence_role": "genuinely_new_chronological_external_evaluation",
+  "adaptation_freeze_commit": "a75a4828abac6b3e26baaca83ea1c6ec7d3c3805",
+  "data_use": {
+    "evaluation_parquet_opened": true,
+    "evaluation_used_for_training": false,
+    "evaluation_used_for_calibration": false,
+    "evaluation_derived_tuning_performed": false
+  },
+  "evaluation": {
+    "source_rows": 8832,
+    "valid_tcn_rows": 8820,
+    "target_start": "2022-10-01 03:00:00",
+    "target_end": "2022-12-31 23:45:00",
+    "tcn_score_min": 0.4708917438983917,
+    "tcn_score_median": 0.9056194722652435,
+    "tcn_score_p90": 1.0970874786376954,
+    "tcn_score_p995": 1.3477122038602845,
+    "tcn_score_max": 401.15924072265625
+  },
+  "frozen_teacher": {
+    "calibration_high_evidence_threshold_q90": 0.8942223191261292,
+    "calibration_alert_evidence_threshold_q995": 311.1317443847656,
+    "evaluation_high_evidence_bins": 4647,
+    "evaluation_alert_evidence_bins": 2
+  },
+  "systems": {
+    "always_on_tcn": {
+      "valid_tcn_rows": 8820,
+      "tcn_invocations": 8820,
+      "tcn_invocation_fraction": 1.0,
+      "high_evidence_bins": 4647,
+      "covered_high_evidence_bins": 4647,
+      "high_evidence_coverage": 1.0,
+      "tcn_alert_bins": 2,
+      "covered_tcn_alert_bins": 2,
+      "tcn_alert_bin_coverage": 1.0
+    },
+    "fixed_pca_route_q90": {
+      "valid_tcn_rows": 8820,
+      "tcn_invocations": 6084,
+      "tcn_invocation_fraction": 0.689795918367347,
+      "high_evidence_bins": 4647,
+      "covered_high_evidence_bins": 4495,
+      "high_evidence_coverage": 0.9672907251990531,
+      "tcn_alert_bins": 2,
+      "covered_tcn_alert_bins": 2,
+      "tcn_alert_bin_coverage": 1.0
+    },
+    "fixed_pca_route_q95": {
+      "valid_tcn_rows": 8820,
+      "tcn_invocations": 3613,
+      "tcn_invocation_fraction": 0.4096371882086168,
+      "high_evidence_bins": 4647,
+      "covered_high_evidence_bins": 3277,
+      "high_evidence_coverage": 0.7051861415967291,
+      "tcn_alert_bins": 2,
+      "covered_tcn_alert_bins": 2,
+      "tcn_alert_bin_coverage": 1.0
+    },
+    "fixed_pca_route_q99": {
+      "valid_tcn_rows": 8820,
+      "tcn_invocations": 15,
+      "tcn_invocation_fraction": 0.0017006802721088435,
+      "high_evidence_bins": 4647,
+      "covered_high_evidence_bins": 14,
+      "high_evidence_coverage": 0.003012696363245104,
+      "tcn_alert_bins": 2,
+      "covered_tcn_alert_bins": 2,
+      "tcn_alert_bin_coverage": 1.0
+    },
+    "frozen_evidence_aware_router": {
+      "valid_tcn_rows": 8820,
+      "tcn_invocations": 3270,
+      "tcn_invocation_fraction": 0.3707482993197279,
+      "high_evidence_bins": 4647,
+      "covered_high_evidence_bins": 1818,
+      "high_evidence_coverage": 0.39122014202711425,
+      "tcn_alert_bins": 2,
+      "covered_tcn_alert_bins": 1,
+      "tcn_alert_bin_coverage": 0.5
+    }
+  },
+  "evidence_stage_status": "EVIDENCE_COVERAGE_FAIL",
+  "energy_stage_status": "PENDING",
+  "final_external_status": "PENDING_ENERGY",
+  "success_criteria": {
+    "minimum_high_tcn_evidence_bin_coverage": 0.8,
+    "minimum_tcn_alert_bin_coverage": 0.8,
+    "minimum_mean_gross_gpu_energy_reduction": 0.5,
+    "gross_energy_reduction_positive_each_repetition": true
+  },
+  "zero_denominator_rule": {
+    "high_evidence_coverage_definition": "routed high-evidence bins divided by all EVALUATION high-evidence bins\n",
+    "alert_evidence_coverage_definition": "routed alert-evidence bins divided by all EVALUATION alert-evidence bins\n",
+    "zero_high_evidence_bins": "INCONCLUSIVE_EXTERNAL_EVALUATION",
+    "zero_alert_evidence_bins": "INCONCLUSIVE_EXTERNAL_EVALUATION",
+    "minimum_positive_bins_for_defined_coverage": 1,
+    "success_not_allowed_when_inconclusive": true
+  },
+  "interpretation_guardrails": {
+    "if_pass": "Supports external cross-domain transport of the frozen evidence-aware compute-routing mechanism from MetroPT development data to RCSD-1YD.\n",
+    "if_fail": "Record external transport failure without retuning on RCSD-1YD EVALUATION.\n",
+    "not_supported_even_if_pass": [
+      "universal compressor generalization",
+      "physical fault diagnosis",
+      "physical compressor energy savings",
+      "whole-system compute energy savings",
+      "carbon savings"
+    ]
+  }
+}

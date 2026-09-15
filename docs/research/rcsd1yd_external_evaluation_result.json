@@ -1,0 +1,1277 @@
+{
+  "schema_version": "aeroxai.rcsd1yd_external_evaluation_result.v1",
+  "study": "rcsd1yd_external_evaluation",
+  "evidence_role": "genuinely_new_chronological_external_evaluation",
+  "evaluation_result_file": "docs/research/rcsd1yd_one_shot_evaluation.json",
+  "evaluation": {
+    "schema_version": "aeroxai.rcsd1yd_one_shot_evaluation.v1",
+    "study": "rcsd1yd_external_evaluation",
+    "evidence_role": "genuinely_new_chronological_external_evaluation",
+    "adaptation_freeze_commit": "a75a4828abac6b3e26baaca83ea1c6ec7d3c3805",
+    "data_use": {
+      "evaluation_parquet_opened": true,
+      "evaluation_used_for_training": false,
+      "evaluation_used_for_calibration": false,
+      "evaluation_derived_tuning_performed": false
+    },
+    "evaluation": {
+      "source_rows": 8832,
+      "valid_tcn_rows": 8820,
+      "target_start": "2022-10-01 03:00:00",
+      "target_end": "2022-12-31 23:45:00",
+      "tcn_score_min": 0.4708917438983917,
+      "tcn_score_median": 0.9056194722652435,
+      "tcn_score_p90": 1.0970874786376954,
+      "tcn_score_p995": 1.3477122038602845,
+      "tcn_score_max": 401.15924072265625
+    },
+    "frozen_teacher": {
+      "calibration_high_evidence_threshold_q90": 0.8942223191261292,
+      "calibration_alert_evidence_threshold_q995": 311.1317443847656,
+      "evaluation_high_evidence_bins": 4647,
+      "evaluation_alert_evidence_bins": 2
+    },
+    "systems": {
+      "always_on_tcn": {
+        "valid_tcn_rows": 8820,
+        "tcn_invocations": 8820,
+        "tcn_invocation_fraction": 1.0,
+        "high_evidence_bins": 4647,
+        "covered_high_evidence_bins": 4647,
+        "high_evidence_coverage": 1.0,
+        "tcn_alert_bins": 2,
+        "covered_tcn_alert_bins": 2,
+        "tcn_alert_bin_coverage": 1.0
+      },
+      "fixed_pca_route_q90": {
+        "valid_tcn_rows": 8820,
+        "tcn_invocations": 6084,
+        "tcn_invocation_fraction": 0.689795918367347,
+        "high_evidence_bins": 4647,
+        "covered_high_evidence_bins": 4495,
+        "high_evidence_coverage": 0.9672907251990531,
+        "tcn_alert_bins": 2,
+        "covered_tcn_alert_bins": 2,
+        "tcn_alert_bin_coverage": 1.0
+      },
+      "fixed_pca_route_q95": {
+        "valid_tcn_rows": 8820,
+        "tcn_invocations": 3613,
+        "tcn_invocation_fraction": 0.4096371882086168,
+        "high_evidence_bins": 4647,
+        "covered_high_evidence_bins": 3277,
+        "high_evidence_coverage": 0.7051861415967291,
+        "tcn_alert_bins": 2,
+        "covered_tcn_alert_bins": 2,
+        "tcn_alert_bin_coverage": 1.0
+      },
+      "fixed_pca_route_q99": {
+        "valid_tcn_rows": 8820,
+        "tcn_invocations": 15,
+        "tcn_invocation_fraction": 0.0017006802721088435,
+        "high_evidence_bins": 4647,
+        "covered_high_evidence_bins": 14,
+        "high_evidence_coverage": 0.003012696363245104,
+        "tcn_alert_bins": 2,
+        "covered_tcn_alert_bins": 2,
+        "tcn_alert_bin_coverage": 1.0
+      },
+      "frozen_evidence_aware_router": {
+        "valid_tcn_rows": 8820,
+        "tcn_invocations": 3270,
+        "tcn_invocation_fraction": 0.3707482993197279,
+        "high_evidence_bins": 4647,
+        "covered_high_evidence_bins": 1818,
+        "high_evidence_coverage": 0.39122014202711425,
+        "tcn_alert_bins": 2,
+        "covered_tcn_alert_bins": 1,
+        "tcn_alert_bin_coverage": 0.5
+      }
+    },
+    "evidence_stage_status": "EVIDENCE_COVERAGE_FAIL",
+    "energy_stage_status": "PENDING",
+    "final_external_status": "PENDING_ENERGY",
+    "success_criteria": {
+      "minimum_high_tcn_evidence_bin_coverage": 0.8,
+      "minimum_tcn_alert_bin_coverage": 0.8,
+      "minimum_mean_gross_gpu_energy_reduction": 0.5,
+      "gross_energy_reduction_positive_each_repetition": true
+    },
+    "zero_denominator_rule": {
+      "high_evidence_coverage_definition": "routed high-evidence bins divided by all EVALUATION high-evidence bins\n",
+      "alert_evidence_coverage_definition": "routed alert-evidence bins divided by all EVALUATION alert-evidence bins\n",
+      "zero_high_evidence_bins": "INCONCLUSIVE_EXTERNAL_EVALUATION",
+      "zero_alert_evidence_bins": "INCONCLUSIVE_EXTERNAL_EVALUATION",
+      "minimum_positive_bins_for_defined_coverage": 1,
+      "success_not_allowed_when_inconclusive": true
+    },
+    "interpretation_guardrails": {
+      "if_pass": "Supports external cross-domain transport of the frozen evidence-aware compute-routing mechanism from MetroPT development data to RCSD-1YD.\n",
+      "if_fail": "Record external transport failure without retuning on RCSD-1YD EVALUATION.\n",
+      "not_supported_even_if_pass": [
+        "universal compressor generalization",
+        "physical fault diagnosis",
+        "physical compressor energy savings",
+        "whole-system compute energy savings",
+        "carbon savings"
+      ]
+    }
+  },
+  "energy": {
+    "measurement_scope": "gpu_device_tcn_scoring_only",
+    "cpu_router_energy": "UNKNOWN",
+    "whole_system_energy": "UNKNOWN",
+    "physical_compressor_energy": "NOT_MEASURED",
+    "protocol": {
+      "scope": "gpu_device_tcn_scoring_only",
+      "nvml_sampling_interval_seconds": 0.1,
+      "warmup_runs_per_condition": 2,
+      "measured_repetitions": 5,
+      "matched_idle_seconds": 10.0,
+      "minimum_metered_workload_seconds": 20.0,
+      "cpu_router_energy": "UNKNOWN",
+      "whole_system_energy": "UNKNOWN",
+      "physical_compressor_energy": "NOT_MEASURED",
+      "gpu_device_index": 0,
+      "inference_batch_size": 1024,
+      "cooldown_seconds": 5.0,
+      "condition_order_seed": 20260915,
+      "condition_orders": [
+        [
+          "fixed_pca_route_q90",
+          "fixed_pca_route_q99",
+          "fixed_pca_route_q95",
+          "always_on_tcn",
+          "frozen_evidence_aware_router"
+        ],
+        [
+          "fixed_pca_route_q90",
+          "frozen_evidence_aware_router",
+          "fixed_pca_route_q99",
+          "fixed_pca_route_q95",
+          "always_on_tcn"
+        ],
+        [
+          "frozen_evidence_aware_router",
+          "fixed_pca_route_q90",
+          "always_on_tcn",
+          "fixed_pca_route_q95",
+          "fixed_pca_route_q99"
+        ],
+        [
+          "frozen_evidence_aware_router",
+          "fixed_pca_route_q95",
+          "fixed_pca_route_q99",
+          "always_on_tcn",
+          "fixed_pca_route_q90"
+        ],
+        [
+          "fixed_pca_route_q95",
+          "always_on_tcn",
+          "fixed_pca_route_q99",
+          "frozen_evidence_aware_router",
+          "fixed_pca_route_q90"
+        ]
+      ]
+    },
+    "records": [
+      {
+        "repetition": 1,
+        "condition": "fixed_pca_route_q90",
+        "idle": {
+          "duration_s": 10.003008758008946,
+          "sample_count": 99,
+          "instant_energy_j": 112.61167392240178,
+          "average_field_energy_j": 182.45341307945296,
+          "mean_instant_w": 11.477888888888888,
+          "mean_average_w": 18.360737373737372,
+          "peak_instant_w": 61.57,
+          "peak_average_w": 61.072
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.006975343989325,
+            "sample_count": 197,
+            "instant_energy_j": 1527.3362306524364,
+            "average_field_energy_j": 1496.3732792856733,
+            "mean_instant_w": 76.17233502538072,
+            "mean_average_w": 74.63231979695432,
+            "peak_instant_w": 87.479,
+            "peak_average_w": 87.061
+          },
+          "logical_passes": 4542,
+          "invocations_per_logical_pass": 6084,
+          "total_tcn_invocations": 27633528,
+          "checksum": 32374387.150268555
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1527.3362306524364,
+          "matched_idle_mean_power_w": 11.477888888888888,
+          "matched_idle_equivalent_energy_j": 229.637840001049,
+          "incremental_gpu_energy_j": 1297.6983906513874,
+          "gross_gpu_energy_per_logical_pass_j": 0.33626953559058487,
+          "incremental_gpu_energy_per_logical_pass_j": 0.2857107861407722,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 1,
+        "condition": "fixed_pca_route_q99",
+        "idle": {
+          "duration_s": 10.003281295998022,
+          "sample_count": 99,
+          "instant_energy_j": 83.90068069222441,
+          "average_field_energy_j": 83.9344898221772,
+          "mean_instant_w": 8.380494949494949,
+          "mean_average_w": 8.390828282828283,
+          "peak_instant_w": 10.004,
+          "peak_average_w": 8.911
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.002058695987216,
+            "sample_count": 195,
+            "instant_energy_j": 594.5586096738642,
+            "average_field_energy_j": 583.195264026855,
+            "mean_instant_w": 29.678979487179486,
+            "mean_average_w": 29.12140512820513,
+            "peak_instant_w": 31.036,
+            "peak_average_w": 30.827
+          },
+          "logical_passes": 17408,
+          "invocations_per_logical_pass": 15,
+          "total_tcn_invocations": 261120,
+          "checksum": 19909450.125
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 594.5586096738642,
+          "matched_idle_mean_power_w": 8.380494949494949,
+          "matched_idle_equivalent_energy_j": 167.6271518812224,
+          "incremental_gpu_energy_j": 426.9314577926418,
+          "gross_gpu_energy_per_logical_pass_j": 0.03415433189762547,
+          "incremental_gpu_energy_per_logical_pass_j": 0.0245250148088604,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 1,
+        "condition": "fixed_pca_route_q95",
+        "idle": {
+          "duration_s": 10.002752055996098,
+          "sample_count": 99,
+          "instant_energy_j": 75.96908662248208,
+          "average_field_energy_j": 76.11166724519225,
+          "mean_instant_w": 7.590868686868687,
+          "mean_average_w": 7.606999999999999,
+          "peak_instant_w": 8.63,
+          "peak_average_w": 7.866
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.003364780000993,
+            "sample_count": 197,
+            "instant_energy_j": 1538.432982243907,
+            "average_field_energy_j": 1498.2388893670943,
+            "mean_instant_w": 76.75238071065989,
+            "mean_average_w": 74.732269035533,
+            "peak_instant_w": 89.163,
+            "peak_average_w": 88.386
+          },
+          "logical_passes": 6956,
+          "invocations_per_logical_pass": 3613,
+          "total_tcn_invocations": 25132028,
+          "checksum": 34216169.158691406
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1538.432982243907,
+          "matched_idle_mean_power_w": 7.590868686868687,
+          "matched_idle_equivalent_energy_j": 151.84291534052147,
+          "incremental_gpu_energy_j": 1386.5900669033854,
+          "gross_gpu_energy_per_logical_pass_j": 0.22116632867221203,
+          "incremental_gpu_energy_per_logical_pass_j": 0.19933727241279262,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 1,
+        "condition": "always_on_tcn",
+        "idle": {
+          "duration_s": 10.002157704991987,
+          "sample_count": 99,
+          "instant_energy_j": 91.37014559261361,
+          "average_field_energy_j": 92.09429212976399,
+          "mean_instant_w": 9.121646464646465,
+          "mean_average_w": 9.20380808080808,
+          "peak_instant_w": 9.98,
+          "peak_average_w": 9.4
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.004863252994255,
+            "sample_count": 198,
+            "instant_energy_j": 1504.0164839226516,
+            "average_field_energy_j": 1470.2439491745527,
+            "mean_instant_w": 75.11206565656566,
+            "mean_average_w": 73.46461111111111,
+            "peak_instant_w": 89.328,
+            "peak_average_w": 88.627
+          },
+          "logical_passes": 2863,
+          "invocations_per_logical_pass": 8820,
+          "total_tcn_invocations": 25251660,
+          "checksum": 26238061.531188965
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1504.0164839226516,
+          "matched_idle_mean_power_w": 9.121646464646465,
+          "matched_idle_equivalent_energy_j": 182.47729016741104,
+          "incremental_gpu_energy_j": 1321.5391937552406,
+          "gross_gpu_energy_per_logical_pass_j": 0.5253288452401856,
+          "incremental_gpu_energy_per_logical_pass_j": 0.46159245328509974,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 1,
+        "condition": "frozen_evidence_aware_router",
+        "idle": {
+          "duration_s": 10.003463354005362,
+          "sample_count": 98,
+          "instant_energy_j": 99.03995201374703,
+          "average_field_energy_j": 99.72574984620638,
+          "mean_instant_w": 9.895734693877552,
+          "mean_average_w": 9.967091836734694,
+          "peak_instant_w": 11.559,
+          "peak_average_w": 10.687
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.00477602999308,
+            "sample_count": 197,
+            "instant_energy_j": 1325.2076568190707,
+            "average_field_energy_j": 1288.2963562522343,
+            "mean_instant_w": 66.3872994923858,
+            "mean_average_w": 64.56145177664975,
+            "peak_instant_w": 89.012,
+            "peak_average_w": 88.614
+          },
+          "logical_passes": 5939,
+          "invocations_per_logical_pass": 3270,
+          "total_tcn_invocations": 19420530,
+          "checksum": 22739773.26589966
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1325.2076568190707,
+          "matched_idle_mean_power_w": 9.895734693877552,
+          "matched_idle_equivalent_energy_j": 197.96195620325258,
+          "incremental_gpu_energy_j": 1127.2457006158181,
+          "gross_gpu_energy_per_logical_pass_j": 0.2231364971912899,
+          "incremental_gpu_energy_per_logical_pass_j": 0.1898039569987907,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 2,
+        "condition": "fixed_pca_route_q90",
+        "idle": {
+          "duration_s": 10.003270896995673,
+          "sample_count": 99,
+          "instant_energy_j": 101.2518640577771,
+          "average_field_energy_j": 101.21901485019826,
+          "mean_instant_w": 10.122767676767676,
+          "mean_average_w": 10.118515151515151,
+          "peak_instant_w": 11.117,
+          "peak_average_w": 10.254
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.00474575199769,
+            "sample_count": 198,
+            "instant_energy_j": 1603.6843432241442,
+            "average_field_energy_j": 1560.0572984115333,
+            "mean_instant_w": 79.99111616161616,
+            "mean_average_w": 77.83080808080808,
+            "peak_instant_w": 90.935,
+            "peak_average_w": 85.877
+          },
+          "logical_passes": 4597,
+          "invocations_per_logical_pass": 6084,
+          "total_tcn_invocations": 27968148,
+          "checksum": 32766415.176086426
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1603.6843432241442,
+          "matched_idle_mean_power_w": 10.122767676767676,
+          "matched_idle_equivalent_energy_j": 202.5033936802777,
+          "incremental_gpu_energy_j": 1401.1809495438665,
+          "gross_gpu_energy_per_logical_pass_j": 0.3488545449693592,
+          "incremental_gpu_energy_per_logical_pass_j": 0.3048033390349938,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 2,
+        "condition": "frozen_evidence_aware_router",
+        "idle": {
+          "duration_s": 10.00226646399824,
+          "sample_count": 99,
+          "instant_energy_j": 103.00462166453671,
+          "average_field_energy_j": 103.99811503342704,
+          "mean_instant_w": 10.293474747474747,
+          "mean_average_w": 10.392333333333335,
+          "peak_instant_w": 11.6,
+          "peak_average_w": 11.215
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.005853312992258,
+            "sample_count": 196,
+            "instant_energy_j": 1286.0649451050786,
+            "average_field_energy_j": 1255.1816306850205,
+            "mean_instant_w": 64.2185306122449,
+            "mean_average_w": 62.75806122448979,
+            "peak_instant_w": 90.235,
+            "peak_average_w": 89.291
+          },
+          "logical_passes": 5673,
+          "invocations_per_logical_pass": 3270,
+          "total_tcn_invocations": 18550710,
+          "checksum": 21721288.72494507
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1286.0649451050786,
+          "matched_idle_mean_power_w": 10.293474747474747,
+          "matched_idle_equivalent_energy_j": 205.9297458789698,
+          "incremental_gpu_energy_j": 1080.1351992261089,
+          "gross_gpu_energy_per_logical_pass_j": 0.22669926760181183,
+          "incremental_gpu_energy_per_logical_pass_j": 0.19039929476927708,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 2,
+        "condition": "fixed_pca_route_q99",
+        "idle": {
+          "duration_s": 10.002677604003111,
+          "sample_count": 99,
+          "instant_energy_j": 102.0659918472632,
+          "average_field_energy_j": 101.90076376454668,
+          "mean_instant_w": 10.198373737373737,
+          "mean_average_w": 10.197141414141413,
+          "peak_instant_w": 11.333,
+          "peak_average_w": 10.806
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.003638027003035,
+            "sample_count": 195,
+            "instant_energy_j": 618.1527119968372,
+            "average_field_energy_j": 608.3207423071108,
+            "mean_instant_w": 30.850866666666665,
+            "mean_average_w": 30.36776923076923,
+            "peak_instant_w": 32.271,
+            "peak_average_w": 31.908
+          },
+          "logical_passes": 17204,
+          "invocations_per_logical_pass": 15,
+          "total_tcn_invocations": 258060,
+          "checksum": 19676136.256347656
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 618.1527119968372,
+          "matched_idle_mean_power_w": 10.198373737373737,
+          "matched_idle_equivalent_energy_j": 204.00457670651835,
+          "incremental_gpu_energy_j": 414.1481352903188,
+          "gross_gpu_energy_per_logical_pass_j": 0.03593075517303169,
+          "incremental_gpu_energy_per_logical_pass_j": 0.024072781637428434,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 2,
+        "condition": "fixed_pca_route_q95",
+        "idle": {
+          "duration_s": 10.003381671995157,
+          "sample_count": 98,
+          "instant_energy_j": 97.12381962524219,
+          "average_field_energy_j": 97.11434782642908,
+          "mean_instant_w": 9.710673469387755,
+          "mean_average_w": 9.70730612244898,
+          "peak_instant_w": 10.69,
+          "peak_average_w": 9.931
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.002978409000207,
+            "sample_count": 198,
+            "instant_energy_j": 1614.0328671744535,
+            "average_field_energy_j": 1573.0965255451415,
+            "mean_instant_w": 80.56889393939393,
+            "mean_average_w": 78.56954545454546,
+            "peak_instant_w": 90.732,
+            "peak_average_w": 90.313
+          },
+          "logical_passes": 7022,
+          "invocations_per_logical_pass": 3613,
+          "total_tcn_invocations": 25370486,
+          "checksum": 34540819.412353516
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1614.0328671744535,
+          "matched_idle_mean_power_w": 9.710673469387755,
+          "matched_idle_equivalent_energy_j": 194.2423917450144,
+          "incremental_gpu_energy_j": 1419.790475429439,
+          "gross_gpu_energy_per_logical_pass_j": 0.22985372645606003,
+          "incremental_gpu_energy_per_logical_pass_j": 0.20219175098681844,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 2,
+        "condition": "always_on_tcn",
+        "idle": {
+          "duration_s": 10.003411765006604,
+          "sample_count": 99,
+          "instant_energy_j": 108.17035725694765,
+          "average_field_energy_j": 108.35205682564168,
+          "mean_instant_w": 10.807878787878789,
+          "mean_average_w": 10.83212121212121,
+          "peak_instant_w": 11.342,
+          "peak_average_w": 11.253
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.00781493699469,
+            "sample_count": 197,
+            "instant_energy_j": 1581.9552666941506,
+            "average_field_energy_j": 1543.6005586927179,
+            "mean_instant_w": 79.02251269035533,
+            "mean_average_w": 77.06126395939086,
+            "peak_instant_w": 93.924,
+            "peak_average_w": 93.504
+          },
+          "logical_passes": 2916,
+          "invocations_per_logical_pass": 8820,
+          "total_tcn_invocations": 25719120,
+          "checksum": 26723781.845947266
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1581.9552666941506,
+          "matched_idle_mean_power_w": 10.807878787878789,
+          "matched_idle_equivalent_energy_j": 216.2420386493493,
+          "incremental_gpu_energy_j": 1365.7132280448013,
+          "gross_gpu_energy_per_logical_pass_j": 0.5425086648471024,
+          "incremental_gpu_energy_per_logical_pass_j": 0.4683515871209881,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 3,
+        "condition": "frozen_evidence_aware_router",
+        "idle": {
+          "duration_s": 10.003899602001184,
+          "sample_count": 100,
+          "instant_energy_j": 103.80910569783678,
+          "average_field_energy_j": 104.70944745061914,
+          "mean_instant_w": 10.369639999999999,
+          "mean_average_w": 10.463040000000001,
+          "peak_instant_w": 11.193,
+          "peak_average_w": 10.871
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.00116134599375,
+            "sample_count": 196,
+            "instant_energy_j": 875.5617268161177,
+            "average_field_energy_j": 841.430104796213,
+            "mean_instant_w": 43.95794387755102,
+            "mean_average_w": 42.21795408163265,
+            "peak_instant_w": 78.709,
+            "peak_average_w": 71.703
+          },
+          "logical_passes": 3638,
+          "invocations_per_logical_pass": 3270,
+          "total_tcn_invocations": 11896260,
+          "checksum": 13929499.097717285
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 875.5617268161177,
+          "matched_idle_mean_power_w": 10.369639999999999,
+          "matched_idle_equivalent_energy_j": 207.40484273987062,
+          "incremental_gpu_energy_j": 668.156884076247,
+          "gross_gpu_energy_per_logical_pass_j": 0.24067117284665138,
+          "incremental_gpu_energy_per_logical_pass_j": 0.1836604958978139,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 3,
+        "condition": "fixed_pca_route_q90",
+        "idle": {
+          "duration_s": 10.003403408001759,
+          "sample_count": 99,
+          "instant_energy_j": 89.85894902679199,
+          "average_field_energy_j": 90.4247421321114,
+          "mean_instant_w": 8.980565656565657,
+          "mean_average_w": 9.0419797979798,
+          "peak_instant_w": 10.374,
+          "peak_average_w": 9.388
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.004202294003335,
+            "sample_count": 198,
+            "instant_energy_j": 1526.5876400476327,
+            "average_field_energy_j": 1491.7888418090265,
+            "mean_instant_w": 76.17300505050504,
+            "mean_average_w": 74.45244949494949,
+            "peak_instant_w": 83.188,
+            "peak_average_w": 82.715
+          },
+          "logical_passes": 4532,
+          "invocations_per_logical_pass": 6084,
+          "total_tcn_invocations": 27572688,
+          "checksum": 32303109.327392578
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1526.5876400476327,
+          "matched_idle_mean_power_w": 8.980565656565657,
+          "matched_idle_equivalent_energy_j": 179.64905210851828,
+          "incremental_gpu_energy_j": 1346.9385879391143,
+          "gross_gpu_energy_per_logical_pass_j": 0.33684634599462326,
+          "incremental_gpu_energy_per_logical_pass_j": 0.2972062197570861,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 3,
+        "condition": "always_on_tcn",
+        "idle": {
+          "duration_s": 10.002781579998555,
+          "sample_count": 99,
+          "instant_energy_j": 88.10323917321965,
+          "average_field_energy_j": 89.93328861926439,
+          "mean_instant_w": 8.80720202020202,
+          "mean_average_w": 8.992212121212122,
+          "peak_instant_w": 10.323,
+          "peak_average_w": 10.019
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.010083481000038,
+            "sample_count": 198,
+            "instant_energy_j": 1559.2703744830012,
+            "average_field_energy_j": 1525.1036673497385,
+            "mean_instant_w": 77.75575757575757,
+            "mean_average_w": 76.06872222222222,
+            "peak_instant_w": 89.821,
+            "peak_average_w": 89.274
+          },
+          "logical_passes": 3125,
+          "invocations_per_logical_pass": 8820,
+          "total_tcn_invocations": 27562500,
+          "checksum": 28639169.5022583
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1559.2703744830012,
+          "matched_idle_mean_power_w": 8.80720202020202,
+          "matched_idle_equivalent_energy_j": 176.2328476582746,
+          "incremental_gpu_energy_j": 1383.0375268247267,
+          "gross_gpu_energy_per_logical_pass_j": 0.49896651983456036,
+          "incremental_gpu_energy_per_logical_pass_j": 0.44257200858391255,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 3,
+        "condition": "fixed_pca_route_q95",
+        "idle": {
+          "duration_s": 10.002122464997228,
+          "sample_count": 99,
+          "instant_energy_j": 87.70192522100527,
+          "average_field_energy_j": 88.8268418299048,
+          "mean_instant_w": 8.76110101010101,
+          "mean_average_w": 8.878151515151515,
+          "peak_instant_w": 9.61,
+          "peak_average_w": 9.371
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.002633199997945,
+            "sample_count": 198,
+            "instant_energy_j": 1542.5474306865842,
+            "average_field_energy_j": 1504.5558748035503,
+            "mean_instant_w": 76.9534393939394,
+            "mean_average_w": 75.06377272727273,
+            "peak_instant_w": 90.064,
+            "peak_average_w": 89.398
+          },
+          "logical_passes": 7393,
+          "invocations_per_logical_pass": 3613,
+          "total_tcn_invocations": 26710909,
+          "checksum": 36365747.353393555
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1542.5474306865842,
+          "matched_idle_mean_power_w": 8.76110101010101,
+          "matched_idle_equivalent_energy_j": 175.245089933182,
+          "incremental_gpu_energy_j": 1367.3023407534022,
+          "gross_gpu_energy_per_logical_pass_j": 0.20864972686143435,
+          "incremental_gpu_energy_per_logical_pass_j": 0.18494553506741543,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 3,
+        "condition": "fixed_pca_route_q99",
+        "idle": {
+          "duration_s": 10.002666957007023,
+          "sample_count": 99,
+          "instant_energy_j": 79.5149682413563,
+          "average_field_energy_j": 80.95250641891846,
+          "mean_instant_w": 7.945636363636363,
+          "mean_average_w": 8.080484848484849,
+          "peak_instant_w": 9.846,
+          "peak_average_w": 8.969
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.003422527006478,
+            "sample_count": 197,
+            "instant_energy_j": 587.3365668816479,
+            "average_field_energy_j": 576.2908413023824,
+            "mean_instant_w": 29.30876649746193,
+            "mean_average_w": 28.76160913705584,
+            "peak_instant_w": 30.728,
+            "peak_average_w": 30.504
+          },
+          "logical_passes": 17222,
+          "invocations_per_logical_pass": 15,
+          "total_tcn_invocations": 258330,
+          "checksum": 19696722.774169922
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 587.3365668816479,
+          "matched_idle_mean_power_w": 7.945636363636363,
+          "matched_idle_equivalent_energy_j": 158.93992142776546,
+          "incremental_gpu_energy_j": 428.3966454538824,
+          "gross_gpu_energy_per_logical_pass_j": 0.034103853610593884,
+          "incremental_gpu_energy_per_logical_pass_j": 0.02487496489686926,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 4,
+        "condition": "frozen_evidence_aware_router",
+        "idle": {
+          "duration_s": 10.003002608005772,
+          "sample_count": 99,
+          "instant_energy_j": 66.39676303867417,
+          "average_field_energy_j": 66.73774857468959,
+          "mean_instant_w": 6.63629292929293,
+          "mean_average_w": 6.672393939393939,
+          "peak_instant_w": 7.461,
+          "peak_average_w": 7.0
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.01327650200983,
+            "sample_count": 198,
+            "instant_energy_j": 1473.708533789159,
+            "average_field_energy_j": 1436.578476356812,
+            "mean_instant_w": 73.52055050505051,
+            "mean_average_w": 71.66917676767676,
+            "peak_instant_w": 86.445,
+            "peak_average_w": 85.862
+          },
+          "logical_passes": 7007,
+          "invocations_per_logical_pass": 3270,
+          "total_tcn_invocations": 22912890,
+          "checksum": 26829026.986724854
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1473.708533789159,
+          "matched_idle_mean_power_w": 6.63629292929293,
+          "matched_idle_equivalent_energy_j": 132.81396534227218,
+          "incremental_gpu_energy_j": 1340.8945684468868,
+          "gross_gpu_energy_per_logical_pass_j": 0.21031947107023818,
+          "incremental_gpu_energy_per_logical_pass_j": 0.19136500191906475,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 4,
+        "condition": "fixed_pca_route_q95",
+        "idle": {
+          "duration_s": 10.003017409995664,
+          "sample_count": 99,
+          "instant_energy_j": 74.55425306121849,
+          "average_field_energy_j": 74.79074461248828,
+          "mean_instant_w": 7.450868686868686,
+          "mean_average_w": 7.474979797979798,
+          "peak_instant_w": 8.338,
+          "peak_average_w": 7.741
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.00176157199894,
+            "sample_count": 198,
+            "instant_energy_j": 1543.9949112496624,
+            "average_field_energy_j": 1500.9779685649726,
+            "mean_instant_w": 77.03784343434343,
+            "mean_average_w": 74.91836868686869,
+            "peak_instant_w": 89.915,
+            "peak_average_w": 89.041
+          },
+          "logical_passes": 7033,
+          "invocations_per_logical_pass": 3613,
+          "total_tcn_invocations": 25410229,
+          "checksum": 34594927.78796387
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1543.9949112496624,
+          "matched_idle_mean_power_w": 7.450868686868686,
+          "matched_idle_equivalent_energy_j": 149.0304989790203,
+          "incremental_gpu_energy_j": 1394.9644122706422,
+          "gross_gpu_energy_per_logical_pass_j": 0.21953574736949558,
+          "incremental_gpu_energy_per_logical_pass_j": 0.19834557262486027,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 4,
+        "condition": "fixed_pca_route_q99",
+        "idle": {
+          "duration_s": 10.00348614298855,
+          "sample_count": 99,
+          "instant_energy_j": 81.79111490355756,
+          "average_field_energy_j": 82.28379247869088,
+          "mean_instant_w": 8.169878787878787,
+          "mean_average_w": 8.225757575757576,
+          "peak_instant_w": 9.188,
+          "peak_average_w": 8.523
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.002171858999645,
+            "sample_count": 197,
+            "instant_energy_j": 594.428692300985,
+            "average_field_energy_j": 582.6480658104238,
+            "mean_instant_w": 29.67710152284264,
+            "mean_average_w": 29.09582233502538,
+            "peak_instant_w": 31.009,
+            "peak_average_w": 30.707
+          },
+          "logical_passes": 16947,
+          "invocations_per_logical_pass": 15,
+          "total_tcn_invocations": 254205,
+          "checksum": 19382206.529663086
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 594.428692300985,
+          "matched_idle_mean_power_w": 8.169878787878787,
+          "matched_idle_equivalent_energy_j": 163.4153195823472,
+          "incremental_gpu_energy_j": 431.01337271863775,
+          "gross_gpu_energy_per_logical_pass_j": 0.03507574746568625,
+          "incremental_gpu_energy_per_logical_pass_j": 0.025433018983810573,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 4,
+        "condition": "always_on_tcn",
+        "idle": {
+          "duration_s": 10.003201182000339,
+          "sample_count": 99,
+          "instant_energy_j": 89.26704729647652,
+          "average_field_energy_j": 89.35343219860181,
+          "mean_instant_w": 8.924818181818182,
+          "mean_average_w": 8.935242424242423,
+          "peak_instant_w": 9.616,
+          "peak_average_w": 9.258
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.005895454989513,
+            "sample_count": 199,
+            "instant_energy_j": 1593.6656644834457,
+            "average_field_energy_j": 1561.2940139370521,
+            "mean_instant_w": 79.47963819095477,
+            "mean_average_w": 77.92263819095477,
+            "peak_instant_w": 90.22,
+            "peak_average_w": 89.541
+          },
+          "logical_passes": 3031,
+          "invocations_per_logical_pass": 8820,
+          "total_tcn_invocations": 26733420,
+          "checksum": 27777703.28363037
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1593.6656644834457,
+          "matched_idle_mean_power_w": 8.924818181818182,
+          "matched_idle_equivalent_energy_j": 178.54897950024414,
+          "incremental_gpu_energy_j": 1415.1166849832016,
+          "gross_gpu_energy_per_logical_pass_j": 0.525788737869827,
+          "incremental_gpu_energy_per_logical_pass_j": 0.46688112338607773,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 4,
+        "condition": "fixed_pca_route_q90",
+        "idle": {
+          "duration_s": 10.002139025003999,
+          "sample_count": 99,
+          "instant_energy_j": 90.67551081968948,
+          "average_field_energy_j": 91.22307642222101,
+          "mean_instant_w": 9.080939393939394,
+          "mean_average_w": 9.13120202020202,
+          "peak_instant_w": 10.769,
+          "peak_average_w": 10.392
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.001383302995237,
+            "sample_count": 198,
+            "instant_energy_j": 1609.026768445572,
+            "average_field_energy_j": 1570.161151068925,
+            "mean_instant_w": 80.28730808080809,
+            "mean_average_w": 78.3660101010101,
+            "peak_instant_w": 89.634,
+            "peak_average_w": 84.243
+          },
+          "logical_passes": 4596,
+          "invocations_per_logical_pass": 6084,
+          "total_tcn_invocations": 27962064,
+          "checksum": 32759287.393798828
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1609.026768445572,
+          "matched_idle_mean_power_w": 9.080939393939394,
+          "matched_idle_equivalent_energy_j": 181.6313495694511,
+          "incremental_gpu_energy_j": 1427.395418876121,
+          "gross_gpu_energy_per_logical_pass_j": 0.35009285649381466,
+          "incremental_gpu_energy_per_logical_pass_j": 0.310573415769391,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 5,
+        "condition": "fixed_pca_route_q95",
+        "idle": {
+          "duration_s": 10.00293353899906,
+          "sample_count": 99,
+          "instant_energy_j": 99.95194530737912,
+          "average_field_energy_j": 100.7577247395741,
+          "mean_instant_w": 9.982181818181818,
+          "mean_average_w": 10.066151515151516,
+          "peak_instant_w": 11.828,
+          "peak_average_w": 10.754
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.006535794003867,
+            "sample_count": 198,
+            "instant_energy_j": 1587.933299142197,
+            "average_field_energy_j": 1552.8117327731775,
+            "mean_instant_w": 79.21625252525253,
+            "mean_average_w": 77.47811616161616,
+            "peak_instant_w": 92.001,
+            "peak_average_w": 91.478
+          },
+          "logical_passes": 7061,
+          "invocations_per_logical_pass": 3613,
+          "total_tcn_invocations": 25511393,
+          "checksum": 34732658.1986084
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1587.933299142197,
+          "matched_idle_mean_power_w": 9.982181818181818,
+          "matched_idle_equivalent_energy_j": 199.70887784770915,
+          "incremental_gpu_energy_j": 1388.224421294488,
+          "gross_gpu_energy_per_logical_pass_j": 0.22488787694975174,
+          "incremental_gpu_energy_per_logical_pass_j": 0.19660450662717574,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 5,
+        "condition": "always_on_tcn",
+        "idle": {
+          "duration_s": 10.002587572002085,
+          "sample_count": 99,
+          "instant_energy_j": 102.1315731125704,
+          "average_field_energy_j": 102.13894585477702,
+          "mean_instant_w": 10.213787878787878,
+          "mean_average_w": 10.211989898989899,
+          "peak_instant_w": 10.917,
+          "peak_average_w": 10.392
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.003522112005157,
+            "sample_count": 197,
+            "instant_energy_j": 1550.2502096898052,
+            "average_field_energy_j": 1518.919185791985,
+            "mean_instant_w": 77.38092893401016,
+            "mean_average_w": 75.764730964467,
+            "peak_instant_w": 91.244,
+            "peak_average_w": 90.672
+          },
+          "logical_passes": 2961,
+          "invocations_per_logical_pass": 8820,
+          "total_tcn_invocations": 26116020,
+          "checksum": 27136185.886779785
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1550.2502096898052,
+          "matched_idle_mean_power_w": 10.213787878787878,
+          "matched_idle_equivalent_energy_j": 204.31173168066357,
+          "incremental_gpu_energy_j": 1345.9384780091416,
+          "gross_gpu_energy_per_logical_pass_j": 0.5235563018202651,
+          "incremental_gpu_energy_per_logical_pass_j": 0.4545553792668496,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 5,
+        "condition": "fixed_pca_route_q99",
+        "idle": {
+          "duration_s": 10.003328227991005,
+          "sample_count": 99,
+          "instant_energy_j": 103.5019409755011,
+          "average_field_energy_j": 104.3268045232576,
+          "mean_instant_w": 10.346434343434344,
+          "mean_average_w": 10.42589898989899,
+          "peak_instant_w": 11.272,
+          "peak_average_w": 10.872
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.0025071400014,
+            "sample_count": 195,
+            "instant_energy_j": 626.2342895531566,
+            "average_field_energy_j": 614.8809215147442,
+            "mean_instant_w": 31.26751794871795,
+            "mean_average_w": 30.71097435897436,
+            "peak_instant_w": 33.008,
+            "peak_average_w": 32.35
+          },
+          "logical_passes": 17077,
+          "invocations_per_logical_pass": 15,
+          "total_tcn_invocations": 256155,
+          "checksum": 19530886.936157227
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 626.2342895531566,
+          "matched_idle_mean_power_w": 10.346434343434344,
+          "matched_idle_equivalent_energy_j": 206.95462682810117,
+          "incremental_gpu_energy_j": 419.27966272505546,
+          "gross_gpu_energy_per_logical_pass_j": 0.03667121213053561,
+          "incremental_gpu_energy_per_logical_pass_j": 0.0245523020861425,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 5,
+        "condition": "frozen_evidence_aware_router",
+        "idle": {
+          "duration_s": 10.003240450008889,
+          "sample_count": 99,
+          "instant_energy_j": 98.78178542777746,
+          "average_field_energy_j": 98.84454837873791,
+          "mean_instant_w": 9.873757575757574,
+          "mean_average_w": 9.881757575757575,
+          "peak_instant_w": 10.663,
+          "peak_average_w": 10.079
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.003637810994405,
+            "sample_count": 197,
+            "instant_energy_j": 1572.0965466205782,
+            "average_field_energy_j": 1527.5862046943557,
+            "mean_instant_w": 78.43427918781725,
+            "mean_average_w": 76.192538071066,
+            "peak_instant_w": 90.386,
+            "peak_average_w": 89.695
+          },
+          "logical_passes": 7067,
+          "invocations_per_logical_pass": 3270,
+          "total_tcn_invocations": 23109090,
+          "checksum": 27058760.341827393
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1572.0965466205782,
+          "matched_idle_mean_power_w": 9.873757575757574,
+          "matched_idle_equivalent_energy_j": 197.51107037901667,
+          "incremental_gpu_energy_j": 1374.5854762415615,
+          "gross_gpu_energy_per_logical_pass_j": 0.22245599923879697,
+          "incremental_gpu_energy_per_logical_pass_j": 0.1945076377871178,
+          "unmetered_zero_invocation_condition": false
+        }
+      },
+      {
+        "repetition": 5,
+        "condition": "fixed_pca_route_q90",
+        "idle": {
+          "duration_s": 10.003259074001107,
+          "sample_count": 99,
+          "instant_energy_j": 105.4706598419746,
+          "average_field_energy_j": 106.56252405109856,
+          "mean_instant_w": 10.539080808080808,
+          "mean_average_w": 10.653575757575757,
+          "peak_instant_w": 11.831,
+          "peak_average_w": 11.181
+        },
+        "workload": {
+          "zero_invocation_condition": false,
+          "meter": {
+            "duration_s": 20.00495184600004,
+            "sample_count": 197,
+            "instant_energy_j": 1527.7166602324155,
+            "average_field_energy_j": 1493.3487000504738,
+            "mean_instant_w": 76.32079695431472,
+            "mean_average_w": 74.6399187817259,
+            "peak_instant_w": 82.97,
+            "peak_average_w": 81.905
+          },
+          "logical_passes": 4420,
+          "invocations_per_logical_pass": 6084,
+          "total_tcn_invocations": 26891280,
+          "checksum": 31504797.71118164
+        },
+        "accounting": {
+          "gross_gpu_energy_j": 1527.7166602324155,
+          "matched_idle_mean_power_w": 10.539080808080808,
+          "matched_idle_equivalent_energy_j": 210.83380406675974,
+          "incremental_gpu_energy_j": 1316.8828561656558,
+          "gross_gpu_energy_per_logical_pass_j": 0.34563725344624785,
+          "incremental_gpu_energy_per_logical_pass_j": 0.29793729777503525,
+          "unmetered_zero_invocation_condition": false
+        }
+      }
+    ],
+    "reductions_vs_always_on_tcn": {
+      "fixed_pca_route_q90": {
+        "gross_reduction_by_repetition": [
+          0.35988754731935757,
+          0.3569604181940976,
+          0.3249119277455538,
+          0.3341567985800232,
+          0.3398279187079601
+        ],
+        "mean_gross_reduction_fraction": 0.34314892210939846,
+        "gross_reduction_positive_each_repetition": true,
+        "incremental_reduction_by_repetition": [
+          0.3810323715056392,
+          0.3491997306795617,
+          0.3284568070446886,
+          0.3347912344004349,
+          0.34455225619466423
+        ],
+        "mean_incremental_reduction_fraction": 0.3476064799649977
+      },
+      "fixed_pca_route_q95": {
+        "gross_reduction_by_repetition": [
+          0.5789945085328552,
+          0.5763132621654241,
+          0.5818362183286061,
+          0.5824639602230365,
+          0.5704609491512627
+        ],
+        "mean_gross_reduction_fraction": 0.5780137796802369,
+        "gross_reduction_positive_each_repetition": true,
+        "incremental_reduction_by_repetition": [
+          0.5681530948044483,
+          0.5682906676377149,
+          0.5821119919915826,
+          0.5751690040789196,
+          0.5674795292395873
+        ],
+        "mean_incremental_reduction_fraction": 0.5722408575504505
+      },
+      "fixed_pca_route_q99": {
+        "gross_reduction_by_repetition": [
+          0.9349848533788208,
+          0.9337692510714862,
+          0.9316510181446613,
+          0.9332892758262726,
+          0.9299574620665636
+        ],
+        "mean_gross_reduction_fraction": 0.9327303720975608,
+        "gross_reduction_positive_each_repetition": true,
+        "incremental_reduction_by_repetition": [
+          0.9468686833280772,
+          0.9486010460957192,
+          0.9437945364496478,
+          0.9455257072734996,
+          0.9459861147705637
+        ],
+        "mean_incremental_reduction_fraction": 0.9461552175835015
+      },
+      "frozen_evidence_aware_router": {
+        "gross_reduction_by_repetition": [
+          0.5752441557073271,
+          0.5821278399936645,
+          0.5176606780622287,
+          0.5999924381752194,
+          0.575105870246663
+        ],
+        "mean_gross_reduction_fraction": 0.5700261964370206,
+        "gross_reduction_positive_each_repetition": true,
+        "incremental_reduction_by_repetition": [
+          0.58880619549133,
+          0.593469308090352,
+          0.5850155628109691,
+          0.5901204989159106,
+          0.572092539965453
+        ],
+        "mean_incremental_reduction_fraction": 0.5859008210548029
+      }
+    }
+  },
+  "final_external_status": "EXTERNAL_TRANSPORT_FAIL",
+  "success_criteria": {
+    "minimum_high_tcn_evidence_bin_coverage": 0.8,
+    "minimum_tcn_alert_bin_coverage": 0.8,
+    "minimum_mean_gross_gpu_energy_reduction": 0.5,
+    "gross_energy_reduction_positive_each_repetition": true
+  },
+  "interpretation": {
+    "if_pass": "Supports external cross-domain transport of the frozen evidence-aware compute-routing mechanism from MetroPT development data to RCSD-1YD.\n",
+    "if_fail": "Record external transport failure without retuning on RCSD-1YD EVALUATION.\n",
+    "not_supported_even_if_pass": [
+      "universal compressor generalization",
+      "physical fault diagnosis",
+      "physical compressor energy savings",
+      "whole-system compute energy savings",
+      "carbon savings"
+    ]
+  },
+  "post_evaluation_tuning_allowed": false
+}
