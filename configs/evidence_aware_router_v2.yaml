@@ -1,0 +1,104 @@
+study:
+  name: evidence_aware_router_v2
+  status: preregistered_no_v2_result
+  parent_commit: "1000a7e096136c32ecc59844a7ca67966baec8e1"
+
+provenance:
+  router_v1_development_commit: "03f16e15c63f1292ed8fcad345ce38547d66bb23"
+  rcsd_external_result_commit: "daa58d4"
+  rcsd_failure_analysis_commit: "87e4d667b94ecdca0ce0a9499347e744cc48aa71"
+  cobra_structural_contract_commit: "1000a7e096136c32ecc59844a7ca67966baec8e1"
+
+development_domains:
+  - metropt3_consumed
+  - metropt2_consumed
+  - rcsd1yd_consumed
+
+cobra:
+  model_outcomes_allowed_for_v2_development: false
+  raw_sensor_statistics_allowed: false
+  pca_scores_allowed: false
+  tcn_scores_allowed: false
+  router_scores_allowed: false
+  teacher_prevalence_allowed: false
+  routing_metrics_allowed: false
+  energy_metrics_allowed: false
+
+inputs:
+  ordered:
+    - pca_ewma_percentile
+    - recent_q90_hit_fraction
+    - recent_q95_hit_fraction
+  tcn_score_online_input: false
+  incident_label_input: false
+  support_features_in_primary_family: false
+
+candidate_families:
+  max3:
+    enabled: true
+
+  top2_mean:
+    enabled: true
+
+  convex:
+    enabled: true
+    weights:
+      - [1.00, 0.00, 0.00]
+      - [0.75, 0.25, 0.00]
+      - [0.75, 0.00, 0.25]
+      - [0.50, 0.50, 0.00]
+      - [0.50, 0.25, 0.25]
+      - [0.50, 0.00, 0.50]
+
+thresholds:
+  - 0.25
+  - 0.30
+  - 0.35
+  - 0.40
+  - 0.45
+  - 0.50
+  - 0.55
+  - 0.60
+  - 0.65
+  - 0.70
+  - 0.75
+  - 0.80
+  - 0.85
+  - 0.90
+  - 0.95
+
+expected_candidate_count: 120
+
+teacher:
+  high_evidence:
+    definition: frozen_cal_q90
+    recompute_from_consumed_evaluation: false
+  alert_evidence:
+    definition: frozen_cal_q995
+    recompute_from_consumed_evaluation: false
+  physical_fault_truth: false
+
+missing_input:
+  valid_tcn_target_but_router_input_missing: route_tcn
+  invalid_tcn_target: exclude_from_routing_units
+  imputation_allowed: false
+
+adequacy:
+  minimum_high_evidence_units: 20
+  minimum_alert_evidence_units: 3
+
+eligibility:
+  minimum_high_evidence_coverage: 0.80
+  minimum_alert_evidence_coverage: 0.80
+  compensate_failed_domain_with_average: false
+
+selection:
+  - minimize_worst_domain_invocation
+  - minimize_mean_domain_invocation
+  - maximize_worst_domain_high_evidence_coverage
+  - maximize_worst_applicable_alert_coverage
+  - prefer_family_order_max3_top2_mean_convex
+  - prefer_higher_threshold
+  - prefer_earlier_convex_weight_tuple
+
+no_rescue_tuning: true
