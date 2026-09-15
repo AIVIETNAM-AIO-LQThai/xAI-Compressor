@@ -39,6 +39,7 @@ DATETIME_FORMATS = (
     "%Y-%m-%d %H:%M:%S.%f",
     "%Y/%m/%d %H:%M:%S",
     "%Y/%m/%d %H:%M:%S.%f",
+    "%d.%m.%Y %H:%M",
     "%d.%m.%Y %H:%M:%S",
     "%d.%m.%Y %H:%M:%S.%f",
     "%d/%m/%Y %H:%M:%S",
@@ -138,6 +139,19 @@ def _parse_datetime(value: str) -> datetime:
             continue
 
     raise ValueError("Unsupported timestamp format.")
+
+
+def _timestamp_resolution(value: str) -> str:
+    stripped = value.strip()
+
+    try:
+        datetime.strptime(
+            stripped,
+            "%d.%m.%Y %H:%M",
+        ).replace(tzinfo=timezone.utc)
+        return "minute"
+    except ValueError:
+        return "second_or_finer"
 
 
 def _decode_header_bytes(
@@ -299,6 +313,7 @@ def _inspect_archive(
             duplicate_timestamp_count = 0
             non_monotonic_timestamp_count = 0
             step_counts: Counter[str] = Counter()
+            timestamp_resolution_counts: Counter[str] = Counter()
 
             first_timestamp: datetime | None = None
             last_timestamp: datetime | None = None
@@ -330,6 +345,10 @@ def _inspect_archive(
                     current_timestamp = None
 
                 if current_timestamp is not None:
+                    timestamp_resolution_counts[
+                        _timestamp_resolution(row[timestamp_index])
+                    ] += 1
+
                     if first_timestamp is None:
                         first_timestamp = current_timestamp
 
@@ -400,6 +419,10 @@ def _inspect_archive(
                         key=lambda item: float(item[0]),
                     )
                 ),
+                "timestamp_resolution_counts": dict(
+                    sorted(timestamp_resolution_counts.items())
+                ),
+                "source_row_order_preserved": True,
                 "field_count_mismatch_rows": field_count_mismatch_rows,
                 "structural_blank_rows": structural_blank_rows,
                 "coarse_schema_classes": schema_classes,

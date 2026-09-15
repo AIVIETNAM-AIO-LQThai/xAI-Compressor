@@ -17,6 +17,7 @@ from scripts.inspect_cobra_schema_chronology import (
     _parse_datetime,
     _primary_csv_member,
     _timestamp_column,
+    _timestamp_resolution,
 )
 
 
@@ -90,6 +91,25 @@ def test_parse_datetime_common_formats() -> None:
     assert _parse_datetime("17.02.2025 12:34:56").month == 2
 
 
+def test_parse_datetime_minute_precision() -> None:
+    parsed = _parse_datetime("27.06.2024 10:02")
+
+    assert parsed.year == 2024
+    assert parsed.month == 6
+    assert parsed.day == 27
+    assert parsed.hour == 10
+    assert parsed.minute == 2
+
+    assert (
+        _timestamp_resolution("27.06.2024 10:02")
+        == "minute"
+    )
+    assert (
+        _timestamp_resolution("27.06.2024 10:02:17")
+        == "second_or_finer"
+    )
+
+
 def test_coarse_class_never_returns_values() -> None:
     numeric = {
         "nonblank": 0,
@@ -146,6 +166,10 @@ def test_synthetic_archive_inspection_is_schema_only(
     assert result["duplicate_timestamp_count"] == 0
     assert result["non_monotonic_timestamp_count"] == 0
     assert result["timestamp_step_seconds_counts"] == {"1": 2}
+    assert result["timestamp_resolution_counts"] == {
+        "second_or_finer": 3
+    }
+    assert result["source_row_order_preserved"] is True
     assert result["coarse_schema_classes"]["Pressure"] == "numeric"
     assert result["coarse_schema_classes"]["State"] == "boolean"
     assert result["structural_blank_rows"] == 1
