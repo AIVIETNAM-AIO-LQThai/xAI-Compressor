@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "configs/cobra_adaptation_evaluation.yaml"
 
 PROTOCOL_COMMIT = (
-    "b859f42d2cc1de84491f39287a918de6b2ef178f"
+    "c18473e7a1ce80fafec04202ce0b61ad8378fe54"
 )
 
 
