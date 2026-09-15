@@ -12,6 +12,7 @@ from scripts.inspect_cobra_schema_chronology import (
     _coarse_class_update,
     _decode_header_bytes,
     _delimiter_from_header,
+    _detect_text_file_encoding,
     _inspect_archive,
     _parse_datetime,
     _primary_csv_member,
@@ -62,6 +63,16 @@ def test_header_encoding_falls_back_to_cp1252() -> None:
 
     assert encoding == "cp1252"
     assert chr(0x00B0) + "C" in decoded
+
+def test_detect_utf16_bom(tmp_path: Path) -> None:
+    path = tmp_path / "overview.csv"
+    path.write_text(
+        "Date;Experiment\n2025-01-01;Test\n",
+        encoding="utf-16",
+    )
+
+    assert _detect_text_file_encoding(path) == "utf-16"
+
 
 def test_delimiter_from_header() -> None:
     assert _delimiter_from_header("Timestamp;A;B\n") == ";"

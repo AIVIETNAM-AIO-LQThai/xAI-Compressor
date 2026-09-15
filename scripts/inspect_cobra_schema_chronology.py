@@ -407,17 +407,57 @@ def _inspect_archive(
             }
 
 
+def _detect_text_file_encoding(path: Path) -> str:
+    with path.open("rb") as handle:
+        prefix = handle.read(4)
+
+    if prefix.startswith(b"\xef\xbb\xbf"):
+        return "utf-8-sig"
+
+    if prefix.startswith((b"\xff\xfe", b"\xfe\xff")):
+        return "utf-16"
+
+    sample = path.read_bytes()[:4096]
+
+    for encoding in TEXT_ENCODING_CANDIDATES:
+        try:
+            sample.decode(encoding, errors="strict")
+            return encoding
+        except UnicodeDecodeError:
+            continue
+
+    raise RuntimeError(
+        f"Could not determine text encoding for {path.name}."
+    )
+
+
 def _inspect_overview(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+    source_encoding = _detect_text_file_encoding(path)
+
+    with path.open(
+        "r",
+        encoding=source_encoding,
+        newline="",
+    ) as handle:
         header_line = handle.readline()
         if not header_line:
             raise RuntimeError("overview_experiments.csv is empty.")
+
         delimiter = _delimiter_from_header(header_line)
-        columns = next(csv.reader([header_line], delimiter=delimiter))
-        rows = sum(1 for _ in csv.reader(handle, delimiter=delimiter))
+        columns = next(
+            csv.reader([header_line], delimiter=delimiter)
+        )
+        rows = sum(
+            1
+            for _ in csv.reader(
+                handle,
+                delimiter=delimiter,
+            )
+        )
 
     return {
         "file": path.name,
+        "source_encoding": source_encoding,
         "delimiter": delimiter,
         "columns": columns,
         "row_count": rows,
