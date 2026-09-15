@@ -1,0 +1,58 @@
+study:
+  name: "cobra_source_lock"
+  selected_dataset_commit: "10fdfa7c8899b955a7563db0eaaee183a891c04a"
+  evidence_role: "FUTURE_GENUINELY_INDEPENDENT_EXTERNAL_VALIDATION"
+  outcome_metrics_allowed: false
+zenodo:
+  record_id: 15862451
+  doi: "10.82481/cobra.2025"
+  version: "1.0.0"
+  api_url: "https://zenodo.org/api/records/15862451"
+download:
+  destination: "data/raw/cobra/source_v1_0_0"
+  manifest_output: "docs/research/cobra_source_lock_manifest.json"
+  overwrite_existing: false
+  chunk_bytes: 1048576
+primary_files:
+  CoBra20240603.zip: "78598e4ed16dd48f64cf5670110f66f7"
+  CoBra20240606.zip: "73091e3811e7886dea133d3e1d3989da"
+  CoBra20240610.zip: "68adc6f5e509c24dd1eae1425bd27017"
+  CoBra20240612.zip: "a14a6d15a3569f32b7d0de205930cefb"
+  CoBra20240617.zip: "b8d277acac970afb6457d8cc64d4fc1f"
+  CoBra20240619.zip: "957c5177897670c5c6b65dd7c4fb6a8e"
+  CoBra20240624.zip: "bbb1b6d00dc86f6f84e6497113b953da"
+  CoBra20240627.zip: "8da7a56d2072e49345d0f71954ade0ca"
+  CoBra20241111.zip: "1d2e3fd44a3609c4aac32a7e1dfaa0d9"
+  CoBra20241121.zip: "9f6d967a7bd31d01179ae18de8be9128"
+  CoBra20241125.zip: "a3f9524876929eb1ec3f42b193fd5bdc"
+  CoBra20241211.zip: "9e9de1488f9299de130ac47843e568d6"
+  CoBra20241218.zip: "4a0f499262f23155de3ab5e74623c59f"
+  CoBra20250115.zip: "b6cde266a85354cd396c3045e4dab7c1"
+  CoBra20250117.zip: "84f2a416277d66217a86053e15537f43"
+  CoBra20250120.zip: "bfa2f99da16f1f0555abd9dd7189fdae"
+  CoBra20250122.zip: "57c496f701d0ed15688a93f1ffb6fae4"
+  CoBra20250206.zip: "9ac34fcbfdf3714ef9a1e8654357c944"
+  CoBra20250217.zip: "778d62fdc6a9d5823d4c6034d8d789ff"
+  CoBra20250218.zip: "33b1d5546a26ac18cab5cac96069d9c8"
+  CoBra20250220.zip: "ef7a33f606a3b08defb9f7119ba0ef64"
+  CoBra20250224.zip: "1a260f786883a917e58865e8b1d84e0a"
+  CoBra20250225.zip: "2c2b1208eb05ad738f6b92e01c040ca5"
+  overview_experiments.csv: "92fd65069957dcba46f45cba20c0cf68"
+published_auxiliary_files:
+  Example_plots_CoBra.zip: "7bea0aa598e5fef90d027c93ded59f24"
+  Preview_CoBra20241125.csv: "41e8c51a716c0c325b4753bc73293a66"
+  Preview_CoBra20241125_ExamplePlot.png: "d933b37687d1599ed6569ef06f88119e"
+  Preview_Experiment_description_CoBra20241125.pdf: "2a6224c2a8067ccff26b78ee169b0002"
+  Preview_PID_CoBra20241015.pdf: "f109ffd2d319786b9fd1297bc5d3cff7"
+  Preview_protocol_CoBra20241125.pdf: "86ccb94a2487846e098ac98e5163014d"
+guardrails:
+  unzip_source_files: false
+  inspect_csv_content: false
+  compute_sensor_distributions: false
+  compute_correlations: false
+  compute_pca_scores: false
+  compute_tcn_scores: false
+  compute_router_scores: false
+  compute_target_prevalence: false
+  compute_coverage_metrics: false
+  compute_energy_metrics: false
