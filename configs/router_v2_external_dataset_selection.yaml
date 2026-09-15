@@ -1,0 +1,79 @@
+study:
+  name: "router_v2_independent_external_dataset_selection"
+  branch: "research/router-v2-external-dataset-selection"
+  parent_commit: "87e4d667b94ecdca0ce0a9499347e744cc48aa71"
+  purpose: >
+    Select and lock a third genuinely independent compressor dataset before
+    Router V2 development.
+
+eligibility:
+  real_measured_data_required: true
+  compressor_central_component_required: true
+  multivariate_sensor_data_required: true
+  chronology_required: true
+  minimum_numeric_sensor_channels: 5
+  causal_temporal_windows_required: true
+  stable_public_source_required: true
+  exact_source_hash_required_after_selection: true
+  excluded_datasets:
+    - "MetroPT-3"
+    - "MetroPT2"
+    - "RCSD-1YD"
+    - "IITK acoustic air-compressor dataset"
+  simulation_only_ineligible: true
+
+preference_order:
+  - "field_industrial_operational_telemetry"
+  - "controlled_industrial_or_test_facility_telemetry"
+  - "laboratory_compressor_telemetry"
+
+metadata_allowed:
+  - "title"
+  - "authors"
+  - "institution"
+  - "DOI_or_permanent_source"
+  - "license"
+  - "compressor_type"
+  - "acquisition_setting"
+  - "sensor_names_and_modalities"
+  - "nominal_sampling_rate"
+  - "stated_row_count"
+  - "stated_duration"
+  - "file_names"
+  - "file_sizes"
+  - "publisher_checksums"
+  - "publisher_documented_missing_data"
+
+preselection_forbidden:
+  - "sensor_distribution_analysis"
+  - "correlation_analysis"
+  - "anomaly_rate_analysis"
+  - "PCA_scoring"
+  - "TCN_scoring"
+  - "Router_V1_scoring"
+  - "Router_V2_scoring"
+  - "performance_metrics"
+  - "target_prevalence"
+  - "coverage_metrics"
+  - "GPU_energy_metrics"
+
+selection_record_must_include:
+  - "selected_dataset"
+  - "permanent_source"
+  - "eligibility_rationale"
+  - "independence_rationale"
+  - "compressor_type"
+  - "acquisition_setting"
+  - "sensor_modalities"
+  - "chronology_duration_sampling"
+  - "license_access"
+  - "known_limitations"
+  - "rejected_alternatives_with_non_outcome_reasons"
+
+post_selection:
+  archive_exact_source: true
+  record_md5_or_sha256: true
+  freeze_chronological_train_cal_eval: true
+  create_dataset_specific_adaptation_protocol: true
+  evaluation_must_remain_blind: true
+  router_v2_development_starts_after_selection: true
