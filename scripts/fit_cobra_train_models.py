@@ -22,7 +22,6 @@ from ml.temporal.energy_aware_training import (
 )
 from ml.temporal.tcn import TemporalForecastConfig
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 CONFIG_PATH = ROOT / "configs/cobra_router_v2_adaptation.yaml"
