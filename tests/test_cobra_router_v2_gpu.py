@@ -85,3 +85,44 @@ def test_energy_failure_makes_overall_fail() -> None:
         alert_status="INSUFFICIENT_EVIDENCE",
         gpu_energy_status="FAIL",
     ) == "FAIL"
+
+
+def test_score_loader_accepts_unnamed_timestamp_index(
+    tmp_path,
+) -> None:
+    import pandas as pd
+
+    from scripts.benchmark_cobra_router_v2_gpu import (
+        load_frozen_score_file,
+    )
+
+    path = tmp_path / "scores.csv"
+
+    source = pd.DataFrame(
+        {
+            "route_tcn": [True, False],
+            "tcn_score": [0.1, 0.2],
+        },
+        index=pd.to_datetime(
+            [
+                "2025-02-17 10:00:00",
+                "2025-02-17 10:05:00",
+            ]
+        ),
+    )
+
+    # Deliberately leave index.name = None,
+    # matching the frozen CSV serialization case.
+    source.to_csv(path)
+
+    loaded = load_frozen_score_file(path)
+
+    assert loaded.index.name == "timestamp"
+    assert isinstance(
+        loaded.index,
+        pd.DatetimeIndex,
+    )
+    assert loaded["route_tcn"].tolist() == [
+        True,
+        False,
+    ]

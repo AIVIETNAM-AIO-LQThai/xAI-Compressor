@@ -331,6 +331,26 @@ def _route_array(
     return route
 
 
+def load_frozen_score_file(
+    path: Path,
+) -> pd.DataFrame:
+    frame = pd.read_csv(
+        path,
+        index_col=0,
+        float_precision="round_trip",
+    )
+
+    frame.index = pd.DatetimeIndex(
+        pd.to_datetime(
+            frame.index,
+            errors="raise",
+        ),
+        name="timestamp",
+    )
+
+    return frame
+
+
 def main() -> None:
     _verify_boundary()
 
@@ -485,11 +505,8 @@ def main() -> None:
         ),
     )
 
-    scores = pd.read_csv(
-        EVALUATION_SCORES_PATH,
-        parse_dates=["timestamp"],
-    ).set_index(
-        "timestamp"
+    scores = load_frozen_score_file(
+        EVALUATION_SCORES_PATH
     )
 
     if len(batch.inputs) != int(
