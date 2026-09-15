@@ -1,0 +1,187 @@
+{
+  "schema_version": "aeroxai.cobra_router_v2_evaluation.v1",
+  "study": "cobra_router_v2_adaptation",
+  "status": "EVALUATION_FUNCTIONAL_COMPLETE",
+  "implementation_commit": "20c9a6c86a012f44d361267047bddf8eff53a4bc",
+  "calibration_commit": "af4e8a17a2bbce5dfd938fa11d6a4d681d9846c8",
+  "evaluation_role": "genuinely_independent_future_partition_after_preregistered_within_domain_adaptation",
+  "zero_shot_claim": false,
+  "data_use": {
+    "partition_opened": "EVALUATION",
+    "opened_archives": [
+      "CoBra20250217.zip",
+      "CoBra20250218.zip",
+      "CoBra20250220.zip",
+      "CoBra20250224.zip",
+      "CoBra20250225.zip"
+    ],
+    "evaluation_day_count": 5,
+    "model_refit": false,
+    "threshold_refit": false,
+    "feature_selection": false,
+    "router_policy_changed": false
+  },
+  "frozen_inputs": {
+    "feature_count": 219,
+    "feature_sha256": "ba54ffa70cda5690ceaef4d0a58d6d14129dd36a0e03abbc95c20344e3e4a9aa",
+    "pca_q90": 88.89060240044532,
+    "pca_q95": 94.27901488205916,
+    "tcn_q90": 0.6537802815437317,
+    "tcn_q995": 2.2471232414245605,
+    "router_family": "max3",
+    "router_threshold": 0.4
+  },
+  "representation": {
+    "source_rows": 125826,
+    "valid_5min_bins": 358,
+    "invalid_5min_bins": 68,
+    "contiguous_segments": 11,
+    "semantic_sha256": "17041faa91d1107c58ad77424df7df2c786f854fee4a0b6cb2a545ccd1906cee",
+    "file_sha256": "31a9b321153c8a641af7d3510e48cae8001e91dceff1214e7e7481b3e9860799",
+    "per_day": [
+      {
+        "day": "2025-02-17",
+        "archive": "CoBra20250217.zip",
+        "source_rows": 24616,
+        "produced_5min_bins": 83,
+        "valid_5min_bins": 67,
+        "invalid_5min_bins": 16,
+        "contiguous_segments": 3
+      },
+      {
+        "day": "2025-02-18",
+        "archive": "CoBra20250218.zip",
+        "source_rows": 18368,
+        "produced_5min_bins": 62,
+        "valid_5min_bins": 52,
+        "invalid_5min_bins": 10,
+        "contiguous_segments": 1
+      },
+      {
+        "day": "2025-02-20",
+        "archive": "CoBra20250220.zip",
+        "source_rows": 27544,
+        "produced_5min_bins": 93,
+        "valid_5min_bins": 88,
+        "invalid_5min_bins": 5,
+        "contiguous_segments": 4
+      },
+      {
+        "day": "2025-02-24",
+        "archive": "CoBra20250224.zip",
+        "source_rows": 30056,
+        "produced_5min_bins": 103,
+        "valid_5min_bins": 83,
+        "invalid_5min_bins": 20,
+        "contiguous_segments": 2
+      },
+      {
+        "day": "2025-02-25",
+        "archive": "CoBra20250225.zip",
+        "source_rows": 25242,
+        "produced_5min_bins": 85,
+        "valid_5min_bins": 68,
+        "invalid_5min_bins": 17,
+        "contiguous_segments": 1
+      }
+    ]
+  },
+  "teacher_evidence": {
+    "eligible_targets": 247,
+    "device": "cuda",
+    "high_threshold": 0.6537802815437317,
+    "alert_threshold": 2.2471232414245605,
+    "high_evidence_units": 93,
+    "alert_evidence_units": 1
+  },
+  "router_v2": {
+    "family": "max3",
+    "threshold": 0.4,
+    "eligible_targets": 247,
+    "forced_missing_input_routes": 0,
+    "tcn_invocation_fraction": 0.7854251012145749,
+    "tcn_call_reduction_fraction": 0.21457489878542513,
+    "high_evidence_coverage": 1.0,
+    "alert_evidence_coverage": 1.0
+  },
+  "success_criteria": {
+    "high": {
+      "minimum_units": 20,
+      "observed_units": 93,
+      "minimum_coverage": 0.8,
+      "observed_coverage": 1.0,
+      "status": "PASS"
+    },
+    "alert": {
+      "minimum_units": 3,
+      "observed_units": 1,
+      "minimum_coverage": 0.8,
+      "observed_coverage": 1.0,
+      "status": "INSUFFICIENT_EVIDENCE"
+    },
+    "gpu_energy": {
+      "status": "NOT_YET_EVALUATED"
+    },
+    "overall": "PENDING_GPU_ENERGY_MEASUREMENT"
+  },
+  "per_day_routing": [
+    {
+      "day": "2025-02-17",
+      "eligible_targets": 42,
+      "tcn_invocation_fraction": 0.5476190476190477,
+      "high_evidence_units": 0,
+      "high_evidence_coverage": null,
+      "alert_evidence_units": 0,
+      "alert_evidence_coverage": null
+    },
+    {
+      "day": "2025-02-18",
+      "eligible_targets": 40,
+      "tcn_invocation_fraction": 1.0,
+      "high_evidence_units": 40,
+      "high_evidence_coverage": 1.0,
+      "alert_evidence_units": 1,
+      "alert_evidence_coverage": 1.0
+    },
+    {
+      "day": "2025-02-20",
+      "eligible_targets": 40,
+      "tcn_invocation_fraction": 0.9,
+      "high_evidence_units": 8,
+      "high_evidence_coverage": 1.0,
+      "alert_evidence_units": 0,
+      "alert_evidence_coverage": null
+    },
+    {
+      "day": "2025-02-24",
+      "eligible_targets": 69,
+      "tcn_invocation_fraction": 0.5652173913043478,
+      "high_evidence_units": 1,
+      "high_evidence_coverage": 1.0,
+      "alert_evidence_units": 0,
+      "alert_evidence_coverage": null
+    },
+    {
+      "day": "2025-02-25",
+      "eligible_targets": 56,
+      "tcn_invocation_fraction": 1.0,
+      "high_evidence_units": 44,
+      "high_evidence_coverage": 1.0,
+      "alert_evidence_units": 0,
+      "alert_evidence_coverage": null
+    }
+  ],
+  "local_outputs": {
+    "evaluation_data_path": "data/processed/cobra_router_v2/evaluation_5min.csv",
+    "evaluation_scores_path": "data/processed/cobra_router_v2/evaluation_scores.csv",
+    "scores_sha256": "965509a31698df522b60c2de38150127c7fc7821d8e80fadbc9f449d7b46058e"
+  },
+  "claim_boundaries": {
+    "causal_fault_diagnosis": false,
+    "autonomous_control": false,
+    "plant_energy_savings": false,
+    "carbon_savings": false,
+    "zero_shot_generalization": false,
+    "gpu_energy_savings_claimed": false
+  }
+}
