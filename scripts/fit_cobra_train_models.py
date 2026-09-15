@@ -196,6 +196,16 @@ def _verify_boundary() -> None:
             )
 
 
+def load_train_representation(
+    path: Path,
+) -> pd.DataFrame:
+    return pd.read_csv(
+        path,
+        parse_dates=["timestamp"],
+        float_precision="round_trip",
+    )
+
+
 def main() -> None:
     _verify_boundary()
 
@@ -231,9 +241,8 @@ def main() -> None:
     if ingestion["firewall"]["evaluation_sensor_values_used"]:
         raise RuntimeError("EVALUATION firewall already violated.")
 
-    train = pd.read_csv(
-        TRAIN_PATH,
-        parse_dates=["timestamp"],
+    train = load_train_representation(
+        TRAIN_PATH
     )
 
     expected_columns = [
