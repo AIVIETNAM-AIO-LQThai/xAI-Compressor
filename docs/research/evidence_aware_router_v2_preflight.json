@@ -1,0 +1,41 @@
+{
+  "schema_version": "aeroxai.evidence_aware_router_v2_preflight.v1",
+  "study": "evidence_aware_router_v2",
+  "preregistration_commit": "c59659b8c131fbe28cef8e50b966acabb78cb54e",
+  "candidate_count": 120,
+  "router_inputs": [
+    "pca_ewma_percentile",
+    "recent_q90_hit_fraction",
+    "recent_q95_hit_fraction"
+  ],
+  "development_domains": [
+    "metropt3_consumed",
+    "metropt2_consumed",
+    "rcsd1yd_consumed"
+  ],
+  "source_artifacts": {
+    "router_v1_development": {
+      "path": "docs/research/evidence_aware_router_development.json",
+      "sha256": "2ce93eb58fc1f2a3a2fdc189d13d726f1de6642c751430d93598a86e1bf39afc"
+    },
+    "rcsd_failure_analysis": {
+      "path": "docs/research/rcsd1yd_router_failure_analysis.json",
+      "sha256": "49c345381f9029ac8fde9431efa1486fa73ee9b9e9e779ba3ff1fe9b336d27e6"
+    },
+    "rcsd_external_result": {
+      "path": "docs/research/rcsd1yd_external_evaluation_result.json",
+      "sha256": "77e3e823ee191ea3a8feab6c414592dddfc930b0c990d3de34ae14d9be45af55"
+    },
+    "cobra_structural_contract": {
+      "path": "docs/research/cobra_structural_compatibility_contract.json",
+      "sha256": "868ab242a8f0b3abbe454b8835dbe10fd8dc2a9b6e91955d13a6c8a196b8a141"
+    }
+  },
+  "consumed_prior_outcome_artifacts_read": true,
+  "router_v2_candidate_metrics_computed": false,
+  "router_v2_policy_selected": false,
+  "cobra_sensor_values_used": false,
+  "cobra_model_outcomes_used": false,
+  "cobra_evaluation_behavior_used": false,
+  "ready_to_freeze_development_implementation": true
+}
