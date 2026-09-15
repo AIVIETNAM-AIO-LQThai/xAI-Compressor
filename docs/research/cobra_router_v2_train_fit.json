@@ -1,0 +1,51 @@
+{
+  "schema_version": "aeroxai.cobra_router_v2_train_fit.v1",
+  "study": "cobra_router_v2_adaptation",
+  "status": "TRAIN_MODELS_FITTED",
+  "implementation_commit": "f12e28b221a546bc549f9d9b802fcfed40f502ab",
+  "train_representation_commit": "928da0e678f376cd2ced24dc0bf75483d017dd3e",
+  "data_use": {
+    "train_rows": 679,
+    "train_segments": 25,
+    "calibration_sensor_values_used": false,
+    "evaluation_sensor_values_used": false
+  },
+  "features": {
+    "count": 219,
+    "sha256": "ba54ffa70cda5690ceaef4d0a58d6d14129dd36a0e03abbc95c20344e3e4a9aa"
+  },
+  "pca": {
+    "scaler": "robust",
+    "variance_retained_target": 0.95,
+    "components": 1,
+    "explained_variance_ratio_sum": 0.9958161073305912,
+    "train_reconstruction_mse_mean": 7.017506716449119,
+    "train_reconstruction_mse_median": 0.781833335388968,
+    "threshold_selected": false
+  },
+  "tcn": {
+    "scaler": "standard",
+    "eligible_sequences": 475,
+    "fit_samples": 380,
+    "validation_samples": 95,
+    "device": "cuda",
+    "best_epoch": 48,
+    "epochs_ran": 50,
+    "best_validation_mse": 0.34722900390625,
+    "final_train_mse": 0.1759603020391966,
+    "threshold_selected": false
+  },
+  "artifacts": {
+    "sklearn_path": "artifacts/research/cobra_router_v2_train_models.pkl",
+    "sklearn_sha256": "ab530956bfc4fcf01681ffdb84006064758039fc5c1e8d5de9cd7e688d11fb75",
+    "tcn_path": "artifacts/research/cobra_router_v2_tcn.pt",
+    "tcn_sha256": "a8337f7a213318a3806f32060686dfa1fa03500fdc52e2cc373c217fc1f4f277"
+  },
+  "firewall": {
+    "calibration_opened": false,
+    "evaluation_opened": false,
+    "router_scored": false,
+    "teacher_thresholds_selected": false,
+    "energy_metrics_computed": false
+  }
+}
