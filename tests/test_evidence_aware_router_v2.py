@@ -13,7 +13,6 @@ from scripts.preflight_evidence_aware_router_v2 import (
     validate_preregistered_candidate_space,
 )
 
-
 CONFIG_PATH = Path(
     "configs/evidence_aware_router_v2.yaml"
 )

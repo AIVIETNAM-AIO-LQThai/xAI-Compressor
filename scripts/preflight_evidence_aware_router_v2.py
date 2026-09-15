@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -338,9 +339,9 @@ def _verify_v1_consumed_artifact(
             "alert_evidence_q995_fit",
         ):
             value = float(teacher[key])
-            if not (value == value):
+            if not math.isfinite(value):
                 raise RuntimeError(
-                    f"{domain} teacher threshold is NaN."
+                    f"{domain} teacher threshold is non-finite."
                 )
 
 
