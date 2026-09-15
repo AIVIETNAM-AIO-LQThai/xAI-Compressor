@@ -1,0 +1,146 @@
+study:
+  name: cobra_adaptation_evaluation
+  evidence_role: FUTURE_GENUINELY_INDEPENDENT_EXTERNAL_VALIDATION
+  parent_schema_result_commit: "3b6b2f358c80fe4aafe2506c493a8bcb680b1fb6"
+  source_lock_commit: "9d3e535ae7e6932fce1a4ec975d0ebacdfa4b0f6"
+  validation_interpretation: preregistered_within_domain_adaptation_then_future_evaluation
+  zero_shot_external_validation_claim_allowed: false
+  cobra_model_outcomes_allowed_before_router_v2_freeze: false
+
+paths:
+  schema_manifest: docs/research/cobra_schema_chronology_manifest.json
+  source_lock_manifest: docs/research/cobra_source_lock_manifest.json
+
+split:
+  preserve_existing_frozen_split: true
+  train_days: 14
+  calibration_days: 4
+  evaluation_days: 5
+  whole_day_units: true
+  reassignment_allowed: false
+
+schema_alignment:
+  align_by_exact_name: true
+  positional_alignment_allowed: false
+
+candidate_compatibility_envelope:
+  derivation_source: committed_schema_metadata_only
+  membership_rule: intersection_all_23_archives
+  exclude_timestamp: true
+  required_coarse_class: numeric
+  coarse_class_must_match_all_archives: true
+  ordering: lexicographic_exact_name
+  serialize_ordered_names: true
+  sha256_required: true
+  is_final_model_feature_set: false
+
+final_feature_contract:
+  must_be_frozen_before_cobra_model_outcomes: true
+  may_use_exact_column_names: true
+  may_use_committed_coarse_schema_classes: true
+  may_use_committed_source_metadata: true
+  may_use_external_sensor_semantics: true
+  may_use_cobra_sensor_values: false
+  may_use_cobra_model_performance: false
+  may_use_evaluation_behavior: false
+  exact_name_ordering_required: true
+  sha256_required: true
+
+missing_features:
+  evaluation_specific_imputation_allowed: false
+  evaluation_specific_substitution_allowed: false
+  evaluation_specific_feature_drop_allowed: false
+  required_feature_without_frozen_behavior: hard_fail
+
+timestamp_contract:
+  infer_physical_timezone: false
+  internal_timezone_is_source_timezone_claim: false
+  preserve_source_row_order: true
+  synthesize_seconds_allowed: false
+  infer_within_minute_elapsed_time: false
+  cross_day_elapsed_time_inference_allowed: false
+
+temporal_contract:
+  fixed_bin_width_defined_here: false
+  fixed_history_length_defined_here: false
+  fixed_prediction_horizon_defined_here: false
+  fixed_temporal_model_architecture_defined_here: false
+  must_be_frozen_before_cobra_model_outcomes: true
+  deterministic: true
+  causal: true
+  same_rule_all_partitions: true
+  source_resolution_compatible: true
+  fabricate_timestamps_allowed: false
+  interpolate_across_source_gaps_allowed: false
+  cross_day_windows_allowed: false
+  reset_on_day_boundary: true
+  gap_behavior_must_be_frozen_before_model_outcomes: true
+
+adaptation:
+  router_v2_must_be_frozen_before_cobra_model_adaptation: true
+  feature_contract_must_be_frozen_before_cobra_model_adaptation: true
+  temporal_contract_must_be_frozen_before_cobra_model_adaptation: true
+  train_fit_allowed_after_freezes: true
+  calibration_operations_must_be_predeclared: true
+  evaluation_fit_allowed: false
+  evaluation_threshold_selection_allowed: false
+  evaluation_feature_selection_allowed: false
+  evaluation_temporal_redesign_allowed: false
+  evaluation_architecture_selection_allowed: false
+  evaluation_rescue_tuning_allowed: false
+
+evidence_definitions:
+  source: frozen_router_v2_policy
+  cobra_specific_redefinition_allowed: false
+
+evaluation_success:
+  high_evidence:
+    minimum_eligible_count: 20
+    minimum_coverage: 0.80
+    insufficient_support_status: INSUFFICIENT_EVALUATION_SUPPORT
+  alert_evidence:
+    minimum_eligible_count: 3
+    minimum_coverage: 0.80
+    insufficient_support_status: INSUFFICIENT_EVALUATION_SUPPORT
+  gpu_tcn_energy:
+    minimum_mean_gross_reduction: 0.50
+    repetitions: 5
+    require_positive_reduction_every_repetition: true
+    scope: gpu_tcn_scoring_only
+    compatible_gpu_nvml_required: true
+    unavailable_hardware_status: NOT_EVALUATED
+    cpu_timing_as_energy_proxy_allowed: false
+    nominal_tdp_as_energy_proxy_allowed: false
+
+evaluation_firewall:
+  one_shot_future_evaluation: true
+  final_artifact_hashes_required_before_opening: true
+  post_evaluation_refit_allowed: false
+  post_evaluation_threshold_tuning_allowed: false
+  post_evaluation_feature_tuning_allowed: false
+  post_evaluation_rescue_as_primary_result_allowed: false
+
+forbidden_before_router_v2_freeze:
+  sensor_descriptive_statistics: true
+  sensor_quantiles: true
+  sensor_correlations: true
+  pca_scores: true
+  reconstruction_error: true
+  ewma_scores: true
+  support_scores: true
+  tcn_scores: true
+  router_v1_scores: true
+  router_v2_scores: true
+  teacher_prevalence: true
+  evidence_coverage: true
+  anomaly_rate: true
+  energy_outcomes: true
+  sensor_distribution_comparison: true
+
+claim_boundary:
+  zero_shot_cross_domain_generalization: false
+  universal_compressor_generalization: false
+  causal_fault_diagnosis: false
+  autonomous_control: false
+  measured_plant_energy_savings: false
+  measured_carbon_savings: false
