@@ -3,7 +3,8 @@
 Status: **research synthesis**
 
 Purpose: define exactly what can and cannot be claimed after the frozen V3
-release plus the multi-dataset research program.
+release plus the multi-dataset detector and energy-aware routing research
+program.
 
 | Claim | Evidence | Status | Allowed wording | Do not say |
 |---|---|---|---|---|
@@ -25,8 +26,14 @@ release plus the multi-dataset research program.
 | 0/45 healthy false positives means true FPR is zero | IITK uncertainty | Rejected | "No false positives were observed in 45 held-out healthy recordings." | "The true FPR is 0%." |
 | sampled AUC=1 means population AUC=1 | IITK uncertainty | Rejected | "Complete separation was observed in this sampled benchmark." | "True AUC is exactly 1." |
 | Representation quality = ranking quality | Cross-dataset synthesis | Rejected | "Representation quality also requires explanation behavior and calibration stability." | "Highest AUC automatically means best operational representation." |
-| MetroPT/IITK calibrate the current physics twin | architecture audit | Not supported | "Real detector evidence currently stops at the physical calibration gate." | "The current twin is calibrated from MetroPT/IITK." |
-| AeroXAI measured factory energy savings on real plant data | current evidence | Not supported | "Energy savings are currently validated only in simulation." | "AeroXAI saved X% in a real factory." |
+| Router V2 retained high-value temporal evidence on future CoBra EVAL data after preregistered within-domain adaptation | REAL CoBra + frozen TCN teacher | Supported in this study | "Router V2 retained 93/93 high-evidence TCN units on the future CoBra EVAL partition." | "Router V2 is universally reliable" or "zero-shot generalization." |
+| CoBra validates Router V2 alert-level transport | REAL CoBra | Insufficient evidence | "Only one alert-evidence unit occurred, so alert-level transport was not evaluable." | "Alert coverage was proven to be 100%." |
+| Router V2 reduced TCN calls on CoBra | REAL CoBra routing | Supported descriptively | "The frozen router invoked TCN on 78.54% of eligible targets, a 21.46% call reduction." | "TCN calls fell by 21.46%, therefore GPU energy fell by 21.46%." |
+| Router V2 met the preregistered CoBra GPU-energy target | MEASURED RTX 4090 GPU-device TCN scoring | Rejected | "Gross GPU-energy reduction was positive in all five repetitions and averaged 9.35%, below the preregistered 50% target." | "The CoBra energy criterion passed." |
+| Positive GPU-energy reduction on CoBra demonstrates some compute benefit | MEASURED RTX 4090 GPU-device TCN scoring | Supported narrowly | "The routed condition used less gross GPU energy per logical pass in all five measured repetitions." | "Whole-system AI energy fell by 9.35%." |
+| CoBra GPU measurement represents CPU or whole-system compute energy | CoBra energy benchmark | Not supported | "Only GPU-device TCN-scoring energy was measured." | "Total AI energy use fell by 9.35%." |
+| MetroPT/IITK/CoBra calibrate the current physics twin | architecture audit | Not supported | "Real detector evidence currently stops at the physical calibration gate." | "The current twin is calibrated from the research datasets." |
+| AeroXAI measured factory energy savings on real plant data | current evidence | Not supported | "Physical plant-energy savings remain simulation-only in the current evidence base." | "AeroXAI saved X% in a real factory." |
 | Synthetic nominal dispatch saving ≈0.369% | SIMULATED twin/control | Supported in frozen synthetic scenario | "The nominal synthetic dispatch experiment reduced simulated energy by ≈0.369%." | "Real-site saving is 0.369%." |
 | Synthetic high-leak energy penalty ≈12.55% | SIMULATED twin | Supported in frozen synthetic scenario | "The modeled high-leak scenario increased simulated energy by ≈12.55%." | "Leak repair saves 12.55% at MetroPT." |
 | Robust action is safe | SIMULATED control | Supported only under modeled scenarios/constraints | "The shared first action remained within the modeled safety envelope." | "Guaranteed safe on arbitrary real compressors." |
@@ -34,7 +41,7 @@ release plus the multi-dataset research program.
 
 ## ESIC-ready claims
 
-The following are safe to use in the product story:
+The following wording is safe for the submission.
 
 > AeroXAI uses explainable anomaly detection on real compressor telemetry and
 > explicitly separates detector evidence from physical root-cause claims.
@@ -53,6 +60,16 @@ The following are safe to use in the product story:
 > analysis showed substantially stronger operating stability than direct
 > feature-energy.
 
+> AeroXAI also evaluates the energy cost of its own AI. In a preregistered
+> future CoBra evaluation after within-domain TRAIN/CAL adaptation, the frozen
+> evidence-aware router retained all 93 adequate high-evidence TCN cases while
+> reducing TCN calls by 21.46%.
+
+> Measured GPU-device TCN-scoring energy was lower in all five routed
+> repetitions and fell by 9.35% on average, but this did not meet the
+> preregistered 50% target. The result is therefore reported as a failed energy
+> criterion rather than tuned post hoc.
+
 > AeroXAI does not allow real anomaly evidence to silently become a physical
 > action. The current real-data path stops at a calibration gate when the
 > physics bridge is not validated.
@@ -64,15 +81,21 @@ The following are safe to use in the product story:
 ## Claims that remain research-only
 
 Keep these out of the main product headline unless explicitly labelled as
-exploratory:
+research or exploratory:
 
 - raw-context TCN pre-onset result;
 - MetroPT2 Standard-PCA / feature-energy detector comparisons;
 - temporal explanation-state dynamics;
 - calibration-normalized state analysis;
 - IITK representation comparison as a detector-selection argument;
-- IITK uncertainty resampling.
+- IITK uncertainty resampling;
+- Router V1 / Router V2 development-set comparisons;
+- RCSD router failure diagnosis;
+- CoBra Router V2 as a universal routing result;
+- CoBra alert-level transport;
+- CoBra GPU-energy reduction as a whole-system or plant-energy result.
 
-These studies strengthen the scientific rationale but do not alter the frozen
-V3 product detector without a separate promotion and independent confirmatory
-evaluation.
+These studies strengthen the scientific rationale but do not silently alter
+the frozen product detector, promote autonomous control, or justify physical
+energy-saving claims without a separate promotion and independent validation
+path.
