@@ -12,6 +12,9 @@ from ml.data.cobra import (
     parse_source_timestamp,
     semantic_representation_sha256,
 )
+from scripts.build_cobra_train_representation import (
+    _validate_adaptation_split_counts,
+)
 
 
 def test_archive_day_parsing() -> None:
@@ -303,3 +306,46 @@ def test_valid_output_contains_only_finite_values() -> None:
     ].to_numpy()
 
     assert np.isfinite(values).all()
+
+def test_adaptation_split_uses_frozen_counts() -> None:
+    train = {
+        f"train-{index}"
+        for index in range(14)
+    }
+    calibration = {
+        f"cal-{index}"
+        for index in range(4)
+    }
+    evaluation = {
+        f"eval-{index}"
+        for index in range(5)
+    }
+
+    _validate_adaptation_split_counts(
+        {
+            "train_days": 14,
+            "calibration_days": 4,
+            "evaluation_days": 5,
+            "reassignment_allowed": False,
+        },
+        train_days=train,
+        calibration_days=calibration,
+        evaluation_days=evaluation,
+    )
+
+    with pytest.raises(
+        TypeError,
+        match="integer count",
+    ):
+        _validate_adaptation_split_counts(
+            {
+                "train_days": list(train),
+                "calibration_days": 4,
+                "evaluation_days": 5,
+                "reassignment_allowed": False,
+            },
+            train_days=train,
+            calibration_days=calibration,
+            evaluation_days=evaluation,
+        )
+

@@ -183,6 +183,47 @@ def _verify_execution_boundary() -> None:
         )
 
 
+def _validate_adaptation_split_counts(
+    adaptation_split: dict[str, Any],
+    *,
+    train_days: set[str],
+    calibration_days: set[str],
+    evaluation_days: set[str],
+) -> None:
+    expected = {
+        "train_days": len(train_days),
+        "calibration_days": len(calibration_days),
+        "evaluation_days": len(evaluation_days),
+    }
+
+    for key, expected_count in expected.items():
+        value = adaptation_split.get(key)
+
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, int)
+        ):
+            raise TypeError(
+                f"Adaptation {key} must be an "
+                "integer count."
+            )
+
+        if value != expected_count:
+            raise RuntimeError(
+                f"Adaptation {key} count differs "
+                "from the frozen schema split: "
+                f"{value} != {expected_count}."
+            )
+
+    if adaptation_split.get(
+        "reassignment_allowed"
+    ) is not False:
+        raise RuntimeError(
+            "CoBra split reassignment must remain "
+            "forbidden."
+        )
+
+
 def _archive_metadata_by_day(
     schema_manifest: dict[str, Any],
 ) -> dict[str, dict[str, Any]]:
@@ -405,15 +446,12 @@ def main() -> None:
         "split"
     ]
 
-    if set(
-        adaptation_split[
-            "train_days"
-        ]
-    ) != train_days:
-        raise RuntimeError(
-            "Adaptation TRAIN split differs from "
-            "schema freeze."
-        )
+    _validate_adaptation_split_counts(
+        adaptation_split,
+        train_days=train_days,
+        calibration_days=calibration_days,
+        evaluation_days=evaluation_days,
+    )
 
     archive_by_day = (
         _archive_metadata_by_day(
