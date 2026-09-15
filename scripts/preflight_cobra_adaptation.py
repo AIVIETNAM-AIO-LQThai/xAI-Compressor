@@ -50,21 +50,15 @@ def _candidate_envelope(
         for archive in archives
     }
 
-    candidates: list[str] = []
-
-    for column in sorted(common_columns):
-        if column in timestamp_columns:
-            continue
-
-        if all(
-            archive["coarse_schema_classes"].get(column) == "numeric"
-            for archive in archives
-        ):
-            candidates.append(column)
+    candidates = sorted(
+        column
+        for column in common_columns
+        if column not in timestamp_columns
+    )
 
     if not candidates:
         raise RuntimeError(
-            "Metadata-only candidate feature envelope is empty."
+            "Metadata-only structural compatibility envelope is empty."
         )
 
     payload = "\n".join(candidates) + "\n"
@@ -131,8 +125,7 @@ def main() -> None:
         "derivation_source": "committed_schema_metadata_only",
         "membership_rule": "intersection_all_23_archives",
         "exclude_timestamp": True,
-        "required_coarse_class": "numeric",
-        "coarse_class_must_match_all_archives": True,
+        "coarse_schema_class_required": False,
         "ordering": "lexicographic_exact_name",
         "serialize_ordered_names": True,
         "sha256_required": True,
@@ -292,7 +285,7 @@ def main() -> None:
                     all_common
                 ),
                 "timestamp_columns_excluded": timestamp_columns,
-                "candidate_numeric_feature_count": len(candidates),
+                "candidate_structural_field_count": len(candidates),
                 "candidate_feature_sha256": digest,
                 "hash_serialization": (
                     "UTF-8 exact feature names, "

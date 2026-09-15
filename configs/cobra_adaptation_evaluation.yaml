@@ -27,8 +27,7 @@ candidate_compatibility_envelope:
   derivation_source: committed_schema_metadata_only
   membership_rule: intersection_all_23_archives
   exclude_timestamp: true
-  required_coarse_class: numeric
-  coarse_class_must_match_all_archives: true
+  coarse_schema_class_required: false
   ordering: lexicographic_exact_name
   serialize_ordered_names: true
   sha256_required: true

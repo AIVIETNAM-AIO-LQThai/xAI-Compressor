@@ -49,8 +49,7 @@ def test_candidate_envelope_is_not_final_feature_set() -> None:
         "intersection_all_23_archives"
     )
     assert envelope["exclude_timestamp"] is True
-    assert envelope["required_coarse_class"] == "numeric"
-    assert envelope["coarse_class_must_match_all_archives"] is True
+    assert envelope["coarse_schema_class_required"] is False
     assert envelope["ordering"] == "lexicographic_exact_name"
     assert envelope["is_final_model_feature_set"] is False
 
@@ -68,7 +67,7 @@ def test_temporal_choices_are_deferred() -> None:
     )
 
 
-def test_candidate_envelope_uses_only_common_numeric_columns() -> None:
+def test_candidate_envelope_uses_only_common_structural_fields() -> None:
     manifest = {
         "archives": [
             {
@@ -76,7 +75,7 @@ def test_candidate_envelope_uses_only_common_numeric_columns() -> None:
                 "timestamp_column": "timestamp",
                 "coarse_schema_classes": {
                     "timestamp": "timestamp",
-                    "A": "numeric",
+                    "A": "text_or_mixed",
                     "B": "numeric",
                     "OnlyFirst": "numeric",
                 },
@@ -86,14 +85,13 @@ def test_candidate_envelope_uses_only_common_numeric_columns() -> None:
                 "timestamp_column": "timestamp",
                 "coarse_schema_classes": {
                     "timestamp": "timestamp",
-                    "A": "numeric",
+                    "A": "text_or_mixed",
                     "B": "text_or_mixed",
                 },
             },
         ]
     }
 
-    # The production function requires the frozen 23-archive cardinality.
     manifest["archives"] = (
         manifest["archives"][:1]
         + [manifest["archives"][1]] * 22
@@ -101,10 +99,10 @@ def test_candidate_envelope_uses_only_common_numeric_columns() -> None:
 
     features, digest = _candidate_envelope(manifest)
 
-    assert features == ["A"]
+    assert features == ["A", "B"]
 
     expected = hashlib.sha256(
-        b"A\n"
+        b"A\nB\n"
     ).hexdigest()
 
     assert digest == expected

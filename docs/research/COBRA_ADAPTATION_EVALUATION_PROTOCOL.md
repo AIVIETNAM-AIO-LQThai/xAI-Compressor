@@ -77,11 +77,19 @@ The candidate envelope is defined as:
 
 1. intersect exact column names across all 23 frozen archives;
 2. exclude the timestamp column;
-3. retain only fields whose committed coarse schema class is `numeric` in
-   every archive;
-4. order surviving names lexicographically by exact source name;
-5. serialize the ordered candidate list and SHA256 before any CoBra
+3. order surviving names lexicographically by exact source name;
+4. serialize the ordered candidate list and SHA256 before any CoBra
    model outcome is opened.
+
+This is a structural compatibility envelope only.
+
+The committed coarse schema classes are not required to classify a field as
+numeric at this stage. The schema inspection demonstrated that the coarse
+classifier can label sensor-like fields as `text_or_mixed`, so requiring
+`numeric` in every archive would make the structural envelope empty.
+
+This amendment does not reinterpret source values and does not assert that
+every candidate field is suitable for numeric modeling.
 
 This candidate envelope is not automatically the final model feature set.
 
