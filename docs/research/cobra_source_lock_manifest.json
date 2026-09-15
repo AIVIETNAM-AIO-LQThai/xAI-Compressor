@@ -1,0 +1,350 @@
+{
+  "schema_version": "aeroxai.cobra_source_lock.v1",
+  "study": "cobra_source_lock",
+  "evidence_role": "FUTURE_GENUINELY_INDEPENDENT_EXTERNAL_VALIDATION",
+  "selected_dataset_commit": "10fdfa7c8899b955a7563db0eaaee183a891c04a",
+  "zenodo": {
+    "record_id": 15862451,
+    "doi": "10.82481/cobra.2025",
+    "version": "1.0.0",
+    "api_url": "https://zenodo.org/api/records/15862451"
+  },
+  "source_lock_only": true,
+  "source_archives_unzipped": false,
+  "sensor_values_opened": false,
+  "outcome_metrics_computed": false,
+  "published_inventory": {
+    "CoBra20240603.zip": {
+      "publisher_md5": "78598e4ed16dd48f64cf5670110f66f7",
+      "remote_size_bytes": 6699387,
+      "downloaded_primary_source": true
+    },
+    "CoBra20240606.zip": {
+      "publisher_md5": "73091e3811e7886dea133d3e1d3989da",
+      "remote_size_bytes": 10793197,
+      "downloaded_primary_source": true
+    },
+    "CoBra20240610.zip": {
+      "publisher_md5": "68adc6f5e509c24dd1eae1425bd27017",
+      "remote_size_bytes": 7252239,
+      "downloaded_primary_source": true
+    },
+    "CoBra20240612.zip": {
+      "publisher_md5": "a14a6d15a3569f32b7d0de205930cefb",
+      "remote_size_bytes": 6857324,
+      "downloaded_primary_source": true
+    },
+    "CoBra20240617.zip": {
+      "publisher_md5": "b8d277acac970afb6457d8cc64d4fc1f",
+      "remote_size_bytes": 9121364,
+      "downloaded_primary_source": true
+    },
+    "CoBra20240619.zip": {
+      "publisher_md5": "957c5177897670c5c6b65dd7c4fb6a8e",
+      "remote_size_bytes": 8518339,
+      "downloaded_primary_source": true
+    },
+    "CoBra20240624.zip": {
+      "publisher_md5": "bbb1b6d00dc86f6f84e6497113b953da",
+      "remote_size_bytes": 7457114,
+      "downloaded_primary_source": true
+    },
+    "CoBra20240627.zip": {
+      "publisher_md5": "8da7a56d2072e49345d0f71954ade0ca",
+      "remote_size_bytes": 5228155,
+      "downloaded_primary_source": true
+    },
+    "CoBra20241111.zip": {
+      "publisher_md5": "1d2e3fd44a3609c4aac32a7e1dfaa0d9",
+      "remote_size_bytes": 7958664,
+      "downloaded_primary_source": true
+    },
+    "CoBra20241121.zip": {
+      "publisher_md5": "9f6d967a7bd31d01179ae18de8be9128",
+      "remote_size_bytes": 7591708,
+      "downloaded_primary_source": true
+    },
+    "CoBra20241125.zip": {
+      "publisher_md5": "a3f9524876929eb1ec3f42b193fd5bdc",
+      "remote_size_bytes": 11886930,
+      "downloaded_primary_source": true
+    },
+    "CoBra20241211.zip": {
+      "publisher_md5": "9e9de1488f9299de130ac47843e568d6",
+      "remote_size_bytes": 15325430,
+      "downloaded_primary_source": true
+    },
+    "CoBra20241218.zip": {
+      "publisher_md5": "4a0f499262f23155de3ab5e74623c59f",
+      "remote_size_bytes": 13774011,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250115.zip": {
+      "publisher_md5": "b6cde266a85354cd396c3045e4dab7c1",
+      "remote_size_bytes": 16091978,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250117.zip": {
+      "publisher_md5": "84f2a416277d66217a86053e15537f43",
+      "remote_size_bytes": 10382099,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250120.zip": {
+      "publisher_md5": "bfa2f99da16f1f0555abd9dd7189fdae",
+      "remote_size_bytes": 12031211,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250122.zip": {
+      "publisher_md5": "57c496f701d0ed15688a93f1ffb6fae4",
+      "remote_size_bytes": 17886513,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250206.zip": {
+      "publisher_md5": "9ac34fcbfdf3714ef9a1e8654357c944",
+      "remote_size_bytes": 21712597,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250217.zip": {
+      "publisher_md5": "778d62fdc6a9d5823d4c6034d8d789ff",
+      "remote_size_bytes": 17151845,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250218.zip": {
+      "publisher_md5": "33b1d5546a26ac18cab5cac96069d9c8",
+      "remote_size_bytes": 11778782,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250220.zip": {
+      "publisher_md5": "ef7a33f606a3b08defb9f7119ba0ef64",
+      "remote_size_bytes": 17463326,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250224.zip": {
+      "publisher_md5": "1a260f786883a917e58865e8b1d84e0a",
+      "remote_size_bytes": 16713740,
+      "downloaded_primary_source": true
+    },
+    "CoBra20250225.zip": {
+      "publisher_md5": "2c2b1208eb05ad738f6b92e01c040ca5",
+      "remote_size_bytes": 14791235,
+      "downloaded_primary_source": true
+    },
+    "overview_experiments.csv": {
+      "publisher_md5": "92fd65069957dcba46f45cba20c0cf68",
+      "remote_size_bytes": 17602,
+      "downloaded_primary_source": true
+    },
+    "Example_plots_CoBra.zip": {
+      "publisher_md5": "7bea0aa598e5fef90d027c93ded59f24",
+      "remote_size_bytes": 14154951,
+      "downloaded_primary_source": false
+    },
+    "Preview_CoBra20241125.csv": {
+      "publisher_md5": "41e8c51a716c0c325b4753bc73293a66",
+      "remote_size_bytes": 35753525,
+      "downloaded_primary_source": false
+    },
+    "Preview_CoBra20241125_ExamplePlot.png": {
+      "publisher_md5": "d933b37687d1599ed6569ef06f88119e",
+      "remote_size_bytes": 731186,
+      "downloaded_primary_source": false
+    },
+    "Preview_Experiment_description_CoBra20241125.pdf": {
+      "publisher_md5": "2a6224c2a8067ccff26b78ee169b0002",
+      "remote_size_bytes": 736544,
+      "downloaded_primary_source": false
+    },
+    "Preview_PID_CoBra20241015.pdf": {
+      "publisher_md5": "f109ffd2d319786b9fd1297bc5d3cff7",
+      "remote_size_bytes": 713968,
+      "downloaded_primary_source": false
+    },
+    "Preview_protocol_CoBra20241125.pdf": {
+      "publisher_md5": "86ccb94a2487846e098ac98e5163014d",
+      "remote_size_bytes": 366330,
+      "downloaded_primary_source": false
+    }
+  },
+  "primary_local_files": {
+    "CoBra20240603.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20240603.zip",
+      "size_bytes": 6699387,
+      "md5": "78598e4ed16dd48f64cf5670110f66f7",
+      "sha256": "1a2a6477828b0b25f9bb5186c7e4c16eaf55054bfeb57610f4c3eb90f2f08b98"
+    },
+    "CoBra20240606.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20240606.zip",
+      "size_bytes": 10793197,
+      "md5": "73091e3811e7886dea133d3e1d3989da",
+      "sha256": "27150cde3f2515b50c0ced7711055d257890b82371c8f79193183522311d3a6e"
+    },
+    "CoBra20240610.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20240610.zip",
+      "size_bytes": 7252239,
+      "md5": "68adc6f5e509c24dd1eae1425bd27017",
+      "sha256": "088a5e31fdd6f1f3adb8a4337a7d42e1db6233fada682e2dc5dd9714ed07d39c"
+    },
+    "CoBra20240612.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20240612.zip",
+      "size_bytes": 6857324,
+      "md5": "a14a6d15a3569f32b7d0de205930cefb",
+      "sha256": "61027499a116c0bd327293c1659b12f5fc5e9567df6096a3996888dc029bd5cb"
+    },
+    "CoBra20240617.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20240617.zip",
+      "size_bytes": 9121364,
+      "md5": "b8d277acac970afb6457d8cc64d4fc1f",
+      "sha256": "ebcfa1a9e5fe1efc54e061dd7a6527ec62c45a056aa9ce6fc20a5b0291a0fe1c"
+    },
+    "CoBra20240619.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20240619.zip",
+      "size_bytes": 8518339,
+      "md5": "957c5177897670c5c6b65dd7c4fb6a8e",
+      "sha256": "d906516426ba84fbaa8b3950cbb5fec18b29d6930616fb3b2f70f1cfc22e71b5"
+    },
+    "CoBra20240624.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20240624.zip",
+      "size_bytes": 7457114,
+      "md5": "bbb1b6d00dc86f6f84e6497113b953da",
+      "sha256": "4ae9dcb6baf70c7c2aac829e65d87bb62058707bf03e015c1ec81f1a71156500"
+    },
+    "CoBra20240627.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20240627.zip",
+      "size_bytes": 5228155,
+      "md5": "8da7a56d2072e49345d0f71954ade0ca",
+      "sha256": "c04e53ff6785ba4ad5c2f9ec66966673d229163d5a09dcbee2fbdad79d5475c7"
+    },
+    "CoBra20241111.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20241111.zip",
+      "size_bytes": 7958664,
+      "md5": "1d2e3fd44a3609c4aac32a7e1dfaa0d9",
+      "sha256": "de9a9acd172b335bc6db6f1ff2b0f1b7320de38b7a9de12b0883861f079ddb11"
+    },
+    "CoBra20241121.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20241121.zip",
+      "size_bytes": 7591708,
+      "md5": "9f6d967a7bd31d01179ae18de8be9128",
+      "sha256": "98fec844dea62d813fb9358923a5955b31dc6f8668d67854062d33d8fec054f2"
+    },
+    "CoBra20241125.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20241125.zip",
+      "size_bytes": 11886930,
+      "md5": "a3f9524876929eb1ec3f42b193fd5bdc",
+      "sha256": "7cfca4646acf822b921a430a8842dd47fb5699fba0b3a0e0ea13727f0f422053"
+    },
+    "CoBra20241211.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20241211.zip",
+      "size_bytes": 15325430,
+      "md5": "9e9de1488f9299de130ac47843e568d6",
+      "sha256": "c4d853630d8f69f766149cd6834217ced0cd50637dcb39a4dd6666af3c6404b1"
+    },
+    "CoBra20241218.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20241218.zip",
+      "size_bytes": 13774011,
+      "md5": "4a0f499262f23155de3ab5e74623c59f",
+      "sha256": "40d957461e0d66a19a8dbae421407abfd57a162fce0d2ca062f407e07916bbfc"
+    },
+    "CoBra20250115.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250115.zip",
+      "size_bytes": 16091978,
+      "md5": "b6cde266a85354cd396c3045e4dab7c1",
+      "sha256": "eededb2e3dc9c1427dc7f02b1ecf8575e537918219d76a64da3ce366271bf84d"
+    },
+    "CoBra20250117.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250117.zip",
+      "size_bytes": 10382099,
+      "md5": "84f2a416277d66217a86053e15537f43",
+      "sha256": "c2fb49764cb77936aea6013c5a7c9e1fe5fdfb43308f72c049641e546b98fc4b"
+    },
+    "CoBra20250120.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250120.zip",
+      "size_bytes": 12031211,
+      "md5": "bfa2f99da16f1f0555abd9dd7189fdae",
+      "sha256": "3d1f53e258c463d18d5fc32b098c8209c533170da58b0e9ab538694240fb74f5"
+    },
+    "CoBra20250122.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250122.zip",
+      "size_bytes": 17886513,
+      "md5": "57c496f701d0ed15688a93f1ffb6fae4",
+      "sha256": "3323680b7ba279275181a982ccd59239b38a55bbe1a46b8cb2aec4f59426a530"
+    },
+    "CoBra20250206.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250206.zip",
+      "size_bytes": 21712597,
+      "md5": "9ac34fcbfdf3714ef9a1e8654357c944",
+      "sha256": "44fab6b57abee2cd68c27c7a176f83c30eac483db019891cfc6283c970068b08"
+    },
+    "CoBra20250217.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250217.zip",
+      "size_bytes": 17151845,
+      "md5": "778d62fdc6a9d5823d4c6034d8d789ff",
+      "sha256": "1da6ffe41d7a438418d171913cf0d34ff4f8d5867a6a2d18afe69ca1eb8d53fc"
+    },
+    "CoBra20250218.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250218.zip",
+      "size_bytes": 11778782,
+      "md5": "33b1d5546a26ac18cab5cac96069d9c8",
+      "sha256": "540803dbb9ccbcc2175c64f669d55843455fbfe89d67219e001133caf51298ae"
+    },
+    "CoBra20250220.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250220.zip",
+      "size_bytes": 17463326,
+      "md5": "ef7a33f606a3b08defb9f7119ba0ef64",
+      "sha256": "98abe3cc8beebf4b19019c7c8a6e66bc3e83fedbbd9fc4f9c0f044af8be56423"
+    },
+    "CoBra20250224.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250224.zip",
+      "size_bytes": 16713740,
+      "md5": "1a260f786883a917e58865e8b1d84e0a",
+      "sha256": "915b06dfe0bb0be0ed3c5c70c8f155c6b56443cf3a2d43053ca18a02e1f7b207"
+    },
+    "CoBra20250225.zip": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/CoBra20250225.zip",
+      "size_bytes": 14791235,
+      "md5": "2c2b1208eb05ad738f6b92e01c040ca5",
+      "sha256": "ed849e5cb6c76b2a288ca1193fc55931096c7629f5d85eac31040963653584f6"
+    },
+    "overview_experiments.csv": {
+      "action": "downloaded",
+      "path": "data/raw/cobra/source_v1_0_0/overview_experiments.csv",
+      "size_bytes": 17602,
+      "md5": "92fd65069957dcba46f45cba20c0cf68",
+      "sha256": "e11abeb0d90d256458c9b010e8583d4e14f321e9b8217ef4556ab7c7f6b70334"
+    }
+  },
+  "guardrails": {
+    "unzip_source_files": false,
+    "inspect_csv_content": false,
+    "compute_sensor_distributions": false,
+    "compute_correlations": false,
+    "compute_pca_scores": false,
+    "compute_tcn_scores": false,
+    "compute_router_scores": false,
+    "compute_target_prevalence": false,
+    "compute_coverage_metrics": false,
+    "compute_energy_metrics": false
+  }
+}
