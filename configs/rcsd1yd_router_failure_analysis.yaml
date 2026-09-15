@@ -1,0 +1,159 @@
+study:
+  name: "rcsd1yd_router_failure_analysis"
+  branch: "research/rcsd1yd-router-failure-analysis"
+  parent_external_result_commit: "daa58d4d1a6ecfedafae02f1d0462456d58f6513"
+  evidence_class: "POST_HOC_EXPLORATORY"
+  causal_claim: false
+  closed_external_status: "EXTERNAL_TRANSPORT_FAIL"
+  closed_result_may_change: false
+
+frozen_inputs:
+  external_result: "docs/research/rcsd1yd_external_evaluation_result.json"
+  one_shot_result: "docs/research/rcsd1yd_one_shot_evaluation.json"
+  adaptation_freeze: "docs/research/rcsd1yd_adaptation_freeze.json"
+  evaluation_parquet: "data/processed/rcsd1yd/evaluation.parquet"
+  calibration_parquet: "data/processed/rcsd1yd/calibration.parquet"
+  tcn_checkpoint: "artifacts/research/rcsd1yd_tcn.pt"
+
+reproduction_guard:
+  valid_tcn_rows: 8820
+  high_threshold_q90: 0.8942223191261292
+  alert_threshold_q995: 311.1317443847656
+  evaluation_high_evidence_bins: 4647
+  evaluation_alert_evidence_bins: 2
+  evidence_aware_invocations: 3270
+  evidence_aware_high_coverage: 0.39122014202711425
+  evidence_aware_alert_coverage: 0.5
+  fixed_q90_invocations: 6084
+  fixed_q90_high_coverage: 0.9672907251990531
+  numeric_tolerance: 1.0e-12
+
+teacher_shift:
+  score_quantiles:
+    - 0.50
+    - 0.75
+    - 0.90
+    - 0.95
+    - 0.99
+    - 0.995
+    - 0.999
+  compare_partitions:
+    - "CALIBRATION"
+    - "EVALUATION"
+  frozen_thresholds_only: true
+  evaluation_months:
+    - "2022-10"
+    - "2022-11"
+    - "2022-12"
+
+cheap_feature_transport:
+  feature_names:
+    - "pca_ewma_percentile"
+    - "pca_ewma_delta_robust_z"
+    - "pca_ewma_volatility_percentile"
+    - "feature_support_percentile"
+    - "pca_latent_support_percentile"
+    - "combined_support_percentile"
+    - "recent_q90_hit_fraction"
+    - "recent_q95_hit_fraction"
+  descriptive_quantiles:
+    - 0.10
+    - 0.25
+    - 0.50
+    - 0.75
+    - 0.90
+  diagnostics:
+    - "raw_roc_auc_vs_high_evidence"
+    - "average_precision_vs_high_evidence"
+    - "spearman_vs_raw_tcn_score"
+  percentile_feature_boundary_mass:
+    report_exact_zero: true
+    report_exact_one: true
+
+frozen_router_diagnostics:
+  probability_threshold: 0.30
+  metrics:
+    - "roc_auc_vs_high_evidence"
+    - "average_precision_vs_high_evidence"
+    - "precision_at_frozen_threshold"
+    - "recall_at_frozen_threshold"
+    - "invocation_fraction_at_frozen_threshold"
+    - "high_evidence_enrichment_at_frozen_threshold"
+  calibration_bins:
+    source_partition: "CALIBRATION"
+    quantiles:
+      - 0.10
+      - 0.20
+      - 0.30
+      - 0.40
+      - 0.50
+      - 0.60
+      - 0.70
+      - 0.80
+      - 0.90
+    interpolation: "linear"
+    apply_same_boundaries_to_evaluation: true
+
+false_negative_analysis:
+  expected_evaluation_false_negatives: 2829
+  groups:
+    - "TP"
+    - "FN"
+    - "FP"
+    - "TN"
+  report:
+    - "count"
+    - "router_probability_median_iqr"
+    - "eight_feature_median_iqr"
+    - "pca_ewma_median_iqr"
+    - "raw_tcn_score_median_iqr"
+
+q90_disagreement:
+  groups:
+    - "both"
+    - "q90_only"
+    - "evidence_aware_only"
+    - "neither"
+  restrict_primary_table_to_high_evidence: true
+  report_conditional_evidence_aware_coverage:
+    - "within_q90_routed_high_evidence"
+    - "within_q90_not_routed_high_evidence"
+
+temporal_analysis:
+  grouping: "calendar_month"
+  months:
+    - "2022-10"
+    - "2022-11"
+    - "2022-12"
+  metrics:
+    - "valid_tcn_rows"
+    - "high_evidence_prevalence"
+    - "evidence_aware_invocation_fraction"
+    - "evidence_aware_high_coverage"
+    - "evidence_aware_false_negative_count"
+    - "q90_invocation_fraction"
+    - "q90_high_coverage"
+
+alert_analysis:
+  evaluation_positive_count_expected: 2
+  report_timestamps: true
+  report_existing_system_routes: true
+  roc_auc_forbidden: true
+  average_precision_forbidden: true
+  model_fitting_forbidden: true
+
+forbidden:
+  logistic_refit: true
+  threshold_sweep: true
+  pca_threshold_search: true
+  feature_selection: true
+  new_feature_search: true
+  tcn_retuning: true
+  teacher_threshold_retuning: true
+  evaluation_reference_refit: true
+  router_v2_selection: true
+  independent_validation_claim: true
+
+outputs:
+  json: "docs/research/rcsd1yd_router_failure_analysis.json"
+  markdown: "docs/research/RCSD1YD_ROUTER_FAILURE_ANALYSIS.md"
