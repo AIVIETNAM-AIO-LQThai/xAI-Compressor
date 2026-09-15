@@ -1,0 +1,83 @@
+study:
+  name: "cobra_schema_chronology"
+  parent_source_lock_commit: "9d3e535ae7e6932fce1a4ec975d0ebacdfa4b0f6"
+  evidence_role: "FUTURE_GENUINELY_INDEPENDENT_EXTERNAL_VALIDATION"
+  model_outcome_metrics_allowed: false
+  evaluation_sensor_exploration_allowed: false
+
+source:
+  directory: "data/raw/cobra/source_v1_0_0"
+  source_lock_manifest: "docs/research/cobra_source_lock_manifest.json"
+  overview_file: "overview_experiments.csv"
+  archive_pattern: "CoBra????????.zip"
+
+split:
+  unit: "whole_test_day"
+  assignment_basis: "chronological_filename_order_only"
+  train_days:
+    - "2024-06-03"
+    - "2024-06-06"
+    - "2024-06-10"
+    - "2024-06-12"
+    - "2024-06-17"
+    - "2024-06-19"
+    - "2024-06-24"
+    - "2024-06-27"
+    - "2024-11-11"
+    - "2024-11-21"
+    - "2024-11-25"
+    - "2024-12-11"
+    - "2024-12-18"
+    - "2025-01-15"
+  calibration_days:
+    - "2025-01-17"
+    - "2025-01-20"
+    - "2025-01-22"
+    - "2025-02-06"
+  evaluation_days:
+    - "2025-02-17"
+    - "2025-02-18"
+    - "2025-02-20"
+    - "2025-02-24"
+    - "2025-02-25"
+  may_change_after_schema_inspection: false
+  may_change_after_model_results: false
+
+allowed_inspection:
+  zip_member_names: true
+  csv_header: true
+  column_names: true
+  delimiter_detection_from_header: true
+  timestamp_column_identity: true
+  timestamp_values: true
+  row_count: true
+  first_last_timestamp: true
+  timestamp_monotonicity: true
+  duplicate_timestamp_count: true
+  timestamp_step_counts: true
+  row_field_count_consistency: true
+  coarse_schema_class: true
+  structural_blank_row_count: true
+  overview_metadata: true
+
+forbidden:
+  sensor_descriptive_statistics: true
+  sensor_quantiles: true
+  sensor_correlations: true
+  sensor_plots: true
+  pca_scores: true
+  ewma_scores: true
+  support_scores: true
+  tcn_scores: true
+  router_v1_scores: true
+  router_v2_scores: true
+  target_prevalence: true
+  coverage_metrics: true
+  anomaly_rate: true
+  energy_metrics: true
+  train_cal_eval_sensor_distribution_comparison: true
+  evaluation_feature_selection: true
+  evaluation_hyperparameter_selection: true
+
+output:
+  manifest: "docs/research/cobra_schema_chronology_manifest.json"
