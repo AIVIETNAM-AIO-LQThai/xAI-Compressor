@@ -349,3 +349,72 @@ def test_adaptation_split_uses_frozen_counts() -> None:
             evaluation_days=evaluation,
         )
 
+
+
+def test_decimal_comma_sensor_values_are_numeric() -> None:
+    frame = pd.DataFrame(
+        {
+            "timestamp": [
+                "2024-06-03 10:00:00",
+                "2024-06-03 10:05:00",
+            ],
+            "sensor_a": [
+                "1,5",
+                "-2,25",
+            ],
+            "sensor_b": [
+                "1000,0",
+                "3.5",
+            ],
+        }
+    )
+
+    result = aggregate_five_minute(
+        frame,
+        timestamp_column="timestamp",
+        feature_names=[
+            "sensor_a",
+            "sensor_b",
+        ],
+    )
+
+    assert result.valid_bins == 2
+    assert result.invalid_bins == 0
+
+    assert result.frame.iloc[0][
+        "sensor_a"
+    ] == pytest.approx(1.5)
+
+    assert result.frame.iloc[1][
+        "sensor_a"
+    ] == pytest.approx(-2.25)
+
+    assert result.frame.iloc[0][
+        "sensor_b"
+    ] == pytest.approx(1000.0)
+
+    assert result.frame.iloc[1][
+        "sensor_b"
+    ] == pytest.approx(3.5)
+
+
+def test_ambiguous_mixed_separators_remain_invalid() -> None:
+    frame = pd.DataFrame(
+        {
+            "timestamp": [
+                "2024-06-03 10:00:00",
+            ],
+            "sensor_a": [
+                "1.234,56",
+            ],
+        }
+    )
+
+    result = aggregate_five_minute(
+        frame,
+        timestamp_column="timestamp",
+        feature_names=["sensor_a"],
+    )
+
+    assert result.valid_bins == 0
+    assert result.invalid_bins == 1

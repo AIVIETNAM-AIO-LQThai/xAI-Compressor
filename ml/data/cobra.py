@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -19,6 +20,28 @@ TIMESTAMP_FORMATS = (
     "%d/%m/%Y %H:%M:%S",
     "%d/%m/%Y %H:%M:%S.%f",
 )
+
+
+DECIMAL_COMMA_PATTERN = re.compile(
+    r"^[+-]?(?:\d+(?:,\d*)?|,\d+)"
+    r"(?:[eE][+-]?\d+)?$"
+)
+
+
+def normalize_numeric_text(
+    value: object,
+) -> str:
+    stripped = str(value).strip()
+
+    if (
+        "," in stripped
+        and DECIMAL_COMMA_PATTERN.fullmatch(
+            stripped
+        )
+    ):
+        return stripped.replace(",", ".")
+
+    return stripped
 
 
 @dataclass(frozen=True)
@@ -230,7 +253,7 @@ def aggregate_five_minute(
     raw = (
         frame.loc[:, feature_names]
         .astype(str)
-        .map(lambda value: value.strip())
+        .map(normalize_numeric_text)
     )
 
     numeric = raw.apply(
