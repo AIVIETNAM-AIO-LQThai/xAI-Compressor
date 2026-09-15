@@ -28,6 +28,12 @@ TIMESTAMP_EXACT_NAMES = {
 TIMESTAMP_HINTS = ("timestamp", "datetime", "date", "time")
 TRUE_TEXT = {"true", "false", "yes", "no", "on", "off"}
 
+TEXT_ENCODING_CANDIDATES = (
+    "utf-8-sig",
+    "cp1252",
+    "latin-1",
+)
+
 DATETIME_FORMATS = (
     "%Y-%m-%d %H:%M:%S",
     "%Y-%m-%d %H:%M:%S.%f",
@@ -134,6 +140,26 @@ def _parse_datetime(value: str) -> datetime:
     raise ValueError("Unsupported timestamp format.")
 
 
+def _decode_header_bytes(
+    header_bytes: bytes,
+) -> tuple[str, str]:
+    if not header_bytes:
+        raise ValueError("CSV header is empty.")
+
+    for encoding in TEXT_ENCODING_CANDIDATES:
+        try:
+            return encoding, header_bytes.decode(
+                encoding,
+                errors="strict",
+            )
+        except UnicodeDecodeError:
+            continue
+
+    raise RuntimeError(
+        "Could not decode CSV header with frozen encoding candidates."
+    )
+
+
 def _coarse_class_update(
     state: dict[str, bool | int],
     value: str,
@@ -223,15 +249,27 @@ def _inspect_archive(
         primary = _primary_csv_member(path.name, members)
 
         with archive.open(primary, "r") as raw:
+            header_bytes = raw.readline()
+
+        if not header_bytes:
+            raise RuntimeError(f"Empty CSV in {path.name}.")
+
+        source_encoding, header_line = _decode_header_bytes(
+            header_bytes
+        )
+
+        with archive.open(primary, "r") as raw:
             text = io.TextIOWrapper(
                 raw,
-                encoding="utf-8-sig",
+                encoding=source_encoding,
                 newline="",
             )
 
-            header_line = text.readline()
-            if not header_line:
-                raise RuntimeError(f"Empty CSV in {path.name}.")
+            decoded_header = text.readline()
+            if decoded_header != header_line:
+                raise RuntimeError(
+                    f"Header decoding was not deterministic in {path.name}."
+                )
 
             delimiter = _delimiter_from_header(header_line)
             header_reader = csv.reader([header_line], delimiter=delimiter)
@@ -335,6 +373,7 @@ def _inspect_archive(
                 "partition": partition,
                 "zip_members": members,
                 "primary_csv_member": primary,
+                "source_encoding": source_encoding,
                 "delimiter": delimiter,
                 "column_count": len(columns),
                 "columns": columns,

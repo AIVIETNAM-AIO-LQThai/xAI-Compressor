@@ -10,6 +10,7 @@ import yaml
 from scripts.inspect_cobra_schema_chronology import (
     _coarse_class,
     _coarse_class_update,
+    _decode_header_bytes,
     _delimiter_from_header,
     _inspect_archive,
     _parse_datetime,
@@ -53,6 +54,14 @@ def test_forbidden_operations_are_all_enabled() -> None:
     )
     assert all(bool(value) for value in config["forbidden"].values())
 
+
+def test_header_encoding_falls_back_to_cp1252() -> None:
+    header = b"Timestamp;Temperature [\xb0C];Pressure\n"
+
+    encoding, decoded = _decode_header_bytes(header)
+
+    assert encoding == "cp1252"
+    assert chr(0x00B0) + "C" in decoded
 
 def test_delimiter_from_header() -> None:
     assert _delimiter_from_header("Timestamp;A;B\n") == ";"
@@ -121,6 +130,7 @@ def test_synthetic_archive_inspection_is_schema_only(
     )
 
     assert result["rows"] == 3
+    assert result["source_encoding"] == "utf-8-sig"
     assert result["timestamp_parse_errors"] == 0
     assert result["duplicate_timestamp_count"] == 0
     assert result["non_monotonic_timestamp_count"] == 0
