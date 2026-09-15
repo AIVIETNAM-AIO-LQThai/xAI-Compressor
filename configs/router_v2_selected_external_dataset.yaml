@@ -1,0 +1,63 @@
+selection:
+  status: "SELECTED_BEFORE_ROUTER_V2_DEVELOPMENT"
+  protocol_commit: "0278641a0b925b9d2d0c484f3bb5f445dcfffa36"
+  parent_failure_analysis_commit: "87e4d667b94ecdca0ce0a9499347e744cc48aa71"
+
+selected_dataset:
+  short_name: "CoBra"
+  title: "CoBra High Temperature Heat Pump Demonstrator - Experimental Dataset 2024-2025"
+  operator: "German Aerospace Center (DLR)"
+  location: "Cottbus, Germany"
+  doi: "10.82481/cobra.2025"
+  source_record: "https://zenodo.org/records/15862451"
+  selected_published_version: "1.0.0"
+  published_date: "2025-09-29"
+  acquisition_period: "2024-06 to 2025-02"
+  sampling_frequency_hz: 1
+  test_days: 23
+  source_type: "real_measured_experimental_telemetry"
+  preference_class: "controlled_industrial_or_test_facility_telemetry"
+  future_evidence_role: "FUTURE_GENUINELY_INDEPENDENT_EXTERNAL_VALIDATION"
+
+documented_modalities:
+  - "temperature"
+  - "pressure"
+  - "rotational_speed"
+  - "acceleration"
+  - "derived_velocity"
+  - "humidity"
+  - "valve_position"
+  - "mass_flow"
+  - "compressor_pressure_ratio"
+  - "compressor_outlet_temperature"
+
+independence:
+  used_in_router_v1_development: false
+  used_in_metropt_transport_studies: false
+  used_in_rcsd_external_evaluation: false
+  used_in_rcsd_failure_analysis: false
+  used_in_router_v2_design_at_selection_time: false
+  router_outcome_metrics_computed_at_selection_time: false
+
+selection_time_data_use:
+  metadata_only: true
+  sensor_distributions_computed: false
+  correlations_computed: false
+  pca_scores_computed: false
+  tcn_scores_computed: false
+  router_v1_scores_computed: false
+  router_v2_scores_computed: false
+  target_prevalence_computed: false
+  coverage_metrics_computed: false
+  gpu_energy_metrics_computed: false
+
+next_source_lock:
+  download_exact_source_version: true
+  verify_publisher_md5: true
+  compute_sha256: true
+  schema_only_inspection_allowed: true
+  timestamp_parsing_allowed: true
+  row_count_allowed: true
+  chronology_validation_allowed: true
+  freeze_chronological_split_before_router_v2_development: true
+  future_evaluation_must_remain_blind: true
