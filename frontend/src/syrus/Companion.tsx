@@ -15,8 +15,10 @@ import { useCaseFile, useCases } from "./useCase";
 export function SyrusCompanion({ selection, choose }: { selection: Selection | null; choose: (s: Selection) => void }) {
   const ui = useSyrusUi();
   const { cases } = useCases();
-  const entry = selection && cases?.find((c) => c.caseId === selection.caseId);
-  const context = entry ? `Incident ${entry.number} · ${selection!.mode === "retro" ? "Retrospective" : "Past-only"}` : "No incident selected";
+  const incident = selection?.kind === "incident" ? selection : null;
+  const entry = incident && cases?.find((c) => c.caseId === incident.caseId);
+  const other = selection && selection.kind !== "incident" ? selection : null;
+  const context = entry ? `Incident ${entry.number} · ${incident!.mode === "retro" ? "Retrospective" : "Past-only"}` : other ? (other.kind === "episode" ? "Alert episode · no case file" : "Interval · no case file") : "No incident selected";
 
   // Focus moves into the drawer when it opens and back to the launcher when it closes. An offered question focuses the composer instead.
   const launcher = useRef<HTMLButtonElement>(null);
@@ -58,18 +60,25 @@ export function SyrusCompanion({ selection, choose }: { selection: Selection | n
         <div>
           <strong>Syrus</strong>
           <span>
-            {entry ? `Incident ${entry.number} · ${dateLabel(entry.alertTime)} · ${selection!.mode === "retro" ? "Retrospective" : "Past-only"}` : "No incident selected"}
+            {entry ? `Incident ${entry.number} · ${dateLabel(entry.alertTime)} · ${incident!.mode === "retro" ? "Retrospective" : "Past-only"}` : context}
           </span>
         </div>
         <button ref={close} className="icon-button" onClick={closeSyrus} aria-label="Close Syrus">
           <X size={18} />
         </button>
       </header>
-      {selection && entry ? (
-        <Conversation key={`${selection.caseId}:${selection.mode}`} selection={selection} />
+      {incident && entry ? (
+        <Conversation key={`${incident.caseId}:${incident.mode}`} selection={incident} />
       ) : (
         <div className="drawer-empty">
-          <p>Syrus answers about one documented incident at a time. Choose one:</p>
+          {other ? (
+            <p>
+              Syrus is off for this {other.kind === "episode" ? "alert episode" : "interval"}: it has no reviewed case file, and it never borrows another incident's findings. The charts and values on the page are
+              the evidence. To talk about a documented incident, choose one:
+            </p>
+          ) : (
+            <p>Syrus answers about one documented incident at a time. Choose one:</p>
+          )}
           <ul>
             {cases?.map((c) => (
               <li key={c.caseId}>
@@ -80,14 +89,14 @@ export function SyrusCompanion({ selection, choose }: { selection: Selection | n
               </li>
             ))}
           </ul>
-          <p className="muted">Alert episodes without a documented incident, recorded intervals and simulations have no reviewed Syrus contract yet.</p>
+          {other ? null : <p className="muted">Alert episodes without a documented incident, recorded intervals and simulations have no reviewed Syrus contract yet.</p>}
         </div>
       )}
     </aside>
   );
 }
 
-function Conversation({ selection }: { selection: Selection }) {
+function Conversation({ selection }: { selection: Extract<Selection, { kind: "incident" }> }) {
   const { file, error } = useCaseFile(selection.caseId, selection.mode);
   const [target, setTarget] = useState<Ref | null>(null);
   if (error) return <p className="notice error">This case could not be loaded.</p>;

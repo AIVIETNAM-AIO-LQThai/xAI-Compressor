@@ -9,6 +9,7 @@ import { ExplorerError, getOverview, instant, type ExplorerOverview } from "../e
 import type { Selection } from "../selection";
 import { dateLabel } from "../syrus/labels";
 import { useCases } from "../syrus/useCase";
+import { useNarrow } from "../useNarrow";
 import type { DetectionEvidence, EvidenceSummary } from "../types";
 
 // Chart colours, checked for colour-vision separation and contrast on the panel surface. Text stays in text tokens.
@@ -126,6 +127,9 @@ export function Overview({ open, choose }: { open: (hash: string) => void; choos
             <h2>New here?</h2>
           </div>
           <p className="muted">One incident walked through end to end: the alert, the evidence behind it, and a conversation with Syrus.</p>
+          <button className="secondary-button" onClick={() => open("explore")}>
+            Explore the recorded data
+          </button>{" "}
           {cases[1] ? (
             <button className="primary-button" onClick={() => choose({ kind: "incident", caseId: cases[1].caseId, mode: "retro" })}>
               Guided example: Incident 2
@@ -351,16 +355,4 @@ function MonthTable({ data }: { data: ExplorerOverview }) {
       </table>
     </details>
   );
-}
-
-function useNarrow() {
-  const query = "(max-width: 820px)";
-  const [narrow, setNarrow] = useState(() => window.matchMedia(query).matches);
-  useEffect(() => {
-    const q = window.matchMedia(query);
-    const on = () => setNarrow(q.matches);
-    q.addEventListener("change", on);
-    return () => q.removeEventListener("change", on);
-  }, []);
-  return narrow;
 }

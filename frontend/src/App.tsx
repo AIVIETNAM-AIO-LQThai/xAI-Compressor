@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import { Activity, Cpu, LayoutDashboard, Menu, Search, ShieldCheck, X, Zap } from "lucide-react";
+import { Activity, Cpu, Database, LayoutDashboard, Menu, Search, ShieldCheck, X, Zap } from "lucide-react";
 
+import { Explorer } from "./pages/Explorer";
 import { DigitalTwinLab } from "./pages/DigitalTwinLab";
 import { EnergyRecommendation } from "./pages/EnergyRecommendation";
 import { IncidentReplay } from "./pages/IncidentReplay";
 import { Investigation } from "./pages/Investigation";
 import { Overview } from "./pages/Overview";
 import { ProofManifest } from "./pages/ProofManifest";
-import { hashFor, parse, recall, remember, type Route, type Selection, type Where } from "./selection";
+import { hashFor, parse, recall, recallIncident, recallView, remember, type Route, type Selection, type Where } from "./selection";
 import { SyrusCompanion } from "./syrus/Companion";
 import { useSyrusUi } from "./syrus/ui";
 
 const ROUTES: Array<{ id: Route; label: string; icon: typeof Activity }> = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "investigate", label: "Investigation", icon: Search },
+  { id: "explore", label: "Data Explorer", icon: Database },
   { id: "incident", label: "Detector Replay", icon: Activity },
   { id: "proof", label: "Evidence Proof", icon: ShieldCheck },
   { id: "twin", label: "Simulation Lab", icon: Cpu },
@@ -50,12 +52,17 @@ export default function App() {
     remember(s);
     open(hashFor(s));
   };
-  // Syrus follows what is on screen; elsewhere it keeps the last incident the user chose in this tab.
-  const selection = where.route === "investigate" ? where.selection : recall();
+  // Syrus follows what is on screen; on other pages it keeps the last thing the user chose in this tab.
+  const selection = where.route === "investigate" || where.route === "explore" ? where.selection : recall();
+  const incident = selection?.kind === "incident" ? selection : recallIncident();
+  const view = selection && selection.kind !== "incident" ? selection : recallView();
+  const target = (id: Route) => (id === "investigate" && incident ? hashFor(incident) : id === "explore" && view ? hashFor(view) : id);
 
   const content =
     where.route === "investigate" ? (
-      <Investigation selection={where.selection} go={choose} />
+      <Investigation selection={where.selection?.kind === "incident" ? where.selection : null} go={choose} />
+    ) : where.route === "explore" ? (
+      <Explorer selection={where.selection?.kind === "incident" ? null : where.selection} go={choose} />
     ) : where.route === "incident" ? (
       <IncidentReplay />
     ) : where.route === "twin" ? (
@@ -90,9 +97,8 @@ export default function App() {
         <nav aria-label="Main">
           {ROUTES.map((item) => {
             const Icon = item.icon;
-            const target = item.id === "investigate" && selection ? hashFor(selection) : item.id;
             return (
-              <button key={item.id} className={where.route === item.id ? "nav-item active" : "nav-item"} aria-current={where.route === item.id ? "page" : undefined} onClick={() => open(target)}>
+              <button key={item.id} className={where.route === item.id ? "nav-item active" : "nav-item"} aria-current={where.route === item.id ? "page" : undefined} onClick={() => open(target(item.id))}>
                 <Icon size={18} />
                 <span>{item.label}</span>
               </button>

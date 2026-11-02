@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 
 import { ErrorPanel } from "../components/ErrorPanel";
 import { LoadingPanel } from "../components/LoadingPanel";
-import { recall, remember, type Selection } from "../selection";
+import { recallIncident, remember, type Selection } from "../selection";
 import { EvidencePane } from "../syrus/EvidencePane";
 import { Inspector, type Ref } from "../syrus/Inspector";
 import { dateLabel, title } from "../syrus/labels";
@@ -11,7 +11,7 @@ import { openSyrus } from "../syrus/ui";
 import { useCaseFile, useCases, type CaseEntry } from "../syrus/useCase";
 
 interface Props {
-  selection: Selection | null;
+  selection: Extract<Selection, { kind: "incident" }> | null;
   go: (s: Selection) => void;
 }
 
@@ -31,7 +31,7 @@ export function Investigation({ selection, go }: Props) {
 }
 
 function Picker({ cases, go, unknown }: { cases: CaseEntry[]; go: (s: Selection) => void; unknown: boolean }) {
-  const last = recall();
+  const last = recallIncident();
   const lastEntry = last && cases.find((c) => c.caseId === last.caseId);
   return (
     <div className="page-shell investigation">
@@ -63,7 +63,7 @@ function Picker({ cases, go, unknown }: { cases: CaseEntry[]; go: (s: Selection)
   );
 }
 
-function Workspace({ selection, entry, cases, go }: { selection: Selection; entry: CaseEntry; cases: CaseEntry[]; go: (s: Selection) => void }) {
+function Workspace({ selection, entry, cases, go }: { selection: Extract<Selection, { kind: "incident" }>; entry: CaseEntry; cases: CaseEntry[]; go: (s: Selection) => void }) {
   const { file, error } = useCaseFile(selection.caseId, selection.mode);
   const [target, setTarget] = useState<Ref | null>(null);
   const [controls, setControls] = useState(false);
