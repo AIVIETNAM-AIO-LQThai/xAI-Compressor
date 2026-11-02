@@ -63,6 +63,14 @@ export function title(id: string): string {
   return FINDING_TITLES[id] ?? recordTitle(id);
 }
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** "2020-05-29 21:20:00" -> "29 May 2020" (dataset local time). */
+export function dateLabel(alertTime: string) {
+  const [y, m, d] = alertTime.slice(0, 10).split("-").map(Number);
+  return `${d} ${MONTHS[m - 1]} ${y}`;
+}
+
 export const DEPTHS: Array<{ id: Depth; label: string; hint: string }> = [
   { id: "quick", label: "Quick Note", hint: "Short answer, up to 3 points" },
   { id: "investigation", label: "Investigation", hint: "Evidence and limits, up to 6 points" },
@@ -92,7 +100,8 @@ const OFFLINE: Record<string, string> = {
   budget_daily: "The daily budget is used up. Try again tomorrow.",
   budget_total: "The development budget is used up.",
   rate_limited: "The model provider is limiting requests.",
-  busy: "Syrus is answering someone else.",
+  busy: "Syrus is answering another question.",
+  paced: "This minute's model allowance is used.",
   timeout: "The model provider took too long.",
   provider_error: "The model provider could not be reached.",
   provider_auth: "The model provider refused the server's credentials.",

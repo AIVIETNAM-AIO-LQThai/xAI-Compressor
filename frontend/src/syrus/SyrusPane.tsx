@@ -4,7 +4,8 @@ import { Send, Sparkles } from "lucide-react";
 import { getHealth } from "./client";
 import { refFor, type Ref } from "./Inspector";
 import { DEPTHS, SUGGESTIONS, notice, title } from "./labels";
-import { ask, cancel, conversationKey, useConversation } from "./store";
+import { ask, conversationKey, useConversation } from "./store";
+import { takePrefill, useSyrusUi } from "./ui";
 import type { Answer, CaseFile, Depth, Health, Mode, TurnOutcome } from "./types";
 
 const MAX_CHARS = 500;
@@ -143,12 +144,14 @@ export function SyrusPane({ c, caseId, mode, onInspect }: { c: CaseFile; caseId:
     getHealth(ac.signal).then(setHealth, () => setHealth(null));
     return () => ac.abort();
   }, []);
-  useEffect(
-    () => () => {
-      cancel(key);
-    },
-    [key],
-  );
+  // A question offered from elsewhere fills the composer; it is never sent without the user.
+  const ui = useSyrusUi();
+  const box = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (ui.prefill === null || !retro) return;
+    setDraft(takePrefill() ?? "");
+    box.current?.focus();
+  }, [ui.prefill, retro]);
   useEffect(() => {
     const box = scroller.current;
     if (box) box.scrollTop = box.scrollHeight; // scroll the conversation only, never the page
@@ -241,6 +244,7 @@ export function SyrusPane({ c, caseId, mode, onInspect }: { c: CaseFile; caseId:
         {retro ? (
           <>
             <textarea
+              ref={box}
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {

@@ -7,40 +7,35 @@ import { IncidentReplay } from "./pages/IncidentReplay";
 import { Investigation } from "./pages/Investigation";
 import { Overview } from "./pages/Overview";
 import { ProofManifest } from "./pages/ProofManifest";
-import type { Mode } from "./syrus/types";
-
-type Route = "overview" | "investigation" | "incident" | "proof" | "twin" | "recommendation";
+import { hashFor, parse, recall, remember, type Route, type Selection, type Where } from "./selection";
+import { SyrusCompanion } from "./syrus/Companion";
+import { useSyrusUi } from "./syrus/ui";
 
 const ROUTES: Array<{ id: Route; label: string; icon: typeof Activity }> = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "investigation", label: "Investigation", icon: Search },
+  { id: "investigate", label: "Investigation", icon: Search },
   { id: "incident", label: "Detector Replay", icon: Activity },
   { id: "proof", label: "Evidence Proof", icon: ShieldCheck },
   { id: "twin", label: "Simulation Lab", icon: Cpu },
   { id: "recommendation", label: "Advisory", icon: Zap },
 ];
 
-interface Where {
-  route: Route;
-  caseId?: string;
-  mode: Mode;
-}
-
-/** `#investigation/<case>/<mode>`; anything unknown falls back to the overview. */
-function parse(hash: string): Where {
-  const [head, caseId, mode] = hash.replace(/^#/, "").split("/");
-  const route = ROUTES.find((r) => r.id === head)?.id ?? "overview";
-  return { route, caseId: route === "investigation" && /^c-[a-z0-9]+$/.test(caseId ?? "") ? caseId : undefined, mode: mode === "asof" ? "asof" : "retro" };
-}
-
 export default function App() {
   const [where, setWhere] = useState<Where>(() => parse(window.location.hash));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const syrus = useSyrusUi();
   const main = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    // The earlier `#investigation/<case>/<mode>` links still work; the address bar is rewritten to the current form.
+    const current = () => {
+      const w = parse(window.location.hash);
+      if (window.location.hash.startsWith("#investigation")) history.replaceState(null, "", w.selection ? `#${hashFor(w.selection)}` : "#investigate");
+      return w;
+    };
+    current();
     const onHash = () => {
-      setWhere(parse(window.location.hash));
+      setWhere(current());
       setMobileOpen(false);
       window.scrollTo(0, 0);
     };
@@ -51,10 +46,16 @@ export default function App() {
   const open = (hash: string) => {
     window.location.hash = hash;
   };
+  const choose = (s: Selection) => {
+    remember(s);
+    open(hashFor(s));
+  };
+  // Syrus follows what is on screen; elsewhere it keeps the last incident the user chose in this tab.
+  const selection = where.route === "investigate" ? where.selection : recall();
 
   const content =
-    where.route === "investigation" ? (
-      <Investigation caseId={where.caseId} mode={where.mode} go={(c, m) => open(`investigation/${c}/${m}`)} />
+    where.route === "investigate" ? (
+      <Investigation selection={where.selection} go={choose} />
     ) : where.route === "incident" ? (
       <IncidentReplay />
     ) : where.route === "twin" ? (
@@ -64,11 +65,11 @@ export default function App() {
     ) : where.route === "proof" ? (
       <ProofManifest />
     ) : (
-      <Overview open={open} />
+      <Overview open={open} choose={choose} />
     );
 
   return (
-    <div className="app">
+    <div className={syrus.open ? "app syrus-open" : "app"}>
       <button className="skip-link" onClick={() => main.current?.focus()}>
         Skip to content
       </button>
@@ -89,8 +90,9 @@ export default function App() {
         <nav aria-label="Main">
           {ROUTES.map((item) => {
             const Icon = item.icon;
+            const target = item.id === "investigate" && selection ? hashFor(selection) : item.id;
             return (
-              <button key={item.id} className={where.route === item.id ? "nav-item active" : "nav-item"} aria-current={where.route === item.id ? "page" : undefined} onClick={() => open(item.id)}>
+              <button key={item.id} className={where.route === item.id ? "nav-item active" : "nav-item"} aria-current={where.route === item.id ? "page" : undefined} onClick={() => open(target)}>
                 <Icon size={18} />
                 <span>{item.label}</span>
               </button>
@@ -100,9 +102,6 @@ export default function App() {
 
         <div className="sidebar-footer">
           <p>Historical replay · advisory only · no equipment control</p>
-          <p className="syrus-line">
-            <b>Syrus</b> · evidence-backed conversation
-          </p>
         </div>
       </aside>
 
@@ -110,6 +109,8 @@ export default function App() {
         <div className="ambient-grid" />
         {content}
       </main>
+
+      <SyrusCompanion selection={selection} choose={choose} />
     </div>
   );
 }

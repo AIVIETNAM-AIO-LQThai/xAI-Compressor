@@ -78,7 +78,7 @@ describe("sessions", () => {
 });
 
 describe("user-facing messages", () => {
-  const offline = ["key_missing", "caps_unconfirmed", "kill_switch", "adapter_missing", "budget_daily", "budget_total", "rate_limited", "busy", "timeout", "provider_error", "provider_auth", "context_over_budget", "context_incomplete"];
+  const offline = ["key_missing", "caps_unconfirmed", "kill_switch", "adapter_missing", "budget_daily", "budget_total", "rate_limited", "busy", "paced", "timeout", "provider_error", "provider_auth", "context_over_budget", "context_incomplete"];
   const errors = ["session_expired", "token_invalid", "token_missing", "turn_limit", "session_rate_limit", "asof_chat_disabled", "message_too_long", "empty_message", "turn_in_progress", "case_mismatch", "case_not_found"];
 
   it("has a specific message for every offline reason and error code the backend can return", () => {

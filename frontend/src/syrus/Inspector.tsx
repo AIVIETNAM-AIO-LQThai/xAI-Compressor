@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { Sparkles, X } from "lucide-react";
 
 import { groupName, title } from "./labels";
 import { useDialog } from "./useDialog";
@@ -44,12 +44,21 @@ function Sources({ record }: { record: CaseRecord }) {
   );
 }
 
-/** Side panel on desktop, bottom sheet on a phone. Shows only what the loaded case file contains. */
-export function Inspector({ c, target, onClose, onOpen }: { c: CaseFile; target: Ref | null; onClose: () => void; onOpen: (r: Ref) => void }) {
-  return target ? <InspectorBody c={c} target={target} onClose={onClose} onOpen={onOpen} /> : null;
+interface Props {
+  c: CaseFile;
+  target: Ref | null;
+  onClose: () => void;
+  onOpen: (r: Ref) => void;
+  /** Offers a question about this item to Syrus. The question is only placed in the composer, never sent. */
+  onAsk?: (r: Ref) => void;
 }
 
-function InspectorBody({ c, target, onClose, onOpen }: { c: CaseFile; target: Ref; onClose: () => void; onOpen: (r: Ref) => void }) {
+/** Side panel on desktop, bottom sheet on a phone. Shows only what the loaded case file contains. */
+export function Inspector({ target, ...rest }: Props) {
+  return target ? <InspectorBody target={target} {...rest} /> : null;
+}
+
+function InspectorBody({ c, target, onClose, onOpen, onAsk }: Props & { target: Ref }) {
   const dialog = useDialog<HTMLElement>(onClose);
   const record = target.kind === "record" ? c.records.find((r) => r.id === target.id) : undefined;
   const finding = target.kind === "finding" ? c.findings.find((f) => f.id === target.id) : undefined;
@@ -129,6 +138,12 @@ function InspectorBody({ c, target, onClose, onOpen }: { c: CaseFile; target: Re
               </div>
             </dl>
           </>
+        ) : null}
+
+        {onAsk && !missing ? (
+          <button className="secondary-button insp-ask" onClick={() => onAsk(target)}>
+            <Sparkles size={16} aria-hidden /> Ask Syrus about this
+          </button>
         ) : null}
       </aside>
     </div>
