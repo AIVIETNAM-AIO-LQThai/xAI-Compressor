@@ -146,7 +146,7 @@ export function EnergyRecommendation() {
             <>
               <div className="metrics-grid metrics-grid-3">
                 <MetricCard
-                  label="Predicted next pressure"
+                  label="Simulated pressure at the horizon end"
                   value={`${result.explanation.predicted_pressure_end_bar_g.toFixed(
                     3,
                   )} bar(g)`}

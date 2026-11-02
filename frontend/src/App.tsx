@@ -47,6 +47,11 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
+  // Each page names itself in the tab and to screen readers.
+  useEffect(() => {
+    document.title = `${ROUTES.find((r) => r.id === where.route)?.label ?? "Overview"} · AeroXAI`;
+  }, [where.route]);
+
   const open = (hash: string) => {
     window.location.hash = hash;
   };

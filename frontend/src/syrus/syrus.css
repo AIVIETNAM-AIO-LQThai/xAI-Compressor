@@ -601,7 +601,7 @@
   border-radius: 6px;
   padding: 4px 9px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
 }
 
@@ -2092,4 +2092,36 @@
 
 .lab .notice {
   margin-top: 12px;
+}
+
+/* Touch targets */
+
+.all-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.chart-table summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.field span {
+  font-size: 14px;
+}
+
+/* Earlier pages: status chips and track headers wrap instead of running past a phone's edge */
+@media (max-width: 600px) {
+  .xai-status {
+    white-space: normal;
+    max-width: 100%;
+  }
+
+  .proof-track-head,
+  .proof-command-head,
+  .proof-claims-head {
+    flex-wrap: wrap;
+  }
 }
