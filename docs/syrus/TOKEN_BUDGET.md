@@ -54,7 +54,7 @@ Offline reasons returned for these are `context_incomplete` and `context_over_bu
 
 ## Before and after, acceptance questions (estimated input tokens)
 
-Case 2020-05-29 unless the fixture names another. "After" parts are system / scope / records / findings / tests / history / request / schema / JSON overhead. The largest result on any of the four cases is 4,558 (`persistence_path_repair`), against the cap of 5,100.
+Case 2020-05-29 unless the fixture names another. "After" parts are system / scope / records / findings / tests / history / request / schema / JSON overhead. The largest result on any of the four cases is 4,555 (`persistence_path_repair`), against the cap of 5,100.
 
 | Question | Turn | Before | After | Topics | After, by part |
 |---|---|---|---|---|---|
@@ -69,14 +69,14 @@ Case 2020-05-29 unless the fixture names another. "After" parts are system / sco
 | raw_trace | 1 | 8,165 | 2,378 | sources | 1034/62/601/36/1/0/25/568/51 |
 | maintenance_log_vi | 1 | 8,172 | 2,385 | sources | 1034/62/601/36/1/0/32/568/51 |
 | oem_manual | 1 | 8,172 | 2,385 | sources | 1034/62/601/36/1/0/32/568/51 |
-| signal_definition | 1 | 8,163 | 2,736 | signals, sources | 1034/65/894/36/1/0/23/616/67 |
+| signal_definition | 1 | 8,163 | 2,733 | signals | 1034/62/894/36/1/0/23/616/67 |
 | air_dryer_2020 | 1 | 8,171 | 4,081 | attribution, label | 1034/66/1201/513/324/0/31/803/109 |
 | explain_prev_smoothed | 1 | 8,167 | 3,124 | method | 1034/62/1207/112/1/0/27/623/58 |
-| persistence_path_repair (2020-07-15) | 1 | 8,213 | 4,558 | alert, repair, signals | 1034/67/2030/543/1/0/48/717/118 |
+| persistence_path_repair (2020-07-15) | 1 | 8,213 | 4,555 | alert, repair | 1034/64/2030/543/1/0/48/717/118 |
 | operator_statement | 1 | 8,183 | 3,956 | attribution | 1034/64/1147/443/324/0/43/793/108 |
 | ignore_rules | 1 | 8,170 | 3,943 | attribution | 1034/64/1147/443/324/0/31/793/107 |
 | two_turn_follow_up | 1 | 8,164 | 3,305 | alert | 1034/62/1307/143/1/0/24/661/73 |
-| two_turn_follow_up | 2 | 8,471 | 4,137 | timing | 1034/62/1507/354/1/305/27/702/145 |
+| two_turn_follow_up | 2 | 8,471 | 3,802 | timing | 1034/62/1316/247/1/305/27/670/140 |
 
 The second turn's "before" and history use a synthetic earlier answer of the size three quick units allow. Every row keeps all of the question's essential evidence and every finding its allowed purposes require (`tests/test_syrus_context.py` checks this on all four cases).
 
@@ -105,3 +105,19 @@ No qualification, refusal rule, depth budget, spending cap or the model changed.
 - That strict structured output accepts a schema whose enums differ from question to question (by topics and allowed purposes), and whether the provider's per-schema preparation adds latency. The single-value `["none"]` enum is used where a list must stay empty.
 - Whether a retry in the same minute as a heavy first call is refused: the retry rule above approximates it, and a local per-minute governor was not added.
 - The topic patterns are keyword lists for English and Vietnamese. A phrasing they do not match falls back to the previous topics or the alert explanation; the Vietnamese patterns and topic names need the owner's review.
+
+## Completeness, citation scope and transport (second stage)
+
+**Required findings are set by the server.** `policy.ESSENTIAL` lists, per topic, the findings an answer must convey and the shallowest depth at which each is required (alert: margin, smoothing memory, and evidence timing from investigation depth; candidates: candidates, identifiability, and repair non-uniqueness from investigation depth; repairs: non-uniqueness and, where it fires, persistence; the documented incident: label and timing; energy: the bridge gate; and so on). `View.required` holds those that fire for the case, for the topics actually loaded; a dropped topic adds none. The depth is the server's (`View.depth`), not one the model's declared purposes imply. The purposes the model declares now only label the answer: they can add a requirement, never remove one. A question that is only about sources, signals or the detector's arithmetic requires nothing.
+
+**Conveyed, not just cited.** A finding counts as conveyed when a unit cites it and, if the finding states figures, repeats at least one. Citing a finding id beside a vague sentence leaves it missing, so the existing path applies: one correction, then the reviewed finding text under "Also relevant" (English text, labelled as such in Vietnamese answers). Only conveyed findings are remembered as stated for later turns.
+
+**Citation scope.** With a View, a cited finding vouches only for its input records that were offered this turn, so citing a lean finding does not authorise figures or signals from records the model never saw. The reviewed text of every cited finding is allowed as before, since the model was shown it.
+
+**Topics.** Words that open a question without naming a topic ("why", "how come", Vietnamese "vì sao", "tại sao") no longer select the alert explanation, so "Why did that happen?" continues the previous topic. When a compound question must be narrowed, the topic mentioned last is dropped first (previously the one listed last in the table), and a topic that adds nothing beyond the others is merged away without being reported. For a question that continues the previous topic, the prompt says so and, if the earlier exchange had to be left out, includes the user's previous question (as untrusted text) and tells the model to ask one short clarifying question as a background unit rather than guess what "that" refers to.
+
+**Transport diagnostics.** A failure with no HTTP response is reported by exception class, the cause chain's class names, the stage the class implies (connect, send, receive, pool, proxy), whether any response arrived, whether the exception had text (not the text), elapsed time, a reviewed OS error name (connection reset, aborted, refused, timed out and a few others, nothing else), and the local setup: httpx and Python versions, platform, event loop class, `trust_env`, the names of proxy variables and system proxy schemes that are set (never their values). These identify where the exchange broke; they do not by themselves establish why. HTTP answers add status, rate-limit headers and elapsed time.
+
+**Spend ledger.** A call whose outcome is unknown (dropped connection, timeout, server error, unreadable 200) keeps its estimated input cost against the daily and total caps, recorded separately from provider-reported usage (`Budget.summary()`: provider-reported, estimated exposure and its call count, and the maximum output that is not counted). Refusals the provider stated (429, authentication, a rejected request) are not charged. Each call is settled once; a failed retry adds only its own estimate. Diagnostics mark each call `provider_reported`, `estimated_exposure` or `none`.
+
+**Smoke script.** It now runs inside one client context, so every request shares one event loop. Previously each request got a new loop while the HTTP client's connection pool was shared, which can only matter from the second call on.

@@ -290,8 +290,8 @@ BROAD = "Why did this alert fire, when did the evidence rise, what did the tp2 r
 
 def test_a_too_broad_question_drops_whole_lower_priority_topics_and_says_so():
     b = build(PACK, thread(), BROAD, "auto", CAP, 2)
-    assert b.view.focus == ("alert", "timing") and b.view.dropped == ("attribution", "repair", "signals")
-    assert "Not loaded because the question is too broad" in b.view.sections["scope"] and "attribution, repair, signals" in b.view.sections["scope"]
+    assert b.view.focus == ("alert", "timing") and b.view.dropped == ("attribution", "repair")
+    assert "Not loaded because the question is too broad" in b.view.sections["scope"] and "attribution, repair" in b.view.sections["scope"]
     assert "hyp.air_leakage" not in b.view.records and "hyp.air_leakage" not in json.dumps(b.view.schema)
 
 
@@ -402,7 +402,7 @@ def test_a_follow_up_uses_the_new_topic_with_compact_history(tmp_path):
     h = start(c)
     assert ask(c, h, "Why did this alert fire?").json()["status"] == "ok"
     timing = unit("dv_pressure reached the 100th percentile at 21:10.", ["temporal.2110"])
-    fake.outputs = [reply(timing, purposes=["what_happened"])]
+    fake.outputs = [reply(timing, purposes=["evidence_and_sources"])]
     body = ask(c, h, "And what about the jump at 21:10?").json()
     second = fake.calls[1]
     assert body["status"] == "ok" and "temporal.2110" in json.dumps(second["schema"]) and "temporal.2110" not in json.dumps(fake.calls[0]["schema"])
@@ -453,13 +453,13 @@ def test_unsafe_header_and_body_values_are_dropped():
     bad = {"retry-after": "3; drop table", "x-ratelimit-remaining-tokens": "5" * 80, "x-request-id": "req id with spaces"}
     with pytest.raises(LlmError) as e:
         call(groq(lambda r: httpx.Response(400, headers=bad, json={"error": {"type": "invalid request", "code": "x" * 100, "message": "PRIVATE"}})))
-    assert e.value.diag == {"http": 400} and e.value.reason == "provider_error"
+    assert {k: v for k, v in e.value.diag.items() if k != "elapsed_ms"} == {"http": 400, "response_received": True} and e.value.reason == "provider_error"
 
 
 def test_non_json_provider_errors_still_map_without_leaking(caplog):
     with caplog.at_level(logging.WARNING, logger="syrus.provider"), pytest.raises(LlmError) as e:
         call(groq(lambda r: httpx.Response(502, text=f"<html>PRIVATE {KEY}</html>")))
-    assert e.value.reason == "provider_error" and e.value.diag == {"http": 502}
+    assert e.value.reason == "provider_error" and e.value.diag["http"] == 502 and e.value.indeterminate
     assert "PRIVATE" not in caplog.text and KEY not in caplog.text and '"http": 502' in caplog.text
 
 

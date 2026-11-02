@@ -14,7 +14,6 @@ from collections import deque
 import yaml
 
 from backend.syrus_app.context import CaseStore
-from backend.syrus_app.policy import PURPOSES, depth_after
 from backend.syrus_app.prompt import baseline, build
 from backend.syrus_app.records import ROOT
 from backend.syrus_app.selection import SelectionError
@@ -63,7 +62,7 @@ def rows(store: CaseStore, cfg_settings, only: list[str] | None = None, cases: l
                             "history": built.keep, "records": len(v.records), "records_all": len(pack.records), "findings": sorted(v.findings),
                             "findings_left_out": sorted(fired - set(v.findings)), "tests": len(v.tests),
                             "essentials_missing": [e for e in essentials if e not in v.ids()],
-                            "required_missing": sorted({f for p in v.purposes for f, d in PURPOSES[p]["require"] if depth_after(v.depth, d) and pack.findings[f]["fires"]} - set(v.findings))})
+                            "required": list(v.required), "required_missing": sorted(set(v.required) - set(v.findings))})
                 asked.append(turn["text"])
                 focus = list(v.focus)
     return out
@@ -79,14 +78,15 @@ def main() -> None:
     cases = [c["case_id"] for c in store.manifest["cases"]] if args.all_cases else None
     data = rows(store, settings, cases=cases)
     sep = " | " if args.markdown else "  "
-    head = ["question", "turn", "before", "after", "focus", "left out of the view", "essentials"]
+    head = ["question", "turn", "before", "after", "focus", "left out of the view", "essentials", "must convey"]
     if args.markdown:
         print("| " + " | ".join(head) + " |\n|" + "---|" * len(head))
     for r in data:
         cells = [r["item"] + (f" ({r['case']})" if args.all_cases else ""), str(r["turn"]), str(r["before"]), str(r["after"] if r["after"] is not None else r["error"]),
                  ", ".join(r.get("focus", [])) + (f" (dropped {', '.join(r['dropped'])})" if r.get("dropped") else ""),
                  f"{r['records_all'] - r['records']} of {r['records_all']} records; findings {', '.join(r['findings_left_out']) or 'none'}" if r["after"] else "",
-                 "all present" if r["after"] and not r["essentials_missing"] else str(r.get("essentials_missing", ""))]
+                 "all present" if r["after"] and not r["essentials_missing"] else str(r.get("essentials_missing", "")),
+                 ", ".join(r.get("required", [])) or "-"]
         print(("| " + sep.join(cells) + " |") if args.markdown else sep.join(cells))
         if args.parts and r["after"]:
             print(f"    before {r['before_parts']}\n    after  {r['after_parts']}")

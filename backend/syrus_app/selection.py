@@ -23,7 +23,9 @@ from backend.syrus_app.policy import (
     DEFAULT_FOCUS,
     DEPTH,
     DEPTHS,
+    ESSENTIAL,
     FOCUS,
+    GENERIC,
     LEAN,
     PURPOSES,
     depth_after,
@@ -45,6 +47,8 @@ class View:
     purposes: tuple   # purposes an answer may declare
     depth: str        # deepest depth the required findings were computed for
     lean: tuple       # findings present with citation anchors only, not all their input records
+    required: tuple   # findings an answer must convey (fired ones the topics and allowed purposes need at this depth)
+    inherited: bool   # the question named no topic and continues the previous turn's
     records: dict     # id -> record the model may cite this turn
     findings: dict    # id -> finding
     tests: dict       # id -> test (only when candidates are compared)
@@ -60,14 +64,33 @@ class View:
         return set(self.records) | set(self.findings) | set(self.tests)
 
 
+def _text(message: str) -> str:
+    """The message with its opening question words blanked out (same length, so positions hold): "why" names no topic."""
+    return GENERIC.sub(lambda m: " " * len(m.group()), message)
+
+
 def classify(message: str) -> list[str]:
-    """Focuses a question touches, in priority order."""
-    return [name for name, f in FOCUS.items() if f["pattern"].search(message)]
+    """Topics a question touches, in table order."""
+    text = _text(message)
+    return [name for name, f in FOCUS.items() if f["pattern"].search(text)]
+
+
+def inherits(message: str, previous: list[str] | tuple = ()) -> bool:
+    """A question that names no topic of its own and continues the previous turn's."""
+    return not classify(message) and any(f in previous for f in FOCUS)
 
 
 def plan(message: str, previous: list[str] | tuple = ()) -> list[str]:
-    """The focuses for a turn: the question's own; else those of the turn before; else the default."""
+    """The topics for a turn: the question's own; else those of the turn before; else the default."""
     return classify(message) or [f for f in FOCUS if f in previous] or list(DEFAULT_FOCUS)
+
+
+def mention_order(message: str, focus: list[str]) -> list[str]:
+    """Topics by where the question first mentions them, so what is asked first is kept longest. Topics not found in the text
+    (inherited or default) keep table order."""
+    text = _text(message)
+    at = {f: m.start() if (m := FOCUS[f]["pattern"].search(text)) else len(text) + n for n, f in enumerate(focus)}
+    return sorted(focus, key=at.get)
 
 
 def _match(pack: Pack, want: list[str]) -> list[str]:
@@ -83,18 +106,23 @@ def _match(pack: Pack, want: list[str]) -> list[str]:
     return out
 
 
-def build_view(pack: Pack, focus: list[str], dropped: list[str], depth_pref: str, with_tests: bool = True) -> View:
+def build_view(pack: Pack, focus: list[str], dropped: list[str], depth_pref: str, with_tests: bool = True, inherited: bool = False) -> View:
     f = [FOCUS[x] for x in focus]
     purposes = [p for p in PURPOSES if p in CORE_PURPOSES or any(p in x["purposes"] for x in f)]
     depth = depth_pref if depth_pref in DEPTH else max((PURPOSES[p]["depth"] for p in purposes), key=DEPTHS.index)
-    required = []
-    for p in purposes:
-        for fid, minimum in PURPOSES[p]["require"]:
-            if fid not in pack.findings:
-                raise SelectionError("context_incomplete", f"finding {fid}")
-            if depth_after(depth, minimum) and pack.findings[fid]["fires"]:
-                required.append(fid)
-    wanted = list(dict.fromkeys([*CORE_FINDINGS, *(x for s in f for x in (*s["find"], *s.get("brief", []))), *required]))
+    # What the answer must convey comes from the topics alone (ESSENTIAL); the model's declared purposes are not consulted. The findings
+    # its allowed purposes would add if it declared them are still offered, so a declared purpose can add a requirement it can meet.
+    required, by_purpose = [], []
+    for fid, _ in [*(e for x in focus for e in ESSENTIAL.get(x, [])), *(e for p in purposes for e in PURPOSES[p]["require"])]:
+        if fid not in pack.findings:
+            raise SelectionError("context_incomplete", f"finding {fid}")
+    for fid, minimum in (e for x in focus for e in ESSENTIAL.get(x, [])):
+        if depth_after(depth, minimum) and pack.findings[fid]["fires"] and fid not in required:
+            required.append(fid)
+    for fid, minimum in (e for p in purposes for e in PURPOSES[p]["require"]):
+        if depth_after(depth, minimum) and pack.findings[fid]["fires"]:
+            by_purpose.append(fid)
+    wanted = list(dict.fromkeys([*CORE_FINDINGS, *(x for s in f for x in (*s["find"], *s.get("brief", []))), *required, *by_purpose]))
     if absent := [x for x in wanted if x not in pack.findings]:
         raise SelectionError("context_incomplete", f"finding {', '.join(absent)}")
     findings = {i: x for i, x in pack.findings.items() if i in wanted}
@@ -116,16 +144,29 @@ def build_view(pack: Pack, focus: list[str], dropped: list[str], depth_pref: str
         scope += f" Not loaded because the question is too broad for one answer: {', '.join(dropped)}."
     sections = {"head": pack.head, "scope": scope, "records": render_records(records), "findings": render_findings(findings.values()),
                 "tests": render_tests(tests, pairs)}
-    return View(tuple(focus), tuple(dropped), tuple(purposes), depth, lean, records, findings, tests, pairs,
+    return View(tuple(focus), tuple(dropped), tuple(purposes), depth, lean, tuple(required), inherited, records, findings, tests, pairs,
                 make_schema(records, findings, tests, purposes), sections)
 
 
 def views(pack: Pack, message: str, previous: list[str] | tuple, depth_pref: str):
-    """The question's slice, then leaner ones. Each step first drops the candidate-test table, which only serves the optional follow-up
-    question, and only then the lowest-priority focus, whole."""
+    """The question's slice, then leaner ones. A topic that adds nothing to the others (same records, findings, purposes and required
+    findings without it) is merged away without being reported. Each later step first drops the candidate-test table, which only
+    serves the optional follow-up question, and only then the topic mentioned last, whole."""
+    follow = inherits(message, previous)
     focus = plan(message, previous)
-    for n in range(len(focus), 0, -1):
-        full = build_view(pack, focus[:n], focus[n:], depth_pref)
+    for t in reversed(mention_order(message, focus)):
+        rest = [f for f in focus if f != t]
+        if rest and _same(build_view(pack, rest, [], depth_pref), build_view(pack, focus, [], depth_pref)):
+            focus = rest
+    order, dropped = mention_order(message, focus), []
+    while order:
+        keep = [f for f in focus if f in order]
+        full = build_view(pack, keep, dropped, depth_pref, inherited=follow)
         yield full
         if full.tests:
-            yield build_view(pack, focus[:n], focus[n:], depth_pref, with_tests=False)
+            yield build_view(pack, keep, dropped, depth_pref, with_tests=False, inherited=follow)
+        dropped = [*dropped, order.pop()]
+
+
+def _same(a: View, b: View) -> bool:
+    return (a.ids(), a.purposes, a.required) == (b.ids(), b.purposes, b.required)

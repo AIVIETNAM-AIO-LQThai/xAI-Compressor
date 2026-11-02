@@ -65,12 +65,12 @@ def assemble(r: Reply, pack: Pack, thread: Thread, depth: str, lang: str, added:
     return out, shown
 
 
-def remember(thread: Thread, reply: Reply, out: dict, shown: set[str], message: str, limit: int, focus: tuple = ()) -> None:
+def remember(thread: Thread, reply: Reply, out: dict, shown: set[str], message: str, limit: int, focus: tuple = (), conveyed: set | None = None) -> None:
     """Update the thread after a validated answer; prior answers are history for the model, never evidence. Only the model's own
     claim texts are kept as history: the server's qualifications and additions are re-derived each turn, so they need not be re-sent."""
     n = thread.turns + 1
     thread.focus = list(focus) or thread.focus
-    for f in {f for u in reply.units for f in u.finding_ids} | {a["finding_id"] for a in out["also_relevant"]}:
+    for f in (conveyed if conveyed is not None else {f for u in reply.units for f in u.finding_ids}) | {a["finding_id"] for a in out["also_relevant"]}:
         thread.stated[f] = n
     thread.quals |= shown
     if out["next_question"]:

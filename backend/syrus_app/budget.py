@@ -42,16 +42,30 @@ class Budget:
             self.pending += worst
         return worst
 
-    def settle(self, held: float, tokens_in: int, tokens_out: int) -> float:
+    def settle(self, held: float, tokens_in: int, tokens_out: int, estimated: bool = False, unrecorded_out: int = 0) -> float:
+        """Release a hold and record the spend. `estimated` marks a call whose outcome is unknown (dropped connection, timeout, server error):
+        its input tokens are counted against the caps as an estimate, kept apart from usage the provider reported, and the output it
+        might have produced is noted as uncounted rather than forgiven silently."""
         actual = self.cost(tokens_in, tokens_out)
         with self.lock:
             self.pending = max(0.0, self.pending - held)
             day = self.today()
             self.state["total"] += actual
             self.state["days"][day] = self.state["days"].get(day, 0.0) + actual
+            if estimated:
+                e = self.state.setdefault("estimated", {"usd": 0.0, "calls": 0, "output_uncounted_usd": 0.0})
+                e["usd"] += actual
+                e["calls"] += 1
+                e["output_uncounted_usd"] += self.cost(0, unrecorded_out)
             if self.path:
                 self.path.parent.mkdir(parents=True, exist_ok=True)
                 tmp = self.path.with_suffix(".tmp")
                 tmp.write_text(json.dumps(self.state), "utf-8")
                 tmp.replace(self.path)
         return actual
+
+    def summary(self) -> dict:
+        """Cumulative spend split into usage the provider reported and estimates for calls whose outcome is unknown."""
+        e = self.state.get("estimated", {"usd": 0.0, "calls": 0, "output_uncounted_usd": 0.0})
+        return {"total_usd": self.state["total"], "provider_reported_usd": self.state["total"] - e["usd"], "estimated_exposure_usd": e["usd"],
+                "estimated_calls": e["calls"], "output_not_counted_usd": e["output_uncounted_usd"]}

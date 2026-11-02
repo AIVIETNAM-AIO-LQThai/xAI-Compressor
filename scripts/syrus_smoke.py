@@ -55,27 +55,31 @@ def main() -> None:
         return
     if settings.offline_reason():
         raise SystemExit(f"not running: {settings.offline_reason()}")
-    c = TestClient(create_app(settings, store=store))
-    for n, item in enumerate(items):
-        if n:
-            time.sleep(SPACING)
-        token = c.post("/api/session", json={"case_id": by_alert[item["alert"]], "mode": "retro"}).json()["token"]
-        for t in item["turns"]:
-            r = c.post("/api/syrus/turn", json={"message": t["text"], "depth": item["depth"]}, headers={"Authorization": f"Bearer {token}"})
-            body = r.json()
-            cited = {x for b in body.get("blocks", []) for x in (*b["records"], *b["findings"])} | {a["finding_id"] for a in body.get("also_relevant", [])}
-            print(f"\n=== {item['id']} [{body['status']}{' ' + body.get('reason', '') if body['status'] == 'offline' else ''}] {t['text']}")
-            if body["status"] == "ok":
-                print(body["answer"])
-                print(f"-- purposes {body['purposes']}, refusal {body['refusal']} (expected {t['refusal']}), missing essentials {sorted(set(t['essentials']) - cited)}, "
-                      f"validator {body['provenance']['validator']}")
-            else:
-                print(body.get("message") or {k: v for k, v in body.items() if k != "diagnostics"})
-            print("-- diagnostics", json.dumps(body.get("diagnostics")))
-            if body["status"] == "offline":
-                raise SystemExit(1)
-    spent = c.app.state.svc.budget.state
-    print(f"\nrecorded spend: total ${spent['total']:.4f}")
+    # One client context: a single event loop for every request, so the HTTP connection pool is never reused across closed loops.
+    with TestClient(create_app(settings, store=store)) as c:
+        try:
+            for n, item in enumerate(items):
+                if n:
+                    time.sleep(SPACING)
+                token = c.post("/api/session", json={"case_id": by_alert[item["alert"]], "mode": "retro"}).json()["token"]
+                for t in item["turns"]:
+                    r = c.post("/api/syrus/turn", json={"message": t["text"], "depth": item["depth"]}, headers={"Authorization": f"Bearer {token}"})
+                    body = r.json()
+                    cited = {x for b in body.get("blocks", []) for x in (*b["records"], *b["findings"])} | {a["finding_id"] for a in body.get("also_relevant", [])}
+                    print(f"\n=== {item['id']} [{body['status']}{' ' + body.get('reason', '') if body['status'] == 'offline' else ''}] {t['text']}")
+                    if body["status"] == "ok":
+                        print(body["answer"])
+                        print(f"-- purposes {body['purposes']}, refusal {body['refusal']} (expected {t['refusal']}), missing essentials {sorted(set(t['essentials']) - cited)}, "
+                              f"validator {body['provenance']['validator']}")
+                    else:
+                        print(body.get("message") or {k: v for k, v in body.items() if k != "diagnostics"})
+                    print("-- diagnostics", json.dumps(body.get("diagnostics")))
+                    if body["status"] == "offline":
+                        raise SystemExit(1)
+        finally:
+            spent = c.app.state.svc.budget.summary()
+            print(f"\nrecorded spend: total ${spent['total_usd']:.4f} = provider-reported ${spent['provider_reported_usd']:.4f} + estimated exposure "
+                  f"${spent['estimated_exposure_usd']:.4f} ({spent['estimated_calls']} call(s) of unknown outcome; their output, up to ${spent['output_not_counted_usd']:.4f}, is not counted)")
 
 
 if __name__ == "__main__":

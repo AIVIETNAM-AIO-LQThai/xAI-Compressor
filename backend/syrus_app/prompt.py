@@ -34,9 +34,24 @@ def system_message(context: str, system: str = SYSTEM) -> str:
     return f"{system}\n\nCONTEXT\n{context}"
 
 
-def user_message(message: str, depth_pref: str, thread: Thread, turn_no: int) -> str:
+def followup_note(view: View | None, thread: Thread, keep: int) -> str | None:
+    """For a question that names no topic: say which topics it continues and, if the earlier exchange had to be left out, what the user
+    previously asked, so the model never has to guess what "that" refers to. It may ask instead of guessing."""
+    if not view or not view.inherited:
+        return None
+    seen = "The earlier exchange is included above." if keep or not thread.exchanges else (
+        "The earlier exchange is NOT included; the user's previous question (untrusted) was: <<<"
+        + thread.exchanges[-1][0][:200].replace("<<<", "").replace(">>>", "") + ">>>.")
+    return (f"FOLLOW-UP: this message names no topic, so it continues the previous topics ({', '.join(view.focus)}). {seen} If it refers to something you "
+            "cannot identify from those topics and the findings already stated, ask one short clarifying question as a single background unit that "
+            "cites nothing, instead of guessing.")
+
+
+def user_message(message: str, depth_pref: str, thread: Thread, turn_no: int, note: str | None = None) -> str:
     stated = sorted(f for f, t in thread.stated.items() if turn_no - t <= 2)
     parts = [f"DEPTH: {depth_pref if depth_pref != 'auto' else 'auto'}"]
+    if note:
+        parts.append(note)
     if stated:
         parts.append(f"ALREADY STATED in the last turns (do not restate unless asked): {', '.join(stated)}")
     if thread.operator:
@@ -53,9 +68,9 @@ def history(thread: Thread, keep: int) -> list[dict]:
     return out
 
 
-def messages(context: str, thread: Thread, message: str, depth_pref: str, keep: int, system: str = SYSTEM) -> list[dict]:
+def messages(context: str, thread: Thread, message: str, depth_pref: str, keep: int, system: str = SYSTEM, note: str | None = None) -> list[dict]:
     return [{"role": "system", "content": system_message(context, system)}, *history(thread, keep),
-            {"role": "user", "content": user_message(message, depth_pref, thread, thread.turns + 1)}]
+            {"role": "user", "content": user_message(message, depth_pref, thread, thread.turns + 1, note)}]
 
 
 @dataclass(frozen=True)
@@ -67,12 +82,13 @@ class Built:
     est: int           # estimated input tokens for the call, schema included
 
 
-def measure(msgs: list[dict], schema: dict, sections: dict, system: str, keep: int, thread: Thread, message: str, depth_pref: str) -> tuple[dict, int]:
+def measure(msgs: list[dict], schema: dict, sections: dict, system: str, keep: int, thread: Thread, message: str, depth_pref: str,
+            note: str | None = None) -> tuple[dict, int]:
     """Estimated tokens by part and in total; `overhead` is the JSON quoting of the messages and the schema keys."""
     parts = {"system": estimate(system), "scope": estimate(sections.get("head", "") + sections.get("scope", "")), "records": estimate(sections["records"]),
              "findings": estimate(sections["findings"]), "tests": estimate(sections["tests"]),
              "history": estimate(json.dumps(history(thread, keep), ensure_ascii=False)) if keep else 0,
-             "request": estimate(user_message(message, depth_pref, thread, thread.turns + 1)), "schema": estimate(json.dumps(schema))}
+             "request": estimate(user_message(message, depth_pref, thread, thread.turns + 1, note)), "schema": estimate(json.dumps(schema))}
     total = estimate_request(msgs, schema)
     return {**parts, "overhead": max(0, total - sum(parts.values()))}, total
 
@@ -83,8 +99,9 @@ def build(pack: Pack, thread: Thread, message: str, depth_pref: str, cap: int, h
     smallest = None
     for view in views(pack, message, thread.focus, depth_pref):
         for keep in range(min(history_max, len(thread.exchanges)), -1, -1):
-            msgs = messages(view.text, thread, message, depth_pref, keep)
-            parts, total = measure(msgs, view.schema, view.sections, SYSTEM, keep, thread, message, depth_pref)
+            note = followup_note(view, thread, keep)
+            msgs = messages(view.text, thread, message, depth_pref, keep, note=note)
+            parts, total = measure(msgs, view.schema, view.sections, SYSTEM, keep, thread, message, depth_pref, note)
             smallest = total if smallest is None else min(smallest, total)
             if total <= cap:
                 return Built(msgs, view, keep, parts, total)

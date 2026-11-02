@@ -168,11 +168,11 @@ LEAN = {"F-EVIDENCE-TIMING": ["temporal.window"], "F-CF-NONUNIQUE": ["alert.thre
 CORE_PURPOSES = ["evidence_and_sources", "outside_evidence"]
 DEFAULT_FOCUS = ["alert"]  # a question that matches nothing and follows no earlier topic
 FOCUS_PATTERNS = {
-    "alert": r"\bfir(?:e|ed|es|ing)\b|\btrigger|\bwhy\b|\bthreshold|\bmargin\b|\bscores?\b|\bsmooth|\bewma\b|\bcarried\b|\bmemory\b|\bpersist"
-             r"|vì sao|tại sao|kích hoạt|ngưỡng|điểm|làm mượt|bộ nhớ",
+    "alert": r"\bfir(?:e|ed|es|ing)\b|\btrigger|\bthreshold|\bmargin\b|\bscores?\b|\bsmooth|\bewma\b|\bcarried\b|\bmemory\b|\bpersist"
+             r"|cảnh báo[^.?!]{0,20}(?:xuất hiện|phát ra|kêu)|kích hoạt|ngưỡng|điểm|làm mượt|bộ nhớ",
     "method": r"\bformula|\bequation|\bcalculat|\bcomput|\bderiv|\balpha\b|\bpca\b|\breconstruction\b|\bwhere does\b|\bcome from\b|\bhow (?:is|are)\b|\bmethod"
               r"|công thức|\btính\b|từ đâu|phương pháp",
-    "timing": r"\b\d{1,2}:\d{2}\b|\bjumps?\b|\bros[e]\b|\brises?\b|\brising\b|\bspik|\bwhen\b|\bfirst\b|\bemerg|\bover time\b|\btrend|\bpercentiles?\b|\bwindow\b"
+    "timing": r"\b\d{1,2}:\d{2}\b|\bjumps?\b|\bros[e]\b|\brises?\b|\brising\b|\bspik|\bwhen\b|\bemerg|\bover time\b|\btrend|\bpercentiles?\b|\bwindow\b"
               r"|khi nào|\blúc\b|\btăng\b|nhảy|phân vị|cửa sổ",
     "attribution": r"\bcaus|\bresponsib|\bdue to\b|\bbecause\b|\bdriv(?:e|es|en|ing)\b|\bbehind\b|\bleak|\bdemand|\bregulat|\bdryer|\bdiagnos|\bfault|\bbroke|\bbroken"
                    r"|\bfail|\bproblem|\bhypothes|\bcandidates?\b|\breason|\bdefinitely\b|\bcertain|\bsure\b|\bwrong\b|\btechnician|\boperators?\b|\bignore\b|\bsafe\b|\bnormal\b"
@@ -194,7 +194,7 @@ FOCUS = {
     "alert": {"find": ["F-MARGIN", "F-EWMA-MEMORY"], "rec": ["contrib.", "calrank.", "detector.persistence", "alert.hits"], "purposes": ["what_happened"]},
     "method": {"find": ["F-EWMA-MEMORY"], "rec": ["detector.ewma", "detector.persistence", "detector.calibration_bins", "detector.repair", "alert.hits"],
                "purposes": ["method"]},
-    "timing": {"find": ["F-EVIDENCE-TIMING"], "rec": ["contrib."], "purposes": ["what_happened"]},
+    "timing": {"find": ["F-EVIDENCE-TIMING"], "rec": ["contrib."], "purposes": []},
     "attribution": {"find": ["F-CANDIDATES", "F-IDENT", "F-LABEL", "F-TIMING"], "brief": ["F-CF-NONUNIQUE"], "rec": [], "purposes": ["possible_causes"]},
     "repair": {"find": ["F-CF-NONUNIQUE", "F-CF-PERSIST"], "rec": ["detector.repair", "detector.persistence", "contrib."], "purposes": []},
     "label": {"find": ["F-LABEL", "F-TIMING", "F-SELECTION"], "rec": [], "purposes": []},
@@ -204,5 +204,20 @@ FOCUS = {
     "energy": {"find": ["F-BRIDGE"], "rec": [], "purposes": []},
     "sources": {"find": [], "rec": [], "purposes": []},
 }
+# What an answer on a topic must convey, set by the server from the topic and the depth, not by the purposes the model declares:
+# (finding, shallowest depth at which it is required). A finding that does not fire for the case is never required. The model's
+# declared purposes can add requirements (PURPOSES) but never remove these. Topics that were dropped to fit the budget add none.
+ESSENTIAL = {
+    "alert": [("F-MARGIN", "quick"), ("F-EWMA-MEMORY", "quick"), ("F-EVIDENCE-TIMING", "investigation")],
+    "timing": [("F-EVIDENCE-TIMING", "quick")],
+    "attribution": [("F-CANDIDATES", "quick"), ("F-IDENT", "quick"), ("F-CF-NONUNIQUE", "investigation")],
+    "repair": [("F-CF-NONUNIQUE", "quick"), ("F-CF-PERSIST", "quick")],
+    "label": [("F-LABEL", "quick"), ("F-TIMING", "quick")],
+    "benchmark": [("F-ALERT-BURDEN", "quick")],
+    "range": [("F-TRAIN-RANGE", "quick")],
+    "energy": [("F-BRIDGE", "quick")],
+}
+# Words that open a question without saying what it is about; they never pick a topic, so "Why did that happen?" follows the last one.
+GENERIC = re.compile(r"\bwhy\b|\bhow come\b|vì sao|tại sao|sao lại", re.IGNORECASE)
 for _name, _rx in FOCUS_PATTERNS.items():
     FOCUS[_name]["pattern"] = re.compile(_rx, re.IGNORECASE)

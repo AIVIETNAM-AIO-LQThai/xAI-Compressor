@@ -15,10 +15,9 @@ from backend.syrus_app.selection import SelectionError
 from backend.syrus_app.sessions import Sessions, Thread
 from backend.syrus_app.settings import Settings
 from backend.syrus_app.tokens import estimate_request
-from backend.syrus_app.validator import Fail, check, choose_depth, missing, parse
+from backend.syrus_app.validator import Fail, check, conveyed, missing, parse
 
 log = logging.getLogger("syrus.turns")
-BILLED_ON_ERROR = {"timeout", "provider_error"}  # the provider may have processed the request; rate limits and auth failures are not billed
 
 
 class ApiError(Exception):
@@ -100,22 +99,25 @@ class Service:
             try:
                 done = await self.adapter.complete(msgs, view.schema, lim["max_output_tokens"], remaining)
             except LlmError as e:
-                self.budget.settle(held, est if e.reason in BILLED_ON_ERROR else 0, 0)
-                diag["calls"].append({"estimated_in": est, "error": e.reason, **e.diag})
+                # An indeterminate failure (dropped connection, timeout, server error) may have been processed: its input tokens stay against
+                # the caps as an estimate, recorded apart from provider-reported usage. A refusal the provider stated is not charged.
+                spent = self.budget.settle(held, est if e.indeterminate else 0, 0, e.indeterminate, lim["max_output_tokens"])
+                diag["calls"].append({"estimated_in": est, "error": e.reason, "billing": "estimated_exposure" if e.indeterminate else "none",
+                                      "counted_usd": round(spent, 6), **e.diag})
                 if attempt and fallback:
                     break
                 self.record(thread, "offline:" + e.reason, 0, 0, time.monotonic() - start, None, ip, diag)
                 return self.offline(e.reason, e.retry_after, diag)
             self.budget.settle(held, done.tokens_in, done.tokens_out)
-            diag["calls"].append({"estimated_in": est, "tokens_in": done.tokens_in, "tokens_out": done.tokens_out, **done.diag})
+            diag["calls"].append({"estimated_in": est, "tokens_in": done.tokens_in, "tokens_out": done.tokens_out, "billing": "provider_reported", **done.diag})
             used[0] += done.tokens_in
             used[1] += done.tokens_out
             reply, fails = parse(done.text)
             if reply:
-                depth = choose_depth(depth_pref, reply.purposes)
+                depth = view.depth  # the server owns depth and the required findings; the declared purposes only label the answer
                 fails = check(reply, pack, message, depth, view)
                 if not fails:
-                    miss = missing(reply, pack, depth, stated)
+                    miss = missing(reply, pack, depth, stated, view)
                     if not miss or attempt:
                         return self.finish(thread, pack, view, reply, depth, message, miss, used, start, ip, diag)
                     fallback, fails = (reply, depth, miss), [Fail("required_finding", ", ".join(miss))]
@@ -136,7 +138,7 @@ class Service:
 
     def finish(self, thread, pack, view, reply, depth, message, miss, used, start, ip, diag) -> tuple[int, dict]:
         out, shown = assemble(reply, pack, thread, depth, pick_lang(reply.lang, message), miss, self.settings.model, view.dropped)
-        remember(thread, reply, out, shown, message, self.settings.limits["operator_statements"], view.focus)
+        remember(thread, reply, out, shown, message, self.settings.limits["operator_statements"], view.focus, conveyed(reply, pack))
         self.record(thread, "ok", *used, time.monotonic() - start, reply.refusal, ip, diag)
         if self.settings.diagnostics:
             out["diagnostics"] = diag

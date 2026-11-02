@@ -80,11 +80,13 @@ def tokens(text: str) -> set[str]:
     return set(TOKEN.findall(text))
 
 
-def carried(unit: Unit, pack: Pack) -> set[str]:
-    """Record IDs a unit stands on: those it cites plus the inputs of the findings it cites."""
+def carried(unit: Unit, pack: Pack, view=None) -> set[str]:
+    """Record IDs a unit stands on: those it cites plus the inputs of the findings it cites. With a View, only inputs the turn
+    offered count, so citing a finding that was shown with an anchor record does not vouch for records the model never saw."""
     ids = set(unit.record_ids)
     for f in unit.finding_ids:
-        ids |= set(pack.findings[f]["inputs"]) & set(pack.records)
+        inputs = set(pack.findings[f]["inputs"]) & set(pack.records)
+        ids |= inputs & set(view.records) if view else inputs
     return ids
 
 
@@ -120,7 +122,7 @@ def check(r: Reply, pack: Pack, message: str, depth: str, view=None) -> list[Fai
     if len(r.units) > DEPTH[depth]["units"]:
         out.append(Fail("depth_budget", f"{len(r.units)} units; {depth} allows {DEPTH[depth]['units']}"))
     for n, u in enumerate(r.units, 1):
-        out += [Fail(f.code, f"unit {n}: {f.detail}") for f in check_unit(u, r, pack, message, depth)]
+        out += [Fail(f.code, f"unit {n}: {f.detail}") for f in check_unit(u, r, pack, message, depth, view)]
     cites = set().union(*(set(u.record_ids) | set(u.finding_ids) for u in r.units))
     need = REFUSALS.get(r.refusal or "", {}).get("cite")
     if need and not cites & set(need):
@@ -128,14 +130,15 @@ def check(r: Reply, pack: Pack, message: str, depth: str, view=None) -> list[Fai
     return out
 
 
-def check_unit(u: Unit, r: Reply, pack: Pack, message: str, depth: str) -> list[Fail]:
+def check_unit(u: Unit, r: Reply, pack: Pack, message: str, depth: str, view=None) -> list[Fail]:
     out, text = [], u.text
     if set(u.record_ids) - set(pack.records) or set(u.finding_ids) - set(pack.findings):
         return [Fail("ids", "unknown record or finding")]
     if FORMULA.search(text) and not DEPTH[depth]["formulas"]:
         out.append(Fail("formula", f"formulas need technical depth, not {depth}"))
-    have = carried(u, pack)
-    blob = _blob(have, pack)
+    have = carried(u, pack, view)
+    stated = " ".join(pack.findings[f]["text"] for f in u.finding_ids)  # reviewed finding text the model was shown: its figures and signals are citable
+    blob = _blob(have, pack) + " " + stated.lower()
     for name, rx, exempt in FORBIDDEN_RE:
         if _hits(rx, text, exempt):
             out.append(Fail("forbidden_phrase", name))
@@ -153,7 +156,7 @@ def check_unit(u: Unit, r: Reply, pack: Pack, message: str, depth: str) -> list[
     wrong = {i for i in u.record_ids if pack.records[i]["kind"] not in (u.kind, "unavailable")}
     if wrong:
         out.append(Fail("kind_mismatch", f"{u.kind} unit cites {', '.join(sorted(wrong))}"))
-    allowed = set().union(*(tokens(json.dumps(pack.records[i]["display"], ensure_ascii=False)) for i in have)) if have else set()
+    allowed = set().union(tokens(stated), *(tokens(json.dumps(pack.records[i]["display"], ensure_ascii=False)) for i in have))
     if r.refusal:
         allowed |= tokens(message)
     if extra := tokens(text) - allowed:
@@ -172,8 +175,18 @@ def check_unit(u: Unit, r: Reply, pack: Pack, message: str, depth: str) -> list[
     return out
 
 
-def missing(r: Reply, pack: Pack, depth: str, stated: set[str]) -> list[str]:
-    """Findings the declared purposes require that no unit cites and the last turns have not already stated."""
-    cited = {f for u in r.units for f in u.finding_ids}
+def conveyed(r: Reply, pack: Pack) -> set[str]:
+    """Findings the answer actually states: a unit cites them and, if the finding states figures, repeats at least one of them."""
+    out = set()
+    for u in r.units:
+        said = tokens(u.text)
+        out |= {f for f in u.finding_ids if not (figures := tokens(pack.findings[f]["text"])) or figures & said}
+    return out
+
+
+def missing(r: Reply, pack: Pack, depth: str, stated: set[str], view=None) -> list[str]:
+    """Findings the answer must convey that it does not and the last turns have not already stated. With a View these are the ones the
+    server set from the question's topics and depth, plus any the declared purposes add; a generic declared purpose removes none."""
     need = [f for p in r.purposes if p in PURPOSES for f, d in PURPOSES[p]["require"] if depth_after(depth, d) and pack.findings.get(f, {}).get("fires")]
-    return [f for f in dict.fromkeys(need) if f not in cited and f not in stated]
+    done = conveyed(r, pack)
+    return [f for f in dict.fromkeys([*(view.required if view else ()), *need]) if f not in done and f not in stated]
