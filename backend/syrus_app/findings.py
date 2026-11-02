@@ -1,123 +1,129 @@
 """Findings ledger: deterministic rules over one case's records.
 
-Each finding has a stable ID, the rule in words, the record IDs it reads, a structured output, whether it
-fires, its visibility, and English text built only from the records' display strings.
+Each finding has a stable ID, the rule in words, the record IDs it reads, a structured output, whether it fires,
+its visibility, a short English text and an optional technical `detail`. Both texts are built only from the input
+records' display strings. Qualifications that must accompany a claim are not part of the ledger; they are applied
+when an answer is assembled (docs/syrus/LEDGER_REVIEW.md).
 """
 from itertools import pairwise
 
-from backend.syrus_app.records import minutes, pct
+from backend.syrus_app.records import listing, minutes
 
 
-def finding(id, rule, inputs, output, text, fires=True, vis="both"):
-    return {"id": id, "rule": rule, "inputs": inputs, "output": output, "fires": fires, "visibility": vis, "text": text}
+def finding(id, rule, inputs, output, text, fires=True, vis="both", detail=None):
+    return {"id": id, "rule": rule, "inputs": inputs, "output": output, "fires": fires, "visibility": vis, "text": text, "detail": detail}
 
 
-def _join(items, word="or"):
-    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + f" {word} " + items[-1]
+def _lower(label: str) -> str:
+    return label[0].lower() + label[1:]
+
+
+def _pc(row: dict, g: str) -> str:
+    return row["display"]["percentiles"][g]
 
 
 def margin(R, ctx):
-    m, cut = R["alert.margin"]["value"], ctx["marginal_margin"]
     d = {i: R[i]["display"] for i in ("alert.smoothed", "alert.threshold", "alert.margin")}
-    text = (f"The smoothed score ({d['alert.smoothed']}) exceeded the threshold ({d['alert.threshold']}) by "
-            f"{d['alert.margin']}" + (", a marginal alert." if m < cut else "."))
-    return finding("F-MARGIN", f"margin = smoothed / threshold - 1; called marginal below {pct(cut, 0)}",
-                   list(d), {"margin": m, "marginal": m < cut}, text)
+    text = f"The smoothed score was {d['alert.smoothed']} against a threshold of {d['alert.threshold']} ({d['alert.margin']})."
+    return finding("F-MARGIN", "margin = smoothed / threshold - 1", list(d), {"margin": R["alert.margin"]["value"]}, text)
 
 
-def carryover(R, ctx):
-    raw, thr = R["alert.raw"]["value"], R["alert.threshold"]["value"]
-    ins, out = ["alert.raw", "alert.threshold", "alert.raw_ratio"], {"raw_below_threshold": raw < thr}
-    if raw < thr:
-        text = (f"The alert bin's own raw score was {R['alert.raw']['display']} ({R['alert.raw_ratio']['display']}); "
-                "the smoothed score above the threshold was carried from earlier bins by EWMA memory.")
+def ewma_memory(R, ctx):
+    raw, prev = R["alert.raw"], R["alert.prev_smoothed"]
+    falling = raw["value"] < prev["value"]["score"]
+    at, carried, mem = prev["display"]["time"], prev["display"]["score"], R["alert.memory"]["display"]
+    if falling:
+        text = (f"The alert bin's own raw score ({raw['display']}) was below the smoothed score carried from {at} ({carried}), so the "
+                f"smoothed score was falling at the alert: {mem} of it came from earlier bins through smoothing.")
     else:
-        text = f"The alert bin's own raw score was {R['alert.raw']['display']} ({R['alert.raw_ratio']['display']}), so the alert does not rest on carried-over evidence alone."
-    if prev := R.get("alert.prev_smoothed"):
-        ins.append("alert.prev_smoothed")
-        out["prev_above_threshold"] = prev["value"]["score"] >= thr
-        text += f" The smoothed score one bin earlier, at {prev['display']['time']}, follows from the EWMA update as {prev['display']['score']}."
-    return finding("F-CARRYOVER", "fires when the raw score at the alert bin is below the threshold", ins, out, text, fires=raw < thr)
+        text = (f"The alert bin's own raw score ({raw['display']}) was above the smoothed score carried from {at} ({carried}), so the "
+                f"smoothed score was still rising at the alert; {mem} of it came from earlier bins through smoothing.")
+    rule = R["detector.ewma"]["display"]["rule"]
+    detail = (f"Smoothing rule: {rule}. The share from earlier bins is one minus the alert bin's own term. This shows how the smoothing "
+              "works; it does not show which earlier bins carried the evidence or that a condition persisted, and one large raw score "
+              "can by itself produce several smoothed hits.")
+    return finding("F-EWMA-MEMORY", "fires when the alert bin's raw score is below the previous smoothed score (smoothed score falling)",
+                   ["alert.raw", "alert.prev_smoothed", "alert.memory", "detector.ewma"],
+                   {"falling": falling, "memory_share": R["alert.memory"]["value"]}, text, fires=falling, detail=detail)
 
 
-def emerge(R, ctx):
+def evidence_timing(R, ctx):
     rows, groups = [R[i] for i in ctx["temporal_ids"]], ctx["display_groups"]
-    steps = [(b["value"]["percentiles"][g] - a["value"]["percentiles"][g], g, a, b)
-             for a, b in pairwise(rows) for g in groups]
-    rise, g, a, b = max(steps, key=lambda s: s[0])
-    first, dom = rows[0], groups[0]
-    gap = "" if minutes(a["value"]["time"], b["value"]["time"]) <= ctx["bin_minutes"] else " across a data gap"
-    if rise >= 0.5 and b["value"]["percentiles"][g] >= 0.99:
-        jumps = [s for s in steps if s[2] is a and s[0] >= 0.5 and s[3]["value"]["percentiles"][s[1]] >= 0.99]
-        parts = [f"{s[1]} went from percentile {a['display']['percentiles'][s[1]]} to {b['display']['percentiles'][s[1]]}" for s in jumps]
-        out = {"pattern": "abrupt", "from": a["value"]["time"], "at": b["value"]["time"], "groups": [s[1] for s in jumps]}
-        text = (f"Smoothed evidence rose abruptly between {a['display']['time']} and {b['display']['time']}{gap}: "
-                + "; ".join(parts) + ". This shows when detector evidence appeared, not when a fault began.")
-    elif first["value"]["percentiles"][dom] >= 0.99:
-        out = {"pattern": "elevated_at_start", "at": first["value"]["time"], "groups": [dom]}
-        text = (f"{dom} evidence was already at calibration percentile {first['display']['percentiles'][dom]} at the window start "
-                f"({first['display']['time']}), so it did not emerge within this window.")
-    else:
-        out = {"pattern": "gradual", "from": a["value"]["time"], "at": b["value"]["time"], "groups": [g]}
-        text = (f"No abrupt one-bin emergence: the largest rise was {g}, from percentile {a['display']['percentiles'][g]} at "
-                f"{a['display']['time']} to {b['display']['percentiles'][g]} at {b['display']['time']}{gap}.")
-    rule = ("largest one-bin rise in smoothed-contribution calibration percentile among displayed groups; abrupt when "
-            "the rise is at least 0.50 and ends at or above 0.99; elevated at start when the dominant group starts at or above 0.99")
-    return finding("F-EMERGE", rule, ["temporal.window", *ctx["temporal_ids"]], out, text)
+    first, last = rows[0], rows[-1]
+    out, parts = {}, []
+    for g in groups:
+        steps = [(b["value"]["percentiles"][g] - a["value"]["percentiles"][g], a, b) for a, b in pairwise(rows)]
+        rise, a, b = max(steps, key=lambda s: s[0])
+        top = next((r for r in rows if r["value"]["percentiles"][g] == 1), None)
+        gap = minutes(a["value"]["time"], b["value"]["time"]) > ctx["bin_minutes"]
+        clause = f"{g} {_pc(first, g)} at {first['display']['time']} and {_pc(last, g)} at {last['display']['time']}"
+        if rise > 0:
+            clause += f", largest one-bin rise {_pc(a, g)} to {_pc(b, g)} between {a['display']['time']} and {b['display']['time']}" + (" across a data gap" if gap else "")
+        clause += (", above every calibration bin from the window start" if top is first else
+                   f", first above every calibration bin at {top['display']['time']}" if top else ", never above every calibration bin in this window")
+        parts.append(clause)
+        out[g] = {"start": first["value"]["percentiles"][g], "end": last["value"]["percentiles"][g],
+                  "rise": {"from": a["value"]["time"], "to": b["value"]["time"], "size": rise, "across_gap": gap} if rise > 0 else None,
+                  "first_above_all": top["value"]["time"] if top else None}
+    text = ("Calibration percentile of each group's smoothed contribution: " + "; ".join(parts)
+            + ". These rank the detector's smoothed evidence; they do not show when a fault began.")
+    return finding("F-EVIDENCE-TIMING", "per displayed group: percentile at window start and at the alert, largest one-bin rise, "
+                   "first bin above every calibration bin; no thresholds", ["temporal.window", *ctx["temporal_ids"]], out, text)
 
 
-def cf_specificity(R, ctx):
-    ids = ctx["cf_ids"]
-    clear = [R[i]["value"]["group"] for i in ids if R[i]["value"]["cleared"]]
-    scores = [R[f"cf.{g}"]["display"]["repaired_smoothed"] for g in clear]
-    thr = R["alert.threshold"]["display"]
+def cf_nonunique(R, ctx):
+    cfs = [R[i] for i in ctx["cf_ids"]]
+    clear = [c for c in cfs if c["value"]["alert_cleared"]]
+    thr, t = R["alert.threshold"]["display"], R["alert.time"]["display"][11:16]
+    names = [c["value"]["group"] for c in clear]
+    scores = listing([c["display"]["repaired_smoothed"] for c in clear]) if clear else ""
     if len(clear) > 1:
-        text = (f"Removing the model-space evidence of any one of {_join(clear)} clears this alert (repaired smoothed scores "
-                f"{_join(scores, 'and')} against the {thr} threshold), so the detector's decision is not specific to {ctx['dominant']}.")
+        text = (f"Replacing any one of {listing(names, 'or')} with the PCA model's reconstruction and re-scoring removes the alert at {t} "
+                f"(repaired smoothed scores {scores} against the {thr} threshold), so the detector's decision does not single out one "
+                "signal group. This tests the detector, not the machine.")
+    elif clear:
+        others = [c["value"]["group"] for c in cfs if not c["value"]["alert_cleared"]]
+        text = (f"Only the {names[0]} repair removes the alert at {t} (repaired smoothed score {scores} against the {thr} threshold); "
+                f"repairs of {listing(others)} leave it in place. This tests the detector, not the machine.")
     else:
-        text = f"Only the {clear[0]} repair clears this alert (repaired smoothed score {scores[0]} against the {thr} threshold)."
-    text += " This tests detector dependence, not a physical repair."
-    return finding("F-CF-SPEC", "lists single-group model-space repairs that clear the alert; non-specific when more than one does",
-                   ["alert.threshold", *ids], {"clearing": clear}, text, fires=len(clear) > 1)
+        text = f"None of the tested single-group repairs removes the alert at {t}. This tests the detector, not the machine."
+    w, pre = cfs[0]["display"]["window"], R["cf.prewindow"]["display"]
+    ratios = [f"{c['value']['group']} {c['display']['ratio']}" for c in clear if c["display"]["ratio"].endswith("×")]
+    detail = (f"Tested groups, each replaced on its own over {w}: {listing([c['value']['group'] for c in cfs])}, the groups with the largest "
+              f"smoothed contributions. Combinations and other groups were not tested, and clearing is checked at {t} only.")
+    if ratios:
+        detail += (" Re-projection changes other groups' residuals too, so a repair is not the same as removing the group's own "
+                   f"contribution. The smoothed score falls by a multiple of the group's own smoothed contribution: {listing(ratios)}.")
+    detail += f" The repair does not edit the smoothing state from before the window; its share of the {t} smoothed score: {pre}."
+    return finding("F-CF-NONUNIQUE", "fires when two or more tested single-group repairs clear the alert at the alert bin",
+                   ["alert.threshold", "alert.time", "cf.prewindow", *ctx["cf_ids"]], {"clearing": names}, text, fires=len(clear) > 1, detail=detail)
 
 
 def cf_persistence(R, ctx):
-    thr = R["alert.threshold"]["value"]
-    hits = [i for i in ctx["cf_ids"] if R[i]["value"]["cleared"] and R[i]["value"]["repaired_smoothed"] >= thr]
+    thr, t = R["alert.threshold"], R["alert.time"]["display"][11:16]
+    per = R["detector.persistence"]["value"]
+    hits = [R[i] for i in ctx["cf_ids"] if R[i]["value"]["path"] == "persistence"]
     if hits:
-        text = " ".join(f"Repairing {R[i]['value']['group']} left the smoothed score at {R[i]['display']['repaired_smoothed']}, "
-                        f"still above the {R['alert.threshold']['display']} threshold, yet the alert cleared because fewer than 3 "
-                        "of the last 4 bins stayed above the threshold." for i in hits)
+        text = " ".join(f"Replacing {c['value']['group']} leaves the {t} smoothed score at {c['display']['repaired_smoothed']}, above the "
+                        f"{thr['display']} threshold, yet the alert clears because fewer than {per['hits']} of the last {per['window']} "
+                        "smoothed scores stay at or above it." for c in hits)
     else:
-        text = "Every repair that clears the alert also brings the smoothed score below the threshold."
+        text = "Every repair that clears this alert also brings the smoothed score below the threshold."
     return finding("F-CF-PERSIST", "fires when a clearing repair leaves the smoothed score at or above the threshold",
-                   ["alert.threshold", "detector.persistence", *ctx["cf_ids"]], {"groups": [R[i]["value"]["group"] for i in hits]}, text,
-                   fires=bool(hits))
+                   ["alert.threshold", "alert.time", "detector.persistence", *ctx["cf_ids"]], {"groups": [c["value"]["group"] for c in hits]},
+                   text, fires=bool(hits))
 
 
-def hyp_tie(R, ctx):
-    ids = ctx["hyp_ids"]
-    text = "All candidate explanations in play remain open; the loaded evidence does not rank or separate them."
-    return finding("F-HYP-TIE", "counts candidates in play; candidates are never ranked", ids, {"open": len(ids)}, text)
-
-
-def scale(R, ctx):
-    ms = [R[i] for i in ctx["measured_ids"]]
-    rows = []
-    for m in ms:
-        v = m["value"]
+def train_range(R, ctx):
+    rows, clauses = [], []
+    for i in ctx["measured_ids"]:
+        v, d = R[i]["value"], R[i]["display"]
         pos = "below" if v["value"] < v["q1"] else "above" if v["value"] > v["q3"] else "inside"
-        rows.append({"feature": m["value"]["feature"], "iqr": v["q3"] - v["q1"], "position": pos})
-    tight = min(ms, key=lambda m: m["value"]["q3"] - m["value"]["q1"])
-    td = tight["display"]
-    text = (f"Training-period ranges are narrow for some features (for example {tight['value']['feature']}: interquartile range "
-            f"{td['q1']} to {td['q3']}), so small physical changes become large scaled residuals.")
-    clauses = []
-    for pos in ("inside", "above", "below"):
-        if feats := [r["feature"] for r in rows if r["position"] == pos]:
-            clauses.append(f"{_join(feats, 'and')} {'was' if len(feats) == 1 else 'were'} {pos} the training interquartile range")
-    text += " At the alert bin, " + "; ".join(clauses) + "."
-    return finding("F-SCALE", "reports training interquartile ranges of the case's measured-context features and where the alert-bin value falls",
+        rows.append({"feature": v["feature"], "position": pos})
+        clauses.append(f"{v['feature']} ({d['value']}) was {pos} its training interquartile range ({d['q1']} to {d['q3']})")
+    text = ("At the alert bin, " + "; ".join(clauses) + ". Only these features are exported for the alert bin; units are not loaded, "
+            "and a value inside the range is not shown to be normal.")
+    return finding("F-TRAIN-RANGE", "position of each exported measured feature against its training interquartile range",
                    ctx["measured_ids"], {"features": rows}, text)
 
 
@@ -134,17 +140,30 @@ def gap(R, ctx):
                    fires=bool(gaps))
 
 
+def candidates(R, ctx):
+    hyps = [R[i] for i in ctx["hyp_ids"]]
+    label = {h["value"]["id"]: h["display"]["label"] for h in hyps}
+    pairs = sorted({tuple(sorted((h["value"]["id"], o))) for h in hyps for o in h["value"]["not_separable_from"]})
+    text = "All candidate explanations are open: no reviewed test has examined them, and Syrus does not rank them."
+    text += "".join(f" {label[a]} and {_lower(label[b])} cannot be told apart with the data recorded for this asset." for a, b in pairs)
+    return finding("F-CANDIDATES", "lists candidate statuses (open until a reviewed test returns a result) and pair limits; never ranks",
+                   ctx["hyp_ids"], {"open": [h["value"]["id"] for h in hyps if h["value"]["status"] == "open"], "not_separable": [list(p) for p in pairs]},
+                   text)
+
+
 def identifiability(R, ctx):
-    ins = ["unavailable:demand_measurement", *(i for i in ("hyp.air_leakage", "hyp.downstream_demand") if i in R)]
+    ins = ["unavailable:demand_measurement", "hyp.air_leakage", "hyp.downstream_demand"]
     text = ("Leakage and higher downstream demand both raise total outflow (total outflow = demand + leakage). Without an "
             "independent demand measurement this data cannot tell them apart.")
-    return finding("F-IDENT", "always present: leak and demand are not separately identifiable without a demand observation", ins, {}, text)
+    return finding("F-IDENT", "always present: leak and demand are not separately identifiable without a demand observation", ins,
+                   {"scope": "asset"}, text)
 
 
 def bridge(R, ctx):
     b = R["bridge.status"]
     text = f"Real-asset physical reasoning and actions are withheld. Missing: {'; '.join(b['display']['missing'])}."
-    return finding("F-BRIDGE", "always present while the physical bridge is not validated", ["bridge.status"], {"status": b["value"]["status"]}, text)
+    return finding("F-BRIDGE", "always present while the physical bridge is not validated", ["bridge.status"],
+                   {"status": b["value"]["status"], "scope": "asset"}, text)
 
 
 def label(R, ctx):
@@ -165,24 +184,33 @@ def timing(R, ctx):
                    {"timing": t["value"]["timing"]}, text, vis="retro")
 
 
-def status(R, ctx):
+def selection(R, ctx):
     text = ("Documented incident in the provider's failure list. This alert was chosen for explanation because it falls in that "
             "incident's timely window, so the case set is selected by the labels.")
-    return finding("F-STATUS", "states the case status and how the case was selected; retrospective", ["case.status"], {}, text, vis="retro")
+    return finding("F-SELECTION", "states the case status and how the case was selected; retrospective", ["case.status"], {}, text, vis="retro")
 
 
-def bench(R, ctx):
-    d = {i: R[i]["display"] for i in ("bench.false_rate", "bench.episodes", "bench.pr_auc", "bench.exposure", "bench.selection")}
+def alert_burden(R, ctx):
+    d = {i: R[i]["display"] for i in ("bench.timely", "bench.false_rate", "bench.episodes", "bench.exposure")}
     e = d["bench.episodes"]
-    text = (f"Over {d['bench.exposure']} of valid TEST exposure the detector raised {d['bench.false_rate']} "
-            f"({e['benchmark_false']} of {e['total']} episodes; PR-AUC {d['bench.pr_auc']}). Benchmark-false means not linked "
-            f"to a documented incident, not physically normal. {d['bench.selection']}, so these figures are not an independent "
-            "held-out estimate.")
-    return finding("F-BENCH", "states the frozen TEST benchmark and its caveats; retrospective", list(d), {}, text, vis="retro")
+    text = (f"{d['bench.timely']} documented incidents had a timely alert. Over {d['bench.exposure']} of valid TEST exposure the detector "
+            f"raised {d['bench.false_rate']} ({e['benchmark_false']} of {e['total']} episodes). Benchmark-false means not linked to a "
+            "documented incident window; it is not a confirmed false alarm or confirmed healthy behaviour.")
+    return finding("F-ALERT-BURDEN", "states timely recall and the benchmark-false alert rate over TEST; retrospective", list(d), {}, text, vis="retro")
 
 
-RULES = [margin, carryover, emerge, cf_specificity, cf_persistence, hyp_tie, scale, gap, identifiability, bridge,
-         label, timing, status, bench]
+def discrimination(R, ctx):
+    d = {i: R[i]["display"] for i in ("bench.pr_auc", "bench.profiles", "bench.selection")}
+    p = d["bench.profiles"]
+    text = (f"PR-AUC {d['bench.pr_auc']}. Averaged over alert bins, the leading groups were {p['incident_linked']} in incident-linked "
+            f"alerts and {p['benchmark_false']} in benchmark-false ones. {d['bench.selection']}, so these are not independent "
+            "held-out estimates.")
+    return finding("F-DISCRIMINATION", "states how well alerts separate documented incidents, with the selection caveat; retrospective",
+                   list(d), {}, text, vis="retro")
+
+
+RULES = [margin, ewma_memory, evidence_timing, cf_nonunique, cf_persistence, train_range, gap, candidates, identifiability, bridge,
+         label, timing, selection, alert_burden, discrimination]
 
 
 def ledger(R: dict, ctx: dict) -> list[dict]:

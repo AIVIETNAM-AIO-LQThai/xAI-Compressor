@@ -10,14 +10,8 @@ asset:
   period: "2020"
 
 # Groups below this share of the smoothed score are not displayed or given records.
+# Any floor between 0.91% and 6.0% displays the same groups in the four cases.
 display_floor: 0.01
-# Groups that put a hypothesis in play need at least this share and calibration percentile.
-evidence_rule:
-  min_share: 0.01
-  min_percentile: 0.90
-# Presentation convention: an alert whose smoothed margin over the threshold is below this is called marginal.
-# Frozen margins are 11.4%, 19.9%, 81.7% and 240.9%, so any cut between 20% and 81% gives the same split.
-marginal_margin: 0.5
 
 cases:
   - id: c-r6tq

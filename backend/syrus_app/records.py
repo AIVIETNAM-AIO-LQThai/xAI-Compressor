@@ -13,7 +13,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
-SCHEMA = "syrus.case.v1"
+SCHEMA = "syrus.case.v2"
 KINDS = {"measured", "model_evidence", "hypothesis", "dataset_label", "benchmark_stat", "case_status",
          "bridge_status", "simulated", "unavailable"}
 RETRO_KINDS = {"dataset_label", "benchmark_stat", "case_status"}
@@ -113,12 +113,6 @@ def num(x: float) -> str:
     return f"{x:.3g}"
 
 
-def ratio(x: float) -> str:
-    if x >= 1:
-        return f"{x:.2f}× the threshold"
-    return f"{100 * x:.2f}% of the threshold" if x < 0.01 else f"{100 * x:.0f}% of the threshold"
-
-
 def minutes(a: str, b: str) -> int:
     return int((datetime.fromisoformat(b) - datetime.fromisoformat(a)).total_seconds() // 60)
 
@@ -133,6 +127,10 @@ def minute(ts: str) -> str:
 
 def count(n: int) -> str:
     return f"{n:,}"
+
+
+def listing(items: list[str], word: str = "and") -> str:
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + f" {word} " + items[-1]
 
 
 def check_case(case: dict) -> None:
@@ -170,7 +168,16 @@ def check_case(case: dict) -> None:
             fail(f"{f['id']}: retrospective finding in as-of file")
         if missing := set(f["inputs"]) - known:
             fail(f"{f['id']}: unknown inputs {sorted(missing)}")
-    hyps = {r["id"].removeprefix("hyp.") for r in recs if r["kind"] == "hypothesis"}
-    for d in case["discriminators"]:
-        if any(set(pair) - hyps for pair in d["separates"]):
-            fail(f"{d['id']}: separates a candidate not in play")
+    hyps = {r["id"].removeprefix("hyp."): r for r in recs if r["kind"] == "hypothesis"}
+    for h, r in hyps.items():
+        if r["value"]["status"] != "open":
+            fail(f"hyp.{h}: status {r['value']['status']!r}; candidates stay open, results belong to tests")
+    for t in case["tests"]:
+        if any(set(pair) - set(hyps) for pair in t["compares"]):
+            fail(f"{t['id']}: compares an unknown candidate")
+        loaded = all(o["availability"] == "loaded" for o in t["observations"])
+        if t["result"] != "not_run" and not (t["maturity"] == "reviewed" and t["rule"] and loaded):
+            fail(f"{t['id']}: result {t['result']!r} without a reviewed rule over loaded observations")
+    for lim in case["pair_limits"]:
+        if set(lim["pair"]) - set(hyps):
+            fail(f"pair limit {lim['pair']}: unknown candidate")

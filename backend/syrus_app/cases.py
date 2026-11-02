@@ -1,9 +1,10 @@
 """Deterministic case builder: frozen artifacts and Syrus configs in, one as-of and one retrospective case file per case out.
 
-Reads only frozen JSON reports and YAML configs. It never imports `ml/` or recomputes detector values;
-derived records are arithmetic on frozen values and keep their formula and input record IDs.
+Reads only frozen JSON reports, YAML configs and (for code pointers) source files. It never imports `ml/` or
+recomputes detector values; derived records are arithmetic or logic on frozen values and keep their formula and
+input record IDs.
 """
-from itertools import pairwise
+from itertools import pairwise, product
 
 from backend.syrus_app.findings import ledger
 from backend.syrus_app.records import (
@@ -12,12 +13,12 @@ from backend.syrus_app.records import (
     count,
     derived,
     hhmm,
+    listing,
     minute,
     minutes,
     num,
     pct,
     pctile,
-    ratio,
     record,
     resolve,
     score,
@@ -30,6 +31,7 @@ PROOF = "docs/proof_manifest.json"
 METRO, DET, BRIDGE = "configs/metropt.yaml", "configs/detection.yaml", "configs/evidence_action_bridge.yaml"
 CASES, HYPS, DISCS = "configs/syrus_cases.yaml", "configs/syrus_hypotheses.yaml", "configs/syrus_discriminators.yaml"
 FEATURES_PY, PCA_PY = "ml/data/features.py", "ml/explainability/pca.py"
+ALERTS_PY, VERIFY_PY, XAI_NB = "ml/detection/alerts.py", "ml/explainability/verification.py", "notebooks/04_detector_xai.ipynb"
 
 ANALOG_STATS, DIGITAL_STATS, RELATION_STATS = ["mean", "std", "min", "max", "last"], ["active_ratio", "transitions", "last"], ["mean", "std"]
 RELATIONS = ["tp3_minus_reservoirs", "tp2_minus_tp3"]
@@ -47,17 +49,63 @@ UNAVAILABLE = {
 }
 
 
-def statuses(in_play: list[str], discs: list[dict]) -> dict:
-    """untestable_here when every observation separating a candidate from another in-play candidate is absent."""
-    pairs = {}
-    for d in discs:
-        for a, b in d["separates"]:
-            pairs.setdefault(frozenset((a, b)), []).append(d["availability"])
-    out = {}
-    for h in in_play:
-        blocked = [o for o in in_play if o != h and (av := pairs.get(frozenset((h, o)))) and all(a == "absent" for a in av)]
-        out[h] = ("untestable_here", blocked) if blocked else ("not_discriminated", [])
-    return out
+def pair_limits(tests: list[dict]) -> list[dict]:
+    """A pair is not separable here when every test that compares it needs an external observation."""
+    by_pair = {}
+    for t in tests:
+        for a, b in t["compares"]:
+            by_pair.setdefault(tuple(sorted((a, b))), []).append(t)
+    return [{"pair": list(p), "limit": "not_separable", "tests": [t["id"] for t in ts]}
+            for p, ts in by_pair.items() if all(o["availability"] == "external" for t in ts for o in t["observations"])]
+
+
+def hit_note(times: list[str], known: dict[str, bool], need: int, window: int, reset: int, merge: int) -> dict:
+    """What the persistence rule implies about threshold hits before an alert's first bin.
+
+    `times` are the observed bins ending at the alert bin and `known` the bins whose hit is known. Every hit
+    pattern over the bins since the last restart is kept if the last bin alerts and no bin within `merge`
+    minutes before it does; a bin is reported only when all kept patterns agree on it. Conditions whose
+    persistence history would reach before the first observed bin are skipped, which keeps the result sound.
+    """
+    start = max([0] + [k for k in range(1, len(times)) if minutes(times[k - 1], times[k]) > reset])
+    bins, t = times[start:], times[-1]
+    free = [b for b in bins if b not in known]
+
+    def alerting(h, k):
+        if start == 0 and k + 1 < window:
+            return None
+        return sum(h[b] for b in bins[max(0, k + 1 - window):k + 1]) >= need
+
+    quiet = [k for k in range(len(bins) - 1) if minutes(bins[k], t) <= merge]
+    kept = []
+    for bits in product((False, True), repeat=len(free)):
+        h = {**known, **dict(zip(free, bits, strict=True))}
+        if alerting(h, len(bins) - 1) and not any(alerting(h, k) for k in quiet):
+            kept.append(h)
+    if not kept:
+        raise ValueError(f"no hit pattern makes {t} the first alerting bin")
+    forced = {b: kept[0][b] for b in bins if all(h[b] == kept[0][b] for h in kept)}
+    recent = bins[-(window + 1):]
+    open_ = [b for b in recent if b not in forced]
+    counts = sorted({sum(h[b] for b in open_) for h in kept})
+    return {"restart": times[start] if start else None, "hits": [b for b in recent if forced.get(b) is True],
+            "misses": [b for b in recent if forced.get(b) is False], "undetermined": open_, "hit_counts": counts}
+
+
+def hit_display(note: dict) -> str:
+    parts = []
+    if note["hits"]:
+        parts.append(f"{listing([hhmm(b) for b in note['hits']])} {'was' if len(note['hits']) == 1 else 'were'} at or above the threshold")
+    if note["undetermined"]:
+        names = listing([hhmm(b) for b in note["undetermined"]])
+        k = note["hit_counts"]
+        parts.append(f"exactly {'one' if k == [1] else k[0]} of {names} {'was' if k == [1] else 'were'}" if len(k) == 1 else f"{names} cannot be determined")
+    if note["misses"]:
+        parts.append(f"{listing([hhmm(b) for b in note['misses']])} {'was' if len(note['misses']) == 1 else 'were'} below it")
+    text = "; ".join(parts) + "."
+    if note["restart"]:
+        text += f" Persistence history restarted at {hhmm(note['restart'])} after a gap."
+    return text[0].upper() + text[1:]
 
 
 def group_features(g: str, cfg_metro: dict) -> list[str]:
@@ -68,7 +116,7 @@ def group_features(g: str, cfg_metro: dict) -> list[str]:
 
 
 def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
-    cfg, hyp_cfg, disc_cfg = src.load(CASES), src.load(HYPS), src.load(DISCS)
+    cfg, hyp_cfg, test_cfg = src.load(CASES), src.load(HYPS), src.load(DISCS)
     cid, i = case_cfg["id"], case_cfg["source"]["incident_id"]
     inc = f"/incidents[id={i}]"
     R = {}
@@ -81,7 +129,8 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
 
     # Alert and detector mechanics.
     t, p = got(VER, f"{inc}/explanation_timestamp")
-    add(record("alert.time", "model_evidence", t, f"{minute(t)} (dataset local time)", [p],
+    add(record("alert.time", "model_evidence", t, f"{minute(t)} (dataset local time)",
+               [p, src.code(XAI_NB, "we explain the first alert episode whose **start time** is inside the Phase 2 timely window")],
                caveat="Start of the first five-minute bin of this alert."))
     thr, p = got(VER, f"{inc}/threshold")
     add(record("alert.threshold", "model_evidence", thr, score(thr), [p], caveat="99.5th percentile of the smoothed score over the calibration period only."))
@@ -91,17 +140,19 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
     add(record("alert.raw", "model_evidence", raw, score(raw), [p],
                caveat="Mean squared PCA residual over 63 robust-scaled features for the alert bin alone, before smoothing."))
     add(derived("alert.margin", s / thr - 1, signed_pct(s / thr - 1), ["alert.smoothed", "alert.threshold"], "smoothed / threshold - 1", R))
-    add(derived("alert.raw_ratio", raw / thr, ratio(raw / thr), ["alert.raw", "alert.threshold"], "raw / threshold", R))
 
     alpha, pa = got(DET, "/alerting/ewma_alpha")
     reset, pr = got(DET, "/alerting/reset_gap_minutes")
     add(record("detector.ewma", "model_evidence", {"alpha": alpha, "reset_gap_minutes": reset},
                {"alpha": f"{alpha:.2f}", "rule": f"smoothed = {alpha:.2f} × raw + {1 - alpha:.2f} × previous smoothed; restarts after a gap over {reset} min"},
-               [pa, pr]))
+               [pa, pr, src.code(ALERTS_PY, "causal_ewma")]))
     hits, ph = got(DET, "/alerting/persistence_hits")
     window, pw = got(DET, "/alerting/persistence_window")
-    add(record("detector.persistence", "model_evidence", {"hits": hits, "window": window},
-               f"alert when {hits} of the last {window} smoothed scores are at or above the threshold", [ph, pw]))
+    merge, pm = got(DET, "/alerting/merge_minutes")
+    add(record("detector.persistence", "model_evidence", {"hits": hits, "window": window, "merge_minutes": merge},
+               f"alert when {hits} of the last {window} smoothed scores are at or above the threshold; alerting bins up to {merge} min apart form one alert",
+               [ph, pw, pm, src.code(ALERTS_PY, "persistent_alerts"), src.code(ALERTS_PY, "extract_alert_episodes")],
+               caveat="The history of the last scores is cleared after a gap, so an alert needs that many hits since the last restart. Smoothed hits need not come from separate anomalous bins: one large raw score can produce several."))
     n_cal, p = got(BENCH, "/evaluation_protocol/calibration_rows")
     add(record("detector.calibration_bins", "model_evidence", n_cal, count(n_cal), [p], caveat="Valid five-minute bins in the calibration period."))
 
@@ -114,7 +165,7 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
         (sh, p1), (pc, p2), (c, p3) = (got(VER, f"{base}/{k}") for k in ("share", "calibration_percentile", "smoothed_contribution"))
         add(record(f"contrib.{g}", "model_evidence", {"group": g, "share": sh, "percentile": pc, "contribution": c},
                    {"share": pct(sh), "percentile": pctile(pc), "contribution": score(c)}, [p1, p2, p3],
-                   caveat="Share of the smoothed PCA anomaly-evidence score, and calibration percentile of this group's smoothed contribution. Not a probability."))
+                   caveat="Share of the smoothed PCA anomaly-evidence score, and calibration percentile of this group's smoothed contribution. Not a probability or a cause."))
         k = pc * n_cal
         if abs(k - round(k)) < 1e-6 and pc < 1:
             hi = n_cal - round(k)
@@ -154,26 +205,66 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
                    {"time": hhmm(ts), "percentiles": {g: pctile(v) for g, (v, _) in vals.items()}}, [p for _, p in vals.values()]))
         temporal_ids.append(tid)
 
-    # EWMA back-calculation for the previous bin, valid only when it is within the reset gap.
-    if len(times) > 1 and minutes(times[-2], times[-1]) <= reset:
-        prev = (s - alpha * raw) / (1 - alpha)
-        add(derived("alert.prev_smoothed", {"time": times[-2], "score": prev}, {"time": hhmm(times[-2]), "score": score(prev)},
-                    ["alert.smoothed", "alert.raw", "detector.ewma", temporal_ids[-2]],
-                    "(smoothed - alpha × raw) / (1 - alpha); valid because the previous bin is within the reset gap", R,
-                    caveat="Arithmetic on frozen values, not an exported score."))
+    # Smoothing memory. An alert bin always follows a bin within the reset gap: after a restart one hit cannot alert.
+    if minutes(times[-2], times[-1]) > reset:
+        raise ValueError(f"{cid}: the bin before the alert is more than {reset} min earlier")
+    prev = (s - alpha * raw) / (1 - alpha)
+    add(derived("alert.prev_smoothed", {"time": times[-2], "score": prev}, {"time": hhmm(times[-2]), "score": score(prev)},
+                ["alert.smoothed", "alert.raw", "detector.ewma", temporal_ids[-2]],
+                "(smoothed - alpha × raw) / (1 - alpha); valid because the previous bin is within the reset gap", R,
+                caveat="Arithmetic on frozen values, not an exported score."))
+    mem = 1 - alpha * raw / s
+    add(derived("alert.memory", mem, pct(mem, 2), ["alert.raw", "alert.smoothed", "detector.ewma"], "1 - alpha × raw / smoothed", R,
+                caveat=f"Share of the alert-bin smoothed score carried from earlier bins by smoothing. {pct(1 - alpha, 0)} means the score is neither rising nor falling. It does not show which earlier bins carried the evidence."))
+    note = hit_note(times, {times[-1]: s >= thr, times[-2]: prev >= thr}, hits, window, reset, merge)
+    add(derived("alert.hits", note, hit_display(note),
+                ["alert.time", "alert.smoothed", "alert.threshold", "alert.prev_smoothed", "detector.persistence", "temporal.window"],
+                "hit patterns consistent with the persistence rule, the known hits, and this bin being the first alerting bin", R,
+                caveat="Technical note. Inferred from the persistence rule; which earlier bin was a hit is not exported."))
 
     # Counterfactual repairs.
+    (meth, p1), (interp, p2) = got(VER, "/method/counterfactual_repair"), got(VER, "/method/counterfactual_interpretation")
+    add(record("detector.repair", "model_evidence", {"method": meth, "interpretation": interp}, f"{meth} {interp}",
+               [p1, p2, src.code(VERIFY_PY, "verify_counterfactual_alert"), src.code(VERIFY_PY, "score_with_feature_group_repair")],
+               caveat="Only the groups with the largest smoothed contributions at the alert bin are repaired, one at a time."))
     cf_ids = []
     for c in resolve(src.load(VER), f"{inc}/single_group_repairs"):
         g = c["repaired_groups"][0]
         base = f"{inc}/single_group_repairs[repaired_groups={g}]"
-        (rs, p1), (rr, p2), (ra, p3), (cl, p4) = (got(VER, f"{base}/{k}") for k in
-                                                  ("repaired_smoothed_score", "repaired_raw_score", "repaired_alert", "alert_cleared"))
-        add(record(f"cf.{g}", "model_evidence", {"group": g, "repaired_smoothed": rs, "repaired_raw": rr, "repaired_alert": ra, "cleared": cl},
-                   {"repaired_smoothed": score(rs), "repaired_raw": score(rr), "result": "clears the alert" if cl else "alert remains"},
-                   [p1, p2, p3, p4],
-                   caveat="Model-space repair: this group's coordinates are replaced by the PCA reconstruction and rescored through the same EWMA, threshold and persistence rule. Detector dependence, not a physical repair."))
+        keys = ("window_start", "window_end", "window_rows", "original_raw_score", "original_smoothed_score", "original_alert",
+                "repaired_raw_score", "repaired_smoothed_score", "repaired_alert", "alert_cleared")
+        vals = {k: got(VER, f"{base}/{k}") for k in keys}
+        own, po = got(VER, f"{inc}/ranked_groups[group={g}]/smoothed_contribution")
+        share, ps = got(VER, f"{inc}/ranked_groups[group={g}]/share")
+        v = {k: x for k, (x, _) in vals.items()}
+        rs, cl = v["repaired_smoothed_score"], v["alert_cleared"]
+        path = ("score" if rs < thr else "persistence") if cl else None
+        red = (v["original_smoothed_score"] - rs) / own if own else None
+        add(record(f"cf.{g}", "model_evidence",
+                   {"group": g, **v, "own_contribution": own, "share": share, "path": path, "reduction_ratio": red},
+                   {"window": f"{hhmm(v['window_start'])} to {hhmm(v['window_end'])} ({v['window_rows']} bins)",
+                    "repaired_smoothed": score(rs), "repaired_raw": score(v["repaired_raw_score"]), "own_contribution": score(own),
+                    "result": {"score": "clears the alert: smoothed score below the threshold",
+                               "persistence": "clears the alert: persistence rule no longer met", None: "alert remains"}[path],
+                    "ratio": f"{red:.2f}×" if share >= floor else "not shown: contribution below the display floor"},
+                   [*(p for _, p in vals.values()), po, ps],
+                   caveat="Model-space repair over the window shown: this group's robust-scaled coordinates are replaced by the PCA "
+                          "reconstruction, each bin is re-projected and rescored, and the series passes through the same smoothing, "
+                          "threshold and persistence rule. Re-projection changes other groups' residuals too. Checked at the alert "
+                          "bin only. Tests the detector, not a physical repair.",
+                   derivation={"formula": "path = score when the repaired smoothed score is below the threshold, persistence when the alert "
+                                          "clears with it at or above; reduction_ratio = (original smoothed - repaired smoothed) / own smoothed contribution",
+                               "inputs": ["alert.threshold", "detector.repair"]}))
         cf_ids.append(f"cf.{g}")
+    restart = next((g["before"] for g in gaps if g["minutes"] > reset), None)
+    low = min(R[c]["value"]["repaired_smoothed_score"] for c in cf_ids)
+    bound = 0.0 if restart else low / s
+    add(derived("cf.prewindow", {"max_share": bound, "restart": restart},
+                f"none, because smoothing restarts at {hhmm(restart)} inside the window" if restart else f"at most {pct(bound)}",
+                [*cf_ids, "alert.smoothed", "temporal.window", "detector.ewma"],
+                "lowest repaired smoothed / smoothed, because the smoothing state before the window is not edited and repaired raw "
+                "scores are non-negative; zero when smoothing restarts inside the window", R,
+                caveat="Upper bound on how much of the alert-bin smoothed score comes from the unedited smoothing state before the repair window."))
 
     # Measured context at the alert bin.
     measured_ids = []
@@ -186,7 +277,8 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
         v = {k.removeprefix("training_"): x for k, (x, _) in vals.items()}
         add(record(f"measured.{f}", "measured", {"feature": f, **v, "unit": None},
                    {**{k: num(x) for k, x in v.items()}, "unit": "unit not loaded"}, [p for _, p in vals.values()],
-                   caveat="Five-minute feature value at the alert bin with training-period quartiles. Units are defined in the dataset description, which is not loaded.",
+                   caveat="Five-minute feature value at the alert bin with training-period quartiles; only the three features with the largest "
+                          "contributions at the alert bin are exported. Units are defined in the dataset description, which is not loaded.",
                    definition="unavailable:definitions"))
         measured_ids.append(f"measured.{f}")
 
@@ -206,30 +298,28 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
                {"status": "Withheld", "missing": [MISSING[m] for m in miss]}, [p1, p2, p3, *(p for _, p in flags.values())],
                caveat="Asset-level gate from the bridge configuration and proof manifest; it applies to every MetroPT-3 case."))
 
-    # Candidate explanations and discriminators.
-    rule = cfg["evidence_rule"]
-    ev = {g["group"] for g in ranked if g["share"] >= rule["min_share"] and g["calibration_percentile"] >= rule["min_percentile"]}
-    in_play = [h for h in hyp_cfg["hypotheses"] if h["triggers"] == "any" or ev & set(h["triggers"])]
-    st_map = statuses([h["id"] for h in in_play], disc_cfg["discriminators"])
+    # Candidate explanations and tests: every candidate for every case, unranked, status open.
+    tests = [{"id": t_["id"], "compares": t_["compares"],
+              "observations": [{**o, "availability_text": test_cfg["availability"][o["availability"]]} for o in t_["observations"]],
+              "maturity": t_["maturity"], "maturity_text": test_cfg["maturity"][t_["maturity"]], "rule": t_["rule"],
+              "result": t_["result"], "result_text": test_cfg["results"][t_["result"]], "follow_up": t_["follow_up"]}
+             for t_ in test_cfg["tests"]]
+    limits = [{**lim, "text": test_cfg["pair_limits"][lim["limit"]]} for lim in pair_limits(tests)]
     hyp_ids = []
-    for h in in_play:
-        hid = h["id"]
-        matched = [g for g in shown if h["triggers"] != "any" and g in h["triggers"] and g in ev]
-        status, against = st_map[hid]
-        add(record(f"hyp.{hid}", "hypothesis", {"id": hid, "status": status, "against": against, "matched_groups": matched},
-                   {"label": h["label"]["en"], "status": disc_cfg["statuses"][status]["en"]},
-                   [got(HYPS, f"/hypotheses[id={hid}]")[1], {"file": DISCS, "path": "/discriminators", "sha256": src.hashes[DISCS]}],
-                   caveat="Candidate explanation, unranked. Not a diagnosis.",
-                   derivation={"formula": "in play when a trigger group passes the evidence rule, or always for `any`; status from the discriminator table",
-                               "inputs": [f"contrib.{g}" for g in matched]}))
+    for h in hyp_cfg["hypotheses"]:
+        hid, groups = h["id"], h["groups"]
+        related = [g for g in shown if groups != "any" and g in groups]
+        partners = sorted(x for lim in limits if hid in lim["pair"] for x in lim["pair"] if x != hid)
+        add(record(f"hyp.{hid}", "hypothesis",
+                   {"id": hid, "layer": h["layer"], "status": "open", "groups": groups, "related": related,
+                    "tests": [t_["id"] for t_ in tests if any(hid in pr for pr in t_["compares"])], "not_separable_from": partners},
+                   {"label": h["label"]["en"], "layer": hyp_cfg["layers"][h["layer"]]["en"], "status": "open",
+                    "related": ", ".join(related) or "no specific signal group"},
+                   [got(HYPS, f"/hypotheses[id={hid}]")[1], {"file": DISCS, "path": "/tests", "sha256": src.hashes[DISCS]}],
+                   caveat=f"Candidate explanation, unranked; {test_cfg['candidate_status']['open']['en']}. Not a diagnosis.",
+                   derivation={"formula": "status open until a reviewed test returns a result; related = catalog groups among this case's displayed groups",
+                               "inputs": [f"contrib.{g}" for g in related]}))
         hyp_ids.append(f"hyp.{hid}")
-    play = {h["id"] for h in in_play}
-    discs = []
-    for d in disc_cfg["discriminators"]:
-        pairs = [p for p in d["separates"] if set(p) <= play]
-        if pairs:
-            discs.append({"id": d["id"], "observation": d["observation"], "separates": pairs, "availability": d["availability"],
-                          "availability_text": disc_cfg["availability"][d["availability"]], "question": d["question"]})
 
     # Retrospective records.
     lab, p = got(METRO, f"/dataset/reported_incidents[id={i}]")
@@ -251,7 +341,7 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
         add(record(rid, "benchmark_stat", {"recall": v, "n": n_inc}, f"{round(v * n_inc)} of {n_inc}", [p, got(BENCH, f"{b}/incident_results")[1]], vis="retro"))
     v, p = got(BENCH, f"{b}/false_alerts_per_24h")
     add(record("bench.false_rate", "benchmark_stat", v, f"{v:.3f} benchmark-false alert episodes per 24 h", [p], vis="retro",
-               caveat="Benchmark-false means not linked to a documented incident window; it does not mean physically normal."))
+               caveat="Benchmark-false means not linked to a documented incident window; it is not a confirmed false alarm or confirmed healthy behaviour."))
     eps = {k: got(XAI, f"/episodes/{k}") for k in ("total", "incident_linked", "benchmark_false")}
     add(record("bench.episodes", "benchmark_stat", {k: x for k, (x, _) in eps.items()}, {k: count(x) for k, (x, _) in eps.items()},
                [p for _, p in eps.values()], vis="retro"))
@@ -263,25 +353,27 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
     add(record("bench.selection", "benchmark_stat", {"detectors": sorted(summary), "period": "TEST"},
                f"The same TEST period was used to compare {len(summary)} candidate detectors", [p], vis="retro"))
     prof = {k: got(XAI, f"/global_profiles/{k}_top_groups") for k in ("incident_linked", "benchmark_false")}
-    add(record("bench.unmatched_profile", "benchmark_stat", {k: x[:3] for k, (x, _) in prof.items()},
+    add(record("bench.profiles", "benchmark_stat", {k: x[:3] for k, (x, _) in prof.items()},
                {k: ", ".join(f"{g['group']} {pct(g['share'])}" for g in x[:3]) for k, (x, _) in prof.items()},
                [p for _, p in prof.values()], vis="retro",
-               caveat="Average contribution shares over all alert episodes of each type. Benchmark-false does not mean physically normal."))
+               caveat="Mean normalised smoothed group contributions over all alert bins of each episode type, so longer episodes weigh more. "
+                      "Benchmark-false does not mean physically normal."))
 
-    ctx = {"marginal_margin": cfg["marginal_margin"], "display_groups": shown, "dominant": shown[0], "temporal_ids": temporal_ids,
-           "cf_ids": cf_ids, "hyp_ids": hyp_ids, "measured_ids": measured_ids, "bin_minutes": 5, "reset_gap": reset}
+    ctx = {"display_groups": shown, "temporal_ids": temporal_ids, "cf_ids": cf_ids, "hyp_ids": hyp_ids,
+           "measured_ids": measured_ids, "bin_minutes": 5, "reset_gap": reset}
     F = ledger(R, ctx)
 
     head = {"schema": SCHEMA, "case_id": cid, "alert_time": t, "asset": cfg["asset"]}
+    body = {"tests": tests, "pair_limits": limits}
     retro = {**head, "mode": "retro", "source": case_cfg["source"], "role": case_cfg["role"],
-             "records": list(R.values()), "findings": F, "discriminators": discs}
+             "records": list(R.values()), "findings": F, **body}
     asof = {**head, "mode": "asof", "records": [_asof(r) for r in R.values() if r["visibility"] == "both"],
-            "findings": [f for f in F if f["visibility"] == "both"], "discriminators": discs}
+            "findings": [f for f in F if f["visibility"] == "both"], **body}
     return _sealed(asof), _sealed(retro)
 
 
 def _asof(r: dict) -> dict:
-    """As-of records drop source paths, which would reveal the incident number; values and file hashes stay."""
+    """As-of records drop source paths and symbols, which could reveal the incident number; values and file hashes stay."""
     return {**r, "source": [{"file": p["file"], "sha256": p["sha256"]} for p in r["source"]]}
 
 
@@ -293,7 +385,7 @@ def build_all(src: Sources) -> tuple[list[tuple[dict, dict]], dict]:
     cfg = src.load(CASES)
     built = sorted((build(c, src) for c in cfg["cases"]), key=lambda pair: pair[0]["alert_time"])
     manifest = {
-        "schema": "syrus.manifest.v1",
+        "schema": "syrus.manifest.v2",
         "cases": [{"case_id": a["case_id"], "alert_time": a["alert_time"],
                    "files": {m: {"path": f"{a['case_id']}.{m}.json", "sha256": c["sha256"]} for m, c in (("asof", a), ("retro", r))}}
                   for a, r in built],
