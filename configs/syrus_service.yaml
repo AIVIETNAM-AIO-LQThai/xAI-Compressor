@@ -13,7 +13,8 @@ endpoint: https://api.groq.com/openai/v1/chat/completions
 # USD per million tokens (Groq pricing, to be re-checked at the first live smoke test).
 price_per_million: {input: 0.80, output: 4.00}
 
-# Provisional caps from owner decision D3; enforced by the application before every call.
+# Caps from owner decision D3, confirmed by the owner on 2026-11-02; enforced by the application before every call.
+# The environment flag SYRUS_CAPS_CONFIRMED=1 is still set by the owner on the server.
 caps_usd: {daily: 10.0, total: 30.0}
 
 limits:
