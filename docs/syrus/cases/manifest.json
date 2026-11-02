@@ -1,0 +1,80 @@
+{
+  "schema": "syrus.manifest.v1",
+  "cases": [
+    {
+      "case_id": "c-r6tq",
+      "alert_time": "2020-04-18 00:40:00",
+      "files": {
+        "asof": {
+          "path": "c-r6tq.asof.json",
+          "sha256": "0f91624ae38b5624fc47e814bf384a99024123dfa77ff7fcfc0e523e9eeeb73e"
+        },
+        "retro": {
+          "path": "c-r6tq.retro.json",
+          "sha256": "306bae061cf48b64a87c76bb9525c15f04430c928d25d88ea3ed4b930722e9d3"
+        }
+      }
+    },
+    {
+      "case_id": "c-h3vz",
+      "alert_time": "2020-05-29 21:20:00",
+      "files": {
+        "asof": {
+          "path": "c-h3vz.asof.json",
+          "sha256": "fb6b34271bb49cdfca3dc3b33b86b203764b50f300d0f7f0ff75e3d22ebf2464"
+        },
+        "retro": {
+          "path": "c-h3vz.retro.json",
+          "sha256": "ef79f1acb4b97c47fe559b070515d9ba9bd26535dc9a58b0ef344c6151605f79"
+        }
+      }
+    },
+    {
+      "case_id": "c-w8nk",
+      "alert_time": "2020-06-05 10:10:00",
+      "files": {
+        "asof": {
+          "path": "c-w8nk.asof.json",
+          "sha256": "b3bcf42c9204956c1f6ca76147b8a1b55727e844a04b6861ef3245bb448a1fd5"
+        },
+        "retro": {
+          "path": "c-w8nk.retro.json",
+          "sha256": "f13b09c0f3982b03edf392378ccbf205734d7127b899066909433202a7ede1e9"
+        }
+      }
+    },
+    {
+      "case_id": "c-b5xm",
+      "alert_time": "2020-07-15 08:45:00",
+      "files": {
+        "asof": {
+          "path": "c-b5xm.asof.json",
+          "sha256": "3493f00f38741dc7f13f72b1ab3b85259185d3216ad2fd16094293e9d0406573"
+        },
+        "retro": {
+          "path": "c-b5xm.retro.json",
+          "sha256": "773f30e79e8e8980fca062570477d0e54a51e333512e55f39e792c3352c548f1"
+        }
+      }
+    }
+  ],
+  "documents": {
+    "loaded": false,
+    "index_sha256": null
+  },
+  "inputs": {
+    "configs/detection.yaml": "bf6d72dd21d118ad10485b21e5a323e756e319c86da46716714de49d9d528aa7",
+    "configs/evidence_action_bridge.yaml": "ff4b95ac08a5bcbe94220533a47c9f389fb4a02c043906cae619de15fc543949",
+    "configs/metropt.yaml": "1f978956115d5c2bbf0a673687ddce6bd8e40b0fee089b6bd118750b7e2a717d",
+    "configs/syrus_cases.yaml": "b6d18aca1a5dcce1eed944e4bff6238fb1f1f446105f25056b04a6f7048a2ca3",
+    "configs/syrus_discriminators.yaml": "225d615897acc7da137aa8fd207570f0b5ea0b7d6cd9568c037b33bf27d39cd5",
+    "configs/syrus_hypotheses.yaml": "0652efa8313cc4136667db62de6c784f0ce46a8a95bbcad5f6c4e258392e0b24",
+    "docs/detector_benchmark.json": "b25bd0510f4fbaab10225c8b447bef79c6a57e1dc17b82b5600686aaccbc7ce7",
+    "docs/proof_manifest.json": "b7d3766ec1315343b951262a4cd5d8575d1261c91648394140a7cedd41bb2290",
+    "docs/xai_report.json": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e",
+    "docs/xai_verification_report.json": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52",
+    "ml/data/features.py": "5e88bb459bb67318eab17adaa71feec607623717bb0f7cb20970589c84c52e1e",
+    "ml/explainability/pca.py": "362ae72f540ab368f4ff73a2add7cb5181ba7eae4213e3db584724311845fa6a"
+  },
+  "sha256": "26fab01b7270361dbd301488291159d03a65371202ebc881bc784ffd16de2a3f"
+}

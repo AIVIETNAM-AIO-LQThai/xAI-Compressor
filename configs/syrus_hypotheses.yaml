@@ -1,0 +1,72 @@
+# Syrus candidate-explanation catalog (D6). Draft – needs domain review.
+# Separate from the frozen configs/waste_hypotheses.yaml, which stays unchanged.
+#
+# Candidates are unranked. A candidate is in play for a case when one of its trigger
+# groups passes the evidence rule in configs/syrus_cases.yaml; `any` means every alert.
+# Statuses come from configs/syrus_discriminators.yaml, never from contribution share.
+#
+# Changes from the frozen catalog:
+# - "persistent" is dropped: no deterministic rule establishes persistence;
+# - "process-demand surge" becomes downstream air demand;
+# - degradation and unloaded operation merge into one compressor-performance candidate;
+# - excess-pressure operation is left out: it is an energy-waste opportunity, not an alert explanation;
+# - operating-transient and detector-artifact candidates are added.
+version: 1
+status: draft – needs domain review
+
+hypotheses:
+  - id: air_leakage
+    label: {en: Air leakage, vi: Rò rỉ khí}
+    description:
+      en: Air leaves the system through a leak, raising total outflow. Detector evidence alone cannot separate this from higher downstream demand.
+      vi: Khí thoát ra ngoài qua chỗ rò, làm tăng tổng lưu lượng khí ra. Chỉ dựa vào bằng chứng của bộ phát hiện thì không tách được khả năng này với nhu cầu khí phía hạ nguồn tăng.
+    triggers: [dv_pressure, tp2, pressure_relationships]
+    frozen_ids: [leak_like_persistent_outflow]
+
+  - id: downstream_demand
+    label: {en: Higher downstream air demand, vi: Nhu cầu khí phía hạ nguồn tăng}
+    description:
+      en: Legitimate air use downstream rose, raising total outflow in a way that can look like leakage.
+      vi: Lượng khí sử dụng hợp lệ ở phía hạ nguồn tăng, làm tăng tổng lưu lượng khí ra theo cách có thể trông giống rò rỉ.
+    triggers: [dv_pressure, tp2, pressure_relationships]
+    frozen_ids: [demand_surge]
+
+  - id: pressure_regulation
+    label: {en: Pressure-regulation behaviour, vi: Bất thường trong điều tiết áp suất}
+    description:
+      en: Pressure control, load/unload cycling or switching behaved differently from the training period, rather than outflow changing.
+      vi: Cơ chế điều áp, chu kỳ có tải/không tải hoặc đóng cắt hoạt động khác với giai đoạn huấn luyện, thay vì lưu lượng khí ra thay đổi.
+    triggers: [dv_pressure, pressure_relationships, pressure_switch, comp]
+    frozen_ids: [pressure_regulation_instability]
+
+  - id: sensor_inconsistency
+    label: {en: Pressure-sensor inconsistency, vi: Cảm biến áp suất không nhất quán}
+    description:
+      en: A pressure signal disagrees with related measurements because of measurement error, drift or sensor failure.
+      vi: Một tín hiệu áp suất không khớp với các phép đo liên quan do sai số đo, trôi hoặc hỏng cảm biến.
+    triggers: [tp2, tp3, reservoirs, dv_pressure, pressure_relationships]
+    frozen_ids: [sensor_inconsistency]
+
+  - id: compressor_performance
+    label: {en: Compressor performance change, vi: Thay đổi hiệu suất máy nén}
+    description:
+      en: The compressor's electrical effort or operating behaviour does not match the pressure response, as with wear or running without useful output.
+      vi: Mức tiêu thụ điện hoặc cách vận hành của máy nén không tương xứng với đáp ứng áp suất, ví dụ do hao mòn hoặc chạy mà không tạo ra khí hữu ích.
+    triggers: [motor_current, tp2, tp3, reservoirs, comp, pressure_switch, caudal_impulses]
+    frozen_ids: [compressor_performance_degradation, unloaded_or_inefficient_operation]
+
+  - id: operating_transient
+    label: {en: Benign operating transient, vi: Quá độ vận hành bình thường}
+    description:
+      en: A normal start, stop, load change or dryer-tower switch that falls outside the training period's behaviour without any fault.
+      vi: Một lần khởi động, dừng, thay đổi tải hoặc chuyển tháp sấy bình thường nhưng nằm ngoài hành vi của giai đoạn huấn luyện, không có lỗi nào.
+    triggers: any
+    frozen_ids: []
+
+  - id: detector_artifact
+    label: {en: Detector artifact, vi: Hiện tượng giả do bộ phát hiện}
+    description:
+      en: The alert comes from detector mechanics, such as very narrow training ranges inflating scaled residuals or smoothing carrying earlier evidence forward, more than from a physically meaningful change.
+      vi: Cảnh báo bắt nguồn từ cơ chế của bộ phát hiện, như khoảng giá trị huấn luyện quá hẹp làm phóng đại phần dư sau chuẩn hóa hoặc bộ làm mượt mang bằng chứng cũ về sau, hơn là từ một thay đổi vật lý có ý nghĩa.
+    triggers: any
+    frozen_ids: []

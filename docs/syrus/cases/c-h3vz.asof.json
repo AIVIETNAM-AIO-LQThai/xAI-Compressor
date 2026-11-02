@@ -1,0 +1,2047 @@
+{
+  "schema": "syrus.case.v1",
+  "case_id": "c-h3vz",
+  "alert_time": "2020-05-29 21:20:00",
+  "asset": {
+    "dataset": "MetroPT-3",
+    "asset": "metro air-production unit (APU) compressor",
+    "service": "metro",
+    "period": "2020"
+  },
+  "mode": "asof",
+  "records": [
+    {
+      "id": "alert.time",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": "2020-05-29 21:20:00",
+      "display": "2020-05-29 21:20 (dataset local time)",
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Start of the first five-minute bin of this alert."
+    },
+    {
+      "id": "alert.threshold",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": 52941.88448793303,
+      "display": "52,942",
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "99.5th percentile of the smoothed score over the calibration period only."
+    },
+    {
+      "id": "alert.smoothed",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": 58988.95445080686,
+      "display": "58,989",
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "alert.raw",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": 35.822060692348,
+      "display": "35.8",
+      "source": [
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        }
+      ],
+      "caveat": "Mean squared PCA residual over 63 robust-scaled features for the alert bin alone, before smoothing."
+    },
+    {
+      "id": "alert.margin",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": 0.11422090508040239,
+      "display": "+11.4%",
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null,
+      "derivation": {
+        "formula": "smoothed / threshold - 1",
+        "inputs": [
+          "alert.smoothed",
+          "alert.threshold"
+        ]
+      }
+    },
+    {
+      "id": "alert.raw_ratio",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": 0.0006766298751702516,
+      "display": "0.07% of the threshold",
+      "source": [
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null,
+      "derivation": {
+        "formula": "raw / threshold",
+        "inputs": [
+          "alert.raw",
+          "alert.threshold"
+        ]
+      }
+    },
+    {
+      "id": "detector.ewma",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "alpha": 0.2,
+        "reset_gap_minutes": 10
+      },
+      "display": {
+        "alpha": "0.20",
+        "rule": "smoothed = 0.20 × raw + 0.80 × previous smoothed; restarts after a gap over 10 min"
+      },
+      "source": [
+        {
+          "file": "configs/detection.yaml",
+          "sha256": "bf6d72dd21d118ad10485b21e5a323e756e319c86da46716714de49d9d528aa7"
+        },
+        {
+          "file": "configs/detection.yaml",
+          "sha256": "bf6d72dd21d118ad10485b21e5a323e756e319c86da46716714de49d9d528aa7"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "detector.persistence",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "hits": 3,
+        "window": 4
+      },
+      "display": "alert when 3 of the last 4 smoothed scores are at or above the threshold",
+      "source": [
+        {
+          "file": "configs/detection.yaml",
+          "sha256": "bf6d72dd21d118ad10485b21e5a323e756e319c86da46716714de49d9d528aa7"
+        },
+        {
+          "file": "configs/detection.yaml",
+          "sha256": "bf6d72dd21d118ad10485b21e5a323e756e319c86da46716714de49d9d528aa7"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "detector.calibration_bins",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": 1796,
+      "display": "1,796",
+      "source": [
+        {
+          "file": "docs/detector_benchmark.json",
+          "sha256": "b25bd0510f4fbaab10225c8b447bef79c6a57e1dc17b82b5600686aaccbc7ce7"
+        }
+      ],
+      "caveat": "Valid five-minute bins in the calibration period."
+    },
+    {
+      "id": "contrib.dv_pressure",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "dv_pressure",
+        "share": 0.775628600722635,
+        "percentile": 0.9955456570155902,
+        "contribution": 45753.52019877055
+      },
+      "display": {
+        "share": "77.6%",
+        "percentile": "99.55",
+        "contribution": "45,754"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Share of the smoothed PCA anomaly-evidence score, and calibration percentile of this group's smoothed contribution. Not a probability."
+    },
+    {
+      "id": "calrank.dv_pressure",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "higher": 8,
+        "n": 1796
+      },
+      "display": "8 of 1,796",
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/detector_benchmark.json",
+          "sha256": "b25bd0510f4fbaab10225c8b447bef79c6a57e1dc17b82b5600686aaccbc7ce7"
+        }
+      ],
+      "caveat": "Calibration bins whose smoothed contribution for this group was higher.",
+      "derivation": {
+        "formula": "calibration_bins × (1 - percentile); mid-rank percentile with no exact ties",
+        "inputs": [
+          "contrib.dv_pressure",
+          "detector.calibration_bins"
+        ]
+      }
+    },
+    {
+      "id": "contrib.tp2",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "tp2",
+        "share": 0.12633728723990428,
+        "percentile": 0.9994432071269488,
+        "contribution": 7452.504482433213
+      },
+      "display": {
+        "share": "12.6%",
+        "percentile": "99.94",
+        "contribution": "7,453"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Share of the smoothed PCA anomaly-evidence score, and calibration percentile of this group's smoothed contribution. Not a probability."
+    },
+    {
+      "id": "calrank.tp2",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "higher": 1,
+        "n": 1796
+      },
+      "display": "1 of 1,796",
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/detector_benchmark.json",
+          "sha256": "b25bd0510f4fbaab10225c8b447bef79c6a57e1dc17b82b5600686aaccbc7ce7"
+        }
+      ],
+      "caveat": "Calibration bins whose smoothed contribution for this group was higher.",
+      "derivation": {
+        "formula": "calibration_bins × (1 - percentile); mid-rank percentile with no exact ties",
+        "inputs": [
+          "contrib.tp2",
+          "detector.calibration_bins"
+        ]
+      }
+    },
+    {
+      "id": "contrib.motor_current",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "motor_current",
+        "share": 0.09801224365882992,
+        "percentile": 0.9905345211581291,
+        "contribution": 5781.639776812099
+      },
+      "display": {
+        "share": "9.8%",
+        "percentile": "99.05",
+        "contribution": "5,782"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Share of the smoothed PCA anomaly-evidence score, and calibration percentile of this group's smoothed contribution. Not a probability."
+    },
+    {
+      "id": "calrank.motor_current",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "higher": 17,
+        "n": 1796
+      },
+      "display": "17 of 1,796",
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/detector_benchmark.json",
+          "sha256": "b25bd0510f4fbaab10225c8b447bef79c6a57e1dc17b82b5600686aaccbc7ce7"
+        }
+      ],
+      "caveat": "Calibration bins whose smoothed contribution for this group was higher.",
+      "derivation": {
+        "formula": "calibration_bins × (1 - percentile); mid-rank percentile with no exact ties",
+        "inputs": [
+          "contrib.motor_current",
+          "detector.calibration_bins"
+        ]
+      }
+    },
+    {
+      "id": "contrib.others",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": 2.186837863084714e-05,
+      "display": "<0.1%",
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Combined share of groups below 1%; their percentiles are not meaningful at near-zero contribution."
+    },
+    {
+      "id": "group.dv_pressure",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "dv_pressure",
+        "features": [
+          "dv_pressure__mean",
+          "dv_pressure__std",
+          "dv_pressure__min",
+          "dv_pressure__max",
+          "dv_pressure__last"
+        ]
+      },
+      "display": {
+        "features": "dv_pressure__mean, dv_pressure__std, dv_pressure__min, dv_pressure__max, dv_pressure__last"
+      },
+      "source": [
+        {
+          "file": "configs/metropt.yaml",
+          "sha256": "1f978956115d5c2bbf0a673687ddce6bd8e40b0fee089b6bd118750b7e2a717d"
+        },
+        {
+          "file": "configs/metropt.yaml",
+          "sha256": "1f978956115d5c2bbf0a673687ddce6bd8e40b0fee089b6bd118750b7e2a717d"
+        },
+        {
+          "file": "ml/data/features.py",
+          "sha256": "5e88bb459bb67318eab17adaa71feec607623717bb0f7cb20970589c84c52e1e"
+        },
+        {
+          "file": "ml/explainability/pca.py",
+          "sha256": "362ae72f540ab368f4ff73a2add7cb5181ba7eae4213e3db584724311845fa6a"
+        }
+      ],
+      "caveat": "Engineered five-minute features that make up this signal group.",
+      "definition": "unavailable:definitions"
+    },
+    {
+      "id": "group.tp2",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "tp2",
+        "features": [
+          "tp2__mean",
+          "tp2__std",
+          "tp2__min",
+          "tp2__max",
+          "tp2__last"
+        ]
+      },
+      "display": {
+        "features": "tp2__mean, tp2__std, tp2__min, tp2__max, tp2__last"
+      },
+      "source": [
+        {
+          "file": "configs/metropt.yaml",
+          "sha256": "1f978956115d5c2bbf0a673687ddce6bd8e40b0fee089b6bd118750b7e2a717d"
+        },
+        {
+          "file": "configs/metropt.yaml",
+          "sha256": "1f978956115d5c2bbf0a673687ddce6bd8e40b0fee089b6bd118750b7e2a717d"
+        },
+        {
+          "file": "ml/data/features.py",
+          "sha256": "5e88bb459bb67318eab17adaa71feec607623717bb0f7cb20970589c84c52e1e"
+        },
+        {
+          "file": "ml/explainability/pca.py",
+          "sha256": "362ae72f540ab368f4ff73a2add7cb5181ba7eae4213e3db584724311845fa6a"
+        }
+      ],
+      "caveat": "Engineered five-minute features that make up this signal group.",
+      "definition": "unavailable:definitions"
+    },
+    {
+      "id": "group.motor_current",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "motor_current",
+        "features": [
+          "motor_current__mean",
+          "motor_current__std",
+          "motor_current__min",
+          "motor_current__max",
+          "motor_current__last"
+        ]
+      },
+      "display": {
+        "features": "motor_current__mean, motor_current__std, motor_current__min, motor_current__max, motor_current__last"
+      },
+      "source": [
+        {
+          "file": "configs/metropt.yaml",
+          "sha256": "1f978956115d5c2bbf0a673687ddce6bd8e40b0fee089b6bd118750b7e2a717d"
+        },
+        {
+          "file": "configs/metropt.yaml",
+          "sha256": "1f978956115d5c2bbf0a673687ddce6bd8e40b0fee089b6bd118750b7e2a717d"
+        },
+        {
+          "file": "ml/data/features.py",
+          "sha256": "5e88bb459bb67318eab17adaa71feec607623717bb0f7cb20970589c84c52e1e"
+        },
+        {
+          "file": "ml/explainability/pca.py",
+          "sha256": "362ae72f540ab368f4ff73a2add7cb5181ba7eae4213e3db584724311845fa6a"
+        }
+      ],
+      "caveat": "Engineered five-minute features that make up this signal group.",
+      "definition": "unavailable:definitions"
+    },
+    {
+      "id": "temporal.window",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "requested": 12,
+        "observed": 12,
+        "start": "2020-05-29 20:25:00",
+        "end": "2020-05-29 21:20:00",
+        "groups": [
+          "dv_pressure",
+          "tp2",
+          "motor_current"
+        ],
+        "gaps": []
+      },
+      "display": {
+        "window": "20:25 to 21:20",
+        "bins": "12 of 12",
+        "gaps": []
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Past-only window of smoothed-contribution percentiles ending at the alert bin. It shows smoothed evidence, not when a fault began."
+    },
+    {
+      "id": "temporal.2025",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 20:25:00",
+        "percentiles": {
+          "dv_pressure": 0.6982182628062361,
+          "tp2": 0.9994432071269488,
+          "motor_current": 0.47383073496659245
+        }
+      },
+      "display": {
+        "time": "20:25",
+        "percentiles": {
+          "dv_pressure": "69.82",
+          "tp2": "99.94",
+          "motor_current": "47.38"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2030",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 20:30:00",
+        "percentiles": {
+          "dv_pressure": 0.6308463251670379,
+          "tp2": 0.9938752783964365,
+          "motor_current": 0.3819599109131403
+        }
+      },
+      "display": {
+        "time": "20:30",
+        "percentiles": {
+          "dv_pressure": "63.08",
+          "tp2": "99.39",
+          "motor_current": "38.20"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2035",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 20:35:00",
+        "percentiles": {
+          "dv_pressure": 0.5467706013363028,
+          "tp2": 0.987750556792873,
+          "motor_current": 0.2989977728285078
+        }
+      },
+      "display": {
+        "time": "20:35",
+        "percentiles": {
+          "dv_pressure": "54.68",
+          "tp2": "98.78",
+          "motor_current": "29.90"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2040",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 20:40:00",
+        "percentiles": {
+          "dv_pressure": 0.4548997772828508,
+          "tp2": 0.9793986636971047,
+          "motor_current": 0.22717149220489977
+        }
+      },
+      "display": {
+        "time": "20:40",
+        "percentiles": {
+          "dv_pressure": "45.49",
+          "tp2": "97.94",
+          "motor_current": "22.72"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2045",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 20:45:00",
+        "percentiles": {
+          "dv_pressure": 0.4220489977728285,
+          "tp2": 0.9693763919821826,
+          "motor_current": 0.2516703786191537
+        }
+      },
+      "display": {
+        "time": "20:45",
+        "percentiles": {
+          "dv_pressure": "42.20",
+          "tp2": "96.94",
+          "motor_current": "25.17"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2050",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 20:50:00",
+        "percentiles": {
+          "dv_pressure": 0.6191536748329621,
+          "tp2": 0.9576837416481069,
+          "motor_current": 0.6252783964365256
+        }
+      },
+      "display": {
+        "time": "20:50",
+        "percentiles": {
+          "dv_pressure": "61.92",
+          "tp2": "95.77",
+          "motor_current": "62.53"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2055",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 20:55:00",
+        "percentiles": {
+          "dv_pressure": 0.534521158129176,
+          "tp2": 0.9359688195991092,
+          "motor_current": 0.5328507795100222
+        }
+      },
+      "display": {
+        "time": "20:55",
+        "percentiles": {
+          "dv_pressure": "53.45",
+          "tp2": "93.60",
+          "motor_current": "53.29"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2100",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 21:00:00",
+        "percentiles": {
+          "dv_pressure": 0.44153674832962136,
+          "tp2": 0.9064587973273942,
+          "motor_current": 0.43875278396436523
+        }
+      },
+      "display": {
+        "time": "21:00",
+        "percentiles": {
+          "dv_pressure": "44.15",
+          "tp2": "90.65",
+          "motor_current": "43.88"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2105",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 21:05:00",
+        "percentiles": {
+          "dv_pressure": 0.3507795100222717,
+          "tp2": 0.8730512249443207,
+          "motor_current": 0.35356347438752783
+        }
+      },
+      "display": {
+        "time": "21:05",
+        "percentiles": {
+          "dv_pressure": "35.08",
+          "tp2": "87.31",
+          "motor_current": "35.36"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2110",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 21:10:00",
+        "percentiles": {
+          "dv_pressure": 1.0,
+          "tp2": 0.9977728285077951,
+          "motor_current": 0.9977728285077951
+        }
+      },
+      "display": {
+        "time": "21:10",
+        "percentiles": {
+          "dv_pressure": "100",
+          "tp2": "99.78",
+          "motor_current": "99.78"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2115",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 21:15:00",
+        "percentiles": {
+          "dv_pressure": 0.9977728285077951,
+          "tp2": 1.0,
+          "motor_current": 0.9955456570155902
+        }
+      },
+      "display": {
+        "time": "21:15",
+        "percentiles": {
+          "dv_pressure": "99.78",
+          "tp2": "100",
+          "motor_current": "99.55"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "temporal.2120",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 21:20:00",
+        "percentiles": {
+          "dv_pressure": 0.9955456570155902,
+          "tp2": 0.9994432071269488,
+          "motor_current": 0.9905345211581291
+        }
+      },
+      "display": {
+        "time": "21:20",
+        "percentiles": {
+          "dv_pressure": "99.55",
+          "tp2": "99.94",
+          "motor_current": "99.05"
+        }
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "alert.prev_smoothed",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "time": "2020-05-29 21:15:00",
+        "score": 73727.23754833548
+      },
+      "display": {
+        "time": "21:15",
+        "score": "73,727"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "configs/detection.yaml",
+          "sha256": "bf6d72dd21d118ad10485b21e5a323e756e319c86da46716714de49d9d528aa7"
+        },
+        {
+          "file": "configs/detection.yaml",
+          "sha256": "bf6d72dd21d118ad10485b21e5a323e756e319c86da46716714de49d9d528aa7"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Arithmetic on frozen values, not an exported score.",
+      "derivation": {
+        "formula": "(smoothed - alpha × raw) / (1 - alpha); valid because the previous bin is within the reset gap",
+        "inputs": [
+          "alert.smoothed",
+          "alert.raw",
+          "detector.ewma",
+          "temporal.2115"
+        ]
+      }
+    },
+    {
+      "id": "cf.dv_pressure",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "dv_pressure",
+        "repaired_smoothed": 7471.553585643533,
+        "repaired_raw": 1.7092254706579773,
+        "repaired_alert": false,
+        "cleared": true
+      },
+      "display": {
+        "repaired_smoothed": "7,472",
+        "repaired_raw": "1.7",
+        "result": "clears the alert"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Model-space repair: this group's coordinates are replaced by the PCA reconstruction and rescored through the same EWMA, threshold and persistence rule. Detector dependence, not a physical repair."
+    },
+    {
+      "id": "cf.tp2",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "tp2",
+        "repaired_smoothed": 51472.834397391554,
+        "repaired_raw": 35.591171531337174,
+        "repaired_alert": false,
+        "cleared": true
+      },
+      "display": {
+        "repaired_smoothed": "51,473",
+        "repaired_raw": "35.6",
+        "result": "clears the alert"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Model-space repair: this group's coordinates are replaced by the PCA reconstruction and rescored through the same EWMA, threshold and persistence rule. Detector dependence, not a physical repair."
+    },
+    {
+      "id": "cf.motor_current",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "motor_current",
+        "repaired_smoothed": 48374.13337980856,
+        "repaired_raw": 26.485362972285024,
+        "repaired_alert": false,
+        "cleared": true
+      },
+      "display": {
+        "repaired_smoothed": "48,374",
+        "repaired_raw": "26.5",
+        "result": "clears the alert"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Model-space repair: this group's coordinates are replaced by the PCA reconstruction and rescored through the same EWMA, threshold and persistence rule. Detector dependence, not a physical repair."
+    },
+    {
+      "id": "cf.oil_temperature",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "oil_temperature",
+        "repaired_smoothed": 58988.20468981765,
+        "repaired_raw": 35.192163201634344,
+        "repaired_alert": true,
+        "cleared": false
+      },
+      "display": {
+        "repaired_smoothed": "58,988",
+        "repaired_raw": "35.2",
+        "result": "alert remains"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Model-space repair: this group's coordinates are replaced by the PCA reconstruction and rescored through the same EWMA, threshold and persistence rule. Detector dependence, not a physical repair."
+    },
+    {
+      "id": "cf.h1",
+      "kind": "model_evidence",
+      "visibility": "both",
+      "value": {
+        "group": "h1",
+        "repaired_smoothed": 58988.74866426696,
+        "repaired_raw": 35.80827613861285,
+        "repaired_alert": true,
+        "cleared": false
+      },
+      "display": {
+        "repaired_smoothed": "58,989",
+        "repaired_raw": "35.8",
+        "result": "alert remains"
+      },
+      "source": [
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        },
+        {
+          "file": "docs/xai_verification_report.json",
+          "sha256": "1043787df992c7b4fdc4038b09abc48df497d270f7910ae204d33f919d224c52"
+        }
+      ],
+      "caveat": "Model-space repair: this group's coordinates are replaced by the PCA reconstruction and rescored through the same EWMA, threshold and persistence rule. Detector dependence, not a physical repair."
+    },
+    {
+      "id": "measured.dv_pressure__std",
+      "kind": "measured",
+      "visibility": "both",
+      "value": {
+        "feature": "dv_pressure__std",
+        "value": 0.0008603661343036797,
+        "q1": 0.0007924373724447455,
+        "median": 0.0009321831993982857,
+        "q3": 0.001008013865988671,
+        "unit": null
+      },
+      "display": {
+        "value": "0.00086",
+        "q1": "0.000792",
+        "median": "0.000932",
+        "q3": "0.00101",
+        "unit": "unit not loaded"
+      },
+      "source": [
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        }
+      ],
+      "caveat": "Five-minute feature value at the alert bin with training-period quartiles. Units are defined in the dataset description, which is not loaded.",
+      "definition": "unavailable:definitions"
+    },
+    {
+      "id": "measured.motor_current__min",
+      "kind": "measured",
+      "visibility": "both",
+      "value": {
+        "feature": "motor_current__min",
+        "value": 0.0424999999999995,
+        "q1": 0.0349999999999992,
+        "median": 0.0349999999999992,
+        "q3": 0.0375000000000005,
+        "unit": null
+      },
+      "display": {
+        "value": "0.0425",
+        "q1": "0.035",
+        "median": "0.035",
+        "q3": "0.0375",
+        "unit": "unit not loaded"
+      },
+      "source": [
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        }
+      ],
+      "caveat": "Five-minute feature value at the alert bin with training-period quartiles. Units are defined in the dataset description, which is not loaded.",
+      "definition": "unavailable:definitions"
+    },
+    {
+      "id": "measured.dv_pressure__last",
+      "kind": "measured",
+      "visibility": "both",
+      "value": {
+        "feature": "dv_pressure__last",
+        "value": -0.0199999999999995,
+        "q1": -0.0199999999999995,
+        "median": -0.0180000000000006,
+        "q3": -0.0159999999999982,
+        "unit": null
+      },
+      "display": {
+        "value": "-0.02",
+        "q1": "-0.02",
+        "median": "-0.018",
+        "q3": "-0.016",
+        "unit": "unit not loaded"
+      },
+      "source": [
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        },
+        {
+          "file": "docs/xai_report.json",
+          "sha256": "f2fea94bcba953f81ce3e7133ee294a59012c2afed13034daf0391b1b28c169e"
+        }
+      ],
+      "caveat": "Five-minute feature value at the alert bin with training-period quartiles. Units are defined in the dataset description, which is not loaded.",
+      "definition": "unavailable:definitions"
+    },
+    {
+      "id": "unavailable:definitions",
+      "kind": "unavailable",
+      "visibility": "both",
+      "value": null,
+      "display": "Signal definitions and units are not loaded: the dataset description has not passed the document gate.",
+      "source": [],
+      "caveat": null
+    },
+    {
+      "id": "unavailable:documents",
+      "kind": "unavailable",
+      "visibility": "both",
+      "value": null,
+      "display": "No OEM manual, SOP, maintenance ticket or other document for this asset is loaded.",
+      "source": [],
+      "caveat": null
+    },
+    {
+      "id": "unavailable:raw_series",
+      "kind": "unavailable",
+      "visibility": "both",
+      "value": null,
+      "display": "Raw telemetry and the raw-score series around the alert are not in the frozen artifacts; only the alert bin's raw score is.",
+      "source": [],
+      "caveat": null
+    },
+    {
+      "id": "unavailable:demand_measurement",
+      "kind": "unavailable",
+      "visibility": "both",
+      "value": {
+        "calibrated_compressor_inflow_available": false
+      },
+      "display": "No independent measurement of downstream air demand is available for this asset, and the bridge configuration records no calibrated compressor inflow observation.",
+      "source": [
+        {
+          "file": "configs/evidence_action_bridge.yaml",
+          "sha256": "ff4b95ac08a5bcbe94220533a47c9f389fb4a02c043906cae619de15fc543949"
+        }
+      ],
+      "caveat": null
+    },
+    {
+      "id": "bridge.status",
+      "kind": "bridge_status",
+      "visibility": "both",
+      "value": {
+        "status": "WITHHOLD_REAL_ASSET_ADVISORY_MISSING_VALIDATED_PHYSICAL_BRIDGE",
+        "physical_bridge_available": false,
+        "missing": [
+          "site_calibrated_receiver_and_compressor_model",
+          "calibrated_compressor_inflow_observation",
+          "receiver_pressure_trace"
+        ],
+        "site_calibrated": false,
+        "calibrated_compressor_inflow_available": false,
+        "receiver_pressure_trace_available": false
+      },
+      "display": {
+        "status": "Withheld",
+        "missing": [
+          "a site-calibrated receiver and compressor model",
+          "a calibrated compressor inflow observation",
+          "a receiver pressure trace suitable for inverse physics"
+        ]
+      },
+      "source": [
+        {
+          "file": "docs/proof_manifest.json",
+          "sha256": "b7d3766ec1315343b951262a4cd5d8575d1261c91648394140a7cedd41bb2290"
+        },
+        {
+          "file": "docs/proof_manifest.json",
+          "sha256": "b7d3766ec1315343b951262a4cd5d8575d1261c91648394140a7cedd41bb2290"
+        },
+        {
+          "file": "docs/proof_manifest.json",
+          "sha256": "b7d3766ec1315343b951262a4cd5d8575d1261c91648394140a7cedd41bb2290"
+        },
+        {
+          "file": "configs/evidence_action_bridge.yaml",
+          "sha256": "ff4b95ac08a5bcbe94220533a47c9f389fb4a02c043906cae619de15fc543949"
+        },
+        {
+          "file": "configs/evidence_action_bridge.yaml",
+          "sha256": "ff4b95ac08a5bcbe94220533a47c9f389fb4a02c043906cae619de15fc543949"
+        },
+        {
+          "file": "configs/evidence_action_bridge.yaml",
+          "sha256": "ff4b95ac08a5bcbe94220533a47c9f389fb4a02c043906cae619de15fc543949"
+        }
+      ],
+      "caveat": "Asset-level gate from the bridge configuration and proof manifest; it applies to every MetroPT-3 case."
+    },
+    {
+      "id": "hyp.air_leakage",
+      "kind": "hypothesis",
+      "visibility": "both",
+      "value": {
+        "id": "air_leakage",
+        "status": "untestable_here",
+        "against": [
+          "downstream_demand"
+        ],
+        "matched_groups": [
+          "dv_pressure",
+          "tp2"
+        ]
+      },
+      "display": {
+        "label": "Air leakage",
+        "status": "untestable here"
+      },
+      "source": [
+        {
+          "file": "configs/syrus_hypotheses.yaml",
+          "sha256": "0652efa8313cc4136667db62de6c784f0ce46a8a95bbcad5f6c4e258392e0b24"
+        },
+        {
+          "file": "configs/syrus_discriminators.yaml",
+          "sha256": "225d615897acc7da137aa8fd207570f0b5ea0b7d6cd9568c037b33bf27d39cd5"
+        }
+      ],
+      "caveat": "Candidate explanation, unranked. Not a diagnosis.",
+      "derivation": {
+        "formula": "in play when a trigger group passes the evidence rule, or always for `any`; status from the discriminator table",
+        "inputs": [
+          "contrib.dv_pressure",
+          "contrib.tp2"
+        ]
+      }
+    },
+    {
+      "id": "hyp.downstream_demand",
+      "kind": "hypothesis",
+      "visibility": "both",
+      "value": {
+        "id": "downstream_demand",
+        "status": "untestable_here",
+        "against": [
+          "air_leakage"
+        ],
+        "matched_groups": [
+          "dv_pressure",
+          "tp2"
+        ]
+      },
+      "display": {
+        "label": "Higher downstream air demand",
+        "status": "untestable here"
+      },
+      "source": [
+        {
+          "file": "configs/syrus_hypotheses.yaml",
+          "sha256": "0652efa8313cc4136667db62de6c784f0ce46a8a95bbcad5f6c4e258392e0b24"
+        },
+        {
+          "file": "configs/syrus_discriminators.yaml",
+          "sha256": "225d615897acc7da137aa8fd207570f0b5ea0b7d6cd9568c037b33bf27d39cd5"
+        }
+      ],
+      "caveat": "Candidate explanation, unranked. Not a diagnosis.",
+      "derivation": {
+        "formula": "in play when a trigger group passes the evidence rule, or always for `any`; status from the discriminator table",
+        "inputs": [
+          "contrib.dv_pressure",
+          "contrib.tp2"
+        ]
+      }
+    },
+    {
+      "id": "hyp.pressure_regulation",
+      "kind": "hypothesis",
+      "visibility": "both",
+      "value": {
+        "id": "pressure_regulation",
+        "status": "not_discriminated",
+        "against": [],
+        "matched_groups": [
+          "dv_pressure"
+        ]
+      },
+      "display": {
+        "label": "Pressure-regulation behaviour",
+        "status": "not discriminated"
+      },
+      "source": [
+        {
+          "file": "configs/syrus_hypotheses.yaml",
+          "sha256": "0652efa8313cc4136667db62de6c784f0ce46a8a95bbcad5f6c4e258392e0b24"
+        },
+        {
+          "file": "configs/syrus_discriminators.yaml",
+          "sha256": "225d615897acc7da137aa8fd207570f0b5ea0b7d6cd9568c037b33bf27d39cd5"
+        }
+      ],
+      "caveat": "Candidate explanation, unranked. Not a diagnosis.",
+      "derivation": {
+        "formula": "in play when a trigger group passes the evidence rule, or always for `any`; status from the discriminator table",
+        "inputs": [
+          "contrib.dv_pressure"
+        ]
+      }
+    },
+    {
+      "id": "hyp.sensor_inconsistency",
+      "kind": "hypothesis",
+      "visibility": "both",
+      "value": {
+        "id": "sensor_inconsistency",
+        "status": "not_discriminated",
+        "against": [],
+        "matched_groups": [
+          "dv_pressure",
+          "tp2"
+        ]
+      },
+      "display": {
+        "label": "Pressure-sensor inconsistency",
+        "status": "not discriminated"
+      },
+      "source": [
+        {
+          "file": "configs/syrus_hypotheses.yaml",
+          "sha256": "0652efa8313cc4136667db62de6c784f0ce46a8a95bbcad5f6c4e258392e0b24"
+        },
+        {
+          "file": "configs/syrus_discriminators.yaml",
+          "sha256": "225d615897acc7da137aa8fd207570f0b5ea0b7d6cd9568c037b33bf27d39cd5"
+        }
+      ],
+      "caveat": "Candidate explanation, unranked. Not a diagnosis.",
+      "derivation": {
+        "formula": "in play when a trigger group passes the evidence rule, or always for `any`; status from the discriminator table",
+        "inputs": [
+          "contrib.dv_pressure",
+          "contrib.tp2"
+        ]
+      }
+    },
+    {
+      "id": "hyp.compressor_performance",
+      "kind": "hypothesis",
+      "visibility": "both",
+      "value": {
+        "id": "compressor_performance",
+        "status": "not_discriminated",
+        "against": [],
+        "matched_groups": [
+          "tp2",
+          "motor_current"
+        ]
+      },
+      "display": {
+        "label": "Compressor performance change",
+        "status": "not discriminated"
+      },
+      "source": [
+        {
+          "file": "configs/syrus_hypotheses.yaml",
+          "sha256": "0652efa8313cc4136667db62de6c784f0ce46a8a95bbcad5f6c4e258392e0b24"
+        },
+        {
+          "file": "configs/syrus_discriminators.yaml",
+          "sha256": "225d615897acc7da137aa8fd207570f0b5ea0b7d6cd9568c037b33bf27d39cd5"
+        }
+      ],
+      "caveat": "Candidate explanation, unranked. Not a diagnosis.",
+      "derivation": {
+        "formula": "in play when a trigger group passes the evidence rule, or always for `any`; status from the discriminator table",
+        "inputs": [
+          "contrib.tp2",
+          "contrib.motor_current"
+        ]
+      }
+    },
+    {
+      "id": "hyp.operating_transient",
+      "kind": "hypothesis",
+      "visibility": "both",
+      "value": {
+        "id": "operating_transient",
+        "status": "not_discriminated",
+        "against": [],
+        "matched_groups": []
+      },
+      "display": {
+        "label": "Benign operating transient",
+        "status": "not discriminated"
+      },
+      "source": [
+        {
+          "file": "configs/syrus_hypotheses.yaml",
+          "sha256": "0652efa8313cc4136667db62de6c784f0ce46a8a95bbcad5f6c4e258392e0b24"
+        },
+        {
+          "file": "configs/syrus_discriminators.yaml",
+          "sha256": "225d615897acc7da137aa8fd207570f0b5ea0b7d6cd9568c037b33bf27d39cd5"
+        }
+      ],
+      "caveat": "Candidate explanation, unranked. Not a diagnosis.",
+      "derivation": {
+        "formula": "in play when a trigger group passes the evidence rule, or always for `any`; status from the discriminator table",
+        "inputs": []
+      }
+    },
+    {
+      "id": "hyp.detector_artifact",
+      "kind": "hypothesis",
+      "visibility": "both",
+      "value": {
+        "id": "detector_artifact",
+        "status": "not_discriminated",
+        "against": [],
+        "matched_groups": []
+      },
+      "display": {
+        "label": "Detector artifact",
+        "status": "not discriminated"
+      },
+      "source": [
+        {
+          "file": "configs/syrus_hypotheses.yaml",
+          "sha256": "0652efa8313cc4136667db62de6c784f0ce46a8a95bbcad5f6c4e258392e0b24"
+        },
+        {
+          "file": "configs/syrus_discriminators.yaml",
+          "sha256": "225d615897acc7da137aa8fd207570f0b5ea0b7d6cd9568c037b33bf27d39cd5"
+        }
+      ],
+      "caveat": "Candidate explanation, unranked. Not a diagnosis.",
+      "derivation": {
+        "formula": "in play when a trigger group passes the evidence rule, or always for `any`; status from the discriminator table",
+        "inputs": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-MARGIN",
+      "rule": "margin = smoothed / threshold - 1; called marginal below 50%",
+      "inputs": [
+        "alert.smoothed",
+        "alert.threshold",
+        "alert.margin"
+      ],
+      "output": {
+        "margin": 0.11422090508040239,
+        "marginal": true
+      },
+      "fires": true,
+      "visibility": "both",
+      "text": "The smoothed score (58,989) exceeded the threshold (52,942) by +11.4%, a marginal alert."
+    },
+    {
+      "id": "F-CARRYOVER",
+      "rule": "fires when the raw score at the alert bin is below the threshold",
+      "inputs": [
+        "alert.raw",
+        "alert.threshold",
+        "alert.raw_ratio",
+        "alert.prev_smoothed"
+      ],
+      "output": {
+        "raw_below_threshold": true,
+        "prev_above_threshold": true
+      },
+      "fires": true,
+      "visibility": "both",
+      "text": "The alert bin's own raw score was 35.8 (0.07% of the threshold); the smoothed score above the threshold was carried from earlier bins by EWMA memory. The smoothed score one bin earlier, at 21:15, follows from the EWMA update as 73,727."
+    },
+    {
+      "id": "F-EMERGE",
+      "rule": "largest one-bin rise in smoothed-contribution calibration percentile among displayed groups; abrupt when the rise is at least 0.50 and ends at or above 0.99; elevated at start when the dominant group starts at or above 0.99",
+      "inputs": [
+        "temporal.window",
+        "temporal.2025",
+        "temporal.2030",
+        "temporal.2035",
+        "temporal.2040",
+        "temporal.2045",
+        "temporal.2050",
+        "temporal.2055",
+        "temporal.2100",
+        "temporal.2105",
+        "temporal.2110",
+        "temporal.2115",
+        "temporal.2120"
+      ],
+      "output": {
+        "pattern": "abrupt",
+        "from": "2020-05-29 21:05:00",
+        "at": "2020-05-29 21:10:00",
+        "groups": [
+          "dv_pressure",
+          "motor_current"
+        ]
+      },
+      "fires": true,
+      "visibility": "both",
+      "text": "Smoothed evidence rose abruptly between 21:05 and 21:10: dv_pressure went from percentile 35.08 to 100; motor_current went from percentile 35.36 to 99.78. This shows when detector evidence appeared, not when a fault began."
+    },
+    {
+      "id": "F-CF-SPEC",
+      "rule": "lists single-group model-space repairs that clear the alert; non-specific when more than one does",
+      "inputs": [
+        "alert.threshold",
+        "cf.dv_pressure",
+        "cf.tp2",
+        "cf.motor_current",
+        "cf.oil_temperature",
+        "cf.h1"
+      ],
+      "output": {
+        "clearing": [
+          "dv_pressure",
+          "tp2",
+          "motor_current"
+        ]
+      },
+      "fires": true,
+      "visibility": "both",
+      "text": "Removing the model-space evidence of any one of dv_pressure, tp2 or motor_current clears this alert (repaired smoothed scores 7,472, 51,473 and 48,374 against the 52,942 threshold), so the detector's decision is not specific to dv_pressure. This tests detector dependence, not a physical repair."
+    },
+    {
+      "id": "F-CF-PERSIST",
+      "rule": "fires when a clearing repair leaves the smoothed score at or above the threshold",
+      "inputs": [
+        "alert.threshold",
+        "detector.persistence",
+        "cf.dv_pressure",
+        "cf.tp2",
+        "cf.motor_current",
+        "cf.oil_temperature",
+        "cf.h1"
+      ],
+      "output": {
+        "groups": []
+      },
+      "fires": false,
+      "visibility": "both",
+      "text": "Every repair that clears the alert also brings the smoothed score below the threshold."
+    },
+    {
+      "id": "F-HYP-TIE",
+      "rule": "counts candidates in play; candidates are never ranked",
+      "inputs": [
+        "hyp.air_leakage",
+        "hyp.downstream_demand",
+        "hyp.pressure_regulation",
+        "hyp.sensor_inconsistency",
+        "hyp.compressor_performance",
+        "hyp.operating_transient",
+        "hyp.detector_artifact"
+      ],
+      "output": {
+        "open": 7
+      },
+      "fires": true,
+      "visibility": "both",
+      "text": "All candidate explanations in play remain open; the loaded evidence does not rank or separate them."
+    },
+    {
+      "id": "F-SCALE",
+      "rule": "reports training interquartile ranges of the case's measured-context features and where the alert-bin value falls",
+      "inputs": [
+        "measured.dv_pressure__std",
+        "measured.motor_current__min",
+        "measured.dv_pressure__last"
+      ],
+      "output": {
+        "features": [
+          {
+            "feature": "dv_pressure__std",
+            "iqr": 0.00021557649354392555,
+            "position": "inside"
+          },
+          {
+            "feature": "motor_current__min",
+            "iqr": 0.0025000000000013,
+            "position": "above"
+          },
+          {
+            "feature": "dv_pressure__last",
+            "iqr": 0.004000000000001301,
+            "position": "inside"
+          }
+        ]
+      },
+      "fires": true,
+      "visibility": "both",
+      "text": "Training-period ranges are narrow for some features (for example dv_pressure__std: interquartile range 0.000792 to 0.00101), so small physical changes become large scaled residuals. At the alert bin, dv_pressure__std and dv_pressure__last were inside the training interquartile range; motor_current__min was above the training interquartile range."
+    },
+    {
+      "id": "F-GAP",
+      "rule": "fires when the past-only window is incomplete",
+      "inputs": [
+        "temporal.window",
+        "detector.ewma"
+      ],
+      "output": {
+        "gaps": []
+      },
+      "fires": false,
+      "visibility": "both",
+      "text": "All bins of the past-only window are present (12 of 12)."
+    },
+    {
+      "id": "F-IDENT",
+      "rule": "always present: leak and demand are not separately identifiable without a demand observation",
+      "inputs": [
+        "unavailable:demand_measurement",
+        "hyp.air_leakage",
+        "hyp.downstream_demand"
+      ],
+      "output": {},
+      "fires": true,
+      "visibility": "both",
+      "text": "Leakage and higher downstream demand both raise total outflow (total outflow = demand + leakage). Without an independent demand measurement this data cannot tell them apart."
+    },
+    {
+      "id": "F-BRIDGE",
+      "rule": "always present while the physical bridge is not validated",
+      "inputs": [
+        "bridge.status"
+      ],
+      "output": {
+        "status": "WITHHOLD_REAL_ASSET_ADVISORY_MISSING_VALIDATED_PHYSICAL_BRIDGE"
+      },
+      "fires": true,
+      "visibility": "both",
+      "text": "Real-asset physical reasoning and actions are withheld. Missing: a site-calibrated receiver and compressor model; a calibrated compressor inflow observation; a receiver pressure trace suitable for inverse physics."
+    }
+  ],
+  "discriminators": [
+    {
+      "id": "q_demand_record",
+      "observation": {
+        "en": "An independent record of downstream air use, such as a flow meter or consumer-demand log, for the same period.",
+        "vi": "Một bản ghi độc lập về lượng khí sử dụng phía hạ nguồn, như đồng hồ lưu lượng hoặc nhật ký nhu cầu của thiết bị tiêu thụ, trong cùng khoảng thời gian."
+      },
+      "separates": [
+        [
+          "air_leakage",
+          "downstream_demand"
+        ]
+      ],
+      "availability": "absent",
+      "availability_text": {
+        "en": "not recorded for this asset",
+        "vi": "không được ghi nhận cho thiết bị này"
+      },
+      "question": {
+        "en": "Do you have any independent record of downstream air use for this period, such as a flow meter or a consumer-demand log?",
+        "vi": "Bạn có bản ghi độc lập nào về lượng khí sử dụng phía hạ nguồn trong khoảng thời gian này không, chẳng hạn đồng hồ lưu lượng hoặc nhật ký nhu cầu của thiết bị tiêu thụ?"
+      }
+    },
+    {
+      "id": "q_cycle_pattern",
+      "observation": {
+        "en": "Compressor load/unload cycle durations and pressure-switch activity in the hours before the alert.",
+        "vi": "Độ dài chu kỳ có tải/không tải của máy nén và hoạt động của công tắc áp suất trong vài giờ trước cảnh báo."
+      },
+      "separates": [
+        [
+          "pressure_regulation",
+          "air_leakage"
+        ],
+        [
+          "pressure_regulation",
+          "downstream_demand"
+        ],
+        [
+          "pressure_regulation",
+          "operating_transient"
+        ]
+      ],
+      "availability": "raw_data_only",
+      "availability_text": {
+        "en": "in the raw MetroPT-3 telemetry, not in the loaded evidence",
+        "vi": "có trong dữ liệu thô MetroPT-3, chưa có trong bằng chứng đã nạp"
+      },
+      "question": {
+        "en": "Do you know whether the compressor's load/unload cycling changed in the hours before this alert?",
+        "vi": "Bạn có biết chu kỳ có tải/không tải của máy nén có thay đổi trong vài giờ trước cảnh báo này không?"
+      }
+    },
+    {
+      "id": "q_sensor_agreement",
+      "observation": {
+        "en": "Agreement between related pressure signals (TP2, TP3 and reservoirs) over the same bins.",
+        "vi": "Mức độ khớp nhau giữa các tín hiệu áp suất liên quan (TP2, TP3 và bình chứa) trong cùng các khoảng thời gian."
+      },
+      "separates": [
+        [
+          "sensor_inconsistency",
+          "air_leakage"
+        ],
+        [
+          "sensor_inconsistency",
+          "downstream_demand"
+        ],
+        [
+          "sensor_inconsistency",
+          "pressure_regulation"
+        ],
+        [
+          "sensor_inconsistency",
+          "compressor_performance"
+        ]
+      ],
+      "availability": "raw_data_only",
+      "availability_text": {
+        "en": "in the raw MetroPT-3 telemetry, not in the loaded evidence",
+        "vi": "có trong dữ liệu thô MetroPT-3, chưa có trong bằng chứng đã nạp"
+      },
+      "question": {
+        "en": "Were the related pressure sensors (TP2, TP3, reservoirs) checked against each other or recalibrated around this time?",
+        "vi": "Các cảm biến áp suất liên quan (TP2, TP3, bình chứa) có được đối chiếu với nhau hoặc hiệu chuẩn lại vào khoảng thời gian này không?"
+      }
+    },
+    {
+      "id": "q_load_response",
+      "observation": {
+        "en": "Pressure rise per loaded minute compared with motor current.",
+        "vi": "Mức tăng áp suất trên mỗi phút chạy có tải so với dòng điện động cơ."
+      },
+      "separates": [
+        [
+          "compressor_performance",
+          "air_leakage"
+        ],
+        [
+          "compressor_performance",
+          "downstream_demand"
+        ]
+      ],
+      "availability": "raw_data_only",
+      "availability_text": {
+        "en": "in the raw MetroPT-3 telemetry, not in the loaded evidence",
+        "vi": "có trong dữ liệu thô MetroPT-3, chưa có trong bằng chứng đã nạp"
+      },
+      "question": {
+        "en": "Is there any record of how quickly the compressor built pressure while loaded around this time?",
+        "vi": "Có bản ghi nào cho biết máy nén tăng áp nhanh hay chậm khi chạy có tải vào khoảng thời gian này không?"
+      }
+    },
+    {
+      "id": "q_persistence",
+      "observation": {
+        "en": "Whether raw anomaly evidence persists over many bins or is confined to one or two bins.",
+        "vi": "Bằng chứng bất thường thô kéo dài qua nhiều khoảng thời gian hay chỉ nằm trong một hai khoảng."
+      },
+      "separates": [
+        [
+          "operating_transient",
+          "air_leakage"
+        ],
+        [
+          "operating_transient",
+          "downstream_demand"
+        ],
+        [
+          "operating_transient",
+          "compressor_performance"
+        ]
+      ],
+      "availability": "raw_data_only",
+      "availability_text": {
+        "en": "in the raw MetroPT-3 telemetry, not in the loaded evidence",
+        "vi": "có trong dữ liệu thô MetroPT-3, chưa có trong bằng chứng đã nạp"
+      },
+      "question": {
+        "en": "Do you have any information on whether this behaviour lasted many cycles or appeared only briefly?",
+        "vi": "Bạn có thông tin nào cho thấy hiện tượng này kéo dài nhiều chu kỳ hay chỉ xuất hiện trong thời gian ngắn không?"
+      }
+    },
+    {
+      "id": "q_physical_size",
+      "observation": {
+        "en": "The size of the change in physical units where the evidence emerged, compared with normal training-period variation.",
+        "vi": "Độ lớn của thay đổi theo đơn vị vật lý tại thời điểm bằng chứng xuất hiện, so với dao động bình thường trong giai đoạn huấn luyện."
+      },
+      "separates": [
+        [
+          "detector_artifact",
+          "air_leakage"
+        ],
+        [
+          "detector_artifact",
+          "downstream_demand"
+        ],
+        [
+          "detector_artifact",
+          "pressure_regulation"
+        ],
+        [
+          "detector_artifact",
+          "sensor_inconsistency"
+        ],
+        [
+          "detector_artifact",
+          "compressor_performance"
+        ],
+        [
+          "detector_artifact",
+          "operating_transient"
+        ]
+      ],
+      "availability": "raw_data_only",
+      "availability_text": {
+        "en": "in the raw MetroPT-3 telemetry, not in the loaded evidence",
+        "vi": "có trong dữ liệu thô MetroPT-3, chưa có trong bằng chứng đã nạp"
+      },
+      "question": {
+        "en": "Do you know how large the change in the signal was, in physical units, when the evidence appeared, compared with its normal variation?",
+        "vi": "Bạn có biết tín hiệu đã thay đổi bao nhiêu, theo đơn vị vật lý, tại thời điểm bằng chứng xuất hiện, so với dao động bình thường của nó không?"
+      }
+    }
+  ],
+  "sha256": "fb6b34271bb49cdfca3dc3b33b86b203764b50f300d0f7f0ff75e3d22ebf2464"
+}

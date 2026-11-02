@@ -1,0 +1,105 @@
+# Syrus discriminator table. Draft – needs domain review.
+#
+# Each entry names an observation that would separate pairs of candidate explanations,
+# whether that observation exists here, and the follow-up question Syrus may ask.
+# Follow-up questions come only from this table. Documents may explain why an
+# observation discriminates; they may not add candidates or change statuses.
+#
+# Status rule (deterministic, per case, over the candidates in play):
+# - untestable_here: for some other candidate in play, every listed observation that
+#   would separate the two is `absent`;
+# - not_discriminated: otherwise, while no rule below evaluates loaded evidence.
+# `consistent` and `contradicted` are reserved for rules over loaded evidence; version 1
+# has none, because no separating observation is in the frozen case evidence.
+version: 1
+status: draft – needs domain review
+
+availability:
+  in_case: {en: "in this case's loaded evidence", vi: "có trong bằng chứng đã nạp của ca này"}
+  raw_data_only: {en: "in the raw MetroPT-3 telemetry, not in the loaded evidence", vi: "có trong dữ liệu thô MetroPT-3, chưa có trong bằng chứng đã nạp"}
+  absent: {en: "not recorded for this asset", vi: "không được ghi nhận cho thiết bị này"}
+
+statuses:
+  consistent: {en: consistent, vi: phù hợp}
+  not_discriminated: {en: not discriminated, vi: chưa phân biệt được}
+  contradicted: {en: contradicted, vi: bị bằng chứng bác bỏ}
+  untestable_here: {en: untestable here, vi: không kiểm định được với dữ liệu này}
+
+discriminators:
+  - id: q_demand_record
+    observation:
+      en: An independent record of downstream air use, such as a flow meter or consumer-demand log, for the same period.
+      vi: Một bản ghi độc lập về lượng khí sử dụng phía hạ nguồn, như đồng hồ lưu lượng hoặc nhật ký nhu cầu của thiết bị tiêu thụ, trong cùng khoảng thời gian.
+    separates: [[air_leakage, downstream_demand]]
+    availability: absent
+    question:
+      en: Do you have any independent record of downstream air use for this period, such as a flow meter or a consumer-demand log?
+      vi: Bạn có bản ghi độc lập nào về lượng khí sử dụng phía hạ nguồn trong khoảng thời gian này không, chẳng hạn đồng hồ lưu lượng hoặc nhật ký nhu cầu của thiết bị tiêu thụ?
+
+  - id: q_cycle_pattern
+    observation:
+      en: Compressor load/unload cycle durations and pressure-switch activity in the hours before the alert.
+      vi: Độ dài chu kỳ có tải/không tải của máy nén và hoạt động của công tắc áp suất trong vài giờ trước cảnh báo.
+    separates:
+      - [pressure_regulation, air_leakage]
+      - [pressure_regulation, downstream_demand]
+      - [pressure_regulation, operating_transient]
+    availability: raw_data_only
+    question:
+      en: Do you know whether the compressor's load/unload cycling changed in the hours before this alert?
+      vi: Bạn có biết chu kỳ có tải/không tải của máy nén có thay đổi trong vài giờ trước cảnh báo này không?
+
+  - id: q_sensor_agreement
+    observation:
+      en: Agreement between related pressure signals (TP2, TP3 and reservoirs) over the same bins.
+      vi: Mức độ khớp nhau giữa các tín hiệu áp suất liên quan (TP2, TP3 và bình chứa) trong cùng các khoảng thời gian.
+    separates:
+      - [sensor_inconsistency, air_leakage]
+      - [sensor_inconsistency, downstream_demand]
+      - [sensor_inconsistency, pressure_regulation]
+      - [sensor_inconsistency, compressor_performance]
+    availability: raw_data_only
+    question:
+      en: Were the related pressure sensors (TP2, TP3, reservoirs) checked against each other or recalibrated around this time?
+      vi: Các cảm biến áp suất liên quan (TP2, TP3, bình chứa) có được đối chiếu với nhau hoặc hiệu chuẩn lại vào khoảng thời gian này không?
+
+  - id: q_load_response
+    observation:
+      en: Pressure rise per loaded minute compared with motor current.
+      vi: Mức tăng áp suất trên mỗi phút chạy có tải so với dòng điện động cơ.
+    separates:
+      - [compressor_performance, air_leakage]
+      - [compressor_performance, downstream_demand]
+    availability: raw_data_only
+    question:
+      en: Is there any record of how quickly the compressor built pressure while loaded around this time?
+      vi: Có bản ghi nào cho biết máy nén tăng áp nhanh hay chậm khi chạy có tải vào khoảng thời gian này không?
+
+  - id: q_persistence
+    observation:
+      en: Whether raw anomaly evidence persists over many bins or is confined to one or two bins.
+      vi: Bằng chứng bất thường thô kéo dài qua nhiều khoảng thời gian hay chỉ nằm trong một hai khoảng.
+    separates:
+      - [operating_transient, air_leakage]
+      - [operating_transient, downstream_demand]
+      - [operating_transient, compressor_performance]
+    availability: raw_data_only
+    question:
+      en: Do you have any information on whether this behaviour lasted many cycles or appeared only briefly?
+      vi: Bạn có thông tin nào cho thấy hiện tượng này kéo dài nhiều chu kỳ hay chỉ xuất hiện trong thời gian ngắn không?
+
+  - id: q_physical_size
+    observation:
+      en: The size of the change in physical units where the evidence emerged, compared with normal training-period variation.
+      vi: Độ lớn của thay đổi theo đơn vị vật lý tại thời điểm bằng chứng xuất hiện, so với dao động bình thường trong giai đoạn huấn luyện.
+    separates:
+      - [detector_artifact, air_leakage]
+      - [detector_artifact, downstream_demand]
+      - [detector_artifact, pressure_regulation]
+      - [detector_artifact, sensor_inconsistency]
+      - [detector_artifact, compressor_performance]
+      - [detector_artifact, operating_transient]
+    availability: raw_data_only
+    question:
+      en: Do you know how large the change in the signal was, in physical units, when the evidence appeared, compared with its normal variation?
+      vi: Bạn có biết tín hiệu đã thay đổi bao nhiêu, theo đơn vị vật lý, tại thời điểm bằng chứng xuất hiện, so với dao động bình thường của nó không?
