@@ -79,11 +79,11 @@ def client(tmp_path, adapter, patch=None, **envover):
     env = {"SYRUS_LLM_API_KEY": KEY, "SYRUS_CAPS_CONFIRMED": "1", "SYRUS_SESSION_SECRET": "secret", "SYRUS_IP_SALT": "salt",
            "SYRUS_BUDGET_FILE": str(tmp_path / "budget.json"), **envover}
     s = load_settings(env)
+    cfg = copy.deepcopy(s.cfg)
+    cfg["governor"] = {"concurrent_calls": 1, "window_share": 1000}  # pacing has its own tests; these scripted token counts are not realistic
     if patch:
-        cfg = copy.deepcopy(s.cfg)
         patch(cfg)
-        s = dataclasses.replace(s, cfg=cfg)
-    return TestClient(create_app(s, adapter, STORE))
+    return TestClient(create_app(dataclasses.replace(s, cfg=cfg), adapter, STORE))
 
 
 def start(c, case=CASE):

@@ -8,6 +8,7 @@ import uuid
 from backend.syrus_app.answer import assemble, pick_lang, remember
 from backend.syrus_app.budget import Budget, BudgetExceeded
 from backend.syrus_app.context import CaseStore
+from backend.syrus_app.governor import Governor
 from backend.syrus_app.llm import Adapter, LlmError
 from backend.syrus_app.policy import TEXT
 from backend.syrus_app.prompt import build
@@ -29,6 +30,8 @@ class ApiError(Exception):
 class Service:
     def __init__(self, settings: Settings, store: CaseStore, budget: Budget, sessions: Sessions, adapter: Adapter | None):
         self.settings, self.store, self.budget, self.sessions, self.adapter = settings, store, budget, sessions, adapter
+        g = settings.cfg.get("governor", {})
+        self.governor = Governor(settings.cfg["tokens_per_minute"], g.get("window_share", 0.9), g.get("concurrent_calls", 1))
 
     def offline_reason(self) -> str | None:
         if reason := self.settings.offline_reason():
@@ -96,9 +99,18 @@ class Service:
                     break
                 self.record(thread, "offline:" + e.reason, 0, 0, 0, None, ip)
                 return self.offline(e.reason, diag=diag)
+            ticket, wait = self.governor.admit(est + lim["max_output_tokens"])
+            if not ticket:  # another visitor's call is in flight or the minute's token window is full: nothing is sent
+                self.budget.settle(held, 0, 0)
+                if attempt:
+                    break
+                diag["calls"].append({"estimated_in": est, "billing": "none", "error": "busy", "retry_after": wait})
+                self.record(thread, "offline:busy", 0, 0, 0, None, ip, diag)
+                return self.offline("busy", wait, diag)
             try:
                 done = await self.adapter.complete(msgs, view.schema, lim["max_output_tokens"], remaining)
             except LlmError as e:
+                self.governor.release(ticket)
                 # An indeterminate failure (dropped connection, timeout, server error) may have been processed: its input tokens stay against
                 # the caps as an estimate, recorded apart from provider-reported usage. A refusal the provider stated is not charged.
                 spent = self.budget.settle(held, est if e.indeterminate else 0, 0, e.indeterminate, lim["max_output_tokens"])
@@ -108,19 +120,25 @@ class Service:
                     break
                 self.record(thread, "offline:" + e.reason, 0, 0, time.monotonic() - start, None, ip, diag)
                 return self.offline(e.reason, e.retry_after, diag)
+            self.governor.release(ticket, done.tokens_in + done.tokens_out)
             self.budget.settle(held, done.tokens_in, done.tokens_out)
             diag["calls"].append({"estimated_in": est, "tokens_in": done.tokens_in, "tokens_out": done.tokens_out, "billing": "provider_reported", **done.diag})
             used[0] += done.tokens_in
             used[1] += done.tokens_out
             reply, fails = parse(done.text)
+            verdict = diag["calls"][-1]  # why a reply was not accepted: check codes and finding IDs only, never model text or check details
             if reply:
                 depth = view.depth  # the server owns depth and the required findings; the declared purposes only label the answer
                 fails = check(reply, pack, message, depth, view)
                 if not fails:
                     miss = missing(reply, pack, depth, stated, view)
+                    verdict.update(verdict="accepted", added_findings=miss)
                     if not miss or attempt:
                         return self.finish(thread, pack, view, reply, depth, message, miss, used, start, ip, diag)
+                    verdict.update(verdict="rejected", codes=["required_finding"], missing_findings=miss)
                     fallback, fails = (reply, depth, miss), [Fail("required_finding", ", ".join(miss))]
+            if fails and verdict.get("verdict") != "rejected":
+                verdict.update(verdict="rejected", codes=sorted({f.code for f in fails}))
             msgs = [*msgs, {"role": "assistant", "content": done.text},
                     {"role": "user", "content": "The reply failed these checks: " + "; ".join(map(str, fails)) + ". Return the complete corrected JSON object; change only what is needed."}]
         if fallback:
@@ -137,9 +155,9 @@ class Service:
         return 200, out
 
     def finish(self, thread, pack, view, reply, depth, message, miss, used, start, ip, diag) -> tuple[int, dict]:
-        out, shown = assemble(reply, pack, thread, depth, pick_lang(reply.lang, message), miss, self.settings.model, view.dropped)
+        out, shown = assemble(reply, pack, thread, depth, pick_lang(reply.lang, message), miss, self.settings.model, view.dropped, view.refusal)
         remember(thread, reply, out, shown, message, self.settings.limits["operator_statements"], view.focus, conveyed(reply, pack))
-        self.record(thread, "ok", *used, time.monotonic() - start, reply.refusal, ip, diag)
+        self.record(thread, "ok", *used, time.monotonic() - start, out["refusal"], ip, diag)
         if self.settings.diagnostics:
             out["diagnostics"] = diag
         return 200, out

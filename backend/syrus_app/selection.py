@@ -64,6 +64,11 @@ class View:
     def ids(self) -> set:
         return set(self.records) | set(self.findings) | set(self.tests)
 
+    @property
+    def refusal(self) -> str | None:
+        """A question that asks the system to confirm a diagnosis is a diagnosis request whatever label the model gives its answer."""
+        return "diagnosis_request" if "certainty" in self.focus else None
+
 
 def _text(message: str) -> str:
     """The message with its opening question words blanked out (same length, so positions hold): "why" names no topic."""

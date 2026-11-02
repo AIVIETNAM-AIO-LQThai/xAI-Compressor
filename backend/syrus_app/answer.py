@@ -25,6 +25,9 @@ def qualifications(direct: set[str], text: str, forced: list[str], thread_quals:
         on = q["id"] in forced or triggers(q, direct, text)
         if not on or q["id"] in shown or (q["severity"] == "context" and q["id"] in thread_quals):
             continue
+        if q.get("said") and all(rx.search(text) for rx in q["said"]):
+            shown.add(q["id"])  # the unit already says it; later units and turns treat it as shown
+            continue
         short = q["severity"] == "critical" and q["id"] in thread_quals
         out.append({"id": q["id"], "severity": q["severity"], "short": short, "text": q[f"short_{lang}" if short else lang]})
         shown.add(q["id"])
@@ -41,7 +44,7 @@ def question(r: Reply, pack: Pack, thread: Thread, turn_no: int, lang: str) -> d
     return {"test_id": t["id"], "text": t["follow_up"][lang]}
 
 
-def assemble(r: Reply, pack: Pack, thread: Thread, depth: str, lang: str, added: list[str], model: str, dropped: tuple = ()) -> tuple[dict, set[str]]:
+def assemble(r: Reply, pack: Pack, thread: Thread, depth: str, lang: str, added: list[str], model: str, dropped: tuple = (), server_refusal: str | None = None) -> tuple[dict, set[str]]:
     turn_no = thread.turns + 1
     forced = REFUSALS.get(r.refusal or "", {}).get("quals", [])
     shown, blocks = set(), []
@@ -58,7 +61,9 @@ def assemble(r: Reply, pack: Pack, thread: Thread, depth: str, lang: str, added:
     narrowed = TEXT["narrowed"][lang].format(topics="; ".join(FOCUS_LABELS[f][lang] for f in dropped)) if dropped else None
     paras += [x for x in (narrowed, op, nxt and nxt["text"]) if x]
     cited = {i for u in r.units for i in u.record_ids}
-    out = {"status": "ok", "lang": lang, "depth": depth, "purposes": r.purposes, "refusal": r.refusal, "blocks": blocks, "also_relevant": also,
+    refusal = r.refusal or server_refusal
+    out = {"status": "ok", "lang": lang, "depth": depth, "purposes": r.purposes, "refusal": refusal,
+           "refusal_by": "model" if r.refusal else "server" if server_refusal else None, "blocks": blocks, "also_relevant": also,
             "operator_note": op, "narrowed": narrowed, "next_question": nxt, "alternatives": r.alternatives, "gaps": r.gaps, "answer": "\n\n".join(paras),
             "provenance": {"case_id": pack.case_id, "case_sha256": pack.sha256, "document_index_sha256": None, "model": model, "cited_records": len(cited),
                            "validator": "passed_with_added_findings" if added else "passed"}}

@@ -72,10 +72,11 @@ def env(tmp_path, **over):
 
 def client(tmp_path, adapter, patch=None, **envover):
     s = load_settings(env(tmp_path, **envover))
+    cfg = copy.deepcopy(s.cfg)
+    cfg["governor"] = {"concurrent_calls": 1, "window_share": 1000}  # pacing has its own tests; these scripted token counts are not realistic
     if patch:
-        cfg = copy.deepcopy(s.cfg)
         patch(cfg)
-        s = type(s)(cfg, s.key, s.caps_confirmed, s.kill, s.secret, s.ip_salt, s.budget_file)
+    s = type(s)(cfg, s.key, s.caps_confirmed, s.kill, s.secret, s.ip_salt, s.budget_file)
     return TestClient(create_app(s, adapter, STORE)), adapter
 
 

@@ -23,6 +23,10 @@ caps_usd: {daily: 10.0, total: 30.0}
 tokens_per_minute: 8000
 request_share: 0.75
 
+# Shared pacing for the one provider key: calls run one at a time, within this share of the tokens-per-minute window. A visitor who
+# cannot be admitted gets reason `busy` with a retry time and nothing is sent.
+governor: {concurrent_calls: 1, window_share: 0.9}
+
 limits:
   turns_per_session: 15
   message_chars: 500

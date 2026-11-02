@@ -3106,7 +3106,7 @@
       },
       "fires": true,
       "visibility": "both",
-      "text": "The alert bin's own raw score (22,696) was below the smoothed score carried from 08:40 (73,697), so the smoothed score was falling at the alert: 92.85% of it came from earlier bins through smoothing.",
+      "text": "The alert bin's own raw score (22,696) was below the smoothed score carried from 08:40 (73,697), so the smoothed score was falling at the alert, and the smoothing state carried from earlier bins accounts for 92.85% of the current smoothed score.",
       "detail": "Smoothing rule: smoothed = 0.20 × raw + 0.80 × previous smoothed; restarts after a gap over 10 min. The share from earlier bins is one minus the alert bin's own term. This shows how the smoothing works; it does not show which earlier bins carried the evidence or that a condition persisted, and one large raw score can by itself produce several smoothed hits."
     },
     {
@@ -3712,5 +3712,5 @@
       }
     }
   ],
-  "sha256": "84b9f8eb60e27be2e75239432d8f9c8c5dc559259f2c7427da150bab2f921e40"
+  "sha256": "803227fc232218684b4287a9da45dc5209f86eb7da32e713f8d45a6d4a232e62"
 }

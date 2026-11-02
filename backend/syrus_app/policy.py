@@ -119,6 +119,7 @@ QUALS = [
 QUAL = {q["id"]: q for q in QUALS}
 for _q in QUALS:
     _q["pattern"] = re.compile(_q["text"], re.IGNORECASE) if _q["text"] else None
+PERSISTENCE_SAID = re.compile(r"(?<![\w.])(?:3|three) (?:of|out of) (?:the )?(?:last )?(?:4|four)(?!\d)|(?<![\w.])3 trong (?:số )?4(?!\d)|ba trong (?:số )?bốn", re.IGNORECASE)
 
 TEXT = {
     "operator_note": {"en": "Recorded as unverified for this session; it does not change any evidence or candidate status.",
@@ -256,3 +257,7 @@ CONVEY = {f: [re.compile(rx, re.IGNORECASE) for rx in groups] for f, groups in C
 GENERIC = re.compile(r"\bwhy\b|\bhow come\b|vì sao|tại sao|sao lại", re.IGNORECASE)
 for _name, _rx in FOCUS_PATTERNS.items():
     FOCUS[_name]["pattern"] = re.compile(_rx, re.IGNORECASE)
+
+# A qualification is not repeated beside a unit whose own text already states what it says: all patterns must match that text.
+QUAL["leak_demand"]["said"] = CONVEY["F-IDENT"]
+QUAL["persistence_path"]["said"] = [PERSISTENCE_SAID]

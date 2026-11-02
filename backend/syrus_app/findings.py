@@ -34,10 +34,10 @@ def ewma_memory(R, ctx):
     at, carried, mem = prev["display"]["time"], prev["display"]["score"], R["alert.memory"]["display"]
     if falling:
         text = (f"The alert bin's own raw score ({raw['display']}) was below the smoothed score carried from {at} ({carried}), so the "
-                f"smoothed score was falling at the alert: {mem} of it came from earlier bins through smoothing.")
+                f"smoothed score was falling at the alert, and the smoothing state carried from earlier bins accounts for {mem} of the current smoothed score.")
     else:
         text = (f"The alert bin's own raw score ({raw['display']}) was above the smoothed score carried from {at} ({carried}), so the "
-                f"smoothed score was still rising at the alert; {mem} of it came from earlier bins through smoothing.")
+                f"smoothed score was still rising at the alert, and the smoothing state carried from earlier bins accounts for {mem} of the current smoothed score.")
     rule = R["detector.ewma"]["display"]["rule"]
     detail = (f"Smoothing rule: {rule}. The share from earlier bins is one minus the alert bin's own term. This shows how the smoothing "
               "works; it does not show which earlier bins carried the evidence or that a condition persisted, and one large raw score "
