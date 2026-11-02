@@ -1,0 +1,7 @@
+# Runtime requirements for the slim Syrus service (backend/syrus_app). No torch, SciPy, pandas or NumPy.
+# Development and tests also need pytest, which requirements.txt already pins.
+PyYAML==6.0.3
+pydantic==2.13.4
+fastapi==0.141.1
+uvicorn==0.52.1
+httpx==0.28.1

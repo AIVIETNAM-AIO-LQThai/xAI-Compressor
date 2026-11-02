@@ -1,6 +1,6 @@
 # Syrus case files
 
-Deterministic evidence for Syrus, built from frozen AeroXAI artifacts. Nothing here retrains, retunes or re-thresholds the detector.
+Deterministic evidence for Syrus, built from frozen AeroXAI artifacts. Nothing here retrains, retunes or re-thresholds the detector. `LEDGER_REVIEW.md` records the ledger decisions and the response contract; `SERVICE.md` describes the chat service built on these files.
 
 ```bash
 python -m scripts.build_syrus_cases          # rebuild docs/syrus/cases/

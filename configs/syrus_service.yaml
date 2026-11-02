@@ -1,0 +1,28 @@
+# Syrus service settings.
+# The model is fixed by owner decision D2: Groq-hosted qwen/qwen3.8-27b, no fallback and no routing.
+# Secrets and the caps confirmation come from the server environment only:
+#   SYRUS_LLM_API_KEY       Groq API key (absent: Syrus is offline)
+#   SYRUS_CAPS_CONFIRMED=1  the owner has confirmed the caps below (absent: Syrus is offline)
+#   SYRUS_SESSION_SECRET    signs guest tokens (absent: random per process, so sessions end on restart)
+#   SYRUS_IP_SALT           salts the IP hash kept in turn metadata (absent: random per process)
+#   SYRUS_BUDGET_FILE       where spend is persisted (default outputs/syrus_budget.json)
+#   SYRUS_KILL_SWITCH=1     forces the offline state
+model: qwen/qwen3.8-27b
+endpoint: https://api.groq.com/openai/v1/chat/completions
+
+# USD per million tokens (Groq pricing, to be re-checked at the first live smoke test).
+price_per_million: {input: 0.80, output: 4.00}
+
+# Provisional caps from owner decision D3; enforced by the application before every call.
+caps_usd: {daily: 10.0, total: 30.0}
+
+limits:
+  turns_per_session: 15
+  message_chars: 500
+  max_output_tokens: 900
+  turn_timeout_seconds: 20
+  retry_min_seconds: 4
+  session_minutes: 30
+  sessions_per_ip_per_hour: 20
+  history_exchanges: 2
+  operator_statements: 5
