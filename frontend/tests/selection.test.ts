@@ -33,6 +33,12 @@ describe("explorer selections", () => {
     assert.deepEqual(parse("#explore/interval/2020-05-29T00:00/2020-05-30T00:00"), { route: "explore", selection: { kind: "interval", start: "2020-05-29T00:00", end: "2020-05-30T00:00" } });
   });
 
+  it("reads an episode investigation as its own route", () => {
+    assert.deepEqual(parse("#investigate/episode/2020-03-04T05:15"), { route: "investigate", selection: { kind: "episode", start: "2020-03-04T05:15" } });
+    assert.equal(parse("#investigate/episode/nonsense").selection, null);
+    assert.equal(parse("#investigate/interval/2020-03-04T00:00/2020-03-05T00:00").selection, null);
+  });
+
   it("rejects malformed or reversed windows", () => {
     for (const h of ["#explore", "#explore/episode/x", "#explore/interval/2020-05-29T00:00", "#explore/interval/2020-05-30T00:00/2020-05-29T00:00", "#explore/interval/2020-05-29/2020-05-30"]) {
       assert.equal(parse(h).selection, null, h);

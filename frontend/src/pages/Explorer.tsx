@@ -386,6 +386,12 @@ function EpisodeNote({ e, caseId, go }: { e: Episode; caseId?: string; go: Pick 
           </dd>
         </div>
       </dl>
+      <p className="foot">
+        <a className="link-button" href={`#investigate/episode/${e.start.replace(" ", "T").slice(0, 16)}`}>
+          Investigate this episode
+        </a>
+        : the detector's contributions and alert mechanics, computed from the recording and not reviewed.
+      </p>
       {e.linked_incident === null ? (
         <p className="foot">
           No documented incident overlaps this episode under the evaluation's rule (from 24 hours before an incident's start to its end). That is not a confirmed false alarm: the recording carries no label for this

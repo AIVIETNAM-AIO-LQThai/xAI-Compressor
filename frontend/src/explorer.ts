@@ -85,6 +85,27 @@ export interface BinData {
   samples: number;
 }
 
+/** Computed on request with the frozen detector's explanation code; not a reviewed case file. */
+export interface EpisodeEvidence {
+  episode: Episode;
+  status: "computed_not_reviewed";
+  causal_claim: false;
+  not_computed: string[];
+  linked_incident: number | null;
+  evidence: {
+    time: string;
+    threshold: number;
+    rule: { hits: number; window: number; alpha: number };
+    smoothed_score: number;
+    raw_score: number;
+    restart: boolean;
+    carried_share: number | null;
+    recent: Array<{ time: string; smoothed_score: number; hit: boolean; restart: boolean }>;
+    groups: Array<{ group: string; smoothed_contribution: number; share: number; calibration_percentile: number }>;
+    window: { complete: boolean; bins: Array<{ time: string; percentiles: Record<string, number> }> };
+  };
+}
+
 export const MAX_RANGE_DAYS = 14;
 export const MAX_RAW_HOURS = 24;
 
@@ -92,6 +113,7 @@ const q = (s: string) => encodeURIComponent(s.replace("T", " "));
 export const getEpisodes = (signal?: AbortSignal) => get<{ episodes: Episode[] }>("/explorer/episodes", signal).then((r) => r.episodes);
 export const getRange = (start: string, end: string, signal?: AbortSignal) => get<RangeData>(`/explorer/range?start=${q(start)}&end=${q(end)}`, signal);
 export const getRaw = (start: string, end: string, signal?: AbortSignal) => get<RawData>(`/explorer/raw?start=${q(start)}&end=${q(end)}`, signal);
+export const getEpisodeEvidence = (start: string, signal?: AbortSignal) => get<EpisodeEvidence>(`/explorer/episode?start=${q(start)}`, signal);
 export const getBin = (t: string, signal?: AbortSignal) => get<BinData>(`/explorer/bin?t=${q(t)}`, signal);
 
 export const getOverview = (signal?: AbortSignal) => get<ExplorerOverview>("/explorer/overview", signal);

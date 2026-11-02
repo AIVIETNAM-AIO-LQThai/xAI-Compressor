@@ -4,6 +4,7 @@ import { Sparkles } from "lucide-react";
 import { ErrorPanel } from "../components/ErrorPanel";
 import { LoadingPanel } from "../components/LoadingPanel";
 import { recallIncident, remember, type Selection } from "../selection";
+import { EpisodeInvestigation } from "./EpisodeInvestigation";
 import { EvidencePane } from "../syrus/EvidencePane";
 import { Inspector, type Ref } from "../syrus/Inspector";
 import { dateLabel, title } from "../syrus/labels";
@@ -11,12 +12,17 @@ import { openSyrus } from "../syrus/ui";
 import { useCaseFile, useCases, type CaseEntry } from "../syrus/useCase";
 
 interface Props {
-  selection: Extract<Selection, { kind: "incident" }> | null;
+  selection: Exclude<Selection, { kind: "interval" }> | null;
   go: (s: Selection) => void;
 }
 
 /** One selected documented incident. Without a selection it asks the user to choose; it never picks one. */
 export function Investigation({ selection, go }: Props) {
+  if (selection?.kind === "episode") return <EpisodeInvestigation selection={selection} go={go} />;
+  return <Incidents selection={selection} go={go} />;
+}
+
+function Incidents({ selection, go }: { selection: Extract<Selection, { kind: "incident" }> | null; go: (s: Selection) => void }) {
   const { cases, error } = useCases();
   const entry = selection && cases?.find((c) => c.caseId === selection.caseId);
 
@@ -58,7 +64,7 @@ function Picker({ cases, go, unknown }: { cases: CaseEntry[]; go: (s: Selection)
           </li>
         ))}
       </ul>
-      <p className="muted pick-note">Alert episodes without a documented incident and arbitrary recorded intervals come with the data explorer.</p>
+      <p className="muted pick-note">Any alert episode, linked or not, can also be investigated from the <a href="#explore">Data Explorer</a>, with computed evidence and without Syrus.</p>
     </div>
   );
 }

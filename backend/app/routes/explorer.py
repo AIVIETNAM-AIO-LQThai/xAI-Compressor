@@ -4,10 +4,12 @@ import re
 import pandas as pd
 from fastapi import APIRouter, HTTPException
 
+from backend.app.episode_evidence import EpisodeEvidence
 from backend.app.explorer import MAX_RANGE, MAX_RAW, Explorer, IndexMissing
 
 router = APIRouter(prefix="/explorer", tags=["explorer"])
 explorer = Explorer()
+evidence = EpisodeEvidence(explorer)
 STAMP = re.compile(r"\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2}(?::\d{2})?)?")
 
 
@@ -62,5 +64,18 @@ def bin_(t: str):
             return explorer.bin(stamp)
         except KeyError as e:
             raise HTTPException(404, detail={"code": "bin_not_found"}) from e
+
+    return _guard(get)
+
+
+@router.get("/episode")
+def episode(start: str):
+    stamp = _time(start)
+
+    def get():
+        try:
+            return evidence.episode(stamp)
+        except KeyError as e:
+            raise HTTPException(404, detail={"code": "episode_not_found"}) from e
 
     return _guard(get)

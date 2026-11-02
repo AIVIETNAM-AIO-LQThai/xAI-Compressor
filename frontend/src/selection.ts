@@ -24,7 +24,7 @@ const CASE = /^c-[a-z0-9]+$/;
 const STAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 const KEY = "aeroxai.selection";
 
-/** `#investigate/incident/<case>/<asof|retro>`, `#explore/episode/<start>`, `#explore/interval/<start>/<end>`; the earlier `#investigation/<case>/<mode>` form is still understood. */
+/** `#investigate/incident/<case>/<asof|retro>`, `#investigate/episode/<start>`, `#explore/episode/<start>`, `#explore/interval/<start>/<end>`; the earlier `#investigation/<case>/<mode>` form is still understood. */
 export function parse(hash: string): Where {
   const parts = hash.replace(/^#/, "").split("/");
   if (parts[0] === "investigation") {
@@ -35,12 +35,15 @@ export function parse(hash: string): Where {
   if (route === "investigate" && parts[1] === "incident" && CASE.test(parts[2] ?? "")) {
     return { route, selection: { kind: "incident", caseId: parts[2], mode: parts[3] === "asof" ? "asof" : "retro" } };
   }
-  if (route === "explore" && parts[1] === "episode" && STAMP.test(parts[2] ?? "")) return { route, selection: { kind: "episode", start: parts[2] } };
+  if ((route === "explore" || route === "investigate") && parts[1] === "episode" && STAMP.test(parts[2] ?? "")) return { route, selection: { kind: "episode", start: parts[2] } };
   if (route === "explore" && parts[1] === "interval" && STAMP.test(parts[2] ?? "") && STAMP.test(parts[3] ?? "") && parts[2] < parts[3]) {
     return { route, selection: { kind: "interval", start: parts[2], end: parts[3] } };
   }
   return { route, selection: null };
 }
+
+/** The investigation view of an episode; `hashFor` gives its data view. */
+export const investigateHash = (start: string) => `investigate/episode/${start}`;
 
 export function hashFor(s: Selection): string {
   if (s.kind === "incident") return `investigate/incident/${s.caseId}/${s.mode}`;

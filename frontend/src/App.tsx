@@ -60,7 +60,7 @@ export default function App() {
 
   const content =
     where.route === "investigate" ? (
-      <Investigation selection={where.selection?.kind === "incident" ? where.selection : null} go={choose} />
+      <Investigation selection={where.selection?.kind === "interval" ? null : where.selection} go={choose} />
     ) : where.route === "explore" ? (
       <Explorer selection={where.selection?.kind === "incident" ? null : where.selection} go={choose} />
     ) : where.route === "incident" ? (
