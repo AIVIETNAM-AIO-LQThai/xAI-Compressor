@@ -5,7 +5,7 @@ import json
 import pytest
 
 from backend.syrus_app.policy import CONVEY
-from backend.syrus_app.validator import conveyed, missing, parse, tokens
+from backend.syrus_app.validator import check, conveyed, missing, parse, tokens
 from scripts.syrus_tokens import items
 from tests.test_syrus_context import (
     CASE,
@@ -48,6 +48,43 @@ def test_a_leak_certainty_question_requires_the_label_and_identifiability_only(m
     assert {"F-LABEL", "F-IDENT"} <= set(v.findings) and "label.incident" in v.records
 
 
+@pytest.mark.parametrize("depth", ["quick", "investigation", "technical"])
+@pytest.mark.parametrize("message", [EN, VI, "Is it really a leak?", "Có phải rò rỉ thật sự không?"])
+def test_a_leak_certainty_question_is_not_offered_the_candidate_purposes_or_evidence(message, depth):
+    v = view(message, depth)
+    assert v.focus == ("certainty",) and v.purposes == ("evidence_and_sources", "outside_evidence") and not v.tests and v.pairs  # the leakage/demand pair limit stays
+    assert not {"F-CANDIDATES", "F-CF-NONUNIQUE", "F-TIMING"} & set(v.findings)
+    s = v.schema["properties"]
+    assert s["purposes"]["items"]["enum"] == ["evidence_and_sources", "outside_evidence"] and s["next_test"]["enum"] == [None]
+
+
+@pytest.mark.parametrize("message", [EN, VI])
+def test_declaring_possible_causes_on_a_leak_certainty_question_is_rejected_not_rewarded(tmp_path, message):
+    v = view(message, "investigation")
+    r, _ = parse(json.dumps(reply(LABEL_EN, IDENT_EN, purposes=["possible_causes"], refusal="diagnosis_request")))
+    assert "not_offered" in {f.code for f in check(r, PACK, message, "investigation", v)}
+    # the same reply, with the cause-finding requirements the declared purpose would have added, never reaches the completeness check
+    fake = Fake(reply(LABEL_EN, IDENT_EN, purposes=["possible_causes"], refusal="diagnosis_request"))
+    c = client(tmp_path, fake)
+    body = ask(c, start(c), message, depth="investigation").json()
+    assert body["status"] == "failed_checks" and body["failed"] == ["not_offered"] and len(fake.calls) == 2
+    assert "possible_causes" not in json.dumps(fake.calls[0]["schema"]["properties"]["purposes"])
+
+
+@pytest.mark.parametrize(("message", "focus", "purpose", "required"), [
+    ("Was it a leak, and which signal drove the alert?", ("attribution", "signals"), True, ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
+    ("Có phải rò rỉ thật sự không, và tín hiệu nào gây ra cảnh báo?", ("attribution", "signals"), True, ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
+    ("Was it definitely a leak, or did a counterfactual repair change that?", ("attribution", "repair"), True, ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE", "F-CF-PERSIST")),
+    ("Is it definitely a regulator fault?", ("attribution",), True, ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
+    ("What are the candidate causes?", ("attribution",), True, ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
+    ("Is it definitely a leak, and did the alert come early?", ("certainty", "lead"), False, ("F-LABEL", "F-IDENT", "F-TIMING")),
+])
+def test_compound_and_generic_questions_keep_the_investigation_pathway(message, focus, purpose, required):
+    v = view(message, "investigation", STORE.pack(next(c["case_id"] for c in STORE.manifest["cases"] if c["alert_time"].startswith("2020-07-15"))))
+    assert v.focus == focus and ("possible_causes" in v.purposes) is purpose and bool(v.tests) is purpose
+    assert v.required == required  # F-CF-PERSIST fires in this case, which is why the repair question lists it
+
+
 def test_a_generic_candidate_question_does_not_require_the_label():
     for message in ("What are the candidate causes?", "Is it the regulator or a sensor problem?", "Did DV pressure cause it?"):
         assert "F-LABEL" not in view(message, "investigation").required, message
@@ -73,6 +110,7 @@ def test_repeating_a_timestamp_does_not_convey_the_label():
     ("The provider's list labels it \"Air leak, high stress\".", False),  # no statement that AeroXAI does not establish it
     ("AeroXAI's evidence does not establish an air leak.", False),  # no provenance
     ("The provider failure list says the interval is a leak.", False),  # no limit
+    ("The provider failure list does not show an air leak.", False),  # a negation that misstates the label is not the limit
     ("The provider failure list labels the interval \"Air leak, high stress\"; this is not an independent finding by AeroXAI.", True),
     ("The transcribed provider list shows air leak, high stress, which AeroXAI cannot confirm.", True),
     ("Danh sách của nhà cung cấp ghi nhãn rò rỉ, nhưng AeroXAI chưa xác nhận điều đó.", True),
@@ -137,11 +175,16 @@ def test_the_label_is_not_demanded_of_a_generic_candidate_question(tmp_path):
 
 def test_the_fixture_lists_every_finding_the_server_requires_for_each_turn():
     by_alert = {c["alert_time"][:10]: c["case_id"] for c in STORE.manifest["cases"]}
-    for item in items():
-        pack = STORE.pack(by_alert[item["alert"]])
-        for turn in item["turns"]:
-            required = set(view(turn["text"], item["depth"], pack).required)
-            assert required <= set(turn["essentials"]), (item["id"], sorted(required - set(turn["essentials"])))
+    for case in STORE.manifest["cases"]:
+        pack = STORE.pack(case["case_id"])
+        for item in items():
+            own = STORE.pack(by_alert[item["alert"]])
+            silent = {f for f, x in own.findings.items() if not x["fires"]}  # may be required on other cases, where they fire
+            for turn in item["turns"]:
+                required = set(view(turn["text"], item["depth"], pack).required)
+                assert required <= set(turn["essentials"]) | silent, (case["case_id"], item["id"], sorted(required - set(turn["essentials"])))
+                if case["case_id"] == own.case_id:
+                    assert required <= set(turn["essentials"])
     leak = {i["id"]: i["turns"][0]["essentials"] for i in items() if i["id"].startswith("definitely_a_leak")}
     assert leak == {"definitely_a_leak": ["F-LABEL", "F-IDENT"], "definitely_a_leak_vi": ["F-LABEL", "F-IDENT"]}
 

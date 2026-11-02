@@ -71,9 +71,11 @@ def _text(message: str) -> str:
 
 
 def classify(message: str) -> list[str]:
-    """Topics a question touches, in table order."""
+    """Topics a question touches, in table order. A narrower topic subsumes the broader one it is listed against (NARROWS): a standalone
+    "was it definitely a leak?" is not also a candidate-causes question, so it gets neither that topic's purposes nor its requirements."""
     text = _text(message)
-    return [name for name, f in FOCUS.items() if f["pattern"].search(text)]
+    found = [name for name, f in FOCUS.items() if f["pattern"].search(text)]
+    return [f for f in found if not any(narrow in found and NARROWS[narrow] == f for narrow in NARROWS)]
 
 
 def inherits(message: str, previous: list[str] | tuple = ()) -> bool:
@@ -117,8 +119,7 @@ def build_view(pack: Pack, focus: list[str], dropped: list[str], depth_pref: str
     for fid, _ in [*(e for x in focus for e in ESSENTIAL.get(x, [])), *(e for p in purposes for e in PURPOSES[p]["require"])]:
         if fid not in pack.findings:
             raise SelectionError("context_incomplete", f"finding {fid}")
-    narrowed = {broad for narrow, broad in NARROWS.items() if narrow in focus}
-    for fid, minimum in (e for x in focus if x not in narrowed for e in ESSENTIAL.get(x, [])):
+    for fid, minimum in (e for x in focus for e in ESSENTIAL.get(x, [])):
         if depth_after(depth, minimum) and pack.findings[fid]["fires"] and fid not in required:
             required.append(fid)
     for fid, minimum in (e for p in purposes for e in PURPOSES[p]["require"]):

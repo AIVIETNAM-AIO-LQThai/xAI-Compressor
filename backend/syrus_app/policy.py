@@ -185,7 +185,7 @@ FOCUS_PATTERNS = {
     "lead": r"\bonset\b|\bprecursor|\bpredict|\bforecast|\bearly\b|\bahead\b|in advance|lead time|before the (?:incident|failure|leak)|dự đoán|dự báo|\bsớm\b|trước khi",
     # A short question about whether the documented incident was definitely a leak (or another named fault). A question that also asks
     # about causes, signals, repairs or PCA evidence is an attribution question instead.
-    "certainty": r"(?s)\A(?!.*(?:\bcaus|\bresponsib|\bdriv|\bsignal|\bcontribut|\brepair|\bpca\b|nguyên nhân|gây ra|tín hiệu|đóng góp|sửa))"
+    "certainty": r"(?s)\A(?!.*(?:\bcaus|\bresponsib|\bdriv|\bsignal|\bcontribut|\brepair|\bpca\b|\bregulat|\bsensor|\bcompressor|nguyên nhân|gây ra|tín hiệu|đóng góp|sửa|điều áp|cảm biến))"
                  r"(?=.*(?:\bdefinitely\b|\bcertain|\bsure\b|\bconfirm|\bactually\b|\breally\b|\bproven?\b|chắc chắn|xác nhận|thật sự|có phải))"
                  r"(?=.*(?:\bleak|\bdryer|\bfault|rò rỉ|máy sấy|\blỗi\b))",
     "signals": r"\btp[23]\b|\bh1\b|dv[_ ]?pressure|dv[_ ]?electric|motor[_ ]?current|oil[_ ]?(?:temperature|level)|reservoirs?|\bcomp\b|\btowers?\b|\bmpg\b|\blps\b"
@@ -229,8 +229,8 @@ ESSENTIAL = {
     "range": [("F-TRAIN-RANGE", "quick")],
     "energy": [("F-BRIDGE", "quick")],
 }
-# A narrower topic's essentials replace a broader one's when both are active: a short "was it definitely a leak?" asks for the label and
-# the identifiability limit, not for the candidate list or the repair evidence. The broader topic's evidence is still loaded.
+# A narrower topic subsumes the broader one when both match: a short "was it definitely a leak?" asks for the label and the
+# identifiability limit, not for the candidate list or the repair evidence, and must not be offered the broader topic's purposes.
 NARROWS = {"certainty": "attribution"}
 # What counts as conveying a finding that states no figure to repeat: every group must match the text of the units that cite it. A
 # matching timestamp or number is not enough. Draft Vietnamese wording; it needs the owner's review.
@@ -240,7 +240,7 @@ CONVEY = {
         r"air[- ]leak|high[- ]stress|rò rỉ",
         r"provider|failure list|transcri|repository|configuration|nhà cung cấp|danh sách|phiên âm|sao chép|cấu hình|kho mã",
         (r"\bnot (?:an? |the )?(?:independent|established|confirmed|verified|proof)|n't (?:an? )?(?:independent|establish|confirm|verif)"
-         r"|\bnot (?:establish|confirm|verif|prov|show)|no independent|cannot (?:establish|confirm|verify)"
+         r"|\bnot (?:establish|confirm|verif)|no independent|cannot (?:establish|confirm|verify)"
          r"|không (?:xác lập|xác nhận|chứng minh|kiểm chứng|độc lập|thiết lập)|chưa (?:xác lập|xác nhận|được kiểm chứng|kiểm chứng)"),
     ],
     # leakage and downstream demand, and that this data cannot separate them

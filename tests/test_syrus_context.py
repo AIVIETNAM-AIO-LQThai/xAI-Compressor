@@ -167,8 +167,8 @@ CATEGORIES = [
     ("Vì sao cảnh báo này xuất hiện?", ["alert"]),
     ("And what about the jump at 21:10?", ["timing"]),
     ("Bằng chứng tăng lúc nào trong cửa sổ?", ["timing"]),
-    ("Was this definitely an air leak?", ["certainty", "attribution"]),
-    ("Đây có chắc chắn là rò rỉ khí không?", ["certainty", "attribution"]),
+    ("Was this definitely an air leak?", ["certainty"]),
+    ("Đây có chắc chắn là rò rỉ khí không?", ["certainty"]),
     ("Did removing the motor_current contribution fix the compressor?", ["repair", "signals"]),
     ("Nếu thay thế tín hiệu tp2 thì sao?", ["repair", "signals"]),
     ("Did the model predict it 2 hours early?", ["lead"]),
@@ -196,7 +196,7 @@ def test_a_simple_alert_explanation_leaves_out_candidates_repairs_and_tests():
 
 
 def test_a_candidate_question_gets_candidates_tests_and_the_pair_limit():
-    v = view("Was this definitely an air leak?", "investigation")
+    v = view("What are the candidate causes?", "investigation")
     assert {"F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE", "F-LABEL", "F-TIMING"} <= set(v.findings)
     assert len([i for i in v.records if i.startswith("hyp.")]) == 8 and len(v.tests) == 7 and v.pairs
     assert "leakage" in v.text.lower() and "air_leakage / downstream_demand" in v.sections["tests"]
@@ -255,7 +255,7 @@ def test_a_follow_up_gets_its_own_topic_and_earlier_exchanges_while_they_fit():
 
 
 def test_the_candidate_test_table_is_dropped_before_any_topic():
-    q = "Was this definitely an air leak?"
+    q = "What are the candidate causes?"
     full = build(PACK, thread(), q, "investigation", CAP, 2)
     lean = build(PACK, thread(), q, "investigation", full.est - 1, 2)
     assert full.view.tests and not lean.view.tests and lean.view.focus == full.view.focus and lean.view.dropped == ()
