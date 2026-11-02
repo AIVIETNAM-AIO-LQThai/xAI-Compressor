@@ -2,8 +2,8 @@
 
     uvicorn backend.web:app --host 127.0.0.1 --port 8000
 
-`/api/*` is the Syrus service (one budget, one session store, one governor); `/evidence/*`, `/twin/*`, `/optimization/*` and `/health` are the
-existing dashboard routes, reused as they are; every other path serves `frontend/dist` when it has been built. The browser and a phone on the
+`/api/*` is the Syrus service (one budget, one session store, one governor); `/evidence/*`, `/explorer/*`, `/twin/*`, `/optimization/*` and `/health` are
+the dashboard routes, reused as they are; every other path serves `frontend/dist` when it has been built. The browser and a phone on the
 same network use one URL and no CORS. With AEROXAI_PUBLIC=1 the simulation-compute routes (`/twin`, `/optimization`) are not served at all.
 """
 import os
@@ -14,6 +14,7 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.app.routes.detection import router as detection
 from backend.app.routes.evidence import router as evidence
+from backend.app.routes.explorer import router as explorer
 from backend.app.routes.optimization import router as optimization
 from backend.app.routes.twin import router as twin
 from backend.syrus_app.app import create_app as create_syrus
@@ -30,7 +31,7 @@ def create_web(settings: Settings | None = None, adapter=None, store=None, dist:
     app.state.svc = syrus.state.svc
     for exc in (ApiError, SessionError):
         app.add_exception_handler(exc, syrus.exception_handlers[exc])
-    for router in (detection, evidence) if public else (detection, evidence, twin, optimization):
+    for router in (detection, evidence, explorer) if public else (detection, evidence, explorer, twin, optimization):
         app.include_router(router)
     app.router.routes.extend(r for r in syrus.router.routes if getattr(r, "path", "").startswith("/api/"))
 

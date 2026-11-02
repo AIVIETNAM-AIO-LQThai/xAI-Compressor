@@ -323,7 +323,8 @@ def build(case_cfg: dict, src: Sources) -> tuple[dict, dict]:
 
     # Retrospective records.
     lab, p = got(METRO, f"/dataset/reported_incidents[id={i}]")
-    add(record("label.incident", "dataset_label", {"condition": lab["condition"], "start": lab["start"], "end": lab["end"]},
+    names = [h["id"] for h in hyp_cfg["hypotheses"] if lab["condition"] in h.get("label_conditions", [])]  # candidates the label's wording names
+    add(record("label.incident", "dataset_label", {"condition": lab["condition"], "start": lab["start"], "end": lab["end"], "names_candidates": names},
                {"condition": CONDITIONS[lab["condition"]], "interval": f"{minute(lab['start'])} to {minute(lab['end'])}"}, [p], vis="retro",
                caveat="Transcribed in configs/metropt.yaml from the provider's failure list. The original document is not loaded, so this record cannot cite it yet."))
     (tm, p1), (lead, p2), (delay, p3) = (got(XAI, f"{inc}/{k}") for k in ("timing", "lead_hours", "delay_hours"))

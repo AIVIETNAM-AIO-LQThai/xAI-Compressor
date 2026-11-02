@@ -10,8 +10,9 @@ from backend.syrus_app.budget import Budget, BudgetExceeded
 from backend.syrus_app.context import CaseStore
 from backend.syrus_app.governor import Governor
 from backend.syrus_app.llm import Adapter, LlmError
-from backend.syrus_app.policy import TEXT
+from backend.syrus_app.policy import FIX_HINTS, TEXT
 from backend.syrus_app.prompt import build
+from backend.syrus_app.records import KINDS
 from backend.syrus_app.selection import SelectionError
 from backend.syrus_app.sessions import Sessions, Thread
 from backend.syrus_app.settings import Settings
@@ -19,6 +20,16 @@ from backend.syrus_app.tokens import estimate_request
 from backend.syrus_app.validator import Fail, check, conveyed, missing, parse
 
 log = logging.getLogger("syrus.turns")
+
+
+KIND_NAMES = {*KINDS, "background"}
+
+
+def correction(fails: list[Fail]) -> str:
+    """The one correction request: the failed checks, then a fixed repair hint for each kind of failure."""
+    hints = [FIX_HINTS[c] for c in dict.fromkeys(f.code for f in fails) if c in FIX_HINTS]
+    return ("The reply failed these checks: " + "; ".join(map(str, fails)) + ". " + " ".join(hints)
+            + (" " if hints else "") + "Return the complete corrected JSON object; change only what is needed.")
 
 
 class ApiError(Exception):
@@ -104,9 +115,10 @@ class Service:
                 self.budget.settle(held, 0, 0)
                 if attempt:
                     break
-                diag["calls"].append({"estimated_in": est, "billing": "none", "error": "busy", "retry_after": wait})
-                self.record(thread, "offline:busy", 0, 0, 0, None, ip, diag)
-                return self.offline("busy", wait, diag)
+                why = self.governor.refused or "busy"
+                diag["calls"].append({"estimated_in": est, "billing": "none", "error": why, "retry_after": wait})
+                self.record(thread, f"offline:{why}", 0, 0, 0, None, ip, diag)
+                return self.offline(why, wait, diag)
             try:
                 done = await self.adapter.complete(msgs, view.schema, lim["max_output_tokens"], remaining)
             except LlmError as e:
@@ -140,8 +152,11 @@ class Service:
                     fallback, fails = (reply, depth, miss), [Fail("required_finding", ", ".join(miss))]
             if fails and verdict.get("verdict") != "rejected":
                 verdict.update(verdict="rejected", codes=sorted({f.code for f in fails}))
+            if reply:  # each unit's declared kind and the kinds of the records it cites: IDs and kinds only, never text
+                verdict["units"] = [{"kind": u.kind if u.kind in KIND_NAMES else "other", "cited_kinds": sorted({pack.records[i]["kind"] for i in u.record_ids if i in pack.records})}
+                                    for u in reply.units]
             msgs = [*msgs, {"role": "assistant", "content": done.text},
-                    {"role": "user", "content": "The reply failed these checks: " + "; ".join(map(str, fails)) + ". Return the complete corrected JSON object; change only what is needed."}]
+                    {"role": "user", "content": correction(fails)}]
         if fallback:
             reply, depth, miss = fallback
             return self.finish(thread, pack, view, reply, depth, message, miss, used, start, ip, diag)

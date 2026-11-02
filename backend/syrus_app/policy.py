@@ -121,6 +121,17 @@ for _q in QUALS:
     _q["pattern"] = re.compile(_q["text"], re.IGNORECASE) if _q["text"] else None
 PERSISTENCE_SAID = re.compile(r"(?<![\w.])(?:3|three) (?:of|out of) (?:the )?(?:last )?(?:4|four)(?!\d)|(?<![\w.])3 trong (?:số )?4(?!\d)|ba trong (?:số )?bốn", re.IGNORECASE)
 
+# How to repair a failed check, sent with the one correction request. Fixed text; it names no record or finding.
+FIX_HINTS = {
+    "kind_mismatch": "Split that unit into separate units, one per record kind (for example the dataset label in one unit and the candidates in "
+                     "another); records of kind unavailable may be cited alongside any unit.",
+    "entity_not_cited": "Cite a record that carries that signal or candidate in the same unit, or leave the name out of that unit.",
+    "number_not_cited": "Use only numbers and times shown in the records the unit cites, or cite the record that shows them.",
+    "source_not_cited": "When a unit mentions documents, raw data or definitions, cite the matching unavailable record in that unit.",
+    "required_finding": "Add a unit that states each named finding and cites it.",
+    "not_offered": "Use only the purposes, records and findings listed in the schema.",
+}
+
 TEXT = {
     "operator_note": {"en": "Recorded as unverified for this session; it does not change any evidence or candidate status.",
                       "vi": "Đã ghi nhận là chưa kiểm chứng trong phiên này; điều đó không làm thay đổi bằng chứng hay trạng thái của các giả thuyết."},

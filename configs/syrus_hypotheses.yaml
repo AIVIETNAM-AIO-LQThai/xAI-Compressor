@@ -37,6 +37,9 @@ hypotheses:
       vi: Khí thoát ra ngoài qua chỗ rò, làm tăng tổng lưu lượng khí ra. Chỉ dựa vào bằng chứng của bộ phát hiện thì không tách được khả năng này với nhu cầu khí phía hạ nguồn tăng.
     groups: [dv_pressure, tp2, pressure_relationships]
     frozen_ids: [leak_like_persistent_outflow]
+    # The provider's label wording that names this candidate. A claim stating that label may use the candidate's name without
+    # citing the candidate record (in Vietnamese the label "air leak" and this candidate share the words "rò rỉ khí").
+    label_conditions: [air_leak_high_stress]
 
   - id: downstream_demand
     layer: process

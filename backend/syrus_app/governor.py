@@ -13,6 +13,7 @@ class Governor:
         self.limit, self.concurrent, self.now = int(tokens_per_minute * share), concurrent, now
         self.window: deque = deque()  # (start time, tokens) of calls in the last minute
         self.inflight = 0
+        self.refused: str | None = None
         self.ratio = 1.0  # observed provider-counted input tokens per estimated token, learned from completed calls
 
     def observe(self, estimated: int, actual: int) -> None:
@@ -25,12 +26,16 @@ class Governor:
             self.window.popleft()
 
     def admit(self, tokens: int) -> tuple[object | None, float]:
-        """A ticket for the call, or (None, seconds to wait). A call larger than the whole window is never admitted."""
+        """A ticket for the call, or (None, seconds to wait). A call larger than the whole window is never admitted. On a refusal
+        `refused` says why: "busy" (another call is in flight) or "paced" (this minute's token allowance is used)."""
         self._expire()
+        self.refused = None
         if self.inflight >= self.concurrent:
+            self.refused = "busy"
             return None, 3.0
         used, ticket = sum(t for _, t in self.window), [self.now(), tokens]
         if used + tokens > self.limit:
+            self.refused = "paced"
             need, freed = used + tokens - self.limit, 0
             for start, t in self.window:
                 freed += t

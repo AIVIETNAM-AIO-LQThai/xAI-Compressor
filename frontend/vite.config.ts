@@ -12,6 +12,7 @@ export default defineConfig({
     proxy: {
       "/api": backend,
       "/evidence": backend,
+      "/explorer": backend,
       "/twin": backend,
       "/optimization": backend,
       "/health": backend,

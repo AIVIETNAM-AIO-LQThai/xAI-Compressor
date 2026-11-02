@@ -26,6 +26,14 @@ Set in `.env` at the repository root (never committed, never read by the browser
 
 `.env` is loaded automatically, so starting the app with a real key configured makes every question a paid call. To look at the interface without spending, start it with the kill switch (the interface shows Syrus as switched off) or use the interface check server below.
 
+## Recorded-data index (once, and after any change to the frozen data)
+
+```powershell
+python -m scripts.build_explorer_index
+```
+
+Reads the local MetroPT-3 recording and frozen splits, rebuilds the frozen detector's series and writes `data/processed/explorer/` (about 30 MB, gitignored). It stops without a manifest unless it reproduces the frozen threshold, the Incident 2 smoothed score and the 142 / 133 episode counts. Without it the explorer endpoints answer `explorer_index_missing`.
+
 ## Start
 
 Production-style, one origin:

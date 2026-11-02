@@ -2188,7 +2188,7 @@
         {
           "file": "configs/syrus_hypotheses.yaml",
           "path": "/hypotheses[id=air_leakage]",
-          "sha256": "283be69e578a5cf7b65f3d4d075994f12319d8cc04930a40c5e0378152b03f71"
+          "sha256": "5fe31a0eb735d0536e6220e3a35e25bca72fe927bf84be77be2d58b3878bb314"
         },
         {
           "file": "configs/syrus_discriminators.yaml",
@@ -2243,7 +2243,7 @@
         {
           "file": "configs/syrus_hypotheses.yaml",
           "path": "/hypotheses[id=downstream_demand]",
-          "sha256": "283be69e578a5cf7b65f3d4d075994f12319d8cc04930a40c5e0378152b03f71"
+          "sha256": "5fe31a0eb735d0536e6220e3a35e25bca72fe927bf84be77be2d58b3878bb314"
         },
         {
           "file": "configs/syrus_discriminators.yaml",
@@ -2293,7 +2293,7 @@
         {
           "file": "configs/syrus_hypotheses.yaml",
           "path": "/hypotheses[id=pressure_regulation]",
-          "sha256": "283be69e578a5cf7b65f3d4d075994f12319d8cc04930a40c5e0378152b03f71"
+          "sha256": "5fe31a0eb735d0536e6220e3a35e25bca72fe927bf84be77be2d58b3878bb314"
         },
         {
           "file": "configs/syrus_discriminators.yaml",
@@ -2346,7 +2346,7 @@
         {
           "file": "configs/syrus_hypotheses.yaml",
           "path": "/hypotheses[id=compressor_performance]",
-          "sha256": "283be69e578a5cf7b65f3d4d075994f12319d8cc04930a40c5e0378152b03f71"
+          "sha256": "5fe31a0eb735d0536e6220e3a35e25bca72fe927bf84be77be2d58b3878bb314"
         },
         {
           "file": "configs/syrus_discriminators.yaml",
@@ -2388,7 +2388,7 @@
         {
           "file": "configs/syrus_hypotheses.yaml",
           "path": "/hypotheses[id=normal_operating_change]",
-          "sha256": "283be69e578a5cf7b65f3d4d075994f12319d8cc04930a40c5e0378152b03f71"
+          "sha256": "5fe31a0eb735d0536e6220e3a35e25bca72fe927bf84be77be2d58b3878bb314"
         },
         {
           "file": "configs/syrus_discriminators.yaml",
@@ -2438,7 +2438,7 @@
         {
           "file": "configs/syrus_hypotheses.yaml",
           "path": "/hypotheses[id=sensor_problem]",
-          "sha256": "283be69e578a5cf7b65f3d4d075994f12319d8cc04930a40c5e0378152b03f71"
+          "sha256": "5fe31a0eb735d0536e6220e3a35e25bca72fe927bf84be77be2d58b3878bb314"
         },
         {
           "file": "configs/syrus_discriminators.yaml",
@@ -2481,7 +2481,7 @@
         {
           "file": "configs/syrus_hypotheses.yaml",
           "path": "/hypotheses[id=data_quality]",
-          "sha256": "283be69e578a5cf7b65f3d4d075994f12319d8cc04930a40c5e0378152b03f71"
+          "sha256": "5fe31a0eb735d0536e6220e3a35e25bca72fe927bf84be77be2d58b3878bb314"
         },
         {
           "file": "configs/syrus_discriminators.yaml",
@@ -2521,7 +2521,7 @@
         {
           "file": "configs/syrus_hypotheses.yaml",
           "path": "/hypotheses[id=reference_coverage]",
-          "sha256": "283be69e578a5cf7b65f3d4d075994f12319d8cc04930a40c5e0378152b03f71"
+          "sha256": "5fe31a0eb735d0536e6220e3a35e25bca72fe927bf84be77be2d58b3878bb314"
         },
         {
           "file": "configs/syrus_discriminators.yaml",
@@ -2542,7 +2542,10 @@
       "value": {
         "condition": "air_leak_high_stress",
         "start": "2020-04-18 00:00:00",
-        "end": "2020-04-18 23:59:00"
+        "end": "2020-04-18 23:59:00",
+        "names_candidates": [
+          "air_leakage"
+        ]
       },
       "display": {
         "condition": "Air leak, high stress",
@@ -3428,5 +3431,5 @@
       }
     }
   ],
-  "sha256": "a787bf473570ed9103ae5dd2e933c927f745218e65f0dec56907bb6491286d1d"
+  "sha256": "cbfd10e526fcb27888b589ca3bde751e1caf0add89ad8b68749da42bdbb57a2b"
 }
