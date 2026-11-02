@@ -13,7 +13,7 @@
   --panel-raised: #181e24;
   --line: rgba(255, 255, 255, 0.11);
   --text: #f2f3f5;
-  --muted: #9ca4ad;
+  --muted: #aab2bb;
   --cyan: #ff7126;
   --cyan-2: #ffb58a;
   --lime: #6fcf8a;
@@ -225,7 +225,7 @@ button {
   margin-left: 248px;
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow: clip; /* clip, not hidden: hidden makes this a scroll container, which breaks sticky and lets scrollIntoView scroll it */
 }
 
 .ambient-grid {

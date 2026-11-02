@@ -85,3 +85,7 @@ Run in the built-in browser against `backend.web` with `scripts/qa_web.py` (a sc
 Found and fixed during these checks: the page crashed on the first answer (an effect returned a value instead of a cleanup); a limit stated in one unit was still appended beside another unit; a provider refusal kept its tokens in the governor's window; the governor reserved the pessimistic estimate and refused a second question within a minute (it now learns the real ratio, never below half).
 
 Not checked: a real phone on a network, two simultaneous visitors, Vietnamese in the interface, keyboard-only use beyond focus outlines and Escape, screen readers.
+
+### Interface refinement checks (scripted model double)
+
+Section flow, section nav jump, collapse with `aria-expanded`, the all-findings drawer (13 findings in full, grouped), stacked dialogs closing one at a time on Escape, numbered sources with the collapsed list, the "Evidence note" labels, past-only mode (same sections, no label text, no chat, 8 findings), and no horizontal overflow at 1920, 820 and 375 px. Frontend `tsc`, `npm run build` and `npm test` pass. Not checked: a real phone, keyboard-only use end to end, screen readers.

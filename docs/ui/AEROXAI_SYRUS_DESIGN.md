@@ -15,11 +15,11 @@ The deck supplies the brand: deep black, one vivid orange, white type, the Detec
 
 Overview · Investigation · Detector Replay · Evidence Proof · Simulation Lab · Advisory. Only Investigation is new; the other pages keep their function and take the new theme. Routes are hash routes: `#investigation/<case>/<asof|retro>`.
 
-**Investigation** is two coordinated panes. Evidence (left): score, threshold and margin; alert mechanics (the 3-of-4 bins, previous smoothed state against the raw score); Verified Findings; detector contributions with calibration ranks; the evidence window as a chart of real percentiles; counterfactual repairs; unranked candidates, the leakage/demand limit and the discriminating observations; missing evidence; the physical-action gate. Syrus (right): depth chips (Quick Note, Investigation, Technical, sent as `quick`, `investigation`, `technical`), verified highlights, suggested questions, claim blocks with the server's qualifications inline, "Also relevant" lines, a "Next useful question" from the test table, and chips that open the evidence inspector. Every chip, metric and finding opens the inspector with the exact text, caveat, source files and hashes for that record, from the loaded case file only.
+**Investigation** is two coordinated panes. Evidence (left) is a short flow of collapsible sections with a sticky section nav: **Alert** (open: mechanics and the three most useful Verified Findings, with "View all N findings" opening every finding in full), **Why the detector alerted** (open: contributions with calibration ranks, and the evidence window as a chart of real percentiles), **What was tested** (counterfactual repairs), **What it could be** (unranked candidates, the leakage/demand limit, discriminating observations), **What is not known** (missing evidence, the physical-action gate, and the documented label in Retrospective mode only). Each collapsed header carries one figure. Syrus (right): depth chips with a one-line hint (Quick Note, Investigation, Technical, sent as `quick`, `investigation`, `technical`), verified highlights, suggested questions, and answers in which the server's qualifications appear inline as labelled "Evidence note" blocks, with numbered source markers on each claim and one collapsed "Sources" list per answer. Every marker, metric and finding opens the inspector with the exact text, caveat, source files and hashes, from the loaded case file only. Dialogs hold focus, close on Escape and return focus; only the top dialog answers Escape.
 
 **Past-only mode** shows the evidence available at the alert and no retrospective label. Chat is off there (the service does not answer as-of questions); the pane shows verified highlights and says why. **Retrospective mode** enables chat.
 
-**Phone** (under 820 px): the page opens on Syrus with a one-line alert summary and compact incident and mode controls; Evidence is one tap away; the inspector is a bottom sheet.
+**Phone and tablet** (up to 820 px): the page opens on Syrus with a one-line alert summary, incident and mode behind one "Change" control, and the chat pane sized to the viewport so the composer stays visible; Evidence is one tap away; the inspector is a bottom sheet.
 
 ## Integration
 
@@ -50,3 +50,7 @@ With `AEROXAI_PUBLIC=1` the simulation routes are not served at all.
 - The finding titles and error messages are fixed UI text keyed by finding ID and error code; the finding and record text itself is shown as the ledger wrote it, in English.
 - Quick Note is a depth setting for a real Syrus call, not a canned summary. The two verified highlights shown before the first question are ledger text, not generated.
 - The Syrus pane keeps full answers and every qualification; only the fixed interface text is short.
+
+## Refinement pass
+
+Checked at 1440, 1920, 820 and 375 px. The default Investigation page went from about 4,700 px to about 2,100 px with the two open sections (about 1,500 px with all collapsed). Fixed-copy type is 13 px or larger except uppercase labels at 12 px; generated answers are 16 px. The main container uses `overflow: clip`, since `hidden` broke sticky positioning and let `scrollIntoView` scroll it.

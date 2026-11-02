@@ -63,10 +63,10 @@ export function title(id: string): string {
   return FINDING_TITLES[id] ?? recordTitle(id);
 }
 
-export const DEPTHS: Array<{ id: Depth; label: string }> = [
-  { id: "quick", label: "Quick Note" },
-  { id: "investigation", label: "Investigation" },
-  { id: "technical", label: "Technical" },
+export const DEPTHS: Array<{ id: Depth; label: string; hint: string }> = [
+  { id: "quick", label: "Quick Note", hint: "Short answer, up to 3 points" },
+  { id: "investigation", label: "Investigation", hint: "Evidence and limits, up to 6 points" },
+  { id: "technical", label: "Technical", hint: "Method and formulas, up to 10 points" },
 ];
 
 export const SUGGESTIONS = [

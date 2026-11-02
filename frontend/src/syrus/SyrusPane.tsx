@@ -22,20 +22,13 @@ function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void })
   return <span>{left > 0 ? ` Retry in ${left} s.` : ""}</span>;
 }
 
-function Chips({ ids, c, onOpen }: { ids: string[]; c: CaseFile; onOpen: (r: Ref) => void }) {
-  return (
-    <div className="chips">
-      {[...new Map(ids.map((id) => [title(id), id])).values()].map((id) => (
-        <button key={id} className="chip" onClick={() => onOpen(refFor(id, c))}>
-          {title(id)}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 function AnswerView({ a, ms, c, onOpen, onAsk }: { a: Answer; ms: number; c: CaseFile; onOpen: (r: Ref) => void; onAsk: (q: string) => void }) {
   const added = a.provenance.validator === "passed_with_added_findings";
+  // Sources are numbered by first citation and listed once; each claim carries only the numbers of what it rests on.
+  const sources = new Map<string, string>();
+  for (const b of a.blocks) for (const id of [...b.findings, ...b.records]) if (!sources.has(title(id))) sources.set(title(id), id);
+  const list = [...sources.entries()];
+  const numberOf = (id: string) => list.findIndex(([t]) => t === title(id)) + 1;
   return (
     <article className="answer" lang={a.lang}>
       <div className="answer-head">
@@ -44,13 +37,22 @@ function AnswerView({ a, ms, c, onOpen, onAsk }: { a: Answer; ms: number; c: Cas
       </div>
       {a.blocks.map((b, i) => (
         <section key={i} className="claim">
-          <p>{b.text}</p>
+          <p>
+            {b.text}
+            <span className="refs">
+              {[...new Set([...b.findings, ...b.records].map(numberOf))].map((n) => (
+                <button key={n} className="ref" aria-label={`Source ${n}: ${list[n - 1][0]}`} onClick={() => onOpen(refFor(list[n - 1][1], c))}>
+                  {n}
+                </button>
+              ))}
+            </span>
+          </p>
           {b.qualifications.map((q) => (
             <p key={q.id} className={`qualification ${q.severity}${q.short ? " short" : ""}`}>
+              <span className="note-label">Evidence note</span>
               {q.text}
             </p>
           ))}
-          <Chips ids={[...b.findings, ...b.records]} c={c} onOpen={onOpen} />
         </section>
       ))}
       {a.also_relevant.length > 0 ? (
@@ -66,20 +68,42 @@ function AnswerView({ a, ms, c, onOpen, onAsk }: { a: Answer; ms: number; c: Cas
           ))}
         </section>
       ) : null}
-      {a.narrowed ? <p className="qualification context">{a.narrowed}</p> : null}
-      {a.operator_note ? <p className="qualification context">{a.operator_note}</p> : null}
+      {a.narrowed ? (
+        <p className="qualification context">
+          <span className="note-label">Scope</span>
+          {a.narrowed}
+        </p>
+      ) : null}
+      {a.operator_note ? (
+        <p className="qualification context">
+          <span className="note-label">Your statement</span>
+          {a.operator_note}
+        </p>
+      ) : null}
       {a.next_question ? (
         <div className="next-question">
           <span>Next useful question</span>
           <button onClick={() => onAsk(a.next_question!.text)}>{a.next_question.text}</button>
         </div>
       ) : null}
+      {list.length > 0 ? (
+        <details className="sources">
+          <summary>Sources ({list.length})</summary>
+          <ol>
+            {list.map(([t, id]) => (
+              <li key={id}>
+                <button className="link-button" onClick={() => onOpen(refFor(id, c))}>
+                  {t}
+                </button>
+              </li>
+            ))}
+          </ol>
+        </details>
+      ) : null}
       <footer className="answer-foot">
         <span className={added ? "status-chip added" : "status-chip passed"}>{added ? "Checked · server added findings" : "Checked against the evidence"}</span>
         {a.refusal === "diagnosis_request" ? <span className="status-chip neutral">No diagnosis claimed</span> : null}
-        <span className="foot-note">
-          {a.provenance.cited_records} records · {(ms / 1000).toFixed(1)} s
-        </span>
+        <span className="foot-note">{(ms / 1000).toFixed(1)} s</span>
       </footer>
     </article>
   );
@@ -163,6 +187,7 @@ export function SyrusPane({ c, caseId, mode, onInspect }: { c: CaseFile; caseId:
           </button>
         ))}
       </div>
+      <p className="depth-hint">{DEPTHS.find((d) => d.id === depth)?.hint}</p>
 
       <div className="transcript" aria-live="polite" ref={scroller}>
         {conv.turns.length === 0 ? (

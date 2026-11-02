@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Activity, Cpu, LayoutDashboard, Menu, Search, ShieldCheck, X, Zap } from "lucide-react";
 
 import { DigitalTwinLab } from "./pages/DigitalTwinLab";
@@ -36,6 +36,7 @@ function parse(hash: string): Where {
 export default function App() {
   const [where, setWhere] = useState<Where>(() => parse(window.location.hash));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const main = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const onHash = () => {
@@ -68,6 +69,9 @@ export default function App() {
 
   return (
     <div className="app">
+      <button className="skip-link" onClick={() => main.current?.focus()}>
+        Skip to content
+      </button>
       <button className="mobile-menu-button" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle navigation" aria-expanded={mobileOpen}>
         {mobileOpen ? <X /> : <Menu />}
       </button>
@@ -102,7 +106,7 @@ export default function App() {
         </div>
       </aside>
 
-      <main className="main-content">
+      <main className="main-content" ref={main} tabIndex={-1}>
         <div className="ambient-grid" />
         {content}
       </main>

@@ -27,6 +27,7 @@ export function Investigation({ caseId, mode, go }: Props) {
   const [error, setError] = useState("");
   const [target, setTarget] = useState<Ref | null>(null);
   const [tab, setTab] = useState<"syrus" | "evidence">("syrus");
+  const [controls, setControls] = useState(false);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -65,7 +66,13 @@ export function Investigation({ caseId, mode, go }: Props) {
         <span className="badge-outline">Verified detector evidence</span>
       </header>
 
-      <div className="inv-controls">
+      <button className="case-toggle" aria-expanded={controls} onClick={() => setControls(!controls)}>
+        <span>
+          Incident {number} · {mode === "retro" ? "Retrospective" : "Past-only"}
+        </span>
+        <small>{controls ? "Hide" : "Change"}</small>
+      </button>
+      <div className={controls ? "inv-controls shown" : "inv-controls"}>
         <div className="segmented" role="group" aria-label="Incident">
           {cases.map((c, i) => (
             <button key={c.case_id} className={c.case_id === active ? "active" : ""} aria-pressed={c.case_id === active} onClick={() => go(c.case_id, mode)}>
@@ -112,7 +119,6 @@ export function Investigation({ caseId, mode, go }: Props) {
           <Inspector c={file} target={target} onClose={() => setTarget(null)} onOpen={setTarget} />
         </>
       )}
-      <p className="concept-note">Historical replay · advisory only · no equipment control.</p>
     </div>
   );
 }

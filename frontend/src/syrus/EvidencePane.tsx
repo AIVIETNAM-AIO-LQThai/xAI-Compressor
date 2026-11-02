@@ -1,3 +1,7 @@
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
+
+import { FindingsDrawer } from "./FindingsDrawer";
 import { refFor, type Ref } from "./Inspector";
 import { groupName, recordTitle, title } from "./labels";
 import type { CaseFile, CaseRecord } from "./types";
@@ -6,10 +10,6 @@ type Rec = (id: string) => CaseRecord | undefined;
 const str = (r: CaseRecord | undefined) => (r && typeof r.display === "string" ? r.display : "n/a");
 const obj = (r: CaseRecord | undefined) => (r && typeof r.display === "object" ? (r.display as Record<string, string>) : {});
 const clock = (t: string) => t.slice(11, 16);
-const persistenceTag = (r: CaseRecord | undefined) => {
-  const v = r?.value as { hits: number; window: number } | undefined;
-  return v ? `${v.hits} of last ${v.window} smoothed bins` : "persistence rule";
-};
 const firstSentence = (t: string) => t.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? t;
 
 function Metric({ label, value, note, accent, onOpen }: { label: string; value: string; note?: string; accent?: boolean; onOpen?: () => void }) {
@@ -39,8 +39,7 @@ function Mechanics({ rec, open }: { rec: Rec; open: (id: string) => void }) {
   return (
     <section className="panel">
       <div className="panel-head">
-        <h2>Alert mechanics</h2>
-        <span className="tag">{persistenceTag(rec("detector.persistence"))}</span>
+        <h3>Alert mechanics</h3>
       </div>
       <ol className="bins">
         {bins.map((b) => (
@@ -89,7 +88,7 @@ function Contributions({ rec, c, open }: { rec: Rec; c: CaseFile; open: (id: str
   return (
     <section className="panel">
       <div className="panel-head">
-        <h2>Detector contributions</h2>
+        <h3>Detector contributions</h3>
         <span className="tag">not probabilities</span>
       </div>
       <ul className="contribs">
@@ -131,7 +130,7 @@ function Timeline({ c, open }: { c: CaseFile; open: (id: string) => void }) {
   return (
     <section className="panel">
       <div className="panel-head">
-        <h2>Evidence over the window</h2>
+        <h3>Evidence over the window</h3>
         <span className="tag">calibration percentile</span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Calibration percentile of each group's smoothed contribution across the explained window" className="timeline">
@@ -182,7 +181,7 @@ function Repairs({ c, open }: { c: CaseFile; open: (id: string) => void }) {
   return (
     <section className="panel">
       <div className="panel-head">
-        <h2>Counterfactual repairs</h2>
+        <h3>Counterfactual repairs</h3>
         <span className="tag">tests the detector, not the machine</span>
       </div>
       <table className="plain">
@@ -220,16 +219,23 @@ function Repairs({ c, open }: { c: CaseFile; open: (id: string) => void }) {
   );
 }
 
-function Findings({ c, open }: { c: CaseFile; open: (r: Ref) => void }) {
+const PRIORITY = ["F-MARGIN", "F-EWMA-MEMORY", "F-CF-NONUNIQUE", "F-IDENT", "F-EVIDENCE-TIMING", "F-CF-PERSIST", "F-CANDIDATES"];
+
+/** The three most useful findings for the case, as one-line summaries. The complete text is in the drawer and the inspector. */
+function TopFindings({ c, open, all }: { c: CaseFile; open: (r: Ref) => void; all: () => void }) {
   const fired = c.findings.filter((f) => f.fires);
+  const rank = (id: string) => (PRIORITY.includes(id) ? PRIORITY.indexOf(id) : PRIORITY.length);
+  const top = [...fired].sort((a, b) => rank(a.id) - rank(b.id)).slice(0, 3);
   return (
-    <section className="panel">
+    <div className="top-findings">
       <div className="panel-head">
-        <h2>Verified findings</h2>
-        <span className="tag">{fired.length} apply</span>
+        <h3>Verified findings</h3>
+        <button className="link-button" onClick={all}>
+          View all {fired.length} findings
+        </button>
       </div>
       <ul className="findings">
-        {fired.map((f) => (
+        {top.map((f) => (
           <li key={f.id}>
             <button onClick={() => open({ kind: "finding", id: f.id })}>
               <strong>{title(f.id)}</strong>
@@ -238,7 +244,7 @@ function Findings({ c, open }: { c: CaseFile; open: (r: Ref) => void }) {
           </li>
         ))}
       </ul>
-    </section>
+    </div>
   );
 }
 
@@ -249,7 +255,7 @@ function Candidates({ c, open }: { c: CaseFile; open: (r: Ref) => void }) {
   return (
     <section className="panel">
       <div className="panel-head">
-        <h2>Candidate explanations</h2>
+        <h3>Candidate explanations</h3>
         <span className="tag">unranked · all open</span>
       </div>
       {layers.map(({ layer, items }) => (
@@ -297,7 +303,7 @@ function Boundaries({ c, rec, open }: { c: CaseFile; rec: Rec; open: (r: Ref) =>
       {label ? (
         <section className="panel">
           <div className="panel-head">
-            <h2>Documented incident</h2>
+            <h3>Documented incident</h3>
             <span className="tag">retrospective label</span>
           </div>
           <p>
@@ -311,7 +317,7 @@ function Boundaries({ c, rec, open }: { c: CaseFile; rec: Rec; open: (r: Ref) =>
       ) : null}
       <section className="panel">
         <div className="panel-head">
-          <h2>Missing evidence</h2>
+          <h3>Missing evidence</h3>
           <span className="tag">not loaded</span>
         </div>
         <ul className="missing">
@@ -327,7 +333,7 @@ function Boundaries({ c, rec, open }: { c: CaseFile; rec: Rec; open: (r: Ref) =>
       {bridge ? (
         <section className="panel">
           <div className="panel-head">
-            <h2>Physical action</h2>
+            <h3>Physical action</h3>
             <span className="tag warn">{obj(bridge).status}</span>
           </div>
           <p className="muted">No real-machine recommendation. Missing: {items.join("; ")}.</p>
@@ -337,10 +343,62 @@ function Boundaries({ c, rec, open }: { c: CaseFile; rec: Rec; open: (r: Ref) =>
   );
 }
 
+function Section({ id, label, summary, isOpen, toggle, children }: { id: string; label: string; summary: string; isOpen: boolean; toggle: () => void; children: React.ReactNode }) {
+  return (
+    <section id={`sec-${id}`} className={`sec${isOpen ? " open" : ""}`}>
+      <h2>
+        <button aria-expanded={isOpen} aria-controls={`body-${id}`} onClick={toggle}>
+          <span className="sec-title">{label}</span>
+          <span className="sec-summary">{summary}</span>
+          <ChevronDown size={18} aria-hidden />
+        </button>
+      </h2>
+      {isOpen ? (
+        <div id={`body-${id}`} className="sec-body">
+          {children}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+const SECTIONS = [
+  ["alert", "Alert"],
+  ["why", "Why"],
+  ["tested", "Tested"],
+  ["could", "Could be"],
+  ["unknown", "Not known"],
+] as const;
+type SectionId = (typeof SECTIONS)[number][0];
+
 export function EvidencePane({ c, onInspect }: { c: CaseFile; onInspect: (r: Ref) => void }) {
   const byId = new Map(c.records.map((r) => [r.id, r]));
   const rec: Rec = (id) => byId.get(id);
   const open = (id: string) => onInspect(refFor(id, c));
+  const [opened, setOpened] = useState<Record<SectionId, boolean>>({ alert: true, why: true, tested: false, could: false, unknown: false });
+  const [drawer, setDrawer] = useState(false);
+  const flip = (id: SectionId) => setOpened((o) => ({ ...o, [id]: !o[id] }));
+  const jump = (id: SectionId) => {
+    setOpened((o) => ({ ...o, [id]: true }));
+    requestAnimationFrame(() => document.getElementById(`sec-${id}`)?.scrollIntoView({ block: "start", behavior: "smooth" }));
+  };
+
+  const contribs = c.records.filter((r) => r.id.startsWith("contrib.") && r.id !== "contrib.others");
+  const repairs = c.records.filter((r) => r.id.startsWith("cf.") && r.id !== "cf.prewindow");
+  const clears = repairs.filter((r) => /^clears/.test(obj(r).result ?? "")).length;
+  const hyps = c.records.filter((r) => r.kind === "hypothesis").length;
+  const gaps = c.records.filter((r) => r.kind === "unavailable").length;
+  const persistence = rec("detector.persistence")?.value as { hits: number; window: number } | undefined;
+
+  const summaries: Record<SectionId, string> = {
+    alert: persistence ? `rule: ${persistence.hits} of last ${persistence.window} smoothed bins` : "mechanics and key findings",
+    why: contribs.slice(0, 2).map((r) => `${groupName((r.value as { group: string }).group)} ${obj(r).share}`).join(" · "),
+    tested: repairs.length ? `${clears} of ${repairs.length} repairs clear the alert` : "no repairs in this case",
+    could: hyps ? `${hyps} candidates · all open` : "no candidates",
+    unknown: `${gaps} sources not loaded · action withheld`,
+  };
+  const present: Record<SectionId, boolean> = { alert: true, why: contribs.length > 0 || !!rec("temporal.window"), tested: repairs.length > 0, could: hyps > 0, unknown: true };
+
   return (
     <div className="evidence-pane">
       <div className="metrics">
@@ -348,13 +406,39 @@ export function EvidencePane({ c, onInspect }: { c: CaseFile; onInspect: (r: Ref
         <Metric label="Threshold" value={str(rec("alert.threshold"))} note="calibration q0.995" onOpen={() => open("alert.threshold")} />
         <Metric label="Above threshold" value={str(rec("alert.margin"))} note="not a fault probability" accent onOpen={() => open("alert.margin")} />
       </div>
-      <Mechanics rec={rec} open={open} />
-      <Findings c={c} open={onInspect} />
-      <Contributions rec={rec} c={c} open={open} />
-      <Timeline c={c} open={open} />
-      <Repairs c={c} open={open} />
-      <Candidates c={c} open={onInspect} />
-      <Boundaries c={c} rec={rec} open={onInspect} />
+
+      <nav className="sec-nav" aria-label="Evidence sections">
+        {SECTIONS.filter(([id]) => present[id]).map(([id, label]) => (
+          <button key={id} className={opened[id] ? "on" : ""} onClick={() => jump(id)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+
+      <Section id="alert" label="Alert" summary={summaries.alert} isOpen={opened.alert} toggle={() => flip("alert")}>
+        <Mechanics rec={rec} open={open} />
+        <TopFindings c={c} open={onInspect} all={() => setDrawer(true)} />
+      </Section>
+      {present.why ? (
+        <Section id="why" label="Why the detector alerted" summary={summaries.why} isOpen={opened.why} toggle={() => flip("why")}>
+          <Contributions rec={rec} c={c} open={open} />
+          <Timeline c={c} open={open} />
+        </Section>
+      ) : null}
+      {present.tested ? (
+        <Section id="tested" label="What was tested" summary={summaries.tested} isOpen={opened.tested} toggle={() => flip("tested")}>
+          <Repairs c={c} open={open} />
+        </Section>
+      ) : null}
+      {present.could ? (
+        <Section id="could" label="What it could be" summary={summaries.could} isOpen={opened.could} toggle={() => flip("could")}>
+          <Candidates c={c} open={onInspect} />
+        </Section>
+      ) : null}
+      <Section id="unknown" label="What is not known" summary={summaries.unknown} isOpen={opened.unknown} toggle={() => flip("unknown")}>
+        <Boundaries c={c} rec={rec} open={onInspect} />
+      </Section>
+      {drawer ? <FindingsDrawer c={c} onClose={() => setDrawer(false)} onInspect={onInspect} /> : null}
     </div>
   );
 }

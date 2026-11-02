@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
 import { groupName, title } from "./labels";
+import { useDialog } from "./useDialog";
 import type { CaseFile, CaseRecord } from "./types";
 
 export interface Ref {
@@ -46,16 +46,11 @@ function Sources({ record }: { record: CaseRecord }) {
 
 /** Side panel on desktop, bottom sheet on a phone. Shows only what the loaded case file contains. */
 export function Inspector({ c, target, onClose, onOpen }: { c: CaseFile; target: Ref | null; onClose: () => void; onOpen: (r: Ref) => void }) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    if (!target) return;
-    closeRef.current?.focus();
-    const key = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", key);
-    return () => window.removeEventListener("keydown", key);
-  }, [target, onClose]);
-  if (!target) return null;
+  return target ? <InspectorBody c={c} target={target} onClose={onClose} onOpen={onOpen} /> : null;
+}
 
+function InspectorBody({ c, target, onClose, onOpen }: { c: CaseFile; target: Ref; onClose: () => void; onOpen: (r: Ref) => void }) {
+  const dialog = useDialog<HTMLElement>(onClose);
   const record = target.kind === "record" ? c.records.find((r) => r.id === target.id) : undefined;
   const finding = target.kind === "finding" ? c.findings.find((f) => f.id === target.id) : undefined;
   const test = target.kind === "test" ? c.tests.find((t) => t.id === target.id) : undefined;
@@ -63,14 +58,14 @@ export function Inspector({ c, target, onClose, onOpen }: { c: CaseFile; target:
 
   return (
     <div className="inspector-backdrop" onClick={onClose}>
-      <aside className="inspector" role="dialog" aria-modal="true" aria-label="Evidence inspector" onClick={(e) => e.stopPropagation()}>
+      <aside ref={dialog} className="inspector" role="dialog" aria-modal="true" aria-label="Evidence inspector" onClick={(e) => e.stopPropagation()}>
         <header>
           <div>
             <span className="insp-kicker">{target.kind === "finding" ? "Verified finding" : target.kind === "test" ? "Discriminating test" : "Record"}</span>
             <h2>{title(target.id)}</h2>
             <code>{target.id}</code>
           </div>
-          <button ref={closeRef} className="icon-button" onClick={onClose} aria-label="Close inspector">
+          <button className="icon-button" onClick={onClose} aria-label="Close inspector">
             <X size={18} />
           </button>
         </header>
