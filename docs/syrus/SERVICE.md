@@ -18,6 +18,7 @@ Environment variables, all read on the server only:
 | `SYRUS_IP_SALT` | Salts the IP hash kept in turn metadata. |
 | `SYRUS_BUDGET_FILE` | Spend file (default `outputs/syrus_budget.json`, gitignored). |
 | `SYRUS_KILL_SWITCH=1` | Forces the offline state. |
+| `SYRUS_DIAGNOSTICS=1` | Development only: adds sanitised token and provider diagnostics to turn responses (see `TOKEN_BUDGET.md`). |
 
 The model is fixed by owner decision D2 (Groq `qwen/qwen3.8-27b`) in `configs/syrus_service.yaml`; there is no fallback, router or environment override. The production build has no mock mode: without a key the service is offline, and the evidence endpoints keep working. Tests inject a scripted double (`tests/test_syrus_service.py`); no test makes a network call.
 
@@ -31,7 +32,7 @@ The model is fixed by owner decision D2 (Groq `qwen/qwen3.8-27b`) in `configs/sy
 ## A turn
 
 1. The server rejects as-of sessions, empty or over-500-character messages, a 16th turn, and a turn already in progress; it reports offline (no call) for a missing key, unconfirmed caps, the kill switch or an exhausted budget.
-2. Context: the case's retrospective records (feature lists excluded), findings, tests and pair limits, the last two exchanges, the findings already stated, and any unverified user statements. The user's text is delimited as untrusted data. The structured-output schema carries only this case's IDs as enums.
+2. Context: the slice of the case's retrospective ledger the question needs (topics, required findings and their dependencies, always-present standing records; `selection.py`, `TOKEN_BUDGET.md`), the last two exchanges while they fit, the findings already stated, and any unverified user statements. The user's text is delimited as untrusted data. The structured-output schema carries only the offered IDs as enums, while validation uses the whole ledger. A prompt that is incomplete or over the token budget is refused (`context_incomplete`, `context_over_budget`) without a call.
 3. One Groq call (`reasoning_effort: none`, strict JSON schema, 900 output tokens). The worst-case cost is reserved against the daily and total caps first and settled from the reported usage; a persisted spend file keeps the total across restarts.
 4. The reply is parsed and checked (`validator.py`): schema and IDs; claim kind against cited record kinds; every number traced to a cited display string; signals, candidates and times only where a cited record carries them; absent sources only with the matching `unavailable:*` record; refused phrasing (cause, diagnosis, probability, certainty, prediction, healthy or false alarm, energy or cost, procedures, ranking, internal IDs) unless negated; formulas only at technical depth; the depth's unit budget; refusal categories that cite the record explaining the limit. Background units may not cite, count, name signals or refer to the case.
 5. On a failed check the model gets one retry with the failed checks named, if at least 4 s remain of the 20 s turn. If a required finding is still missing the server appends its reviewed text under "Also relevant"; if the retry breaks a real check, the first reply (which passed everything but coverage) is used with the finding added. Otherwise the response is `failed_checks` with the check names and none of the model's text.
@@ -50,7 +51,7 @@ The model is fixed by owner decision D2 (Groq `qwen/qwen3.8-27b`) in `configs/sy
 ## Not yet verified
 
 - No live Groq call has been made. The model ID, strict-schema support and `reasoning_effort: none` for `qwen/qwen3.8-27b` must be checked at the first approved smoke test, together with the per-million prices in the config.
-- Size against the provider limit: the system prompt, context and schema are about 6K tokens (the budget estimate is a conservative 8.2K), plus up to 900 output tokens. The base tier allows 8K tokens per minute, so one call fits but a retry or a second user inside the same minute may be refused (`rate_limited`). A higher tier or a smaller context is a decision for the owner before public use.
+- Size against the provider limit: the first live call was refused (estimated input 8,162 plus 900 output against 8,000 tokens per minute). Prompts are now selected per question and capped at 5,100 estimated input tokens (`TOKEN_BUDGET.md`); the estimate itself is checked at the next approved live call. A second user inside the same minute can still be refused (`rate_limited`); a higher tier is a decision for the owner before public use.
 - The acceptance questions (`tests/fixtures/syrus_acceptance.yaml`) have not been run against the model.
 - Sessions, rate limits and the budget lock are in memory for one process; the cumulative spend is the only state persisted. Behind a proxy the client address needs `--proxy-headers` and trusted forwarding.
 - The frontend is not built (Node is not installed); the app serves the API only.

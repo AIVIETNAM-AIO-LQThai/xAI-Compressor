@@ -2,6 +2,7 @@
 and the server-rendered additions. A qualification is part of its claim's block, never a footnote."""
 from backend.syrus_app.context import Pack
 from backend.syrus_app.policy import (
+    FOCUS_LABELS,
     QUALS,
     QUESTION_PURPOSES,
     REFUSALS,
@@ -40,7 +41,7 @@ def question(r: Reply, pack: Pack, thread: Thread, turn_no: int, lang: str) -> d
     return {"test_id": t["id"], "text": t["follow_up"][lang]}
 
 
-def assemble(r: Reply, pack: Pack, thread: Thread, depth: str, lang: str, added: list[str], model: str) -> tuple[dict, set[str]]:
+def assemble(r: Reply, pack: Pack, thread: Thread, depth: str, lang: str, added: list[str], model: str, dropped: tuple = ()) -> tuple[dict, set[str]]:
     turn_no = thread.turns + 1
     forced = REFUSALS.get(r.refusal or "", {}).get("quals", [])
     shown, blocks = set(), []
@@ -54,18 +55,21 @@ def assemble(r: Reply, pack: Pack, thread: Thread, depth: str, lang: str, added:
     paras = [b["display"] for b in blocks]
     if also:
         paras.append(f"{TEXT['also_relevant'][lang]}: " + " ".join(a["text"] for a in also))
-    paras += [x for x in (op, nxt and nxt["text"]) if x]
+    narrowed = TEXT["narrowed"][lang].format(topics="; ".join(FOCUS_LABELS[f][lang] for f in dropped)) if dropped else None
+    paras += [x for x in (narrowed, op, nxt and nxt["text"]) if x]
     cited = {i for u in r.units for i in u.record_ids}
     out = {"status": "ok", "lang": lang, "depth": depth, "purposes": r.purposes, "refusal": r.refusal, "blocks": blocks, "also_relevant": also,
-            "operator_note": op, "next_question": nxt, "alternatives": r.alternatives, "gaps": r.gaps, "answer": "\n\n".join(paras),
+            "operator_note": op, "narrowed": narrowed, "next_question": nxt, "alternatives": r.alternatives, "gaps": r.gaps, "answer": "\n\n".join(paras),
             "provenance": {"case_id": pack.case_id, "case_sha256": pack.sha256, "document_index_sha256": None, "model": model, "cited_records": len(cited),
                            "validator": "passed_with_added_findings" if added else "passed"}}
     return out, shown
 
 
-def remember(thread: Thread, reply: Reply, out: dict, shown: set[str], message: str, limit: int) -> None:
-    """Update the thread after a validated answer; prior answers are history for the model, never evidence."""
+def remember(thread: Thread, reply: Reply, out: dict, shown: set[str], message: str, limit: int, focus: tuple = ()) -> None:
+    """Update the thread after a validated answer; prior answers are history for the model, never evidence. Only the model's own
+    claim texts are kept as history: the server's qualifications and additions are re-derived each turn, so they need not be re-sent."""
     n = thread.turns + 1
+    thread.focus = list(focus) or thread.focus
     for f in {f for u in reply.units for f in u.finding_ids} | {a["finding_id"] for a in out["also_relevant"]}:
         thread.stated[f] = n
     thread.quals |= shown
@@ -74,5 +78,5 @@ def remember(thread: Thread, reply: Reply, out: dict, shown: set[str], message: 
         thread.last_question = n
     if reply.operator_statement:
         thread.operator = [*thread.operator, message[:200]][-limit:]
-    thread.exchanges.append((message, out["answer"]))
+    thread.exchanges.append((message, " ".join(b["text"] for b in out["blocks"])))
     thread.turns = n

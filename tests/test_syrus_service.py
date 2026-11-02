@@ -294,7 +294,7 @@ def test_the_first_reply_is_kept_when_the_retry_breaks_a_real_check(tmp_path):
 def test_operator_statements_are_recorded_as_unverified_and_never_evidence(tmp_path):
     c, fake = client(tmp_path, Fake(reply(U1, U2, purposes=["what_happened"], operator_statement=True)))
     h = start(c)
-    body = ask(c, h, "The technician said the regulator broke.").json()
+    body = ask(c, h, "The technician said the regulator broke. Why did this alert fire?").json()
     assert "unverified" in body["operator_note"]
     ask(c, h, "OK, why then?")
     last = fake.calls[-1]["messages"][-1]["content"]
@@ -425,7 +425,7 @@ def test_logs_hold_metadata_only(tmp_path, caplog):
     with caplog.at_level(logging.INFO, logger="syrus.turns"):
         ask(c, start(c), "PRIVATE-QUESTION-TEXT")
     line = json.loads(caplog.records[-1].message)
-    assert set(line) == {"turn", "mode", "case_sha256", "model", "latency_ms", "tokens_in", "tokens_out", "outcome", "refusal", "ip"}
+    assert set(line) == {"turn", "mode", "case_sha256", "model", "latency_ms", "tokens_in", "tokens_out", "outcome", "refusal", "ip", "focus", "dropped", "estimated_in"}
     assert "PRIVATE" not in caplog.text and "testclient" not in caplog.text and line["outcome"] == "ok"
 
 

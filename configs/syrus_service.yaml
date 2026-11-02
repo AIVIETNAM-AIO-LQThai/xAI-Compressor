@@ -7,6 +7,7 @@
 #   SYRUS_IP_SALT           salts the IP hash kept in turn metadata (absent: random per process)
 #   SYRUS_BUDGET_FILE       where spend is persisted (default outputs/syrus_budget.json)
 #   SYRUS_KILL_SWITCH=1     forces the offline state
+#   SYRUS_DIAGNOSTICS=1     development only: sanitised token and provider diagnostics in responses
 model: qwen/qwen3.8-27b
 endpoint: https://api.groq.com/openai/v1/chat/completions
 
@@ -16,6 +17,11 @@ price_per_million: {input: 0.80, output: 4.00}
 # Caps from owner decision D3, confirmed by the owner on 2026-11-02; enforced by the application before every call.
 # The environment flag SYRUS_CAPS_CONFIRMED=1 is still set by the owner on the server.
 caps_usd: {daily: 10.0, total: 30.0}
+
+# Provider tokens-per-minute limit for the fixed model (Groq on-demand tier; confirmed by a 429 response) and the share of it that
+# one request (estimated input plus maximum output) may use. The rest is margin for estimate error and neighbouring requests.
+tokens_per_minute: 8000
+request_share: 0.75
 
 limits:
   turns_per_session: 15

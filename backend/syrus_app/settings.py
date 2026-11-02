@@ -5,11 +5,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
 
 from backend.syrus_app.records import ROOT
 
+load_dotenv(ROOT / ".env")
 CONFIG = ROOT / "configs" / "syrus_service.yaml"
-
 
 @dataclass(frozen=True)
 class Settings:
@@ -20,10 +21,16 @@ class Settings:
     secret: bytes
     ip_salt: bytes
     budget_file: Path
+    diagnostics: bool = False
 
     @property
     def limits(self) -> dict:
         return self.cfg["limits"]
+
+    @property
+    def input_cap(self) -> int:
+        """Estimated input tokens one call may use: the share of the provider's tokens-per-minute limit a request may take, less its maximum output."""
+        return int(self.cfg["tokens_per_minute"] * self.cfg["request_share"]) - self.limits["max_output_tokens"]
 
     @property
     def model(self) -> str:
@@ -46,4 +53,4 @@ def load_settings(env: dict | None = None) -> Settings:
                     caps_confirmed=env.get("SYRUS_CAPS_CONFIRMED") == "1", kill=env.get("SYRUS_KILL_SWITCH") == "1",
                     secret=(env.get("SYRUS_SESSION_SECRET") or secrets.token_hex(32)).encode(),
                     ip_salt=(env.get("SYRUS_IP_SALT") or secrets.token_hex(16)).encode(),
-                    budget_file=Path(env.get("SYRUS_BUDGET_FILE") or ROOT / "outputs" / "syrus_budget.json"))
+                    budget_file=Path(env.get("SYRUS_BUDGET_FILE") or ROOT / "outputs" / "syrus_budget.json"), diagnostics=env.get("SYRUS_DIAGNOSTICS") == "1")

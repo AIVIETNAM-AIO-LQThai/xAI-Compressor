@@ -96,9 +96,17 @@ def _hits(rx: re.Pattern, text: str, exempt: bool) -> bool:
     return any(not (exempt and NEGATION.search(text[max(0, m.start() - 40):m.start()])) for m in rx.finditer(text))
 
 
-def check(r: Reply, pack: Pack, message: str, depth: str) -> list[Fail]:
-    """All failed checks for a parsed reply; empty means it passes."""
+def not_offered(r: Reply, view) -> set[str]:
+    """IDs and purposes a reply uses that this turn's prompt did not offer. The ledger may hold them; the model was never shown them."""
+    used = {*r.alternatives, *r.gaps, *(i for u in r.units for i in (*u.record_ids, *u.finding_ids))} | ({r.next_test} if r.next_test else set())
+    return (used - view.ids()) | (set(r.purposes) - set(view.purposes))
+
+
+def check(r: Reply, pack: Pack, message: str, depth: str, view=None) -> list[Fail]:
+    """All failed checks for a parsed reply against the whole ledger and, if given, the View this turn offered; empty means it passes."""
     out = []
+    if view and (extra := not_offered(r, view)):
+        out.append(Fail("not_offered", ", ".join(sorted(extra))))
     if not 1 <= len(r.purposes) <= 2 or set(r.purposes) - set(PURPOSES):
         out.append(Fail("purposes", "declare one or two known purposes"))
     hyps = {i for i, x in pack.records.items() if x["kind"] == "hypothesis"}

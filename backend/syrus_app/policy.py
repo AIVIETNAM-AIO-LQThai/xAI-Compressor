@@ -125,6 +125,22 @@ TEXT = {
                       "vi": "Đã ghi nhận là chưa kiểm chứng trong phiên này; điều đó không làm thay đổi bằng chứng hay trạng thái của các giả thuyết."},
     "also_relevant": {"en": "Also relevant", "vi": "Cũng liên quan (nguyên văn tiếng Anh)"},
     "failed": {"en": "I couldn't produce an answer that passes the evidence checks", "vi": "Tôi không tạo được câu trả lời vượt qua các kiểm tra bằng chứng"},
+    "narrowed": {"en": "This question was too broad for one answer, so the evidence on {topics} was not used. Ask about it separately.",
+                 "vi": "Câu hỏi quá rộng cho một câu trả lời, nên bằng chứng về {topics} chưa được dùng. Hãy hỏi riêng về phần đó."},
+}
+# Topic names shown to the user when a question had to be narrowed.
+FOCUS_LABELS = {
+    "alert": {"en": "why the alert fired", "vi": "vì sao cảnh báo xuất hiện"},
+    "method": {"en": "how the numbers are computed", "vi": "cách tính các con số"},
+    "timing": {"en": "how the evidence developed over the window", "vi": "diễn biến bằng chứng trong cửa sổ thời gian"},
+    "attribution": {"en": "candidate explanations", "vi": "các giả thuyết giải thích"},
+    "repair": {"en": "the detector repairs", "vi": "các phép sửa bộ phát hiện"},
+    "label": {"en": "the documented incident", "vi": "sự cố đã ghi nhận"},
+    "signals": {"en": "the signal contributions", "vi": "đóng góp của các tín hiệu"},
+    "range": {"en": "the signal values and training ranges", "vi": "giá trị tín hiệu và khoảng huấn luyện"},
+    "benchmark": {"en": "the benchmark results", "vi": "kết quả đánh giá"},
+    "energy": {"en": "energy and simulation", "vi": "năng lượng và mô phỏng"},
+    "sources": {"en": "the sources", "vi": "các nguồn"},
 }
 
 
@@ -135,3 +151,58 @@ def triggers(q: dict, direct: set[str], text: str) -> bool:
 
 def depth_after(depth: str, minimum: str) -> bool:
     return DEPTHS.index(depth) >= DEPTHS.index(minimum)
+
+
+# Question focus -> what a turn about it needs. `find` are findings (their input records come with them), `brief` findings that come
+# with their LEAN anchors only, `rec` extra record IDs
+# (a prefix when it ends with "." or ":"), `purposes` the purposes beyond CORE_PURPOSES an answer may declare. A focus is matched
+# from the question text in English and Vietnamese. Order is priority: when a prompt does not fit the token budget the
+# last-listed matched focuses are dropped first, whole.
+# Every turn also carries a record each refusal can cite (REFUSALS), so a refusal can always be validated, and the data-gap finding.
+CORE_RECORDS = ["alert.time", "alert.threshold", "alert.smoothed", "alert.margin", "unavailable:",
+                *dict.fromkeys(c for r in REFUSALS.values() for c in r["cite"] if not c.startswith("F-"))]
+CORE_FINDINGS = ["F-GAP"]
+# A finding that is in a turn without the question being about it (a purpose requires it, or a focus lists it as `brief`) comes with
+# just these records to cite beside it instead of all its inputs. Its text still carries every figure it states.
+LEAN = {"F-EVIDENCE-TIMING": ["temporal.window"], "F-CF-NONUNIQUE": ["alert.threshold"]}
+CORE_PURPOSES = ["evidence_and_sources", "outside_evidence"]
+DEFAULT_FOCUS = ["alert"]  # a question that matches nothing and follows no earlier topic
+FOCUS_PATTERNS = {
+    "alert": r"\bfir(?:e|ed|es|ing)\b|\btrigger|\bwhy\b|\bthreshold|\bmargin\b|\bscores?\b|\bsmooth|\bewma\b|\bcarried\b|\bmemory\b|\bpersist"
+             r"|vì sao|tại sao|kích hoạt|ngưỡng|điểm|làm mượt|bộ nhớ",
+    "method": r"\bformula|\bequation|\bcalculat|\bcomput|\bderiv|\balpha\b|\bpca\b|\breconstruction\b|\bwhere does\b|\bcome from\b|\bhow (?:is|are)\b|\bmethod"
+              r"|công thức|\btính\b|từ đâu|phương pháp",
+    "timing": r"\b\d{1,2}:\d{2}\b|\bjumps?\b|\bros[e]\b|\brises?\b|\brising\b|\bspik|\bwhen\b|\bfirst\b|\bemerg|\bover time\b|\btrend|\bpercentiles?\b|\bwindow\b"
+              r"|khi nào|\blúc\b|\btăng\b|nhảy|phân vị|cửa sổ",
+    "attribution": r"\bcaus|\bresponsib|\bdue to\b|\bbecause\b|\bdriv(?:e|es|en|ing)\b|\bbehind\b|\bleak|\bdemand|\bregulat|\bdryer|\bdiagnos|\bfault|\bbroke|\bbroken"
+                   r"|\bfail|\bproblem|\bhypothes|\bcandidates?\b|\breason|\bdefinitely\b|\bcertain|\bsure\b|\bwrong\b|\btechnician|\boperators?\b|\bignore\b|\bsafe\b|\bnormal\b"
+                   r"|rò rỉ|nhu cầu|nguyên nhân|chẩn đoán|\blỗi\b|hỏng|giả thuyết|điều áp|chắc|kỹ thuật viên|vận hành viên|bỏ qua|an toàn|bình thường",
+    "repair": r"\brepair|\bremov|\bfix|\breplac|\breconstruct|\bcounterfactual|\bclears?\b|\bcleared\b|\bwhat if\b|\bwithout\b|sửa|thay thế|loại bỏ|\bgỡ\b|\bxóa\b|tái tạo",
+    "label": r"\blabel|\bdocumented\b|\bincident|\bfailure list|\bprovider\b|ground truth|\bonset\b|\bprecursor|\bpredict|\bforecast|\bearly\b|\bahead\b|in advance"
+             r"|\bair dryer\b|\b20(?:19|2\d)\b|nhãn|sự cố|dự đoán|dự báo|\bsớm\b|trước|máy sấy",
+    "signals": r"\btp[23]\b|\bh1\b|dv[_ ]?pressure|dv[_ ]?electric|motor[_ ]?current|oil[_ ]?(?:temperature|level)|reservoirs?|\bcomp\b|\btowers?\b|\bmpg\b|\blps\b"
+               r"|pressure[_ ]?switch|caudal|\bsignals?\b|\bgroups?\b|\bcontribut|\bshares?\b|\brank|tín hiệu|nhóm|đóng góp|tỷ trọng|xếp hạng|áp suất",
+    "range": r"\brange|\bunits?\b|interquartile|\btraining\b|\bfeatures?\b|đơn vị|khoảng huấn luyện|đặc trưng|huấn luyện",
+    "benchmark": r"false alarms?|false positives?|\bbenchmark|\bprecision|\brecall|pr-?auc|\bepisodes?\b|\bburden|how often|\bper (?:day|24)|\bexposure|test period"
+                 r"|\bselect|\bhealthy\b|\breliab|\baccura|how many|báo (?:động )?giả|độ chính xác|thường xuyên|khỏe|bao nhiêu lần",
+    "energy": r"energy|\bkwh\b|\bcosts?\b|\bsaving|\bsaved\b|\bwast|\bpower\b|\bflow\b|\bschedul|\bsimulat|\bbridge\b|\bapply\b|\belectricity\b|\bmoney|\bbill"
+              r"|năng lượng|điện|chi phí|tiết kiệm|lãng phí|\blịch\b|mô phỏng|áp dụng|công suất|lưu lượng",
+    "sources": r"\bmanuals?\b|\boem\b|\bsops?\b|datasheet|maintenance|\blogs?\b|\btickets?\b|\braw\b|\btraces?\b|telemetry|waveform|\bseries\b|\bdefin(?:e|ed|es|itions?)\b|\bwhat is\b"
+               r"|\bwhat are\b|\bmeaning\b|stands for|\bshow me\b|\bdocuments?\b|sổ tay|nhật ký|bảo trì|\bthô\b|đồ thị|định nghĩa|là gì|cho tôi xem|tài liệu",
+}
+FOCUS = {
+    "alert": {"find": ["F-MARGIN", "F-EWMA-MEMORY"], "rec": ["contrib.", "calrank.", "detector.persistence", "alert.hits"], "purposes": ["what_happened"]},
+    "method": {"find": ["F-EWMA-MEMORY"], "rec": ["detector.ewma", "detector.persistence", "detector.calibration_bins", "detector.repair", "alert.hits"],
+               "purposes": ["method"]},
+    "timing": {"find": ["F-EVIDENCE-TIMING"], "rec": ["contrib."], "purposes": ["what_happened"]},
+    "attribution": {"find": ["F-CANDIDATES", "F-IDENT", "F-LABEL", "F-TIMING"], "brief": ["F-CF-NONUNIQUE"], "rec": [], "purposes": ["possible_causes"]},
+    "repair": {"find": ["F-CF-NONUNIQUE", "F-CF-PERSIST"], "rec": ["detector.repair", "detector.persistence", "contrib."], "purposes": []},
+    "label": {"find": ["F-LABEL", "F-TIMING", "F-SELECTION"], "rec": [], "purposes": []},
+    "signals": {"find": [], "rec": ["contrib.", "calrank."], "purposes": []},
+    "range": {"find": ["F-TRAIN-RANGE"], "rec": [], "purposes": []},
+    "benchmark": {"find": ["F-ALERT-BURDEN", "F-DISCRIMINATION", "F-SELECTION"], "rec": [], "purposes": []},
+    "energy": {"find": ["F-BRIDGE"], "rec": [], "purposes": []},
+    "sources": {"find": [], "rec": [], "purposes": []},
+}
+for _name, _rx in FOCUS_PATTERNS.items():
+    FOCUS[_name]["pattern"] = re.compile(_rx, re.IGNORECASE)

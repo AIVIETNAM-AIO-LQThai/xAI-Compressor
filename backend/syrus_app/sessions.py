@@ -31,6 +31,7 @@ class Thread:
     asked: set = field(default_factory=set)                 # follow-up test ids already asked
     last_question: int = 0                                  # turn number of the last follow-up question
     operator: list = field(default_factory=list)            # unverified statements by the user, never evidence
+    focus: list = field(default_factory=list)               # topics of the last answered question, for a bare follow-up
 
 
 def _b64(b: bytes) -> str:

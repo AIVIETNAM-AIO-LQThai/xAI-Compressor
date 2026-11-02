@@ -23,14 +23,18 @@ REFUSAL_IDS = ["diagnosis_request", "causal_claim", "prediction", "energy_or_cos
 
 @dataclass(frozen=True)
 class Pack:
+    """The complete authoritative ledger of one case, used for validation. A turn's prompt and schema use a View of it (selection.py);
+    `text` and `schema` here are the full-ledger rendering, kept as the baseline the token measurements compare against."""
     case_id: str
     sha256: str
+    head: str           # first line of the rendered context
     records: dict       # id -> record, the ones a claim may cite
     findings: dict      # id -> finding
     tests: dict         # id -> test
+    pairs: list         # candidate pairs that cannot be told apart, with their limits
     hyp_patterns: dict  # candidate id -> patterns for its English and Vietnamese labels
-    text: str           # rendered context
-    schema: dict        # JSON schema for the model's structured output
+    text: str           # full rendered context
+    schema: dict        # full JSON schema for the model's structured output
 
 
 def label_patterns(hyp_cfg: dict) -> dict:
@@ -54,7 +58,11 @@ def _span(ids: list[str]) -> str:
     return ", ".join(f"{p}.*" if sum(i.split(".")[0] == p for i in ids) > 1 else next(i for i in ids if i.split(".")[0] == p) for p in sorted(prefixes))
 
 
-def render(case: dict, records: dict) -> str:
+def head(case: dict) -> str:
+    return f"CASE {case['case_id']} (retrospective review). Alert {case['alert_time']} dataset local time."
+
+
+def render_records(records: dict) -> str:
     """Record caveats appear once each in a legend instead of on every row."""
     legend = {}
     for r in records.values():
@@ -62,24 +70,54 @@ def render(case: dict, records: dict) -> str:
             legend.setdefault(r["caveat"], []).append(r["id"])
     notes = "\n".join(f"- {c} (applies to {_span(ids)})" for c, ids in legend.items())
     rec = "\n".join(f"{r['id']} | {r['kind']} | {_display(r['display'])}" for r in records.values())
-    fnd = "\n".join(f"{f['id']} | fires={str(f['fires']).lower()} | {f['text']}" for f in case["findings"])
+    return f"RECORDS (id | kind | display)\n{rec}\n\nNOTES ON RECORDS\n{notes}"
+
+
+def render_findings(findings) -> str:
+    return "FINDINGS (id | fires | text)\n" + "\n".join(f"{f['id']} | fires={str(f['fires']).lower()} | {f['text']}" for f in findings)
+
+
+def _pairs(pairs: list) -> str:
+    """[[a, b], [a, c]] -> "a vs b, c" (pairs are grouped by their first candidate)."""
+    groups = {}
+    for a, b in pairs:
+        groups.setdefault(a, []).append(b)
+    return "; ".join(f"{a} vs {', '.join(bs)}" for a, bs in groups.items())
+
+
+def render_tests(tests: dict, pairs: list) -> str:
+    """The tests as the model needs them to pick `next_test`: which candidates each separates and what kind of observation it needs.
+    The server renders the follow-up question itself from the ledger, so the observation wording is not sent."""
+    states = {(t["maturity"], t["result"]) for t in tests.values()}
+    state = "all {}, result {}".format(*next(iter(states))) if len(states) == 1 else "maturity and result per test"
+    rows = [f"{t['id']} | separates {_pairs(t['compares'])} | needs {'+'.join(sorted({o['availability'] for o in t['observations']}))}"
+            + ("" if len(states) == 1 else f" | {t['maturity']} | {t['result']}") for t in tests.values()]
+    lim = [f"{' / '.join(p['pair'])}: {p['text']['en']}" for p in pairs]
+    return "\n\n".join(x for x in (f"TESTS (id | separates | needs; {state})\n" + "\n".join(rows) if tests else "",
+                                   "PAIRS THAT CANNOT BE TOLD APART WITH THIS DATA\n" + "\n".join(lim) if pairs else "") if x)
+
+
+def render(case: dict, records: dict) -> str:
+    """The whole ledger as one block: the baseline rendering the token measurements compare against."""
     tst = "\n".join(f"{t['id']} | compares {_dump(t['compares'])} | {t['maturity']} | {t['result']} | needs: "
                     + "; ".join(f"{o['availability']}: {o['text']['en']}" for o in t["observations"]) for t in case["tests"])
     lim = "\n".join(f"{' / '.join(p['pair'])}: {p['text']['en']}" for p in case["pair_limits"])
-    return (f"CASE {case['case_id']} (retrospective review). Alert {case['alert_time']} dataset local time.\n\nRECORDS (id | kind | display)\n{rec}\n\n"
-            f"NOTES ON RECORDS\n{notes}\n\nFINDINGS (id | fires | text)\n{fnd}\n\nTESTS (id | compares | maturity | result | needs)\n{tst}\n\n"
+    return (f"{head(case)}\n\n{render_records(records)}\n\n{render_findings(case['findings'])}\n\nTESTS (id | compares | maturity | result | needs)\n{tst}\n\n"
             f"PAIRS THAT CANNOT BE TOLD APART WITH THIS DATA\n{lim}")
 
 
-def make_schema(records: dict, findings: dict, tests: dict) -> dict:
-    """Strict structured-output schema whose enums hold only this case's IDs."""
-    ids = lambda xs: {"type": "array", "items": {"type": "string", "enum": list(xs)}}  # noqa: E731
+NO_ID = "none"  # an enum cannot be empty; a list that must stay empty accepts only this, which the validator rejects as an unknown ID
+
+
+def make_schema(records: dict, findings: dict, tests: dict, purposes=PURPOSE_IDS) -> dict:
+    """Strict structured-output schema whose enums hold only the IDs offered to the model."""
+    ids = lambda xs: {"type": "array", "items": {"type": "string", "enum": list(xs) or [NO_ID]}}
     hyps = [i for i, r in records.items() if r["kind"] == "hypothesis"]
     gaps = [i for i, r in records.items() if r["kind"] == "unavailable"]
     unit = {"type": "object", "additionalProperties": False, "required": ["text", "kind", "record_ids", "finding_ids"],
             "properties": {"text": {"type": "string"}, "kind": {"type": "string", "enum": [*sorted(KINDS - {"simulated"}), "background"]},
                            "record_ids": ids(records), "finding_ids": ids(findings)}}
-    props = {"lang": {"type": "string", "enum": ["en", "vi"]}, "purposes": ids(PURPOSE_IDS), "units": {"type": "array", "items": unit},
+    props = {"lang": {"type": "string", "enum": ["en", "vi"]}, "purposes": ids(purposes), "units": {"type": "array", "items": unit},
              "alternatives": ids(hyps), "gaps": ids(gaps), "next_test": {"type": ["string", "null"], "enum": [*tests, None]},
              "refusal": {"type": ["string", "null"], "enum": [*REFUSAL_IDS, None]}, "operator_statement": {"type": "boolean"}}
     return {"type": "object", "additionalProperties": False, "required": list(props), "properties": props}
@@ -111,5 +149,6 @@ class CaseStore:
             recs = {r["id"]: r for r in case["records"] if not r["id"].startswith(HIDDEN)}
             finds = {f["id"]: f for f in case["findings"]}
             tests = {t["id"]: t for t in case["tests"]}
-            self.packs[case_id] = Pack(case_id, case["sha256"], recs, finds, tests, self.patterns, render(case, recs), make_schema(recs, finds, tests))
+            self.packs[case_id] = Pack(case_id, case["sha256"], head(case), recs, finds, tests, case["pair_limits"], self.patterns, render(case, recs),
+                                       make_schema(recs, finds, tests))
         return self.packs[case_id]
