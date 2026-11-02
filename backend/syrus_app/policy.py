@@ -136,6 +136,8 @@ FOCUS_LABELS = {
     "attribution": {"en": "candidate explanations", "vi": "các giả thuyết giải thích"},
     "repair": {"en": "the detector repairs", "vi": "các phép sửa bộ phát hiện"},
     "label": {"en": "the documented incident", "vi": "sự cố đã ghi nhận"},
+    "certainty": {"en": "whether the documented incident was a leak", "vi": "việc sự cố đã ghi nhận có phải là rò rỉ hay không"},
+    "lead": {"en": "alert timing against the documented onset", "vi": "thời điểm cảnh báo so với lúc bắt đầu đã ghi nhận"},
     "signals": {"en": "the signal contributions", "vi": "đóng góp của các tín hiệu"},
     "range": {"en": "the signal values and training ranges", "vi": "giá trị tín hiệu và khoảng huấn luyện"},
     "benchmark": {"en": "the benchmark results", "vi": "kết quả đánh giá"},
@@ -178,8 +180,14 @@ FOCUS_PATTERNS = {
                    r"|\bfail|\bproblem|\bhypothes|\bcandidates?\b|\breason|\bdefinitely\b|\bcertain|\bsure\b|\bwrong\b|\btechnician|\boperators?\b|\bignore\b|\bsafe\b|\bnormal\b"
                    r"|rò rỉ|nhu cầu|nguyên nhân|chẩn đoán|\blỗi\b|hỏng|giả thuyết|điều áp|chắc|kỹ thuật viên|vận hành viên|bỏ qua|an toàn|bình thường",
     "repair": r"\brepair|\bremov|\bfix|\breplac|\breconstruct|\bcounterfactual|\bclears?\b|\bcleared\b|\bwhat if\b|\bwithout\b|sửa|thay thế|loại bỏ|\bgỡ\b|\bxóa\b|tái tạo",
-    "label": r"\blabel|\bdocumented\b|\bincident|\bfailure list|\bprovider\b|ground truth|\bonset\b|\bprecursor|\bpredict|\bforecast|\bearly\b|\bahead\b|in advance"
-             r"|\bair dryer\b|\b20(?:19|2\d)\b|nhãn|sự cố|dự đoán|dự báo|\bsớm\b|trước|máy sấy",
+    "label": r"\blabel|\bdocumented\b|\bincident|\bfailure list|\bprovider\b|ground truth|\bair dryer\b|\b20(?:19|2\d)\b|nhãn|sự cố|máy sấy",
+    # Onset, prediction and lead time: what the alert's timing against the documented onset does and does not show.
+    "lead": r"\bonset\b|\bprecursor|\bpredict|\bforecast|\bearly\b|\bahead\b|in advance|lead time|before the (?:incident|failure|leak)|dự đoán|dự báo|\bsớm\b|trước khi",
+    # A short question about whether the documented incident was definitely a leak (or another named fault). A question that also asks
+    # about causes, signals, repairs or PCA evidence is an attribution question instead.
+    "certainty": r"(?s)\A(?!.*(?:\bcaus|\bresponsib|\bdriv|\bsignal|\bcontribut|\brepair|\bpca\b|nguyên nhân|gây ra|tín hiệu|đóng góp|sửa))"
+                 r"(?=.*(?:\bdefinitely\b|\bcertain|\bsure\b|\bconfirm|\bactually\b|\breally\b|\bproven?\b|chắc chắn|xác nhận|thật sự|có phải))"
+                 r"(?=.*(?:\bleak|\bdryer|\bfault|rò rỉ|máy sấy|\blỗi\b))",
     "signals": r"\btp[23]\b|\bh1\b|dv[_ ]?pressure|dv[_ ]?electric|motor[_ ]?current|oil[_ ]?(?:temperature|level)|reservoirs?|\bcomp\b|\btowers?\b|\bmpg\b|\blps\b"
                r"|pressure[_ ]?switch|caudal|\bsignals?\b|\bgroups?\b|\bcontribut|\bshares?\b|\brank|tín hiệu|nhóm|đóng góp|tỷ trọng|xếp hạng|áp suất",
     "range": r"\brange|\bunits?\b|interquartile|\btraining\b|\bfeatures?\b|đơn vị|khoảng huấn luyện|đặc trưng|huấn luyện",
@@ -195,8 +203,10 @@ FOCUS = {
     "method": {"find": ["F-EWMA-MEMORY"], "rec": ["detector.ewma", "detector.persistence", "detector.calibration_bins", "detector.repair", "alert.hits"],
                "purposes": ["method"]},
     "timing": {"find": ["F-EVIDENCE-TIMING"], "rec": ["contrib."], "purposes": []},
+    "certainty": {"find": ["F-LABEL", "F-IDENT"], "rec": [], "purposes": []},
     "attribution": {"find": ["F-CANDIDATES", "F-IDENT", "F-LABEL", "F-TIMING"], "brief": ["F-CF-NONUNIQUE"], "rec": [], "purposes": ["possible_causes"]},
     "repair": {"find": ["F-CF-NONUNIQUE", "F-CF-PERSIST"], "rec": ["detector.repair", "detector.persistence", "contrib."], "purposes": []},
+    "lead": {"find": ["F-TIMING", "F-LABEL"], "rec": [], "purposes": []},
     "label": {"find": ["F-LABEL", "F-TIMING", "F-SELECTION"], "rec": [], "purposes": []},
     "signals": {"find": [], "rec": ["contrib.", "calrank."], "purposes": []},
     "range": {"find": ["F-TRAIN-RANGE"], "rec": [], "purposes": []},
@@ -212,11 +222,36 @@ ESSENTIAL = {
     "timing": [("F-EVIDENCE-TIMING", "quick")],
     "attribution": [("F-CANDIDATES", "quick"), ("F-IDENT", "quick"), ("F-CF-NONUNIQUE", "investigation")],
     "repair": [("F-CF-NONUNIQUE", "quick"), ("F-CF-PERSIST", "quick")],
-    "label": [("F-LABEL", "quick"), ("F-TIMING", "quick")],
+    "certainty": [("F-LABEL", "quick"), ("F-IDENT", "quick")],
+    "lead": [("F-TIMING", "quick")],
+    "label": [("F-LABEL", "quick")],
     "benchmark": [("F-ALERT-BURDEN", "quick")],
     "range": [("F-TRAIN-RANGE", "quick")],
     "energy": [("F-BRIDGE", "quick")],
 }
+# A narrower topic's essentials replace a broader one's when both are active: a short "was it definitely a leak?" asks for the label and
+# the identifiability limit, not for the candidate list or the repair evidence. The broader topic's evidence is still loaded.
+NARROWS = {"certainty": "attribution"}
+# What counts as conveying a finding that states no figure to repeat: every group must match the text of the units that cite it. A
+# matching timestamp or number is not enough. Draft Vietnamese wording; it needs the owner's review.
+CONVEY = {
+    # the label as transcribed from the provider's list; that AeroXAI's evidence does not establish it
+    "F-LABEL": [
+        r"air[- ]leak|high[- ]stress|rò rỉ",
+        r"provider|failure list|transcri|repository|configuration|nhà cung cấp|danh sách|phiên âm|sao chép|cấu hình|kho mã",
+        (r"\bnot (?:an? |the )?(?:independent|established|confirmed|verified|proof)|n't (?:an? )?(?:independent|establish|confirm|verif)"
+         r"|\bnot (?:establish|confirm|verif|prov|show)|no independent|cannot (?:establish|confirm|verify)"
+         r"|không (?:xác lập|xác nhận|chứng minh|kiểm chứng|độc lập|thiết lập)|chưa (?:xác lập|xác nhận|được kiểm chứng|kiểm chứng)"),
+    ],
+    # leakage and downstream demand, and that this data cannot separate them
+    "F-IDENT": [
+        r"leak|rò rỉ",
+        r"demand|nhu cầu",
+        (r"cannot (?:be )?(?:told apart|distinguished|separated)|cannot (?:tell|distinguish|separate)|can't (?:tell|distinguish|separate)"
+         r"|(?:not|n't) (?:be )?(?:able to )?(?:tell|distinguish|separate)|indistinguishable|không (?:thể )?(?:phân biệt|tách|phân định)"),
+    ],
+}
+CONVEY = {f: [re.compile(rx, re.IGNORECASE) for rx in groups] for f, groups in CONVEY.items()}
 # Words that open a question without saying what it is about; they never pick a topic, so "Why did that happen?" follows the last one.
 GENERIC = re.compile(r"\bwhy\b|\bhow come\b|vì sao|tại sao|sao lại", re.IGNORECASE)
 for _name, _rx in FOCUS_PATTERNS.items():

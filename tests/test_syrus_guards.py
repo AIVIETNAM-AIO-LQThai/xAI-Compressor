@@ -254,12 +254,20 @@ def required(message, depth="auto", pack=PACK):
 @pytest.mark.parametrize(("message", "depth", "expected"), [
     ("Why did this alert fire?", "quick", ("F-MARGIN", "F-EWMA-MEMORY")),
     ("Why did this alert fire?", "investigation", ("F-MARGIN", "F-EWMA-MEMORY", "F-EVIDENCE-TIMING")),
-    ("Was this definitely an air leak?", "quick", ("F-CANDIDATES", "F-IDENT")),
-    ("Was this definitely an air leak?", "investigation", ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
-    ("Đây có chắc chắn là rò rỉ khí không?", "investigation", ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
+    ("Was this definitely an air leak?", "quick", ("F-LABEL", "F-IDENT")),
+    ("Was this definitely an air leak?", "investigation", ("F-LABEL", "F-IDENT")),
+    ("Đây có chắc chắn là rò rỉ khí không?", "investigation", ("F-LABEL", "F-IDENT")),
+    ("Did DV pressure cause it?", "quick", ("F-CANDIDATES", "F-IDENT")),
+    ("Did DV pressure cause it?", "investigation", ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
+    ("What are the candidate causes?", "investigation", ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
+    ("Was it definitely a leak, and which signal drove it?", "investigation", ("F-CANDIDATES", "F-IDENT", "F-CF-NONUNIQUE")),
+    ("Was the alert early relative to the onset?", "quick", ("F-TIMING",)),
+    ("Was the alert early relative to the documented onset?", "quick", ("F-TIMING", "F-LABEL")),
+    ("Was it definitely a leak, and did the alert come early?", "quick", ("F-LABEL", "F-IDENT", "F-TIMING")),
+    ("Was the 2020 case an air dryer fault?", "quick", ("F-CANDIDATES", "F-IDENT", "F-LABEL")),
     ("Vì sao cảnh báo này được kích hoạt?", "quick", ("F-MARGIN", "F-EWMA-MEMORY")),
     ("Did removing the motor_current contribution fix the compressor?", "quick", ("F-CF-NONUNIQUE",)),
-    ("Did the model predict it 2 hours early?", "quick", ("F-LABEL", "F-TIMING")),
+    ("Did the model predict it 2 hours early?", "quick", ("F-TIMING",)),
     ("How much energy did this waste?", "quick", ("F-BRIDGE",)),
     ("And what about the jump at 21:10?", "quick", ("F-EVIDENCE-TIMING",)),
     ("Show the raw sensor trace.", "quick", ()),
@@ -406,7 +414,7 @@ def test_a_clarifying_question_is_an_accepted_answer_to_a_bare_follow_up(tmp_pat
     fake = Fake(reply(*leak, purposes=["possible_causes"]))
     c = client(tmp_path, fake)
     h = start(c)
-    first = ask(c, h, "Was this definitely an air leak?", depth="investigation").json()
+    first = ask(c, h, "Did DV pressure cause it?", depth="investigation").json()
     assert first["status"] == "ok" and first["provenance"]["validator"] == "passed", first.get("failed") or first.get("answer")
     fake.outputs = [reply(ask_back, purposes=["evidence_and_sources"])]
     body = ask(c, h, "Why did that happen?", depth="investigation").json()

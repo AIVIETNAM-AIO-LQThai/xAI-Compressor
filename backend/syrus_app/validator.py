@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, ValidationError
 from backend.syrus_app.context import Pack
 from backend.syrus_app.policy import (
     CASE_REFERENCE,
+    CONVEY,
     DEPTH,
     DEPTHS,
     FORBIDDEN,
@@ -176,11 +177,17 @@ def check_unit(u: Unit, r: Reply, pack: Pack, message: str, depth: str, view=Non
 
 
 def conveyed(r: Reply, pack: Pack) -> set[str]:
-    """Findings the answer actually states: a unit cites them and, if the finding states figures, repeats at least one of them."""
+    """Findings the answer actually states. A finding with phrase groups (CONVEY) needs every group in the units that cite it; any other
+    finding needs a unit that cites it and, if it states figures, repeats at least one."""
     out = set()
-    for u in r.units:
-        said = tokens(u.text)
-        out |= {f for f in u.finding_ids if not (figures := tokens(pack.findings[f]["text"])) or figures & said}
+    for f in {f for u in r.units for f in u.finding_ids}:
+        mine = [u for u in r.units if f in u.finding_ids]
+        if f in CONVEY:
+            said = " ".join(u.text for u in mine)
+            if all(rx.search(said) for rx in CONVEY[f]):
+                out.add(f)
+        elif not (figures := tokens(pack.findings[f]["text"])) or any(figures & tokens(u.text) for u in mine):
+            out.add(f)
     return out
 
 

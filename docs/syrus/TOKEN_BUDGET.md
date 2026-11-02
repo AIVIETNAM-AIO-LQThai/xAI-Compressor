@@ -59,11 +59,11 @@ Case 2020-05-29 unless the fixture names another. "After" parts are system / sco
 | Question | Turn | Before | After | Topics | After, by part |
 |---|---|---|---|---|---|
 | why_alert | 1 | 8,164 | 3,305 | alert | 1034/62/1307/143/1/0/24/661/73 |
-| definitely_a_leak | 1 | 8,169 | 3,942 | attribution | 1034/64/1147/443/324/0/30/793/107 |
-| definitely_a_leak_vi | 1 | 8,174 | 3,947 | attribution | 1034/64/1147/443/324/0/34/793/108 |
+| definitely_a_leak | 1 | 8,169 | 3,946 | certainty, attribution | |
+| definitely_a_leak_vi | 1 | 8,174 | 3,951 | certainty, attribution | |
 | dv_pressure_cause | 1 | 8,167 | 4,299 | attribution, signals | 1034/67/1440/443/324/0/27/841/123 |
 | motor_current_fix | 1 | 8,180 | 3,868 | repair, signals | 1034/65/1751/193/1/0/40/673/111 |
-| predicted_early | 1 | 8,169 | 2,818 | label | 1034/62/781/252/1/0/29/603/56 |
+| predicted_early | 1 | 8,169 | 2,683 | lead | |
 | energy_wasted | 1 | 8,166 | 2,463 | energy | 1034/62/601/116/1/0/27/572/50 |
 | apply_simulated_schedule | 1 | 8,172 | 2,469 | energy | 1034/62/601/116/1/0/32/572/51 |
 | raw_trace | 1 | 8,165 | 2,378 | sources | 1034/62/601/36/1/0/25/568/51 |
@@ -121,3 +121,11 @@ No qualification, refusal rule, depth budget, spending cap or the model changed.
 **Spend ledger.** A call whose outcome is unknown (dropped connection, timeout, server error, unreadable 200) keeps its estimated input cost against the daily and total caps, recorded separately from provider-reported usage (`Budget.summary()`: provider-reported, estimated exposure and its call count, and the maximum output that is not counted). Refusals the provider stated (429, authentication, a rejected request) are not charged. Each call is settled once; a failed retry adds only its own estimate. Diagnostics mark each call `provider_reported`, `estimated_exposure` or `none`.
 
 **Smoke script.** It now runs inside one client context, so every request shares one event loop. Previously each request got a new loop while the HTTP client's connection pool was shared, which can only matter from the second call on.
+
+## Leak-certainty questions, onset questions and phrase-level conveyance (third stage)
+
+- **Certainty topic.** A short question asking whether the documented incident was *definitely* a leak (or another named fault), in English or Vietnamese, selects `certainty`. It must convey `F-LABEL` and `F-IDENT` and nothing more: not `F-TIMING`, not `F-CF-NONUNIQUE`, not the candidate list. A question that also asks about causes, signals, repairs or PCA evidence is an attribution question and keeps the attribution requirements (candidates, identifiability, repair non-uniqueness from investigation depth). A generic candidate question does not require `F-LABEL`. Where `certainty` and `attribution` are both active, `policy.NARROWS` lets the narrower topic's requirements replace the broader one's; the attribution evidence is still loaded.
+- **Onset topic.** `F-TIMING` is required only for a `lead` question: onset, prediction, precursor, lead time ("early", "ahead", "before the incident", Vietnamese "dự đoán", "sớm"). The `label` topic (the documented incident, a year, "provider") requires `F-LABEL` alone.
+- **Conveying the label.** For `F-LABEL` and `F-IDENT` a matching number or a bare citation is not enough (`policy.CONVEY`). The units citing `F-LABEL` must together state the label itself (the "Air leak, high stress" text), its source (the repository's transcription of the provider failure list), and that AeroXAI's evidence does not establish it or that it is not an independent diagnosis. The units citing `F-IDENT` must name leakage and downstream demand and state that this data cannot tell them apart. Both are checked in English and Vietnamese; the Vietnamese phrase lists are drafts for the owner's review. Otherwise the existing path applies: one correction, then the reviewed finding text under "Also relevant". Other findings keep the figure-repeating rule.
+- **Acceptance fixture.** `tests/fixtures/syrus_acceptance.yaml` now lists, for every turn, at least the findings the server requires, and a test enforces it. `definitely_a_leak` and `definitely_a_leak_vi` expect `F-LABEL` and `F-IDENT`. Other turns gained the requirements the earlier guard already imposed (`dv_pressure_cause`, `air_dryer_2020`, `operator_statement`, `ignore_rules`, `persistence_path_repair`, the two energy turns).
+- **As-of mode.** The label records, findings and the strings "high stress", `label.*`, `case.*` and `F-LABEL` appear in no as-of case file or as-of API response; they are retrospective-only, chat refuses as-of sessions before any model call, and the model pack is built from the retrospective file only. Tests cover each.
