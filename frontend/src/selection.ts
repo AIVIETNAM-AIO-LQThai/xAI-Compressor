@@ -12,14 +12,14 @@ export type Selection =
   | { kind: "episode"; start: string }
   | { kind: "interval"; start: string; end: string };
 
-export type Route = "overview" | "investigate" | "explore" | "incident" | "proof" | "twin" | "recommendation";
+export type Route = "overview" | "investigate" | "explore" | "lab" | "incident" | "proof" | "twin" | "recommendation";
 
 export interface Where {
   route: Route;
   selection: Selection | null;
 }
 
-const ROUTES: Route[] = ["overview", "investigate", "explore", "incident", "proof", "twin", "recommendation"];
+const ROUTES: Route[] = ["overview", "investigate", "explore", "lab", "incident", "proof", "twin", "recommendation"];
 const CASE = /^c-[a-z0-9]+$/;
 const STAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 const KEY = "aeroxai.selection";

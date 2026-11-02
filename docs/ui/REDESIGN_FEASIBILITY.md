@@ -1,6 +1,6 @@
 # AeroXAI redesign: feasibility and design review
 
-Status: decisions approved on 2026-11-03 as recommended (units: charts say "units not loaded" until the dataset description passes the document gate). Stages 1 to 5 implemented (Syrus fixes; explorer index and API; shell, explicit selection, Syrus drawer and Overview; Data Explorer interface; computed investigation of alert episodes). Every number below was checked read-only on 2026-11-03 against the local files.
+Status: decisions approved on 2026-11-03 as recommended (units: charts say "units not loaded" until the dataset description passes the document gate). Stages 1 to 6 implemented (Syrus fixes; explorer index and API; shell, explicit selection, Syrus drawer and Overview; Data Explorer interface; computed investigation of alert episodes; Scenario Lab). Every number below was checked read-only on 2026-11-03 against the local files.
 
 ## Summary
 

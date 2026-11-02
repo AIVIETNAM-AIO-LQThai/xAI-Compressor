@@ -12,13 +12,14 @@ import { useCaseFile, useCases } from "./useCase";
  * Syrus as a companion: a fixed launcher, and a drawer that talks about the selected incident only. Its context is the selection's
  * case and mode, never a default; without a selection it asks the user to choose one.
  */
-export function SyrusCompanion({ selection, choose }: { selection: Selection | null; choose: (s: Selection) => void }) {
+/** `simulation`: on a simulation page Syrus is off, whatever was chosen before, so no recorded case is read across a synthetic run. */
+export function SyrusCompanion({ selection, choose, simulation = false }: { selection: Selection | null; choose: (s: Selection) => void; simulation?: boolean }) {
   const ui = useSyrusUi();
   const { cases } = useCases();
   const incident = selection?.kind === "incident" ? selection : null;
   const entry = incident && cases?.find((c) => c.caseId === incident.caseId);
   const other = selection && selection.kind !== "incident" ? selection : null;
-  const context = entry ? `Incident ${entry.number} · ${incident!.mode === "retro" ? "Retrospective" : "Past-only"}` : other ? (other.kind === "episode" ? "Alert episode · no case file" : "Interval · no case file") : "No incident selected";
+  const context = simulation ? "Simulation · Syrus off" : entry ? `Incident ${entry.number} · ${incident!.mode === "retro" ? "Retrospective" : "Past-only"}` : other ? (other.kind === "episode" ? "Alert episode · no case file" : "Interval · no case file") : "No incident selected";
 
   // Focus moves into the drawer when it opens and back to the launcher when it closes. An offered question focuses the composer instead.
   const launcher = useRef<HTMLButtonElement>(null);
@@ -60,14 +61,22 @@ export function SyrusCompanion({ selection, choose }: { selection: Selection | n
         <div>
           <strong>Syrus</strong>
           <span>
-            {entry ? `Incident ${entry.number} · ${dateLabel(entry.alertTime)} · ${incident!.mode === "retro" ? "Retrospective" : "Past-only"}` : context}
+            {entry && !simulation ? `Incident ${entry.number} · ${dateLabel(entry.alertTime)} · ${incident!.mode === "retro" ? "Retrospective" : "Past-only"}` : context}
           </span>
         </div>
         <button ref={close} className="icon-button" onClick={closeSyrus} aria-label="Close Syrus">
           <X size={18} />
         </button>
       </header>
-      {incident && entry ? (
+      {simulation ? (
+        <div className="drawer-empty">
+          <p>
+            Syrus is off for simulations. Its answers come from reviewed records of the recorded incidents, and a simulated run has none, so it does not interpret one or reuse a real incident's findings. The labelled
+            ground truth and the detector's response are on the page.
+          </p>
+          <p className="muted">To talk about a documented incident, open it in the Investigation view.</p>
+        </div>
+      ) : incident && entry ? (
         <Conversation key={`${incident.caseId}:${incident.mode}`} selection={incident} />
       ) : (
         <div className="drawer-empty">

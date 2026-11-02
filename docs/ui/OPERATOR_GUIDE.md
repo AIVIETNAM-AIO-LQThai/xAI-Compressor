@@ -32,7 +32,7 @@ Set in `.env` at the repository root (never committed, never read by the browser
 python -m scripts.build_explorer_index
 ```
 
-Reads the local MetroPT-3 recording and frozen splits, rebuilds the frozen detector's series and writes `data/processed/explorer/` (about 30 MB, gitignored). It stops without a manifest unless it reproduces the frozen threshold, the Incident 2 smoothed score and the 142 / 133 episode counts. Without it the explorer endpoints answer `explorer_index_missing`.
+Reads the local MetroPT-3 recording and frozen splits, rebuilds the frozen detector's series and writes `data/processed/explorer/` (about 30 MB, gitignored). It stops without a manifest unless it reproduces the frozen threshold, the Incident 2 smoothed score and the 142 / 133 episode counts. Without it the explorer endpoints answer `explorer_index_missing`. The Scenario Lab (`/lab/*`) reads the same raw index, so it needs it too, and it is not served when `AEROXAI_PUBLIC=1`.
 
 ## Start
 

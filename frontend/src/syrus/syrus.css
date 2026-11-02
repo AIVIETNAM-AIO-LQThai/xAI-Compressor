@@ -2026,3 +2026,70 @@
     margin-top: 8px;
   }
 }
+
+/* Scenario lab */
+
+.lab .segmented {
+  margin-bottom: 16px;
+}
+
+.lab .panel {
+  margin-bottom: 16px;
+}
+
+.lab-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 14px;
+  align-content: start;
+}
+
+.field select,
+.field input {
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--bg-soft);
+  color: var(--text);
+  font: inherit;
+}
+
+.field small {
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.run-button {
+  width: auto;
+  flex: none;
+  padding: 0 28px;
+  font-size: 15px;
+}
+
+.result {
+  margin: 0 0 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel-raised);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.result.alerted {
+  border-color: rgba(232, 96, 28, 0.6);
+}
+
+.lab .notice {
+  margin-top: 12px;
+}

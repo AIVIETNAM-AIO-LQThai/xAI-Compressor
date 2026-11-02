@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Activity, Cpu, Database, LayoutDashboard, Menu, Search, ShieldCheck, X, Zap } from "lucide-react";
+import { Activity, Cpu, Database, FlaskConical, LayoutDashboard, Menu, Search, ShieldCheck, X, Zap } from "lucide-react";
 
 import { Explorer } from "./pages/Explorer";
 import { DigitalTwinLab } from "./pages/DigitalTwinLab";
@@ -8,6 +8,7 @@ import { IncidentReplay } from "./pages/IncidentReplay";
 import { Investigation } from "./pages/Investigation";
 import { Overview } from "./pages/Overview";
 import { ProofManifest } from "./pages/ProofManifest";
+import { ScenarioLab } from "./pages/ScenarioLab";
 import { hashFor, parse, recall, recallIncident, recallView, remember, type Route, type Selection, type Where } from "./selection";
 import { SyrusCompanion } from "./syrus/Companion";
 import { useSyrusUi } from "./syrus/ui";
@@ -18,6 +19,7 @@ const ROUTES: Array<{ id: Route; label: string; icon: typeof Activity }> = [
   { id: "explore", label: "Data Explorer", icon: Database },
   { id: "incident", label: "Detector Replay", icon: Activity },
   { id: "proof", label: "Evidence Proof", icon: ShieldCheck },
+  { id: "lab", label: "Scenario Lab", icon: FlaskConical },
   { id: "twin", label: "Simulation Lab", icon: Cpu },
   { id: "recommendation", label: "Advisory", icon: Zap },
 ];
@@ -65,6 +67,8 @@ export default function App() {
       <Explorer selection={where.selection?.kind === "incident" ? null : where.selection} go={choose} />
     ) : where.route === "incident" ? (
       <IncidentReplay />
+    ) : where.route === "lab" ? (
+      <ScenarioLab />
     ) : where.route === "twin" ? (
       <DigitalTwinLab />
     ) : where.route === "recommendation" ? (
@@ -116,7 +120,7 @@ export default function App() {
         {content}
       </main>
 
-      <SyrusCompanion selection={selection} choose={choose} />
+      <SyrusCompanion selection={selection} choose={choose} simulation={where.route === "lab" || where.route === "twin"} />
     </div>
   );
 }
