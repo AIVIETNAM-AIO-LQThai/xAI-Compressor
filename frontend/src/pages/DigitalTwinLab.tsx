@@ -103,7 +103,7 @@ export function DigitalTwinLab() {
             ]),
             lineStyle: {
               width: 2,
-              color: "#55d6be",
+              color: "#ff7126",
             },
             areaStyle: {
               color: "rgba(85,214,190,.08)",

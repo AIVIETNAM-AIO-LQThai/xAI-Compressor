@@ -13,6 +13,12 @@ class Governor:
         self.limit, self.concurrent, self.now = int(tokens_per_minute * share), concurrent, now
         self.window: deque = deque()  # (start time, tokens) of calls in the last minute
         self.inflight = 0
+        self.ratio = 1.0  # observed provider-counted input tokens per estimated token, learned from completed calls
+
+    def observe(self, estimated: int, actual: int) -> None:
+        """Learn how pessimistic the input estimate is. Never trusted below half, so a lucky call cannot open the window."""
+        if estimated > 0:
+            self.ratio = min(1.0, max(0.5, 0.5 * self.ratio + 0.5 * actual / estimated))
 
     def _expire(self) -> None:
         while self.window and self.now() - self.window[0][0] >= 60:

@@ -48,6 +48,9 @@ def assemble(r: Reply, pack: Pack, thread: Thread, depth: str, lang: str, added:
     turn_no = thread.turns + 1
     forced = REFUSALS.get(r.refusal or "", {}).get("quals", [])
     shown, blocks = set(), []
+    for q in QUALS:  # a limit the answer itself states in any unit is not appended beside another unit that merely touches the topic
+        if q.get("said") and any(all(rx.search(u.text) for rx in q["said"]) for u in r.units):
+            shown.add(q["id"])
     for n, u in enumerate(r.units):
         quals = qualifications(set(u.record_ids) | set(u.finding_ids), u.text, forced if n == 0 else [], thread.quals, shown, lang)
         blocks.append({"text": u.text, "kind": u.kind, "records": u.record_ids, "findings": u.finding_ids, "qualifications": quals,

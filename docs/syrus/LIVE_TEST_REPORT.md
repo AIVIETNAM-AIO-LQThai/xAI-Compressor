@@ -63,3 +63,25 @@ python -m scripts.syrus_smoke --run --only maintenance_log_vi
 ## Claims boundary
 
 MetroPT-3 is a historical metro air-production-unit compressor, not a live plant. No real-asset control action, measured saving or confirmed root cause is established. The separate physics and optimisation results are synthetic.
+
+## Interface checks (re-run, scripted model double)
+
+Run in the built-in browser against `backend.web` with `scripts/qa_web.py` (a scripted stand-in for Groq; the interface showed its "Test fixture" banner). These show the interface and the plumbing, not Syrus's answers.
+
+| Check | Result |
+|---|---|
+| Overview from the real evidence and case APIs: 4 / 4, 2 / 4, 0.886, four incident cards with pre-/post-onset tags | Rendered correctly |
+| Investigation, Incident 2 and 3, retrospective: metrics, alert mechanics, findings, contributions, chart, repairs, candidates, missing evidence | Rendered from the case file; no overflow at 1440 px |
+| Question sent, answer rendered with claims, inline qualification, evidence chips, validator chip, "No diagnosis claimed" | Worked |
+| Chip opens the inspector with text, rule and inputs; Escape and the close button close it | Worked |
+| Depth chips change the depth sent (unit test confirms `quick` / `investigation` / `technical`) | Worked |
+| Past-only mode: no label text, no chat box, a reason shown; the retrospective conversation was still there on return | Worked |
+| Failure states in the browser: rate limited with countdown, busy with countdown, failed checks with the check codes, offline | Worked; a disabled "Try again" during a countdown |
+| Existing pages (Detector Replay, Evidence Proof, Simulation Lab, Advisory) through the proxy | Loaded without errors, new theme |
+| Phone width (375 px): no horizontal overflow, chat first, summary strip, one tap to Evidence | Worked; inline text links are smaller than a touch target |
+| Frontend `npm run build`, `tsc`, and `npm test` (10 client and message tests) | Passed |
+| Secret scan of `frontend/dist` | No key patterns found |
+
+Found and fixed during these checks: the page crashed on the first answer (an effect returned a value instead of a cleanup); a limit stated in one unit was still appended beside another unit; a provider refusal kept its tokens in the governor's window; the governor reserved the pessimistic estimate and refused a second question within a minute (it now learns the real ratio, never below half).
+
+Not checked: a real phone on a network, two simultaneous visitors, Vietnamese in the interface, keyboard-only use beyond focus outlines and Escape, screen readers.

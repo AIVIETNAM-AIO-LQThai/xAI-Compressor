@@ -99,7 +99,7 @@ class Service:
                     break
                 self.record(thread, "offline:" + e.reason, 0, 0, 0, None, ip)
                 return self.offline(e.reason, diag=diag)
-            ticket, wait = self.governor.admit(est + lim["max_output_tokens"])
+            ticket, wait = self.governor.admit(int(est * self.governor.ratio) + lim["max_output_tokens"])
             if not ticket:  # another visitor's call is in flight or the minute's token window is full: nothing is sent
                 self.budget.settle(held, 0, 0)
                 if attempt:
@@ -110,7 +110,7 @@ class Service:
             try:
                 done = await self.adapter.complete(msgs, view.schema, lim["max_output_tokens"], remaining)
             except LlmError as e:
-                self.governor.release(ticket)
+                self.governor.release(ticket, None if e.indeterminate else 0)  # a refusal the provider stated used none of the minute's tokens
                 # An indeterminate failure (dropped connection, timeout, server error) may have been processed: its input tokens stay against
                 # the caps as an estimate, recorded apart from provider-reported usage. A refusal the provider stated is not charged.
                 spent = self.budget.settle(held, est if e.indeterminate else 0, 0, e.indeterminate, lim["max_output_tokens"])
@@ -121,6 +121,7 @@ class Service:
                 self.record(thread, "offline:" + e.reason, 0, 0, time.monotonic() - start, None, ip, diag)
                 return self.offline(e.reason, e.retry_after, diag)
             self.governor.release(ticket, done.tokens_in + done.tokens_out)
+            self.governor.observe(est, done.tokens_in)
             self.budget.settle(held, done.tokens_in, done.tokens_out)
             diag["calls"].append({"estimated_in": est, "tokens_in": done.tokens_in, "tokens_out": done.tokens_out, "billing": "provider_reported", **done.diag})
             used[0] += done.tokens_in

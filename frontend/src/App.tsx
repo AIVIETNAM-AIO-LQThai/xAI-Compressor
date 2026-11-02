@@ -1,152 +1,92 @@
 import { useEffect, useState } from "react";
-import {
-  Activity,
-  Cpu,
-  Gauge,
-  LayoutDashboard,
-  Menu,
-  ShieldCheck,
-  X,
-  Zap,
-} from "lucide-react";
+import { Activity, Cpu, LayoutDashboard, Menu, Search, ShieldCheck, X, Zap } from "lucide-react";
 
 import { DigitalTwinLab } from "./pages/DigitalTwinLab";
 import { EnergyRecommendation } from "./pages/EnergyRecommendation";
 import { IncidentReplay } from "./pages/IncidentReplay";
+import { Investigation } from "./pages/Investigation";
 import { Overview } from "./pages/Overview";
 import { ProofManifest } from "./pages/ProofManifest";
+import type { Mode } from "./syrus/types";
 
-type Route =
-  | "overview"
-  | "incident"
-  | "twin"
-  | "recommendation"
-  | "proof";
+type Route = "overview" | "investigation" | "incident" | "proof" | "twin" | "recommendation";
 
-const ROUTES: Array<{
-  id: Route;
-  label: string;
-  icon: typeof Activity;
-}> = [
-  {
-    id: "overview",
-    label: "Overview",
-    icon: LayoutDashboard,
-  },
-  {
-    id: "incident",
-    label: "Incident Replay",
-    icon: Activity,
-  },
-  {
-    id: "twin",
-    label: "Digital Twin Lab",
-    icon: Cpu,
-  },
-  {
-    id: "recommendation",
-    label: "Energy Recommendation",
-    icon: Zap,
-  },
-  {
-    id: "proof",
-    label: "Evidence Proof",
-    icon: ShieldCheck,
-  },
+const ROUTES: Array<{ id: Route; label: string; icon: typeof Activity }> = [
+  { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "investigation", label: "Investigation", icon: Search },
+  { id: "incident", label: "Detector Replay", icon: Activity },
+  { id: "proof", label: "Evidence Proof", icon: ShieldCheck },
+  { id: "twin", label: "Simulation Lab", icon: Cpu },
+  { id: "recommendation", label: "Advisory", icon: Zap },
 ];
 
-function routeFromHash(): Route {
-  const hash = window.location.hash.slice(1);
+interface Where {
+  route: Route;
+  caseId?: string;
+  mode: Mode;
+}
 
-  return ROUTES.some((route) => route.id === hash)
-    ? (hash as Route)
-    : "overview";
+/** `#investigation/<case>/<mode>`; anything unknown falls back to the overview. */
+function parse(hash: string): Where {
+  const [head, caseId, mode] = hash.replace(/^#/, "").split("/");
+  const route = ROUTES.find((r) => r.id === head)?.id ?? "overview";
+  return { route, caseId: route === "investigation" && /^c-[a-z0-9]+$/.test(caseId ?? "") ? caseId : undefined, mode: mode === "asof" ? "asof" : "retro" };
 }
 
 export default function App() {
-  const [route, setRoute] = useState<Route>(
-    routeFromHash,
-  );
+  const [where, setWhere] = useState<Where>(() => parse(window.location.hash));
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const onHash = () => {
-      setRoute(routeFromHash());
+      setWhere(parse(window.location.hash));
       setMobileOpen(false);
+      window.scrollTo(0, 0);
     };
-
     window.addEventListener("hashchange", onHash);
-
-    return () =>
-      window.removeEventListener(
-        "hashchange",
-        onHash,
-      );
+    return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  function navigate(next: Route) {
-    window.location.hash = next;
-  }
+  const open = (hash: string) => {
+    window.location.hash = hash;
+  };
 
   const content =
-    route === "incident" ? (
+    where.route === "investigation" ? (
+      <Investigation caseId={where.caseId} mode={where.mode} go={(c, m) => open(`investigation/${c}/${m}`)} />
+    ) : where.route === "incident" ? (
       <IncidentReplay />
-    ) : route === "twin" ? (
+    ) : where.route === "twin" ? (
       <DigitalTwinLab />
-    ) : route === "recommendation" ? (
+    ) : where.route === "recommendation" ? (
       <EnergyRecommendation />
-    ) : route === "proof" ? (
+    ) : where.route === "proof" ? (
       <ProofManifest />
     ) : (
-      <Overview />
+      <Overview open={open} />
     );
 
   return (
     <div className="app">
-      <button
-        className="mobile-menu-button"
-        onClick={() => setMobileOpen(!mobileOpen)}
-        aria-label="Toggle navigation"
-      >
+      <button className="mobile-menu-button" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle navigation" aria-expanded={mobileOpen}>
         {mobileOpen ? <X /> : <Menu />}
       </button>
 
-      <aside
-        className={
-          mobileOpen
-            ? "sidebar sidebar-open"
-            : "sidebar"
-        }
-      >
+      <aside className={mobileOpen ? "sidebar sidebar-open" : "sidebar"}>
         <div className="brand">
-          <div className="brand-mark">
-            <Gauge size={23} />
-          </div>
           <div>
-            <strong>AeroXAI</strong>
-            <span>ENERGY COPILOT</span>
+            <strong>
+              Aero<span>XAI</span>
+            </strong>
+            <span>INDUSTRIAL INTELLIGENCE</span>
           </div>
         </div>
 
-        <div className="system-live">
-          <i />
-          <span>ADVISORY MODE</span>
-        </div>
-
-        <nav>
+        <nav aria-label="Main">
           {ROUTES.map((item) => {
             const Icon = item.icon;
-
             return (
-              <button
-                key={item.id}
-                className={
-                  route === item.id
-                    ? "nav-item active"
-                    : "nav-item"
-                }
-                onClick={() => navigate(item.id)}
-              >
+              <button key={item.id} className={where.route === item.id ? "nav-item active" : "nav-item"} aria-current={where.route === item.id ? "page" : undefined} onClick={() => open(item.id)}>
                 <Icon size={18} />
                 <span>{item.label}</span>
               </button>
@@ -155,14 +95,9 @@ export default function App() {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="tiny-grid">
-            <span>CTRL</span>
-            <strong>NO WRITE</strong>
-            <span>MODEL</span>
-            <strong>EXPLAINED</strong>
-          </div>
-          <p>
-            Vendor-agnostic prototype · ESIC 2026
+          <p>Historical replay · advisory only · no equipment control</p>
+          <p className="syrus-line">
+            <b>Syrus</b> · evidence-backed conversation
           </p>
         </div>
       </aside>

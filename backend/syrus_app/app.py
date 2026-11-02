@@ -54,7 +54,7 @@ def create_app(settings: Settings | None = None, adapter: Adapter | None = None,
     @app.get("/api/health")
     async def health():
         reason = svc.offline_reason()
-        return {"status": "offline" if reason else "ok", "reason": reason, "model": settings.model, "mock": False, "cases": len(store.manifest["cases"]),
+        return {"status": "offline" if reason else "ok", "reason": reason, "model": settings.model, "mock": svc.adapter is not None and not isinstance(svc.adapter, GroqAdapter), "cases": len(store.manifest["cases"]),
                 "manifest_sha256": store.manifest["sha256"]}
 
     @app.get("/api/cases")

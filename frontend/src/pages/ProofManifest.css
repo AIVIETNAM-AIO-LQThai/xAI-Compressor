@@ -93,7 +93,7 @@
     linear-gradient(
       90deg,
       #5ecaff,
-      rgba(94, 202, 255, 0)
+      rgba(255, 113, 38, 0)
     );
 }
 
@@ -321,8 +321,8 @@
   min-width: 0;
   padding: 12px 10px;
   border-radius: 12px;
-  border: 1px solid rgba(94, 202, 255, 0.12);
-  background: rgba(94, 202, 255, 0.035);
+  border: 1px solid rgba(255, 113, 38, 0.12);
+  background: rgba(255, 113, 38, 0.035);
 }
 
 .proof-sim-metrics span,
@@ -354,11 +354,11 @@
 .proof-command-panel {
   padding: 16px;
   border-radius: 15px;
-  border: 1px solid rgba(94, 202, 255, 0.16);
+  border: 1px solid rgba(255, 113, 38, 0.16);
   background:
     linear-gradient(
       145deg,
-      rgba(94, 202, 255, 0.045),
+      rgba(255, 113, 38, 0.045),
       rgba(255, 255, 255, 0.012)
     );
 }
@@ -517,7 +517,7 @@
     linear-gradient(
       90deg,
       rgba(142, 252, 115, 0.04),
-      rgba(94, 202, 255, 0.025)
+      rgba(255, 113, 38, 0.025)
     );
 }
 

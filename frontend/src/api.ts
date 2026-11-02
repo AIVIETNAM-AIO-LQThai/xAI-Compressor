@@ -10,9 +10,8 @@ import type {
   TwinResponse,
 } from "./types";
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL ??
-  "http://127.0.0.1:8000";
+// Same origin by default (`uvicorn backend.web:app`, or the Vite proxy in development). VITE_API_BASE_URL is for a separate API host and must never hold a secret.
+const API_BASE: string = import.meta.env.VITE_API_BASE_URL ?? "";
 
 async function request<T>(
   path: string,

@@ -1,26 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap");
-
 :root {
   font-family:
-    Inter, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  color: #e8f0f5;
-  background: #071018;
+    "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #f2f3f5;
+  background: #080a0d;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --bg: #071018;
-  --bg-soft: #0a151f;
-  --panel: rgba(13, 28, 40, 0.82);
-  --panel-strong: #0d1d29;
-  --line: rgba(132, 164, 186, 0.16);
-  --text: #e8f0f5;
-  --muted: #8196a6;
-  --cyan: #55d6be;
-  --cyan-2: #5bc0eb;
-  --lime: #8de26b;
-  --amber: #fbbf24;
-  --red: #fb7185;
-  --mono: "DM Mono", ui-monospace, SFMono-Regular,
+  --bg: #080a0d;
+  --bg-soft: #0e1115;
+  --panel: rgba(17, 22, 27, 0.92);
+  --panel-strong: #11161b;
+  --panel-raised: #181e24;
+  --line: rgba(255, 255, 255, 0.11);
+  --text: #f2f3f5;
+  --muted: #9ca4ad;
+  --cyan: #ff7126;
+  --cyan-2: #ffb58a;
+  --lime: #6fcf8a;
+  --amber: #f5b942;
+  --red: #f0647a;
+  --focus: #ffb58a;
+  --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular",
     Menlo, Consolas, monospace;
 }
 
@@ -38,16 +38,16 @@ body {
   min-height: 100vh;
   background:
     radial-gradient(
-      circle at 80% -10%,
-      rgba(50, 144, 166, 0.13),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at 50% 110%,
-      rgba(45, 200, 155, 0.07),
-      transparent 36%
+      circle at 85% -15%,
+      rgba(255, 113, 38, 0.07),
+      transparent 38%
     ),
     var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 button,
@@ -72,8 +72,8 @@ button {
   background:
     linear-gradient(
       180deg,
-      rgba(10, 22, 32, 0.98),
-      rgba(7, 16, 24, 0.98)
+      rgba(14, 17, 21, 0.98),
+      rgba(10, 12, 15, 0.98)
     );
   z-index: 20;
   display: flex;
@@ -90,19 +90,28 @@ button {
 .brand-mark {
   width: 42px;
   height: 42px;
-  border: 1px solid rgba(85, 214, 190, 0.3);
-  background: rgba(85, 214, 190, 0.08);
+  border: 1px solid rgba(255, 113, 38, 0.3);
+  background: rgba(255, 113, 38, 0.08);
   display: grid;
   place-items: center;
   color: var(--cyan);
   border-radius: 12px;
-  box-shadow: inset 0 0 24px rgba(85, 214, 190, 0.04);
+  box-shadow: inset 0 0 24px rgba(255, 113, 38, 0.04);
 }
 
 .brand strong {
   display: block;
-  font-size: 18px;
-  letter-spacing: -0.03em;
+  font-size: 24px;
+  letter-spacing: -0.04em;
+}
+
+.brand strong span {
+  display: inline;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  color: var(--cyan);
 }
 
 .brand span {
@@ -152,7 +161,7 @@ button {
   gap: 11px;
   border-radius: 10px;
   cursor: pointer;
-  color: #8da1b0;
+  color: #9ca4ad;
   text-align: left;
   transition:
     160ms ease background,
@@ -169,13 +178,13 @@ button {
   background:
     linear-gradient(
       90deg,
-      rgba(85, 214, 190, 0.13),
-      rgba(85, 214, 190, 0.025)
+      rgba(255, 113, 38, 0.13),
+      rgba(255, 113, 38, 0.025)
     );
   color: #c9fff4;
   box-shadow:
     inset 2px 0 0 var(--cyan),
-    inset 0 0 0 1px rgba(85, 214, 190, 0.08);
+    inset 0 0 0 1px rgba(255, 113, 38, 0.08);
 }
 
 .nav-item svg {
@@ -197,7 +206,7 @@ button {
 }
 
 .tiny-grid span {
-  color: #617888;
+  color: #8a9199;
 }
 
 .tiny-grid strong {
@@ -225,12 +234,12 @@ button {
   inset: 0 0 0 248px;
   background-image:
     linear-gradient(
-      rgba(109, 142, 163, 0.035) 1px,
+      rgba(255, 255, 255, 0.035) 1px,
       transparent 1px
     ),
     linear-gradient(
       90deg,
-      rgba(109, 142, 163, 0.035) 1px,
+      rgba(255, 255, 255, 0.035) 1px,
       transparent 1px
     );
   background-size: 48px 48px;
@@ -269,7 +278,7 @@ button {
 .page-header p {
   max-width: 850px;
   margin: 0;
-  color: #8da1b0;
+  color: #9ca4ad;
   font-size: 14px;
   line-height: 1.7;
 }
@@ -314,8 +323,8 @@ button {
 
 .evidence-simulated {
   color: #b6e9fb;
-  border-color: rgba(91, 192, 235, 0.24);
-  background: rgba(91, 192, 235, 0.075);
+  border-color: rgba(255, 181, 138, 0.24);
+  background: rgba(255, 181, 138, 0.075);
 }
 
 .evidence-simulated .evidence-dot {
@@ -360,7 +369,7 @@ button {
   position: relative;
   overflow: hidden;
   padding: 17px 18px;
-  background: rgba(13, 28, 40, 0.8);
+  background: rgba(17, 22, 27, 0.8);
   border: 1px solid var(--line);
   border-radius: 12px;
   min-height: 118px;
@@ -387,7 +396,7 @@ button {
 }
 
 .metric-label {
-  color: #6f8797;
+  color: #9ca4ad;
   font-size: 11px;
   line-height: 1.4;
 }
@@ -403,7 +412,7 @@ button {
 
 .metric-note {
   margin-top: 7px;
-  color: #667e8e;
+  color: #8a9199;
   font-size: 10px;
   line-height: 1.45;
 }
@@ -413,8 +422,8 @@ button {
   background:
     linear-gradient(
       145deg,
-      rgba(15, 31, 43, 0.9),
-      rgba(10, 22, 31, 0.8)
+      rgba(20, 25, 30, 0.9),
+      rgba(14, 17, 21, 0.8)
     );
   border-radius: 14px;
   padding: 22px;
@@ -466,13 +475,13 @@ button {
   background:
     radial-gradient(
       circle,
-      rgba(85, 214, 190, 0.12),
+      rgba(255, 113, 38, 0.12),
       transparent 65%
     );
-  border: 1px solid rgba(85, 214, 190, 0.26);
+  border: 1px solid rgba(255, 113, 38, 0.26);
   box-shadow:
-    0 0 0 12px rgba(85, 214, 190, 0.025),
-    0 0 50px rgba(85, 214, 190, 0.08);
+    0 0 0 12px rgba(255, 113, 38, 0.025),
+    0 0 50px rgba(255, 113, 38, 0.08);
 }
 
 .safety-orb span {
@@ -508,7 +517,7 @@ button {
   gap: 13px 22px;
   padding-top: 16px;
   border-top: 1px solid var(--line);
-  color: #7890a0;
+  color: #9ca4ad;
   font-size: 10px;
 }
 
@@ -602,11 +611,11 @@ button {
 .incident-tab {
   padding: 13px 14px;
   border: 1px solid var(--line);
-  background: rgba(13, 28, 40, 0.58);
+  background: rgba(17, 22, 27, 0.58);
   border-radius: 10px;
   cursor: pointer;
   text-align: left;
-  color: #7890a0;
+  color: #9ca4ad;
 }
 
 .incident-tab small,
@@ -626,8 +635,8 @@ button {
 }
 
 .incident-tab.active {
-  border-color: rgba(85, 214, 190, 0.3);
-  background: rgba(85, 214, 190, 0.08);
+  border-color: rgba(255, 113, 38, 0.3);
+  background: rgba(255, 113, 38, 0.08);
   color: #d6fff7;
 }
 
@@ -652,7 +661,7 @@ button {
 }
 
 .details-list dt {
-  color: #6f8797;
+  color: #9ca4ad;
   font-size: 11px;
 }
 
@@ -687,8 +696,8 @@ button {
 }
 
 .callout-neutral {
-  background: rgba(91, 192, 235, 0.05);
-  border: 1px solid rgba(91, 192, 235, 0.12);
+  background: rgba(255, 181, 138, 0.05);
+  border: 1px solid rgba(255, 181, 138, 0.12);
 }
 
 .lab-layout,
@@ -711,7 +720,7 @@ button {
   display: flex;
   justify-content: space-between;
   margin-bottom: 7px;
-  color: #8da1b0;
+  color: #9ca4ad;
   font-size: 10px;
 }
 
@@ -724,7 +733,7 @@ button {
 .field input {
   width: 100%;
   color: #dcecf4;
-  background: rgba(4, 12, 18, 0.62);
+  background: rgba(8, 10, 13, 0.62);
   border: 1px solid rgba(118, 151, 172, 0.2);
   border-radius: 8px;
   padding: 10px 11px;
@@ -734,18 +743,18 @@ button {
 }
 
 .field input:focus {
-  border-color: rgba(85, 214, 190, 0.45);
-  box-shadow: 0 0 0 3px rgba(85, 214, 190, 0.04);
+  border-color: rgba(255, 113, 38, 0.45);
+  box-shadow: 0 0 0 3px rgba(255, 113, 38, 0.04);
 }
 
 .primary-button {
   width: 100%;
-  border: 1px solid rgba(85, 214, 190, 0.25);
+  border: 1px solid rgba(255, 113, 38, 0.25);
   background:
     linear-gradient(
       135deg,
-      rgba(85, 214, 190, 0.2),
-      rgba(85, 214, 190, 0.08)
+      rgba(255, 113, 38, 0.2),
+      rgba(255, 113, 38, 0.08)
     );
   color: #d8fff7;
   border-radius: 9px;
@@ -763,8 +772,8 @@ button {
   background:
     linear-gradient(
       135deg,
-      rgba(85, 214, 190, 0.27),
-      rgba(85, 214, 190, 0.11)
+      rgba(255, 113, 38, 0.27),
+      rgba(255, 113, 38, 0.11)
     );
 }
 
@@ -799,7 +808,7 @@ button {
   place-items: center;
   align-content: center;
   text-align: center;
-  color: #7890a0;
+  color: #9ca4ad;
 }
 
 .empty-state h2 {
@@ -818,10 +827,10 @@ button {
   width: 92px;
   height: 145px;
   border-radius: 40px 40px 28px 28px;
-  border: 1px solid rgba(85, 214, 190, 0.3);
+  border: 1px solid rgba(255, 113, 38, 0.3);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 45px rgba(85, 214, 190, 0.08);
+  box-shadow: 0 0 45px rgba(255, 113, 38, 0.08);
 }
 
 .vessel-fill {
@@ -829,8 +838,8 @@ button {
   inset: 55% 5px 5px;
   background:
     linear-gradient(
-      rgba(85, 214, 190, 0.18),
-      rgba(85, 214, 190, 0.05)
+      rgba(255, 113, 38, 0.18),
+      rgba(255, 113, 38, 0.05)
     );
   border-radius: 0 0 23px 23px;
 }
@@ -870,7 +879,7 @@ button {
 .profile-summary {
   padding: 12px;
   margin: 18px 0;
-  background: rgba(4, 12, 18, 0.5);
+  background: rgba(8, 10, 13, 0.5);
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -959,20 +968,20 @@ button {
 }
 
 .compressor-on {
-  border-color: rgba(85, 214, 190, 0.2);
+  border-color: rgba(255, 113, 38, 0.2);
 }
 
 .compressor-on .compressor-ring {
   color: #bff7ec;
-  border-color: rgba(85, 214, 190, 0.35);
-  background: rgba(85, 214, 190, 0.06);
-  box-shadow: 0 0 24px rgba(85, 214, 190, 0.07);
+  border-color: rgba(255, 113, 38, 0.35);
+  background: rgba(255, 113, 38, 0.06);
+  box-shadow: 0 0 24px rgba(255, 113, 38, 0.07);
 }
 
 .reason-box {
   padding: 14px;
-  background: rgba(91, 192, 235, 0.045);
-  border: 1px solid rgba(91, 192, 235, 0.12);
+  background: rgba(255, 181, 138, 0.045);
+  border: 1px solid rgba(255, 181, 138, 0.12);
   border-radius: 9px;
 }
 
@@ -1015,17 +1024,17 @@ button {
 .decision-radar {
   width: 120px;
   height: 120px;
-  border: 1px solid rgba(85, 214, 190, 0.2);
+  border: 1px solid rgba(255, 113, 38, 0.2);
   border-radius: 999px;
   position: relative;
   background:
     radial-gradient(
       circle,
       transparent 20%,
-      rgba(85, 214, 190, 0.03) 21%,
+      rgba(255, 113, 38, 0.03) 21%,
       transparent 22%,
       transparent 46%,
-      rgba(85, 214, 190, 0.04) 47%,
+      rgba(255, 113, 38, 0.04) 47%,
       transparent 48%
     );
 }
@@ -1034,7 +1043,7 @@ button {
 .decision-radar::after {
   content: "";
   position: absolute;
-  background: rgba(85, 214, 190, 0.13);
+  background: rgba(255, 113, 38, 0.13);
 }
 
 .decision-radar::before {
@@ -1055,7 +1064,7 @@ button {
   height: 6px;
   border-radius: 999px;
   background: var(--cyan);
-  box-shadow: 0 0 12px rgba(85, 214, 190, 0.5);
+  box-shadow: 0 0 12px rgba(255, 113, 38, 0.5);
 }
 
 .decision-radar span:nth-child(1) {
@@ -1086,14 +1095,14 @@ button {
 
 .loading-panel p {
   margin-top: 20px;
-  color: #667e8e;
+  color: #8a9199;
   font-size: 11px;
 }
 
 .loading-orbit {
   width: 58px;
   height: 58px;
-  border: 1px solid rgba(85, 214, 190, 0.12);
+  border: 1px solid rgba(255, 113, 38, 0.12);
   border-top-color: var(--cyan);
   border-radius: 999px;
   animation: rotate 1.2s linear infinite;
@@ -1106,7 +1115,7 @@ button {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(85, 214, 190, 0.5),
+    rgba(255, 113, 38, 0.5),
     transparent
   );
   animation: scanner 2s ease-in-out infinite;
@@ -1114,7 +1123,7 @@ button {
 
 .error-panel {
   padding: 20px;
-  color: #8da1b0;
+  color: #9ca4ad;
 }
 
 .error-panel strong {
@@ -1222,7 +1231,7 @@ button {
     width: 39px;
     height: 39px;
     border: 1px solid var(--line);
-    background: rgba(8, 18, 27, 0.95);
+    background: rgba(14, 17, 21, 0.95);
     border-radius: 9px;
   }
 
@@ -1313,7 +1322,7 @@ button {
   padding: 11px 12px;
   border-radius: 9px;
   background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(132, 164, 186, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .xai-group-row div {
@@ -1331,7 +1340,7 @@ button {
 .xai-group-row small {
   display: block;
   margin-top: 4px;
-  color: #617888;
+  color: #8a9199;
   font-size: 9px;
 }
 
@@ -1404,7 +1413,7 @@ button {
 
 .threshold-line {
   margin: 0 0 16px;
-  color: #6f8797;
+  color: #9ca4ad;
   font-family: var(--mono);
   font-size: 10px;
 }

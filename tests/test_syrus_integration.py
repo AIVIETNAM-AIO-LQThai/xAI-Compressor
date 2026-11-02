@@ -212,3 +212,45 @@ def test_the_origin_exposes_no_equipment_route_and_never_the_key(tmp_path):
         text = " ".join(getattr(r, "path", "") for r in c.app.router.routes).lower()
         assert not any(w in text for w in ("control", "write", "plc", "actuat", "setpoint"))
         assert KEY not in c.get("/api/health").text and KEY not in c.get("/health").text
+
+
+def test_a_limit_stated_in_one_unit_is_not_appended_beside_another_unit_that_only_touches_the_topic(tmp_path):
+    from tests.test_syrus_label import IDENT_EN, LABEL_EN
+    c = client(tmp_path, Fake(reply(LABEL_EN, IDENT_EN, purposes=["evidence_and_sources"], refusal=None)))
+    body = ask(c, start(c), EN, depth="investigation").json()
+    assert body["status"] == "ok" and "leak_demand" not in {q["id"] for b in body["blocks"] for q in b["qualifications"]}
+    assert body["answer"].count("cannot be told apart") == 1
+
+
+def test_a_refusal_from_the_provider_frees_the_governor_but_a_dropped_connection_keeps_its_reservation(tmp_path):
+    from backend.syrus_app.llm import LlmError
+    from tests.test_syrus_guards import Failing
+    cfg = lambda c: c.update(governor={"concurrent_calls": 1, "window_share": 0.9})
+    refused = client(tmp_path, Failing(LlmError("rate_limited", 5.0, indeterminate=False)), patch=cfg)
+    ask(refused, start(refused), "Why did this alert fire?")
+    assert sum(t for _, t in refused.app.state.svc.governor.window) == 0 and refused.app.state.svc.governor.inflight == 0
+    dropped = client(tmp_path, Failing(LlmError("provider_error", indeterminate=True)), patch=cfg)
+    ask(dropped, start(dropped), "Why did this alert fire?")
+    assert sum(t for _, t in dropped.app.state.svc.governor.window) > 0 and dropped.app.state.svc.governor.inflight == 0
+
+
+def test_the_governor_learns_how_pessimistic_the_estimate_is_but_never_trusts_less_than_half():
+    g = Governor(8000, 0.9, 1, Clock())
+    g.observe(3000, 1800)
+    assert g.ratio == pytest.approx(0.8)
+    g.observe(3000, 1800)
+    assert g.ratio == pytest.approx(0.7)
+    for _ in range(20):
+        g.observe(3000, 100)
+    assert g.ratio == 0.5
+    g.observe(3000, 9000)
+    assert g.ratio == 1.0  # a call larger than estimated is trusted at once, up to the full estimate
+
+
+def test_a_second_question_in_the_same_minute_is_admitted_once_the_real_usage_is_known(tmp_path):
+    fake = Fake(reply(U1, U2), tokens=(1900, 300))
+    c = client(tmp_path, fake, patch=lambda cfg: cfg.update(governor={"concurrent_calls": 1, "window_share": 0.9}))
+    h = start(c)
+    assert ask(c, h, "Why did this alert fire?", depth="quick").json()["status"] == "ok"
+    second = ask(c, h, "Which signals contributed to the score?", depth="quick")
+    assert second.status_code == 200 and second.json()["status"] in ("ok", "failed_checks")
