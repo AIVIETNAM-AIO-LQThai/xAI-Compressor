@@ -65,6 +65,7 @@ class TwinRun(BaseModel):
     noise_percent: float = Field(default=2.0, ge=0, le=10)
     scenario: Literal["none", "demand_step", "leak_onset"] = "none"
     onset_minutes: float = Field(default=20, ge=1, le=350)
+    duration_minutes: float | None = Field(default=None, gt=0, le=360)  # absent: to the end of the run
     magnitude_kg_s: float = Field(default=0.02, ge=0, le=0.05)
     seed: int = Field(default=0, ge=0, le=2**31 - 1)
 
@@ -201,6 +202,11 @@ class Lab:
         }
 
     def twin(self, r: TwinRun) -> dict:
+        """Separate synthetic inputs (base demand, added demand, leakage) and the plant's response to their sum.
+
+        The controller and the receiver in this model depend only on total outflow (the controller's set point uses demand + leak, the
+        receiver uses inflow - demand - leak), so the unchanged controller is driven with total outflow as its demand profile. The
+        decomposition is kept as ground truth in the response; nothing observable in this model carries it."""
         rt = load_runtime_config()
         p = rt.pressure
         cfg = BaselineControllerConfig(target_bar_g=p["target_bar_g"], lower_band_bar_g=p["lower_band_bar_g"], upper_band_bar_g=p["upper_band_bar_g"],
@@ -209,28 +215,40 @@ class Lab:
         rng = np.random.default_rng(r.seed)
         base = np.clip(r.base_demand_kg_s * (1 + r.noise_percent / 100 * rng.standard_normal(n)), 0, None)
         onset = int(r.onset_minutes * 60)
-        extra = np.where(np.arange(n) >= onset, r.magnitude_kg_s if r.scenario != "none" else 0.0, 0.0)
-        d = simulate_baseline(list(base + extra), leak_mass_flow_kg_s=0.0, initial_pressure_bar_g=p["target_bar_g"], parameters=rt.twin_parameters,
+        end = min(n, onset + int(r.duration_minutes * 60)) if r.duration_minutes else n
+        step = np.zeros(n)
+        if r.scenario != "none":
+            step[onset:end] = r.magnitude_kg_s
+        added, leak = (step, np.zeros(n)) if r.scenario == "demand_step" else (np.zeros(n), step)
+        total = base + added + leak
+        d = simulate_baseline(list(total), leak_mass_flow_kg_s=0.0, initial_pressure_bar_g=p["target_bar_g"], parameters=rt.twin_parameters,
                               compressors=rt.compressors, controller_config=cfg, timestep_seconds=1.0)
-        k = d.iloc[9::10]  # one point every ten seconds
+        at = np.arange(9, n, 10)  # one point every ten seconds; flows are the values at that second, so total = parts holds point by point
+        k = d.iloc[at]
+        unsafe = d.safety_violation.to_numpy().astype(bool)
+        changed = r.scenario != "none"
         ids = [c.id for c in rt.compressors]
+        r5 = lambda v: np.round(v, 6).tolist()
         return {
             "evidence_class": "SIMULATED",
+            "source": "SIMULATED · generic plant",
             "model": "generic_receiver_twin",
             "detector": "not_applicable",
             "detector_reason": "The twin has no MetroPT-3 channels, so the MetroPT-3 detector cannot score it.",
-            "scenario": r.scenario, "onset_seconds": onset if r.scenario != "none" else None, "magnitude_kg_s": r.magnitude_kg_s if r.scenario != "none" else 0.0, "seed": r.seed,
+            "scenario": r.scenario, "seed": r.seed, "magnitude_kg_s": r.magnitude_kg_s if changed else 0.0,
+            "onset_seconds": onset if changed else None, "end_seconds": end if changed else None,
+            "units": {"time": "s from the start of the run", "flow": "kg/s", "pressure": "bar g", "power": "kW", "energy": "kWh"},
             "band": {"lower": p["lower_band_bar_g"], "upper": p["upper_band_bar_g"], "safety_min": p["safety_min_bar_g"], "safety_max": p["safety_max_bar_g"]},
-            "time_seconds": k.time_seconds.tolist(),
-            "pressure_bar_g": k.pressure_bar_g.round(4).tolist(),
-            "demand_kg_s": k.demand_kg_s.round(5).tolist(),
-            "compressor_flow_kg_s": k.compressor_flow_kg_s.round(5).tolist(),
-            "power_kw": k.power_kw.round(3).tolist(),
-            "on": {i: [bool(x) for x in k[f"{i}_on"]] for i in ids},
+            "time_seconds": (at + 1).tolist(),
+            "inputs": {"base_demand_kg_s": r5(base[at]), "added_demand_kg_s": r5(added[at]), "leak_kg_s": r5(leak[at]), "total_outflow_kg_s": r5(total[at])},
+            "response": {"pressure_bar_g": k.pressure_bar_g.round(4).tolist(), "compressor_flow_kg_s": k.compressor_flow_kg_s.round(6).tolist(),
+                         "power_kw": k.power_kw.round(3).tolist(), "safety_violation": [bool(unsafe[i - 9:i + 1].any()) for i in at],  # any violation in the ten seconds the point closes
+                         "on": {i: [bool(x) for x in k[f"{i}_on"]] for i in ids}},
             "summary": {"pressure_min": float(d.pressure_bar_g.min()), "pressure_max": float(d.pressure_bar_g.max()), "energy_kwh": float(d.energy_kwh.sum()),
-                        "safety_violations": int(d.safety_violation.sum()), "starts": int(sum(d[c].sum() for c in d.columns if c.endswith("_start")))},
-            "notes": ["Leak and demand are both additive outflows: for the same size and onset the plant responds identically, so the twin cannot tell them apart. The controller holds pressure in its band; the extra outflow shows as more compressor flow and energy.",
-                      "A generic 10 m3 isothermal receiver with the fleet in configs/compressors.yaml; not a model of the MetroPT-3 compressor."],
+                        "safety_violations": int(unsafe.sum()), "starts": int(sum(d[c].sum() for c in d.columns if c.endswith("_start"))),
+                        "base_demand_kg": float(base.sum()), "added_demand_kg": float(added.sum()), "leak_kg": float(leak.sum()), "total_outflow_kg": float(total.sum())},
+            "notes": ["Added demand is useful consumption; leakage is outflow that does no work. In this model the controller and the receiver respond only to their sum, so equal totals give identical pressure, compressor flow, power and energy. That is a property of this simplified plant observed through pressure and total flow, not a claim about every real plant or every measurement.",
+                      "A generic 10 m3 isothermal receiver with the fleet in configs/compressors.yaml; not a model of the MetroPT-3 compressor. Energy is simulated, not a measured saving."],
         }
 
 

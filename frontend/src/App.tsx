@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Activity, Cpu, Database, FlaskConical, LayoutDashboard, Menu, Search, ShieldCheck, X, Zap } from "lucide-react";
 
+import { useConfig, type DeploymentConfig } from "./config";
 import { Explorer } from "./pages/Explorer";
 import { DigitalTwinLab } from "./pages/DigitalTwinLab";
 import { EnergyRecommendation } from "./pages/EnergyRecommendation";
@@ -12,6 +13,15 @@ import { ScenarioLab } from "./pages/ScenarioLab";
 import { hashFor, parse, recall, recallIncident, recallView, remember, type Route, type Selection, type Where } from "./selection";
 import { SyrusCompanion } from "./syrus/Companion";
 import { useSyrusUi } from "./syrus/ui";
+
+// The older Simulation Lab is reached by link only: the Scenario Lab's generic twin replaces it.
+const NAV_HIDDEN: Route[] = ["twin"];
+const SERVED: Partial<Record<Route, (c: DeploymentConfig) => boolean>> = {
+  lab: (c) => c.features.lab !== "off",
+  twin: (c) => c.features.twin,
+  recommendation: (c) => c.features.optimization,
+};
+const MODE_NAME: Record<DeploymentConfig["mode"], string> = { local: "local copy", preview: "preview", public: "public site", showcase: "showcase" };
 
 const ROUTES: Array<{ id: Route; label: string; icon: typeof Activity }> = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -28,6 +38,8 @@ export default function App() {
   const [where, setWhere] = useState<Where>(() => parse(window.location.hash));
   const [mobileOpen, setMobileOpen] = useState(false);
   const syrus = useSyrusUi();
+  const config = useConfig();
+  const served = (id: Route) => !config || (SERVED[id]?.(config) ?? true);
   const main = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -65,8 +77,9 @@ export default function App() {
   const view = selection && selection.kind !== "incident" ? selection : recallView();
   const target = (id: Route) => (id === "investigate" && incident ? hashFor(incident) : id === "explore" && view ? hashFor(view) : id);
 
-  const content =
-    where.route === "investigate" ? (
+  const content = !served(where.route) ? (
+    <NotServed mode={config ? MODE_NAME[config.mode] : "deployment"} open={open} />
+  ) : where.route === "investigate" ? (
       <Investigation selection={where.selection?.kind === "interval" ? null : where.selection} go={choose} />
     ) : where.route === "explore" ? (
       <Explorer selection={where.selection?.kind === "incident" ? null : where.selection} go={choose} />
@@ -104,7 +117,7 @@ export default function App() {
         </div>
 
         <nav aria-label="Main">
-          {ROUTES.map((item) => {
+          {ROUTES.filter((item) => !NAV_HIDDEN.includes(item.id) && served(item.id)).map((item) => {
             const Icon = item.icon;
             return (
               <button key={item.id} className={where.route === item.id ? "nav-item active" : "nav-item"} aria-current={where.route === item.id ? "page" : undefined} onClick={() => open(target(item.id))}>
@@ -117,6 +130,13 @@ export default function App() {
 
         <div className="sidebar-footer">
           <p>Historical replay · advisory only · no equipment control</p>
+          <p className="credit">
+            Data:{" "}
+            <a href="https://doi.org/10.24432/C5VW3R" target="_blank" rel="noreferrer">
+              MetroPT-3
+            </a>{" "}
+            (Davari, Veloso, Ribeiro &amp; Gama, 2021), UCI, CC BY 4.0
+          </p>
         </div>
       </aside>
 
@@ -125,7 +145,20 @@ export default function App() {
         {content}
       </main>
 
-      <SyrusCompanion selection={selection} choose={choose} simulation={where.route === "lab" || where.route === "twin"} />
+      <SyrusCompanion selection={selection} choose={choose} simulation={where.route === "lab" || where.route === "twin"} remembered={where.route !== "investigate" && where.route !== "explore"} />
+    </div>
+  );
+}
+
+function NotServed({ mode, open }: { mode: string; open: (hash: string) => void }) {
+  return (
+    <div className="page-shell">
+      <div className="eyebrow">NOT IN THIS {mode.toUpperCase()}</div>
+      <h1>This page is not part of this {mode}</h1>
+      <p className="muted">It runs simulation or optimisation on the server, which this {mode} does not serve.</p>
+      <button className="secondary-button" onClick={() => open("overview")}>
+        Go to the Overview
+      </button>
     </div>
   );
 }

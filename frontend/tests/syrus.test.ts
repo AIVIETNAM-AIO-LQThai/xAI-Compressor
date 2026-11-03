@@ -78,8 +78,8 @@ describe("sessions", () => {
 });
 
 describe("user-facing messages", () => {
-  const offline = ["key_missing", "caps_unconfirmed", "kill_switch", "adapter_missing", "budget_daily", "budget_total", "rate_limited", "busy", "paced", "timeout", "provider_error", "provider_auth", "context_over_budget", "context_incomplete"];
-  const errors = ["session_expired", "token_invalid", "token_missing", "turn_limit", "session_rate_limit", "asof_chat_disabled", "message_too_long", "empty_message", "turn_in_progress", "case_mismatch", "case_not_found"];
+  const offline = ["guests_off", "key_missing", "caps_unconfirmed", "kill_switch", "adapter_missing", "budget_daily", "budget_total", "rate_limited", "busy", "paced", "timeout", "provider_error", "provider_auth", "context_over_budget", "context_incomplete"];
+  const errors = ["session_expired", "token_invalid", "token_missing", "turn_limit", "session_rate_limit", "asof_chat_disabled", "message_too_long", "empty_message", "turn_in_progress", "case_mismatch", "case_not_found", "guest_quota", "preview_locked", "rate_limited"];
 
   it("has a specific message for every offline reason and error code the backend can return", () => {
     for (const reason of offline) assert.notEqual(notice({ kind: "offline", reason, retryAfter: null }).text, "Syrus is unavailable.", reason);
@@ -89,6 +89,8 @@ describe("user-facing messages", () => {
   it("never offers a retry that cannot succeed, and never shows provider text", () => {
     assert.equal(notice({ kind: "error", code: "turn_limit", status: 429 }).canRetry, false);
     assert.equal(notice({ kind: "error", code: "asof_chat_disabled", status: 403 }).canRetry, false);
+    assert.equal(notice({ kind: "error", code: "guest_quota", status: 429 }).canRetry, false);
+    assert.equal(notice({ kind: "offline", reason: "guests_off", retryAfter: null }).canRetry, false);
     assert.equal(notice({ kind: "offline", reason: "rate_limited", retryAfter: 12 }).retryAfter, 12);
     assert.ok(!notice({ kind: "offline", reason: "provider_error", retryAfter: null }).text.includes("ReadError"));
   });

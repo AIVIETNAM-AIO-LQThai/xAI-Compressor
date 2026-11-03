@@ -22,6 +22,7 @@ class Settings:
     ip_salt: bytes
     budget_file: Path
     diagnostics: bool = False
+    guests: bool = True  # False when the deployment mode switches Syrus off for visitors (see backend/access.py)
 
     @property
     def limits(self) -> dict:
@@ -38,6 +39,8 @@ class Settings:
 
     def offline_reason(self) -> str | None:
         """Why no model call may be made at all, before any budget check."""
+        if not self.guests:
+            return "guests_off"
         if self.kill:
             return "kill_switch"
         if not self.key:

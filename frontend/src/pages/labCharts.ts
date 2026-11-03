@@ -91,30 +91,71 @@ function twinBase(r: TwinRunResult, narrow: boolean) {
   };
 }
 
-export function pressureOption(r: TwinRunResult, narrow: boolean) {
-  const line = (v: number, color: string, dash: string) => ({ yAxis: v, lineStyle: { color, type: dash, width: 1 }, label: { show: false } });
+const LEAK = "#e8601c";
+const line = (r: TwinRunResult, name: string, v: number[], color: string, width: number, type: "solid" | "dashed" = "solid") => ({
+  type: "line",
+  name,
+  data: r.time_seconds.map((x, i) => [x, v[i]]),
+  showSymbol: false,
+  lineStyle: { width, color, type },
+  itemStyle: { color },
+});
+const onset = (r: TwinRunResult) => (r.onset_seconds === null ? [] : [{ xAxis: r.onset_seconds, lineStyle: { color: "#f5b942", width: 2, type: "solid" }, label: { show: false } }]);
+const kg = (v: number) => `${v.toFixed(4)} kg/s`;
+
+/** Known simulated inputs: what was declared, kept apart. Legitimate demand is base plus added demand. */
+export function twinInputsOption(r: TwinRunResult, narrow: boolean) {
+  const i = r.inputs;
+  const legit = i.base_demand_kg_s.map((b, k) => b + i.added_demand_kg_s[k]);
+  return {
+    ...twinBase(r, narrow),
+    yAxis: { type: "value", min: 0, splitNumber: 3, ...Y, axisLabel: { color: MUTED, fontSize: 12 } },
+    tooltip: {
+      trigger: "axis",
+      ...TIP,
+      formatter: (items: Array<{ dataIndex: number }>) => {
+        const k = items[0]?.dataIndex;
+        if (k === undefined) return "";
+        return [`<b>${sec(r.time_seconds[k])}</b>`, `Base demand ${kg(i.base_demand_kg_s[k])}`, `Added demand ${kg(i.added_demand_kg_s[k])}`, `Leakage ${kg(i.leak_kg_s[k])}`, `Total outflow ${kg(i.total_outflow_kg_s[k])}`].join("<br/>");
+      },
+    },
+    series: [
+      { ...line(r, "Legitimate demand", legit, SCORE, 1.6), markLine: { silent: true, symbol: "none", data: onset(r) } },
+      line(r, "Leakage", i.leak_kg_s, LEAK, 1.8),
+      line(r, "Total outflow", i.total_outflow_kg_s, MUTED, 1.2, "dashed"),
+    ],
+  };
+}
+
+export function twinPressureOption(r: TwinRunResult, narrow: boolean) {
+  const band = (v: number, color: string, dash: string) => ({ yAxis: v, lineStyle: { color, type: dash, width: 1 }, label: { show: false } });
   return {
     ...twinBase(r, narrow),
     yAxis: { type: "value", min: r.band.safety_min - 0.05, max: r.band.safety_max + 0.05, splitNumber: 4, ...Y, axisLabel: { color: MUTED, fontSize: 12 } },
+    tooltip: { trigger: "axis", ...TIP, valueFormatter: (v: number) => `${v.toFixed(3)} bar g` },
     series: [
       {
-        type: "line",
-        name: "Receiver pressure (bar g)",
-        data: r.time_seconds.map((x, i) => [x, r.pressure_bar_g[i]]),
-        showSymbol: false,
-        lineStyle: { width: 1.6, color: SCORE },
-        itemStyle: { color: SCORE },
-        markLine: { silent: true, symbol: "none", data: [line(r.band.lower, MUTED, "dashed"), line(r.band.upper, MUTED, "dashed"), line(r.band.safety_min, ALERT, "dotted"), line(r.band.safety_max, ALERT, "dotted"), ...(r.onset_seconds === null ? [] : [{ xAxis: r.onset_seconds, lineStyle: { color: "#f5b942", width: 2, type: "solid" }, label: { show: false } }])] },
+        ...line(r, "Receiver pressure", r.response.pressure_bar_g, SCORE, 1.6),
+        markLine: { silent: true, symbol: "none", data: [band(r.band.lower, MUTED, "dashed"), band(r.band.upper, MUTED, "dashed"), band(r.band.safety_min, ALERT, "dotted"), band(r.band.safety_max, ALERT, "dotted"), ...onset(r)] },
       },
     ],
   };
 }
 
-export function flowOption(r: TwinRunResult, narrow: boolean) {
-  const s = (name: string, v: number[], color: string, w: number) => ({ type: "line", name, data: r.time_seconds.map((x, i) => [x, v[i]]), showSymbol: false, lineStyle: { width: w, color }, itemStyle: { color } });
+export function twinFlowOption(r: TwinRunResult, narrow: boolean) {
   return {
     ...twinBase(r, narrow),
     yAxis: { type: "value", scale: true, splitNumber: 3, ...Y, axisLabel: { color: MUTED, fontSize: 12 } },
-    series: [s("Compressor flow (kg/s)", r.compressor_flow_kg_s, SCORE, 1.6), s("Demand with any injected change (kg/s)", r.demand_kg_s, FAINT, 1.2)],
+    tooltip: { trigger: "axis", ...TIP, valueFormatter: (v: number) => kg(v) },
+    series: [{ ...line(r, "Compressor flow", r.response.compressor_flow_kg_s, SCORE, 1.6), markLine: { silent: true, symbol: "none", data: onset(r) } }, line(r, "Total outflow", r.inputs.total_outflow_kg_s, MUTED, 1.2, "dashed")],
+  };
+}
+
+export function twinPowerOption(r: TwinRunResult, narrow: boolean) {
+  return {
+    ...twinBase(r, narrow),
+    yAxis: { type: "value", scale: true, splitNumber: 3, ...Y, axisLabel: { color: MUTED, fontSize: 12 } },
+    tooltip: { trigger: "axis", ...TIP, valueFormatter: (v: number) => `${v.toFixed(1)} kW` },
+    series: [{ ...line(r, "Compressor power", r.response.power_kw, SCORE, 1.6), markLine: { silent: true, symbol: "none", data: onset(r) } }],
   };
 }

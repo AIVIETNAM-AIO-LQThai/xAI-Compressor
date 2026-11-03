@@ -4,6 +4,7 @@ import * as echarts from "echarts";
 
 import { ErrorPanel } from "../components/ErrorPanel";
 import { LoadingPanel } from "../components/LoadingPanel";
+import { SourceTag } from "../components/SourceTag";
 import {
   ExplorerError,
   MAX_RANGE_DAYS,
@@ -289,6 +290,7 @@ function View({ win, overview, episodes, episode, go }: { win: Win; overview: Ex
       <section className="panel">
         <div className="panel-head">
           <h2>Detector score</h2>
+          <SourceTag source="MODEL INFERENCE" />
           <div className="nav-buttons">
             <button className="secondary-button" onClick={() => move(-0.5)} aria-label="Earlier by half a window">
               ← Earlier
@@ -506,6 +508,7 @@ function Channels({ win, data, rawAllowed, narrow, analog, digital }: { win: Win
     <section className="panel">
       <div className="panel-head">
         <h2>Recorded channels</h2>
+        <SourceTag source="RECORDED" />
         <div className="segmented compact" role="group" aria-label="Detail">
           <button className={!useRaw ? "active" : ""} aria-pressed={!useRaw} onClick={() => setMode("summary")}>
             5-minute summary

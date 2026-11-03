@@ -6,7 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from backend.app.explorer import ROOT, Explorer, build_index
-from backend.app.lab import Lab, SensorFault, TwinRun
+from backend.app.lab import Lab, SensorFault
 from backend.syrus_app.settings import load_settings
 from backend.web import create_web
 
@@ -97,17 +97,6 @@ def test_windows_outside_the_test_period_are_refused(lab):
         lab.sensor_fault(SensorFault(start="2020-02-10T00:00", hours=12, fault="offset", channel="tp3", onset_hours=4))
     with pytest.raises(ValueError):
         lab.sensor_fault(SensorFault(start="2020-03-01T01:00", hours=12, fault="offset", channel="tp3", onset_hours=4))  # no recorded warm-up before it
-
-
-def test_the_twin_is_labelled_not_scored_and_leak_equals_demand(lab):
-    leak, demand, none = lab.twin(TwinRun(scenario="leak_onset", seed=3)), lab.twin(TwinRun(scenario="demand_step", seed=3)), lab.twin(TwinRun(scenario="none", seed=3))
-    assert leak["evidence_class"] == "SIMULATED" and leak["detector"] == "not_applicable"
-    assert leak["pressure_bar_g"] == demand["pressure_bar_g"] and leak["compressor_flow_kg_s"] == demand["compressor_flow_kg_s"]  # same outflow, same plant response
-    onset = leak["onset_seconds"] // 10
-    assert sum(leak["compressor_flow_kg_s"][onset:]) > sum(none["compressor_flow_kg_s"][onset:]) and leak["summary"]["energy_kwh"] > none["summary"]["energy_kwh"]
-    assert none["magnitude_kg_s"] == 0 and none["onset_seconds"] is None
-    assert lab.twin(TwinRun(seed=3)) == none and lab.twin(TwinRun(seed=4))["demand_kg_s"] != none["demand_kg_s"]
-    assert len(leak["time_seconds"]) == 360 and 6.5 < leak["summary"]["pressure_min"] and leak["summary"]["pressure_max"] < 7.5
 
 
 def test_the_api_serves_the_lab_locally_and_the_public_build_does_not(lab):

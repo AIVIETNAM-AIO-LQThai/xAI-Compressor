@@ -220,13 +220,14 @@ class Explorer:
                          "bins": act["bins"].astype(int).tolist(), "alert": act["alert"].tolist()},
         }
 
-    def range(self, start: pd.Timestamp, end: pd.Timestamp) -> dict:
+    def range(self, start: pd.Timestamp, end: pd.Timestamp, gaps: bool = True) -> dict:
         if end <= start or end - start > MAX_RANGE:
             raise ValueError("range")
         s = self.detector().loc[start:end]
         f = self.features().loc[start:end]
         cols = [f"{c}__{k}" for c in ANALOG_COLUMNS for k in STATS] + [f"{c}__active_ratio" for c in DIGITAL_COLUMNS]
-        both = _with_gaps(s.join(f[cols], how="left"), BIN)
+        both = s.join(f[cols], how="left")
+        both = _with_gaps(both, BIN) if gaps else both  # without gap rows for day files that a static client stitches and gaps itself
         return {
             "start": _iso(start), "end": _iso(end), "threshold": self.manifest()["threshold"], "step_seconds": 300,
             "t": [_iso(t) for t in both.index],
@@ -240,7 +241,7 @@ class Explorer:
                         | {c: {"active_ratio": _num(both[f"{c}__active_ratio"].tolist(), 3)} for c in DIGITAL_COLUMNS},
         }
 
-    def raw(self, start: pd.Timestamp, end: pd.Timestamp) -> dict:
+    def raw(self, start: pd.Timestamp, end: pd.Timestamp, gaps: bool = True) -> dict:
         if end <= start or end - start > MAX_RAW:
             raise ValueError("range")
         self.manifest()
@@ -248,7 +249,7 @@ class Explorer:
         frames = [pd.read_parquet(p) for d in days if (p := self.root / "raw" / f"{d.date()}.parquet").exists()]
         frame = pd.concat(frames) if frames else pd.DataFrame(columns=["timestamp", *SENSOR_COLUMNS])
         frame = frame[(frame["timestamp"] >= start) & (frame["timestamp"] < end)].set_index("timestamp")
-        frame = _with_gaps(frame, pd.Timedelta(seconds=60))  # the recording is nominally every 10 s; a pause over a minute is a gap
+        frame = _with_gaps(frame, pd.Timedelta(seconds=60)) if gaps else frame  # the recording is nominally every 10 s; a pause over a minute is a gap
         return {"start": _iso(start), "end": _iso(end), "step_seconds": 10, "t": [_iso(t) for t in frame.index],
                 "channels": {c: _num(frame[c].tolist(), 4) for c in SENSOR_COLUMNS}}
 

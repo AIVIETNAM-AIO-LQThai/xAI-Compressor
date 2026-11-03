@@ -1,3 +1,5 @@
+import { DATA, STATIC, days, staticUrl, stitch } from "./staticData";
+
 // Read-only recorded-data explorer. Timestamps are dataset local time as "YYYY-MM-DD HH:MM:SS"; a null value is a recording gap.
 const BASE: string = import.meta.env?.VITE_API_BASE_URL ?? "";
 
@@ -25,7 +27,8 @@ export class ExplorerError extends Error {
 }
 
 async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
-  const r = await fetch(`${BASE}${path}`, { signal });
+  const r = await fetch(STATIC ? staticUrl(path) : `${BASE}${path}`, { signal });
+  if (STATIC && r.status === 404) throw new ExplorerError(path.startsWith("/explorer/episode?") ? "episode_not_found" : "not_found");
   if (!r.ok) {
     let code = `http_${r.status}`;
     try {
@@ -111,10 +114,36 @@ export const MAX_RAW_HOURS = 24;
 
 const q = (s: string) => encodeURIComponent(s.replace("T", " "));
 export const getEpisodes = (signal?: AbortSignal) => get<{ episodes: Episode[] }>("/explorer/episodes", signal).then((r) => r.episodes);
-export const getRange = (start: string, end: string, signal?: AbortSignal) => get<RangeData>(`/explorer/range?start=${q(start)}&end=${q(end)}`, signal);
-export const getRaw = (start: string, end: string, signal?: AbortSignal) => get<RawData>(`/explorer/raw?start=${q(start)}&end=${q(end)}`, signal);
+// The showcase joins one file per recorded day; days without a file have no recording.
+async function dayFiles(kind: "range" | "raw" | "bins", start: string, end: string, signal?: AbortSignal) {
+  const got = await Promise.all(days(start, end).map((d) => fetch(`${DATA}/explorer/${kind}/${d}.json`, { signal }).then((r) => (r.ok ? r.json() : null))));
+  return got.filter(Boolean) as Array<Record<string, unknown>>;
+}
+
+const full = (s: string) => `${s.replace("T", " ").slice(0, 16)}:00`;
+
+export async function getRange(start: string, end: string, signal?: AbortSignal): Promise<RangeData> {
+  if (!STATIC) return get<RangeData>(`/explorer/range?start=${q(start)}&end=${q(end)}`, signal);
+  if (instant(end) - instant(start) > MAX_RANGE_DAYS * 86_400_000 || instant(end) <= instant(start)) throw new ExplorerError("range_invalid");
+  const parts = await dayFiles("range", start, end, signal);
+  const first = parts[0] as { threshold?: number } | undefined;
+  return { ...(stitch(parts, full(start), full(end), 300_000) as object), start: full(start), end: full(end), threshold: first?.threshold ?? 0, step_seconds: 300 } as RangeData;
+}
+
+export async function getRaw(start: string, end: string, signal?: AbortSignal): Promise<RawData> {
+  if (!STATIC) return get<RawData>(`/explorer/raw?start=${q(start)}&end=${q(end)}`, signal);
+  if (instant(end) - instant(start) > MAX_RAW_HOURS * 3_600_000 || instant(end) <= instant(start)) throw new ExplorerError("range_invalid");
+  const parts = await dayFiles("raw", start, end, signal);
+  return { ...(stitch(parts, full(start), full(end), 60_000, true) as object), start: full(start), end: full(end), step_seconds: 10 } as RawData;
+}
 export const getEpisodeEvidence = (start: string, signal?: AbortSignal) => get<EpisodeEvidence>(`/explorer/episode?start=${q(start)}`, signal);
-export const getBin = (t: string, signal?: AbortSignal) => get<BinData>(`/explorer/bin?t=${q(t)}`, signal);
+export async function getBin(t: string, signal?: AbortSignal): Promise<BinData> {
+  if (!STATIC) return get<BinData>(`/explorer/bin?t=${q(t)}`, signal);
+  const [day] = await dayFiles("bins", t, t, signal);
+  const found = (day as Record<string, BinData> | undefined)?.[full(t)];
+  if (!found) throw new ExplorerError("bin_not_found");
+  return found;
+}
 
 export const getOverview = (signal?: AbortSignal) => get<ExplorerOverview>("/explorer/overview", signal);
 

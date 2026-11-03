@@ -9,11 +9,14 @@ import type {
   TurnOutcome,
 } from "./types";
 
+// The extension lets the offline tests load this module in Node without a bundler.
+import { STATIC, staticUrl } from "../staticData.ts";
+
 // Same origin by default: `uvicorn backend.web:app` serves the API and this app, and the Vite dev server proxies /api.
 const BASE: string = import.meta.env?.VITE_API_BASE_URL ?? "";
 
 async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
-  const r = await fetch(`${BASE}${path}`, { signal });
+  const r = await fetch(STATIC ? staticUrl(path) : `${BASE}${path}`, { signal });
   if (!r.ok) throw new Error(`${r.status}`);
   return r.json() as Promise<T>;
 }
@@ -26,6 +29,7 @@ export function getCase(caseId: string, mode: Mode, signal?: AbortSignal) {
 }
 
 export async function createSession(caseId: string, mode: Mode, signal?: AbortSignal): Promise<SessionInfo> {
+  if (STATIC) throw new SessionError("guests_off", 503); // the showcase has no server and no chat
   const r = await fetch(`${BASE}/api/session`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

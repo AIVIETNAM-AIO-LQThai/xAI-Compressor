@@ -96,6 +96,7 @@ const OFFLINE: Record<string, string> = {
   key_missing: "Syrus is not configured on this server.",
   caps_unconfirmed: "Syrus is waiting for the spending caps to be confirmed.",
   kill_switch: "Syrus has been switched off.",
+  guests_off: "Chat is off here. The reviewed evidence on the page is complete without it.",
   adapter_missing: "Syrus is not configured on this server.",
   budget_daily: "The daily budget is used up. Try again tomorrow.",
   budget_total: "The development budget is used up.",
@@ -121,6 +122,10 @@ const ERRORS: Record<string, string> = {
   turn_in_progress: "Syrus is still working on the previous question.",
   case_mismatch: "That conversation belongs to a different case.",
   case_not_found: "That case does not exist.",
+  guest_quota: "You have used today's questions for this preview.",
+  guests_off: "Chat is off here. The reviewed evidence on the page is complete without it.",
+  preview_locked: "Your preview access has ended. Reload the page and enter the invite code again.",
+  rate_limited: "Too many requests at once. Wait a moment and try again.",
 };
 
 export interface Notice {
@@ -133,12 +138,12 @@ export interface Notice {
 export function notice(o: Exclude<TurnOutcome, { kind: "answer" }>): Notice {
   switch (o.kind) {
     case "offline":
-      return { tone: "warn", text: OFFLINE[o.reason] ?? "Syrus is unavailable.", retryAfter: o.retryAfter ?? undefined, canRetry: true };
+      return { tone: "warn", text: OFFLINE[o.reason] ?? "Syrus is unavailable.", retryAfter: o.retryAfter ?? undefined, canRetry: o.reason !== "guests_off" };
     case "failed_checks":
       return { tone: "warn", text: "Syrus could not produce an answer that passes the evidence checks.", canRetry: true };
     case "network":
       return { tone: "error", text: "Cannot reach the server.", canRetry: true };
     case "error":
-      return { tone: "error", text: ERRORS[o.code] ?? "Something went wrong.", canRetry: !["turn_limit", "asof_chat_disabled", "case_not_found"].includes(o.code) };
+      return { tone: "error", text: ERRORS[o.code] ?? "Something went wrong.", canRetry: !["turn_limit", "asof_chat_disabled", "case_not_found", "guest_quota", "preview_locked", "guests_off"].includes(o.code) };
   }
 }

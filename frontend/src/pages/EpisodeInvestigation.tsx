@@ -3,6 +3,7 @@ import ReactECharts from "echarts-for-react";
 
 import { ErrorPanel } from "../components/ErrorPanel";
 import { LoadingPanel } from "../components/LoadingPanel";
+import { SourceTag } from "../components/SourceTag";
 import { ExplorerError, getEpisodeEvidence, instant, type EpisodeEvidence } from "../explorer";
 import type { Selection } from "../selection";
 import { dateLabel, groupName } from "../syrus/labels";
@@ -49,7 +50,11 @@ export function EpisodeInvestigation({ selection, go }: { selection: Extract<Sel
             MetroPT-3 air-production unit · {dateLabel(e.start)} {clock(e.start)} · {e.alert_bins} alert {e.alert_bins === 1 ? "bin" : "bins"} · dataset local time
           </p>
         </div>
-        <span className="computed-badge">Computed · not reviewed · Syrus off</span>
+        <div className="tags">
+          <SourceTag source="MODEL INFERENCE" />
+          <SourceTag source="UNREVIEWED" />
+          <span className="computed-badge">Syrus off</span>
+        </div>
       </header>
 
       <div className="metrics">

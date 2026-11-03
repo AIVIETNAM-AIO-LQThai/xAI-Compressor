@@ -13,13 +13,13 @@ import { useCaseFile, useCases } from "./useCase";
  * case and mode, never a default; without a selection it asks the user to choose one.
  */
 /** `simulation`: on a simulation page Syrus is off, whatever was chosen before, so no recorded case is read across a synthetic run. */
-export function SyrusCompanion({ selection, choose, simulation = false }: { selection: Selection | null; choose: (s: Selection) => void; simulation?: boolean }) {
+export function SyrusCompanion({ selection, choose, simulation = false, remembered = false }: { selection: Selection | null; choose: (s: Selection) => void; simulation?: boolean; remembered?: boolean }) {
   const ui = useSyrusUi();
   const { cases } = useCases();
   const incident = selection?.kind === "incident" ? selection : null;
   const entry = incident && cases?.find((c) => c.caseId === incident.caseId);
   const other = selection && selection.kind !== "incident" ? selection : null;
-  const context = simulation ? "Simulation · Syrus off" : entry ? `Incident ${entry.number} · ${incident!.mode === "retro" ? "Retrospective" : "Past-only"}` : other ? (other.kind === "episode" ? "Alert episode · no case file" : "Interval · no case file") : "No incident selected";
+  const context = simulation ? "Simulation · Syrus off" : entry ? `${remembered ? "Last chosen: " : ""}Incident ${entry.number} · ${incident!.mode === "retro" ? "Retrospective" : "Past-only"}` : other ? (other.kind === "episode" ? "Alert episode · no case file" : "Interval · no case file") : "No incident selected";
 
   // Focus moves into the drawer when it opens and back to the launcher when it closes. An offered question focuses the composer instead.
   const launcher = useRef<HTMLButtonElement>(null);

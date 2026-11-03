@@ -49,9 +49,10 @@ def test_the_build_is_deterministic(built):
     main = ROOT / "data" / "processed" / "explorer" / "manifest.json"
     if not main.exists():
         pytest.skip("no project index to compare with")
-    project = json.loads(main.read_text("utf-8"))["outputs"]
-    for name in ("detector.parquet", "episodes.json", "raw/2020-05-29.parquet"):
-        assert built[1]["outputs"][name] == project[name], name
+    # Parquet files record the writing library's version, so compare their content; episodes.json is compared byte for byte.
+    assert built[1]["outputs"]["episodes.json"] == json.loads(main.read_text("utf-8"))["outputs"]["episodes.json"]
+    for name in ("detector.parquet", "raw/2020-05-29.parquet"):
+        pd.testing.assert_frame_equal(pd.read_parquet(built[0] / name), pd.read_parquet(main.parent / name), check_exact=True, obj=name)
 
 
 def test_the_build_refuses_when_a_frozen_value_is_not_reproduced(tmp_path, monkeypatch):

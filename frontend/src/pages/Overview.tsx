@@ -5,6 +5,7 @@ import { getDetectionEvidence, getEvidenceSummary } from "../api";
 import { ErrorPanel } from "../components/ErrorPanel";
 import { LoadingPanel } from "../components/LoadingPanel";
 import { PageHeader } from "../components/PageHeader";
+import { SourceTag } from "../components/SourceTag";
 import { ExplorerError, getOverview, instant, type ExplorerOverview } from "../explorer";
 import type { Selection } from "../selection";
 import { dateLabel } from "../syrus/labels";
@@ -97,6 +98,14 @@ export function Overview({ open, choose }: { open: (hash: string) => void; choos
         </article>
       </section>
 
+      <p className="foot credit-line">
+        Source: MetroPT-3 dataset, Davari, Veloso, Ribeiro &amp; Gama (2021), UCI Machine Learning Repository,{" "}
+        <a href="https://doi.org/10.24432/C5VW3R" target="_blank" rel="noreferrer">
+          doi:10.24432/C5VW3R
+        </a>
+        , CC BY 4.0. Detector scores are model inference on that recording.
+      </p>
+
       <div className="overview-split">
         <section className="panel">
           <div className="panel-head">
@@ -183,7 +192,10 @@ function Activity({ data }: { data: ExplorerOverview }) {
     <section className="panel activity">
       <div className="panel-head">
         <h2>Detector activity</h2>
-        <span className="tag">{a.bucket_hours}-hour maximum · log scale</span>
+        <div className="tags">
+          <SourceTag source="MODEL INFERENCE" />
+          <span className="tag">{a.bucket_hours}-hour maximum · log scale</span>
+        </div>
       </div>
       <div className="legend" aria-hidden>
         <span>

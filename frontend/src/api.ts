@@ -10,6 +10,8 @@ import type {
   TwinResponse,
 } from "./types";
 
+import { STATIC, staticUrl } from "./staticData";
+
 // Same origin by default (`uvicorn backend.web:app`, or the Vite proxy in development). VITE_API_BASE_URL is for a separate API host and must never hold a secret.
 const API_BASE: string = import.meta.env.VITE_API_BASE_URL ?? "";
 
@@ -17,6 +19,12 @@ async function request<T>(
   path: string,
   init?: RequestInit,
 ): Promise<T> {
+  // The showcase answers from precomputed files; the one POST it keeps (proof verification) was run at export time.
+  if (STATIC) {
+    const r = await fetch(staticUrl(path));
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+    return r.json() as Promise<T>;
+  }
   const response = await fetch(`${API_BASE}${path}`, {
     headers: {
       "Content-Type": "application/json",

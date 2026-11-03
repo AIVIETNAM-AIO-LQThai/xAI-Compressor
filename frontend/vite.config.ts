@@ -16,6 +16,8 @@ export default defineConfig({
       "/twin": backend,
       "/optimization": backend,
       "/health": backend,
+      "/lab": backend,
+      "/config": backend,
     },
   },
 });

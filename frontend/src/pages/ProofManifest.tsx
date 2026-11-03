@@ -18,6 +18,7 @@ import { ErrorPanel } from "../components/ErrorPanel";
 import { EvidenceBadge } from "../components/EvidenceBadge";
 import { LoadingPanel } from "../components/LoadingPanel";
 import { PageHeader } from "../components/PageHeader";
+import { STATIC } from "../staticData";
 import type {
   ProofBundleResponse,
   ProofBundleVerification,
@@ -106,6 +107,8 @@ export function ProofManifest() {
         title="A recommendation is only as strong as the boundary it refuses to cross."
         description="This manifest shows the real MetroPT evidence path and the separate simulated validation path side by side. AeroXAI deliberately stops real-asset reasoning when calibration evidence is missing."
       />
+
+      {STATIC ? <p className="notice warn">The integrity check below was run when this showcase was exported, against the files of that time. It is not re-run in your browser.</p> : null}
 
       <div className="proof-identity">
         <div>
